@@ -23,7 +23,7 @@ private:
 public:
 
 	/**
-	* @brief Returns the singleton engine instance.
+	* @brief Starting point: returns the singleton engine instance.
 	*/
 	static Ace* getInstance();
 
