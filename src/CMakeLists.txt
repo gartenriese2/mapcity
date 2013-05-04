@@ -19,10 +19,12 @@ FILE( GLOB_RECURSE files "*.cpp" "*.hpp" )
 
 add_executable( ${OUTPUT_NAME} ${files} )
 
+# Linux
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
 	target_link_libraries( ${OUTPUT_NAME} glfw GLEW GL rt)
 endif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
 
+# Mac OSX
 if( APPLE )
 	include_directories( ${OPENGL_INCLUDE_DIRS} )
 	target_link_libraries( ${OUTPUT_NAME} ${OPENGL_LIBRARIES} )
