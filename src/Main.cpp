@@ -223,9 +223,7 @@ void terrainTest() {
 	Bitmap b("../assets/heightmap.bmp");
 	cout << "Height: " << b.getHeight() << ", Width: " << b.getWidth() << "\n";
 	Terrain t(b);
-	for (int i = 0; i < 100; i++) {
-		cout << t.getVertices()[i] << "\n";
-	}
+	
 }
 
 int main() {
