@@ -1,8 +1,8 @@
 Documentation
 =============
 
-The mapcity documentation will be created with [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
+The mapcity documentation can be created with [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
 
-TODO:
-- create doxygen configuration files 
-- prepare cmake to include doxygen if it is present on the target machine
+- install Doxygen
+- from the build directory, run "cmake .." followed by "make doc" 
+- open "build/doc/html/index.html"
