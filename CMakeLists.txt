@@ -16,3 +16,6 @@ project( ${PROJECT_NAME} )
 
 # add source directory
 add_subdirectory( "src" )
+
+# Doxygen
+add_subdirectory( "doc" )
