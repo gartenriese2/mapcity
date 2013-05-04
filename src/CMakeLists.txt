@@ -1,5 +1,13 @@
+################################################################################
+#
+#	MapCity CMake files
+#
+################################################################################
+
+# add externel cmake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/" )
 
+# check these!
 find_package( GLM REQUIRED )
 find_package( OpenGL REQUIRED )
 find_package( GLFW REQUIRED )
