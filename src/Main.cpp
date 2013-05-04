@@ -13,6 +13,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+// BEGIN TEST
+#include "../libace/libace.h"
+ace::Ace *Engine = ace::Ace::getInstance();
+// END TEST
+
 using namespace std;
 
 void findHexagonTest() {

@@ -1,13 +1,19 @@
 mapcity
 =======
 
-Building: 
+Prerequisites
+-------------
+- OpenGL
+- GLFW
+- GLM
+- ...
 
-cd build/
+Building
+--------
 
-cmake ../
-
-make
-
-./src/Main
+- cd build/
+- cmake ../
+- make
+- cd src/
+- ./mapcity
 
