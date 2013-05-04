@@ -7,5 +7,7 @@ cd build/
 
 cmake ../
 
+make
+
 ./src/Main
 
