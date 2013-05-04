@@ -7,10 +7,13 @@
 
 class Terrain {
 	public:
-		Terrain();
-		void createVerticesFromBitmap(Bitmap b);
-	private:
+		Terrain(Bitmap b);
 		
+		inline const float * getVertices() { return terrainVertices; }
+	private:
+		float * terrainVertices;
+
+		void createVerticesFromBitmap(Bitmap b);
 };
 
 #endif
