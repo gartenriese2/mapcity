@@ -15,7 +15,9 @@ using namespace std;
 
 void findHexagonTest() {
 
+#ifdef __linux__
 	timespec time1, time2;
+#endif
 
 	int mapX = 5000;
 	int mapY = 5000;
@@ -24,7 +26,9 @@ void findHexagonTest() {
 	int falses = 0;
 	int counts = 100000;
 
+#ifdef __linux__
 	clock_gettime(CLOCK_MONOTONIC, &time1);
+#endif
 
 	for (int i = 0; i < counts; i++) {
 		float x = (float)(rand() % (mapX*100)) / 100;
@@ -38,9 +42,10 @@ void findHexagonTest() {
 		}
 	}
 
+#ifdef __linux__
 	clock_gettime(CLOCK_MONOTONIC, &time2);
-
 	cout << "Benötigte Zeit: " << (time2.tv_nsec - time1.tv_nsec)/1000 << " µs." << endl;
+#endif
 	cout << "Fehlerrate: " << (float)falses / counts * 100 << endl;
 
 }
@@ -209,9 +214,11 @@ void bebauteZonenTest() {
 
 int main() {
 
+#ifdef __linux__
 	timespec time1;
 	clock_gettime(CLOCK_MONOTONIC, &time1);
 	srand(time1.tv_nsec);
+#endif
 
 	// findHexagonTest();
 	// demandFunctionTest();

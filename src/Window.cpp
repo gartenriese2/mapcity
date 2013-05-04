@@ -31,11 +31,11 @@ int Window::createWindow(int w, int h) {
 	}
 
 	// Initialize GLEW
-	glewExperimental=true; // Needed in core profile
-	if (glewInit() != GLEW_OK) {
-	    fprintf(stderr, "Failed to initialize GLEW\n");
-	    return -1;
-	}
+	// glewExperimental=true; // Needed in core profile
+	// if (glewInit() != GLEW_OK) {
+	//     fprintf(stderr, "Failed to initialize GLEW\n");
+	//     return -1;
+	// }
 	 
 	glfwSetWindowTitle( "MapCity" );
 

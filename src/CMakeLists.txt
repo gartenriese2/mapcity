@@ -11,4 +11,23 @@ FILE(GLOB_RECURSE files "*.cpp" "*.hpp")
 
 add_executable	( Main ${files} )
 
-target_link_libraries(Main glfw GLEW GL rt)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	target_link_libraries(Main glfw GLEW GL rt)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
+#if(APPLE)
+	include_directories(${OPENGL_INCLUDE_DIRS})
+	target_link_libraries(Main ${OPENGL_LIBRARIES})
+
+	# GLFW doesn't run without these on OSX 10.7
+	find_library(IOKit IOKit) 
+	target_link_libraries(Main ${IOKit})
+	Message( "-- Linking against " ${IOKit})
+
+	find_library(Cocoa Cocoa)
+	target_link_libraries(Main ${Cocoa})
+	Message( "-- Linking against " ${Cocoa})
+
+    target_link_libraries(Main ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glfw)
+#endif(APPLE)

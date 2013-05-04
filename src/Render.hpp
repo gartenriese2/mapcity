@@ -1,9 +1,7 @@
 #ifndef RENDER_HPP
 #define RENDER_HPP
 
-#include <GL/glew.h>
-#include <GL/glfw.h>
-#include <GL/gl.h>
+#include "ogl.h"
 #include <iostream>
 
 class Render {

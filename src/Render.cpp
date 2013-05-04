@@ -12,8 +12,13 @@ Render::~Render() {
 void Render::setTriangle() {
 	
 	GLuint VertexArrayID;
+#ifdef __linux__
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
+#elif __MACH__
+	glGenVertexArraysAPPLE(1, &VertexArrayID);
+	glBindVertexArrayAPPLE(VertexArrayID);	
+#endif
 
 	// An array of 3 vectors which represents 3 vertices
 	GLfloat g_vertex_buffer_data[] = {
