@@ -7,6 +7,9 @@
 # specify minimum cmake version
 cmake_minimum_required( VERSION 2.8 )
 
+# compiler stuff
+add_definitions( -std=c++11 )
+
 # main options
 SET( PROJECT_NAME "MapCity" )
 SET( OUTPUT_NAME "mapcity" )

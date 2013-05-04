@@ -14,9 +14,13 @@
 #include <time.h>
 
 // BEGIN TEST
-#include "../libace/libace.h"
-ace::Ace *Engine = ace::Ace::getInstance();
-// END TEST
+// #define LIBACE_TEST // uncomment this to test libace
+#ifdef LIBACE_TEST
+	#include "../libace/libace.h"
+	void ace_display() {}  // dummy #1
+	void ace_keyboard() {} // dummy #2
+	ace::Ace *AceEngine = ace::Ace::getInstance();
+#endif
 
 using namespace std;
 
@@ -229,6 +233,11 @@ void terrainTest() {
 }
 
 int main() {
+
+	// BEGIN TEST
+#ifdef LIBACE_TEST
+	AceEngine->AceInit( ace_display, ace_keyboard );
+#endif
 
 #ifdef __linux__
 	timespec time1;
