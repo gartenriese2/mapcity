@@ -8,7 +8,14 @@
 cmake_minimum_required( VERSION 2.8 )
 
 # compiler stuff
-add_definitions( -std=c++11 )
+if( APPLE )
+	add_definitions( -std=c++11 )
+endif( APPLE )
+
+if( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
+	add_definitions( -std=c++0x )
+endif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
+
 
 # main options
 SET( PROJECT_NAME "MapCity" )
