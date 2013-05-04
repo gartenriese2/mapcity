@@ -16,7 +16,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	target_link_libraries(Main glfw GLEW GL rt)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-#if(APPLE)
+if(APPLE)
 	include_directories(${OPENGL_INCLUDE_DIRS})
 	target_link_libraries(Main ${OPENGL_LIBRARIES})
 
@@ -30,4 +30,4 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	Message( "-- Linking against " ${Cocoa})
 
     target_link_libraries(Main ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glfw)
-#endif(APPLE)
+endif(APPLE)
