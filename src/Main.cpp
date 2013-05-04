@@ -6,6 +6,8 @@
 #include "ResidentialZone.hpp"
 #include "Household.hpp"
 #include "Einfamilienhaus.hpp"
+#include "Bitmap.hpp"
+#include "Terrain.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -212,6 +214,13 @@ void bebauteZonenTest() {
 
 }
 
+void terrainTest() {
+	Bitmap b("../assets/heightmap.bmp");
+	cout << "Height: " << b.getHeight() << ", Width: " << b.getWidth() << "\n";
+	Terrain t;
+	t.createVerticesFromBitmap(b);
+}
+
 int main() {
 
 #ifdef __linux__
@@ -225,7 +234,8 @@ int main() {
 	// windowTest();
 	// zoneTest();
 	// householdTest();
-	bebauteZonenTest();
+	// bebauteZonenTest();
+	terrainTest();
 
 	return 0;
 }
