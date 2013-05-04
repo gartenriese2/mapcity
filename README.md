@@ -1,13 +1,12 @@
 mapcity
 =======
 
-Building: 
+Building
+--------
 
-cd build/
-
-cmake ../
-
-make
-
-./src/Main
+* cd build/
+* cmake ../
+* make
+* cd src/
+* ./mapcity
 
