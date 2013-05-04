@@ -16,8 +16,9 @@ find_package( GLEW REQUIRED )
 include_directories( ${GLM_INCLUDE_DIRS} )
 
 FILE( GLOB_RECURSE files "*.cpp" "*.hpp" )
+FILE( GLOB_RECURSE files_libace "../libace/*.cpp" "../libace/*.hpp" "../libace/*.h" )
 
-add_executable( ${OUTPUT_NAME} ${files} )
+add_executable( ${OUTPUT_NAME} ${files} ${files_libace} )
 
 # Linux
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
