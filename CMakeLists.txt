@@ -1,7 +1,18 @@
-#Specify the version being used aswell as the language
-cmake_minimum_required(VERSION 2.8)
+################################################################################
+#
+#	MapCity CMake files
+#
+################################################################################
 
-#Name your project here
-project(MapCity)
+# specify minimum cmake version
+cmake_minimum_required( VERSION 2.8 )
 
-add_subdirectory ( "src" )
+# main options
+SET( PROJECT_NAME "MapCity" )
+SET( OUTPUT_NAME "mapcity" )
+
+# set project name
+project( ${PROJECT_NAME} )
+
+# add source directory
+add_subdirectory( "src" )
