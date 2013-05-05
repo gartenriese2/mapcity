@@ -1,0 +1,2 @@
+/Users/jandoe/Documents/Development/Github/mapcity/build/doc/CMakeFiles/doc.dir
+/Users/jandoe/Documents/Development/Github/mapcity/build/src/CMakeFiles/mapcity.dir
