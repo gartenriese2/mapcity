@@ -131,7 +131,7 @@ void Ace::AceInit( void ( *display )(), void ( *keyboard )() ) {
     GLenum err = glewInit();
     
     if ( GLEW_OK != err ) {
-      cout << "AcceleratorEngine ERROR: " << glewGetErrorString( err ) << endl;
+      std::cout << "AcceleratorEngine ERROR: " << glewGetErrorString( err ) << std::endl;
     }
 #endif
 

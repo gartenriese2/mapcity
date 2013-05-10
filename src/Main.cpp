@@ -8,13 +8,14 @@
 #include "Einfamilienhaus.hpp"
 #include "Bitmap.hpp"
 #include "Terrain.hpp"
+#include "Playground.hpp"
 
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
 // BEGIN TEST
-// #define LIBACE_TEST // uncomment this to test libace
+#define LIBACE_TEST // uncomment this to test libace
 #ifdef LIBACE_TEST
 	#include "../libace/libace.h"
 	void ace_display() {}  // dummy #1
@@ -249,7 +250,10 @@ int main() {
 	// zoneTest();
 	// householdTest();
 	// bebauteZonenTest();
-	terrainTest();
+	// terrainTest();
+
+	Playground p = Playground();
+	p.playground();
 
 	return 0;
 }
