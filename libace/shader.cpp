@@ -135,8 +135,9 @@ void Shader::unbind() {
    glUseProgram( 0 );
 } 
 
-void Shader::addAttribute( const std::string attr ) {
-   m_attributeList[ attr ] = glGetAttribLocation( program, attr.c_str() );
+void Shader::addAttribute( const std::string attr, unsigned int v ) {
+   m_attributeList[ attr ] = v;
+   glBindAttribLocation( program, v, attr.c_str() );
 }
 
 void Shader::addUniform( const std::string uniform, float v ) {

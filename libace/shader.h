@@ -13,6 +13,7 @@
 
 // Libace
 #include "error.h"
+#include "mesh.h"
 
 namespace ace {
 
@@ -43,7 +44,7 @@ public:
 	~Shader();
 	void bind();
 	void unbind();
-	void addAttribute( const std::string attr );
+	void addAttribute( const std::string attr, unsigned int v );
 	void addUniform( const std::string uniform, float v );
 	void addUniform( const std::string uniform, unsigned int v );
 	void addUniform( const std::string uniform, float *v );

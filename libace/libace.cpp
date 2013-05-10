@@ -30,23 +30,14 @@ void Ace::render() {
     g->startRecording();
 
     for( auto m : m_scenegraph->getObjects() ) {
-        int loc = 0;
+        g->getRecShader()->addUniform( "model", glm::value_ptr( m->getTrafo() ) );
+        g->getRecShader()->addUniform( "proj", glm::value_ptr( cam->getProjectionMatrix() ) );
+        g->getRecShader()->addUniform( "view", glm::value_ptr( cam->getViewMatrix() ) );
+        g->getRecShader()->addUniform( "tex", m->getTextureId() );
 
-        loc = glGetUniformLocation( g->getRecShader()->getId(), "model" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( m->getTrafo() ) ) ;
-
-        loc = glGetUniformLocation( g->getRecShader()->getId(), "proj" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getProjectionMatrix() ) );
-            
-        loc = glGetUniformLocation( g->getRecShader()->getId(), "view" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getViewMatrix() ) );
-
-        //loc = glGetUniformLocation( g->getRecShader()->getId(), "tex" );
-        //glUniform1i( loc, tex1->getId() );   
-
-        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_UV, "in_uv" );
-        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_NORM, "in_vn" );
-        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_VERT, "in_pos" );
+        g->getRecShader()->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
+        g->getRecShader()->addAttribute( "in_vn", cfg::ACE_ATTRIB_NORM );
+        g->getRecShader()->addAttribute( "in_pos", cfg::ACE_ATTRIB_VERT );
 
         m->draw();
     }

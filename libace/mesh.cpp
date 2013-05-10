@@ -10,6 +10,7 @@
 namespace ace {
 
 Mesh::Mesh() {
+	m_texture = new Texture();
 }
 
 void Mesh::update() {
@@ -219,6 +220,16 @@ void Mesh::makeQuad() {
          1.0f,  1.0f, 0.0f
     };
 
+    float vns[] = {
+    	0, 0, 1,
+    	0, 0, 1,
+    	0, 0, 1,
+
+    	0, 0, 1,
+    	0, 0, 1,
+    	0, 0, 1
+    };
+
     for( int i = 0; i < num; ++i ) {
 		glm::vec2 uv( uvs[2*i], uvs[2*i+1] );
 		m_uv.push_back( uv );
@@ -229,6 +240,11 @@ void Mesh::makeQuad() {
 
 		m_idx.push_back( i );
 		m_vt.push_back( vec );
+	}
+
+	for( int i = 0; i < num; ++i ) {
+		glm::vec3 vec( vns[3*i], vns[3*i+1], vns[3*i+2] );
+		m_vn.push_back( vec );
 	}
 
 	update();

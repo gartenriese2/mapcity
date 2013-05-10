@@ -47,8 +47,8 @@ GBuffer::GBuffer() {
     }
 
     // everything went well: load shader
-    m_shader    = new Shader( "../shader/gbuffer_render.shader" );
-    m_recShader = new Shader( "../shader/gbuffer_record.shader" );
+    m_shader    = new Shader( "../libace/shader/gbuffer_render.shader" );
+    m_recShader = new Shader( "../libace/shader/gbuffer_record.shader" );
 
     // turn off debug mode
     m_debugMode = 0;
@@ -103,7 +103,7 @@ void GBuffer::render() {
         m_shader->addUniform( "model", glm::value_ptr( cam->getModelMatrix() ) );
         m_shader->addUniform( "proj", glm::value_ptr( cam->getProjectionMatrix() ) );
         m_shader->addUniform( "view", glm::value_ptr( cam->getViewMatrix() ) );
-        m_shader->addUniform( "proj", float( m_debugMode ) );
+        m_shader->addUniform( "debug", float( 4/*m_debugMode*/ ) );
 
         // set input variables
         m_shader->addUniform( "depthTexture", m_depthTexture->getId() );
@@ -111,10 +111,8 @@ void GBuffer::render() {
         m_shader->addUniform( "normalTexture", m_normalTexture->getId());
         m_shader->addUniform( "colorTexture", m_colorTexture->getId() );
 
-        // m_shader->addAttribute( "vertPos_modelspace" );
-        // m_shader->addAttribute( "in_uv" );
-        glBindAttribLocation( m_shader->getId(), cfg::ACE_ATTRIB_VERT, "vertPos_modelspace" );
-        glBindAttribLocation( m_shader->getId(), cfg::ACE_ATTRIB_UV, "in_uv" );
+        m_shader->addAttribute( "vertPos_modelspace", cfg::ACE_ATTRIB_VERT );
+        m_shader->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
 
         // draw gbuffer quad
         m_renderQuad->draw();

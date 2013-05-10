@@ -33,6 +33,7 @@ private:
 
     void init();
 public:
+    Texture();
     Texture( std::string );
     Texture( GLuint, GLuint ); 
     Texture( GLuint, GLuint, GLuint ); // GL_RGBA etc.
