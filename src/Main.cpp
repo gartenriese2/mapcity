@@ -18,9 +18,22 @@
 #define LIBACE_TEST // uncomment this to test libace
 #ifdef LIBACE_TEST
 	#include "../libace/libace.h"
-	void ace_display() {}  // dummy #1
-	void ace_keyboard() {} // dummy #2
-	ace::Ace *AceEngine = ace::Ace::getInstance();
+	ace::Mesh 	*mesh1;
+	ace::Mesh 	*mesh2;
+	ace::Mesh 	*mesh3;
+	void render_loop() {
+		mesh1->rotate( 0.005f, 1, 1, 0 );
+		{
+			ace::Renderblock r;
+			r.draw( *mesh1 );
+			r.draw( *mesh2 );
+			r.draw( *mesh3 );
+		}
+	}  
+	void input() {
+		
+	}
+	ace::Ace *AceEngine = ace::Ace::getEngine();
 #endif
 
 using namespace std;
@@ -233,9 +246,27 @@ void terrainTest() {
 
 int main() {
 
-	// BEGIN TEST
+// BEGIN TEST
 #ifdef LIBACE_TEST
-	AceEngine->AceInit( ace_display, ace_keyboard );
+	AceEngine->init( render_loop, input );
+	
+	mesh1 = new ace::Mesh();
+	mesh1->makeCube();
+	mesh2 = new ace::Mesh();
+	mesh2->makeCube();
+	mesh3 = new ace::Mesh();
+	mesh3->makeQuad();
+
+	mesh1->translate( 0, 0, -10 );
+	mesh1->scale( 1, 1, 1 );
+
+	mesh2->translate( -5, 0, -5 );
+	mesh2->scale( 3, 1, 1 );
+
+	mesh3->translate( 3, 0, -10 );
+	mesh3->scale( 1, 2, 1 );
+
+	AceEngine->start();
 #endif
 
 #ifdef __linux__

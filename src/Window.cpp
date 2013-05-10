@@ -46,7 +46,7 @@ int Window::createWindow(int w, int h) {
 
 void Window::loop() {
 
-	GLuint programID = LoadShaders( "SimpleVertexShader.shader", "SimpleFragmentShader.shader" );
+	GLuint programID = LoadShaders( "../shader/SimpleVertexShader.shader", "../shader/SimpleFragmentShader.shader" );
 
 	do{
 	    

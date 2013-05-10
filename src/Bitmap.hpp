@@ -6,7 +6,7 @@
 class Bitmap {
 	public:
 		
-		Bitmap();
+		Bitmap() {};
 
 		Bitmap(const char * imagepath) {
 			

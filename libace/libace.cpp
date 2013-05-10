@@ -14,20 +14,20 @@ Ace::Ace() {
     m_Wireframe = false;
 }
 
-Ace* Ace::getInstance() {
+Ace* Ace::getEngine() {
 	static Ace instance;
 	return &instance;
 }
 
-void Ace::AceMainLoop() {
-    AceDisplay();
+void Ace::start() {
+    display();
 }
 
-int Ace::AceKeyPressed( int key ) {
+int Ace::keyPressed( int key ) {
     return glfwGetKey( key );
 }
 
-void Ace::AceMouse() {
+void Ace::mouse() {
     int x, y;
     glfwGetMousePos( &x, &y );
 
@@ -39,22 +39,22 @@ void Ace::AceMouse() {
     glfwSetMousePos( cfg::screenwidth / 2.0, cfg::screenheight / 2.0 );
 }
 
-void Ace::AceKeyboard() {
+void Ace::keyboard() {
 	m_extKeyboard();
 
-    if( AceKeyPressed( 'W' ) ) {
+    if( keyPressed( 'W' ) ) {
         m_CurrentDirection = cfg::CAM_DIR_FWD;
     }
-    else if( AceKeyPressed( 'S' ) ) {
+    else if( keyPressed( 'S' ) ) {
         m_CurrentDirection = cfg::CAM_DIR_RWN;
     }
-    else if( AceKeyPressed( 'A' ) ) {
+    else if( keyPressed( 'A' ) ) {
         m_CurrentDirection = cfg::CAM_DIR_LFT;
     }
-    else if( AceKeyPressed( 'D' ) ) {
+    else if( keyPressed( 'D' ) ) {
         m_CurrentDirection = cfg::CAM_DIR_RGT;
     } 
-    else if( AceKeyPressed( 'F' ) ) {
+    else if( keyPressed( 'F' ) ) {
         if( m_Wireframe ) {
             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ); 
         } 
@@ -67,10 +67,10 @@ void Ace::AceKeyboard() {
         m_CurrentDirection = cfg::CAM_DIR_OFF;        
     }
 
-    AceMouse();
+    mouse();
 }
 
-void Ace::AceDisplay() {
+void Ace::display() {
     bool running = true;
 
     while( running ) {
@@ -101,14 +101,14 @@ void Ace::AceDisplay() {
 
         glfwSwapBuffers();
         running = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
-        AceKeyboard();
+        keyboard();
     }
 
     // exit
     glfwTerminate();
 }
 
-void Ace::AceInit( void ( *display )(), void ( *keyboard )() ) {
+void Ace::init( void ( *display )(), void ( *keyboard )() ) {
     m_extDisplay  = display;
     m_extKeyboard = keyboard;
 
