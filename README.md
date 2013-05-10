@@ -14,6 +14,5 @@ Building
 - cd build/
 - cmake ../
 - make
-- cd src/
-- ./mapcity
+- ./src/mapcity (has to be launched directly from the build/ dir to find assets -> fix this :)
 
