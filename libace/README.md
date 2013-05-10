@@ -13,3 +13,13 @@ Initialize the engine, create a camera and a window.
 
 To finally start the engine, type
 > AceEngine->start();
+
+TODOS
+-----
+- think about optimal API design and fix it
+- extend Shader class for dynamic attributes and uniforms
+- implement SceneGraph class to render stuff
+- delete TGA loader and use libpng instead
+- implement class for Terrain
+- implement class for Light
+- improve Wavefront Object loader
