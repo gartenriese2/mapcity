@@ -20,6 +20,7 @@
 #include "object.h"
 #include "gbuffer.h"
 #include "texture.h"
+#include "scenegraph.h"
 
 namespace ace {
 
@@ -40,6 +41,8 @@ private:
     bool  m_Wireframe;
     int   m_Frames;
 
+    Scenegraph *m_scenegraph;
+
     // Timer *m_Timer;
 
     Ace();
@@ -54,13 +57,15 @@ public:
 
 	Camera  *cam;
 
+    Scenegraph *Scene();
+
     int  keyPressed( int key );
     void mouse();
     void keyboard();
     void display();
     void init( void ( *display )(), void ( *keyboard )() );
     void start();
-
+    void render();
 };
 
 class Renderblock {

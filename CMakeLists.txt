@@ -23,6 +23,9 @@ SET( OUTPUT_NAME "mapcity" )
 # set project name
 project( ${PROJECT_NAME} )
 
+# copy all executables to top build directory
+set( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR} )
+
 # add source directory
 add_subdirectory( "src" )
 

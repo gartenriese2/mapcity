@@ -12,11 +12,47 @@ namespace ace {
 Ace::Ace() {
 	m_CurrentDirection = cfg::CAM_DIR_OFF;
     m_Wireframe = false;
+
+    m_scenegraph = new Scenegraph();
 }
 
 Ace* Ace::getEngine() {
 	static Ace instance;
 	return &instance;
+}
+
+Scenegraph *Ace::Scene() {
+    return m_scenegraph;
+}
+
+void Ace::render() {
+    GBuffer *g = GBuffer::getGBuffer();
+    g->startRecording();
+
+    for( auto m : m_scenegraph->getObjects() ) {
+        int loc = 0;
+
+        loc = glGetUniformLocation( g->getRecShader()->getId(), "model" );
+        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( m->getTrafo() ) ) ;
+
+        loc = glGetUniformLocation( g->getRecShader()->getId(), "proj" );
+        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getProjectionMatrix() ) );
+            
+        loc = glGetUniformLocation( g->getRecShader()->getId(), "view" );
+        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getViewMatrix() ) );
+
+        //loc = glGetUniformLocation( g->getRecShader()->getId(), "tex" );
+        //glUniform1i( loc, tex1->getId() );   
+
+        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_UV, "in_uv" );
+        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_NORM, "in_vn" );
+        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_VERT, "in_pos" );
+
+        m->draw();
+    }
+
+    g->stopRecording();    
+    g->render();
 }
 
 void Ace::start() {

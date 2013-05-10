@@ -8,7 +8,7 @@
 #include "Einfamilienhaus.hpp"
 #include "Bitmap.hpp"
 #include "Terrain.hpp"
-#include "Playground.hpp"
+//#include "Playground.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -18,22 +18,19 @@
 #define LIBACE_TEST // uncomment this to test libace
 #ifdef LIBACE_TEST
 	#include "../libace/libace.h"
+	ace::Ace *AceEngine = ace::Ace::getEngine();
+
 	ace::Mesh 	*mesh1;
 	ace::Mesh 	*mesh2;
 	ace::Mesh 	*mesh3;
+
 	void render_loop() {
 		mesh1->rotate( 0.005f, 1, 1, 0 );
-		{
-			ace::Renderblock r;
-			r.draw( *mesh1 );
-			r.draw( *mesh2 );
-			r.draw( *mesh3 );
-		}
+		AceEngine->render();
 	}  
 	void input() {
 		
 	}
-	ace::Ace *AceEngine = ace::Ace::getEngine();
 #endif
 
 using namespace std;
@@ -266,6 +263,9 @@ int main() {
 	mesh3->translate( 3, 0, -10 );
 	mesh3->scale( 1, 2, 1 );
 
+	AceEngine->Scene()->add( mesh1 );
+	AceEngine->Scene()->add( mesh2 );
+	AceEngine->Scene()->add( mesh3 );
 	AceEngine->start();
 #endif
 
@@ -283,8 +283,8 @@ int main() {
 	// bebauteZonenTest();
 	// terrainTest();
 
-	Playground p = Playground();
-	p.playground();
+	// Playground p = Playground();
+	// p.playground();
 
 	return 0;
 }
