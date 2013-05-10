@@ -47,11 +47,8 @@ GBuffer::GBuffer() {
     }
 
     // everything went well: load shader
-    m_shader = new Shader();
-    m_shader->load( "../shader/gbuffer_render.shader" );
-
-    m_recShader = new Shader();
-    m_recShader->load( "../shader/gbuffer_record.shader" );
+    m_shader    = new Shader( "../shader/gbuffer_render.shader" );
+    m_recShader = new Shader( "../shader/gbuffer_record.shader" );
 
     // turn off debug mode
     m_debugMode = 0;
@@ -103,34 +100,23 @@ void GBuffer::render() {
         // bind camera uniforms
         Camera* cam = Camera::getActive();
 
-        loc = glGetUniformLocation( m_shader->getId(), "model" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getModelMatrix() ) ) ;
-
-        loc = glGetUniformLocation( m_shader->getId(), "proj" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getProjectionMatrix() ) );
-            
-        loc = glGetUniformLocation( m_shader->getId(), "view" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( cam->getViewMatrix() ) );
-
-        loc = glGetUniformLocation( m_shader->getId(), "debug" );
-        glUniform1f( loc, float( m_debugMode ) );
+        m_shader->addUniform( "model", glm::value_ptr( cam->getModelMatrix() ) );
+        m_shader->addUniform( "proj", glm::value_ptr( cam->getProjectionMatrix() ) );
+        m_shader->addUniform( "view", glm::value_ptr( cam->getViewMatrix() ) );
+        m_shader->addUniform( "proj", float( m_debugMode ) );
 
         // set input variables
-        loc = glGetUniformLocation( m_shader->getId(), "depthTexture" );
-        glUniform1i( loc, m_depthTexture->getId() );    
+        m_shader->addUniform( "depthTexture", m_depthTexture->getId() );
+        m_shader->addUniform( "positionTexture", m_positionTexture->getId() );
+        m_shader->addUniform( "normalTexture", m_normalTexture->getId());
+        m_shader->addUniform( "colorTexture", m_colorTexture->getId() );
 
-        loc = glGetUniformLocation( m_shader->getId(), "positionTexture" );
-        glUniform1i( loc, m_positionTexture->getId() );    
-
-        loc = glGetUniformLocation( m_shader->getId(), "normalTexture" );
-        glUniform1i( loc, m_normalTexture->getId() );    
-
-        loc = glGetUniformLocation( m_shader->getId(), "colorTexture" );
-        glUniform1i( loc, m_colorTexture->getId() );    
-
+        // m_shader->addAttribute( "vertPos_modelspace" );
+        // m_shader->addAttribute( "in_uv" );
         glBindAttribLocation( m_shader->getId(), cfg::ACE_ATTRIB_VERT, "vertPos_modelspace" );
         glBindAttribLocation( m_shader->getId(), cfg::ACE_ATTRIB_UV, "in_uv" );
 
+        // draw gbuffer quad
         m_renderQuad->draw();
     m_shader->unbind();
 

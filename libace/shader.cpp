@@ -45,6 +45,11 @@ void Shader::printProgramInfoLog( GLuint obj ) {
     }
 }
 
+Shader::Shader( const std::string filename ) {
+   program = 0;
+   load( filename );
+}
+
 Shader::Shader() {
    program = 0;
 }
@@ -53,7 +58,7 @@ Shader::~Shader() {
 
 }
 
-bool Shader::load( std::string filename ) {
+bool Shader::load( const std::string filename ) {
    std::ifstream file( filename.c_str(), std::ios::in );
    if( !file.good() ) {
       g_AceLog.setError( "Shader: could not open file" );
@@ -130,6 +135,23 @@ void Shader::unbind() {
    glUseProgram( 0 );
 } 
 
+void Shader::addAttribute( const std::string attr ) {
+   m_attributeList[ attr ] = glGetAttribLocation( program, attr.c_str() );
+}
 
+void Shader::addUniform( const std::string uniform, float v ) {
+   m_attributeList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform1f( m_attributeList[ uniform ], v );
+}
+
+void Shader::addUniform( const std::string uniform, unsigned int v ) {
+   m_attributeList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform1i( m_attributeList[ uniform ], v );
+}
+
+void Shader::addUniform( const std::string uniform, float *v ) {
+   m_attributeList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniformMatrix4fv( m_attributeList[ uniform ], 1, GL_FALSE, v );
+}
 
 }

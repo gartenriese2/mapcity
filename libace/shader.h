@@ -27,18 +27,26 @@ private:
 	std::string m_vertex;
 	std::string m_fragment;
 
+	std::map<std::string, unsigned int> m_attributeList;
+	std::map<std::string, unsigned int> m_uniformList;
+
 	// taken from http://www.lighthouse3d.com/opengl/glsl/index.php?oglinfo
 	void printShaderInfoLog( GLuint );
 	void printProgramInfoLog( GLuint );
 
 public:
 	inline GLuint getId() { return program; };
-	bool load( std::string );
+	bool load( const std::string );
 	bool compile();
 	Shader();
+	Shader( const std::string );
 	~Shader();
 	void bind();
 	void unbind();
+	void addAttribute( const std::string attr );
+	void addUniform( const std::string uniform, float v );
+	void addUniform( const std::string uniform, unsigned int v );
+	void addUniform( const std::string uniform, float *v );
 };
 
 }
