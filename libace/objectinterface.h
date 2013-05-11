@@ -21,7 +21,7 @@ public:
 	};
 
 	void scale( float x, float y, float z ) {
-		m_transformation = glm::scale( m_transformation, glm::vec3( x, z, z ) );
+		m_transformation = glm::scale( m_transformation, glm::vec3( x, y, z ) );
 	};
 
 	void rotate( float angle, float x, float y, float z ) {

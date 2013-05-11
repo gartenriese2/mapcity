@@ -86,7 +86,7 @@ void GBuffer::nextDebugMode() {
 }
 
 void GBuffer::render() {
-	int loc;
+    Ace *a = Ace::getEngine();
 
 	glViewport( 0, 0, cfg::screenwidth, cfg::screenheight );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -100,9 +100,9 @@ void GBuffer::render() {
         // bind camera uniforms
         Camera* cam = Camera::getActive();
 
-        m_shader->addUniform( "model", glm::value_ptr( cam->getModelMatrix() ) );
-        m_shader->addUniform( "proj", glm::value_ptr( cam->getProjectionMatrix() ) );
-        m_shader->addUniform( "view", glm::value_ptr( cam->getViewMatrix() ) );
+        m_shader->addUniform( "model", cam->getModelMatrix() );
+        m_shader->addUniform( "proj", cam->getProjectionMatrix() );
+        m_shader->addUniform( "view", cam->getViewMatrix() );
         m_shader->addUniform( "debug", float( m_debugMode ) );
 
         // set input variables
@@ -113,6 +113,11 @@ void GBuffer::render() {
 
         m_shader->addAttribute( "vertPos_modelspace", cfg::ACE_ATTRIB_VERT );
         m_shader->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
+
+        for( auto l : a->Scene()->getLights() ) {
+            m_shader->addUniform( "light_pos", l->getPosition() );
+            m_shader->addUniform( "light_radius", l->getRadius() );
+        }
 
         // draw gbuffer quad
         m_renderQuad->draw();

@@ -12,12 +12,8 @@
 #include "stl.h"
 
 // Libace
-#include "texture.h"
-#include "mesh.h"
 #include "framebuffer.h"
-#include "shader.h"
-#include "camera.h"
-#include "error.h"
+#include "libace.h"
 
 namespace ace {
 

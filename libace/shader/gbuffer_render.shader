@@ -26,6 +26,9 @@ uniform sampler2D colorTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D positionTexture;
 
+uniform vec3 light_pos;
+uniform float light_radius;
+
 uniform float debug;
 
 varying vec2 tex_coords;

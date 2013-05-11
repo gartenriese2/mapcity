@@ -141,18 +141,34 @@ void Shader::addAttribute( const std::string attr, unsigned int v ) {
 }
 
 void Shader::addUniform( const std::string uniform, float v ) {
-   m_attributeList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
-   glUniform1f( m_attributeList[ uniform ], v );
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform1f( m_uniformList[ uniform ], v );
 }
 
 void Shader::addUniform( const std::string uniform, unsigned int v ) {
-   m_attributeList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
-   glUniform1i( m_attributeList[ uniform ], v );
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform1i( m_uniformList[ uniform ], v );
 }
 
 void Shader::addUniform( const std::string uniform, float *v ) {
-   m_attributeList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
-   glUniformMatrix4fv( m_attributeList[ uniform ], 1, GL_FALSE, v );
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniformMatrix4fv( m_uniformList[ uniform ], 1, GL_FALSE, v );
 }
+
+void Shader::addUniform( const std::string uniform, glm::mat4& v ) {
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniformMatrix4fv( m_uniformList[ uniform ], 1, GL_FALSE, glm::value_ptr( v ) );
+}
+
+void Shader::addUniform( const std::string uniform, glm::vec3& v ) {
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform3fv( m_uniformList[ uniform ], 1, glm::value_ptr( v ) );
+}
+
+void Shader::addUniform( const std::string uniform, glm::vec4& v ) {
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform4fv( m_uniformList[ uniform ], 1, glm::value_ptr( v ) );
+}
+
 
 }

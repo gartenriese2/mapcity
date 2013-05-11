@@ -22,9 +22,10 @@
 
 	ace::Mesh 	*mesh1;
 	ace::Mesh 	*mesh3;
+	ace::Light  *light1;
 
 	void render_loop() {
-		mesh1->rotate( 0.005f, 1, 1, 0 );
+		mesh1->rotate( 0.05f, 1, 1, 0 );
 		AceEngine->render();
 	}  
 	void input() {
@@ -250,6 +251,7 @@ int main() {
 	mesh1->makeCube();
 	mesh3 = new ace::Mesh();
 	mesh3->makeQuad();
+	light1 = new ace::Light();
 
 	mesh1->scale( 1, 1, 1 );
 
@@ -259,6 +261,7 @@ int main() {
 
 	AceEngine->Scene()->add( mesh1 );
 	AceEngine->Scene()->add( mesh3 );
+	AceEngine->Scene()->add( light1 );
 	AceEngine->start();
 #endif
 

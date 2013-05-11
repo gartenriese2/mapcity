@@ -13,17 +13,20 @@
 
 // Libace
 #include "mesh.h"
+#include "light.h"
 
 namespace ace {
 
 class Scenegraph {
 private:
-    std::vector<Mesh*> m_scenegraph;
+    std::vector<Mesh*>  m_scenegraph;
+    std::vector<Light*> m_lightgraph;
 public:
     Scenegraph();
     ~Scenegraph();
-
     void add( Mesh *m );
+    void add( Light *l );
+    std::vector<Light*>& getLights();
     std::vector<Mesh*>& getObjects();
 };
 

@@ -10,6 +10,7 @@
 
 #include "ogl.h"
 #include "stl.h"
+#include "glm.h"
 
 // Libace
 #include "error.h"
@@ -48,6 +49,9 @@ public:
 	void addUniform( const std::string uniform, float v );
 	void addUniform( const std::string uniform, unsigned int v );
 	void addUniform( const std::string uniform, float *v );
+	void addUniform( const std::string uniform, glm::mat4& v );
+	void addUniform( const std::string uniform, glm::vec3& v );
+	void addUniform( const std::string uniform, glm::vec4& v );
 };
 
 }

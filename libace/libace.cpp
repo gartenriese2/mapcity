@@ -30,9 +30,9 @@ void Ace::render() {
     g->startRecording();
 
     for( auto m : m_scenegraph->getObjects() ) {
-        g->getRecShader()->addUniform( "model", glm::value_ptr( m->getTrafo() ) );
-        g->getRecShader()->addUniform( "proj", glm::value_ptr( cam->getProjectionMatrix() ) );
-        g->getRecShader()->addUniform( "view", glm::value_ptr( cam->getViewMatrix() ) );
+        g->getRecShader()->addUniform( "model", m->getTrafo() );
+        g->getRecShader()->addUniform( "proj", cam->getProjectionMatrix() );
+        g->getRecShader()->addUniform( "view", cam->getViewMatrix() );
         g->getRecShader()->addUniform( "tex", m->getTextureId() );
 
         g->getRecShader()->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );

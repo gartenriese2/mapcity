@@ -14,7 +14,7 @@ namespace ace {
 
         const float screenwidth   = 640;
         const float screenheight  = 480;
-        const float fov           = 35;
+        const float fov           = 70;
         const float aspectratio   = 1.0;
         const bool  fullscreen    = false;
 
