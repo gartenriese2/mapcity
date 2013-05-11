@@ -34,5 +34,5 @@ void main() {
     gl_FragData[0]  = vec4( 0 );                            // depth (ignore)
     gl_FragData[1]  = vec4( frag_position, 1 );             // pos
     gl_FragData[2]  = vec4( frag_normal, 1 );               // norm
-    gl_FragData[3]  = vec4( 1.0, 0, 0, 1.0 );//texture2D( tex, frag_tex_coords );    // col
+    gl_FragData[3]  = texture2D( tex, frag_tex_coords );    // col
 }

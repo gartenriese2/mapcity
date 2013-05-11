@@ -103,7 +103,7 @@ void GBuffer::render() {
         m_shader->addUniform( "model", glm::value_ptr( cam->getModelMatrix() ) );
         m_shader->addUniform( "proj", glm::value_ptr( cam->getProjectionMatrix() ) );
         m_shader->addUniform( "view", glm::value_ptr( cam->getViewMatrix() ) );
-        m_shader->addUniform( "debug", float( 4/*m_debugMode*/ ) );
+        m_shader->addUniform( "debug", float( m_debugMode ) );
 
         // set input variables
         m_shader->addUniform( "depthTexture", m_depthTexture->getId() );

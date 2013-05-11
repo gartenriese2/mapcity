@@ -46,6 +46,11 @@ void Ace::render() {
     g->render();
 }
 
+void Ace::nextDebugMode() {
+    GBuffer *g = GBuffer::getGBuffer();
+    g->nextDebugMode();
+}
+
 void Ace::start() {
     display();
 }

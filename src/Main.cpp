@@ -29,7 +29,7 @@
 		AceEngine->render();
 	}  
 	void input() {
-		
+		if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
 	}
 #endif
 

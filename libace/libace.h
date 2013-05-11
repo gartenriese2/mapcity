@@ -66,43 +66,7 @@ public:
     void init( void ( *display )(), void ( *keyboard )() );
     void start();
     void render();
-};
-
-class Renderblock {
-private:
-    GBuffer *g;
-    Ace     *a;
-public:
-    Renderblock() { 
-        g = GBuffer::getGBuffer();
-        a = Ace::getEngine();
-        g->startRecording();
-    }
-    void draw( Mesh& m ) {
-        int loc = 0;
-
-        loc = glGetUniformLocation( g->getRecShader()->getId(), "model" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( m.getTrafo() ) ) ;
-
-        loc = glGetUniformLocation( g->getRecShader()->getId(), "proj" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( a->cam->getProjectionMatrix() ) );
-            
-        loc = glGetUniformLocation( g->getRecShader()->getId(), "view" );
-        glUniformMatrix4fv( loc, 1, GL_FALSE, glm::value_ptr( a->cam->getViewMatrix() ) );
-
-        //loc = glGetUniformLocation( g->getRecShader()->getId(), "tex" );
-        //glUniform1i( loc, tex1->getId() );   
-
-        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_UV, "in_uv" );
-        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_NORM, "in_vn" );
-        glBindAttribLocation( g->getRecShader()->getId(), cfg::ACE_ATTRIB_VERT, "in_pos" );
-
-        m.draw();
-    }
-    ~Renderblock() {
-        g->stopRecording();
-        g->render();
-    }
+    void nextDebugMode();
 };
 
 }
