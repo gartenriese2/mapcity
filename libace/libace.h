@@ -21,6 +21,7 @@
 #include "gbuffer.h"
 #include "texture.h"
 #include "scenegraph.h"
+#include "light.h"
 
 namespace ace {
 

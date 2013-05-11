@@ -21,7 +21,6 @@
 	ace::Ace *AceEngine = ace::Ace::getEngine();
 
 	ace::Mesh 	*mesh1;
-	ace::Mesh 	*mesh2;
 	ace::Mesh 	*mesh3;
 
 	void render_loop() {
@@ -249,22 +248,16 @@ int main() {
 	
 	mesh1 = new ace::Mesh();
 	mesh1->makeCube();
-	mesh2 = new ace::Mesh();
-	mesh2->makeCube();
 	mesh3 = new ace::Mesh();
 	mesh3->makeQuad();
 
-	mesh1->translate( 0, 0, -10 );
 	mesh1->scale( 1, 1, 1 );
 
-	mesh2->translate( -5, 0, -5 );
-	mesh2->scale( 3, 1, 1 );
-
-	mesh3->translate( 3, 0, -10 );
-	mesh3->scale( 1, 2, 1 );
+	mesh3->translate( 0, -3, 0 );
+	mesh3->scale( 10, 10, 10 );
+	mesh3->rotate( 90, 1, 0, 0 );
 
 	AceEngine->Scene()->add( mesh1 );
-	AceEngine->Scene()->add( mesh2 );
 	AceEngine->Scene()->add( mesh3 );
 	AceEngine->start();
 #endif

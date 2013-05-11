@@ -37,28 +37,21 @@ void main() {
     vec4 normal = texture2D( normalTexture,   tex_coords );
     vec4 color  = texture2D( colorTexture,    tex_coords );
 
-    /*vec3 light_dir     = normalize( vec3( 0.3, 0.5, 1 ) );
-    vec3 eye_dir       = normalize( cam_pos - vec3( pos.rgb ) );
-    vec3 v_half_vector = normalize( light_dir + eye_dir );
-    vec3 norm          = vec3( normal.rgb ); 
-
-    gl_FragColor = vec4( max( dot( norm, light_dir ), 0.0 ) * vec3( color.rgb ) + 
-    				+ pow( max( dot( norm, v_half_vector ), 0.0 ), 100.0 ) * 1.5, 1.0 );
-    */
     vec3 light_dir       = normalize( vec3( 0.3, 0.5, 1.0 ) );
     vec3 eye_dir         = normalize( vec3( pos.rgb ) - cam_pos );
-    vec4 col_ambient     = vec4( 0.2, 0.2, 0.2, 1.0 );
-    float diffuse_factor = dot( normal.xyz, light_dir );
 
+    vec4 col_ambient     = vec4( 0.5, 0.5, 0.5, 1.0 );
     vec4 col_diffuse     = vec4( 0.0 );
     vec4 col_specular    = vec4( 0.0 );
+
+    float diffuse_factor = dot( normal.xyz, light_dir );
 
     if( diffuse_factor > 0.0 ) {
         col_diffuse = vec4( 0.7, 0.7, 0.7, 1.0 ) * diffuse_factor;
 
         vec3 light_reflect    = normalize( reflect( -light_dir, normal.xyz ) );
         vec3 v_half_vector    = normalize( light_dir + eye_dir );
-        float specular_factor = pow( dot( v_half_vector, light_reflect), 10.0 );  
+        float specular_factor = pow( dot( v_half_vector, light_reflect ), 10.0 );  
         if( specular_factor > 0.0 ) {
             col_specular = vec4( 0.7, 0.7, 0.7, 1.0 ) * specular_factor;
         }
