@@ -22,8 +22,8 @@ namespace ace {
         const int   depthbits     = 8;
         const int   stencilbits   = 8;
 
-        const float cam_speed_fwd_rwn = 0.1;
-        const float cam_speed_lft_rgt = 0.1;
+        const float cam_speed_fwd_rwn = 0.5;
+        const float cam_speed_lft_rgt = 0.5;
         const float mouse_speed       = 0.001;
 
         // shader attributes

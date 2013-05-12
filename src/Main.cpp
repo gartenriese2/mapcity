@@ -21,31 +21,34 @@
 	ace::Ace *AceEngine = ace::Ace::getEngine();
 
 	ace::Mesh 	*mesh1;
+	ace::Mesh 	*mesh2;
 	ace::Mesh 	*mesh3;
 	ace::Light  *light1;
 	ace::Light  *light2;
 
-	float light_pos = -5;
+	float light_pos = -10;
 
 	void render_loop() {
 
 		light_pos += 0.1f;
-		if( light_pos > 5.f ) light_pos = -5.f;
+		if( light_pos > 10.f ) light_pos = -10.f;
 
-		light1->setPosition( 3, 3, light_pos );
-		light2->setPosition( -3, 3, light_pos -5 );
+		light1->setPosition( 6, 3, light_pos );
+		light2->setPosition( -6, 3, light_pos -5 );
 
 		mesh1->rotate( 0.5f, 1, 0, 0 );
 		AceEngine->render();
 	}  
 	void input() {
-		if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
+
 	}
 	void ace_test() {
 		AceEngine->init( render_loop, input );
 	
 		mesh1 = new ace::Mesh();
 		mesh1->makeCube();
+		mesh2 = new ace::Mesh();
+		mesh2->makeQuad();
 		mesh3 = new ace::Mesh();
 		mesh3->makeQuad();
 		
@@ -53,11 +56,17 @@
 		light2 = new ace::Light( 1, 1, 1, 1, 25 );
 
 		mesh1->scale( 1, 1, 1 );
+
+		mesh2->translate( 15, 0, -10 );
+		mesh2->scale( 20 );
+		mesh2->rotate( -90, 0, 1, 0 );
+		
 		mesh3->translate( 0, -3, -2 );
-		mesh3->scale( 10, 10, 10 );
+		mesh3->scale( 50 );
 		mesh3->rotate( -90, 1, 0, 0 );
 
 		AceEngine->Scene()->add( mesh1 );
+		AceEngine->Scene()->add( mesh2 );
 		AceEngine->Scene()->add( mesh3 );
 		AceEngine->Scene()->add( light1 );
 		AceEngine->Scene()->add( light2 );
