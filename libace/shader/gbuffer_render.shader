@@ -28,8 +28,8 @@ uniform sampler2D positionTexture;
 
 uniform vec3  light_pos[100];
 uniform vec3  light_color[100];
-uniform float  light_radius[100];
-uniform float  light_intensity[100];
+uniform float light_radius[100];
+uniform float light_intensity[100];
 uniform float light_count;
 
 uniform float debug;
@@ -37,17 +37,21 @@ uniform float debug;
 varying vec2 tex_coords;
 varying vec3 cam_pos;
 
-vec4 blur( sampler2D tex, vec2 coords, int size ) {
-    vec3 col = vec3( 0, 0, 0 );
-    int b = int( float( size-1 ) / 2.0 );
-    for( int x = -b; x <= b; ++x ) {
-        for( int y = -b; y <= b; ++y ) {
+vec4 gauss( sampler2D tex, vec2 coords ) {
+    int i = 0;
+    float w[9];
+    w[0] = 1.0 / 9.0; w[3] = 2.0 / 9.0; w[6] = 1.0 / 9.0;
+    w[1] = 2.0 / 9.0; w[4] = 4.0 / 9.0; w[7] = 2.0 / 9.0;
+    w[2] = 1.0 / 9.0; w[5] = 2.0 / 9.0; w[8] = 1.0 / 9.0;
+    vec3 ret = vec3( 0, 0, 0 );
+    for( int x = -1; x <= 1; ++x ) {
+        for( int y = -1; y <= 1; ++y ) {
             vec2 offset = vec2( float(x)/640.0, float(y)/480.0 );
             vec4 col    = texture2D( tex, coords + offset ); 
-            col.xyz    += dot( col.xyz, col.xyz );           
+            ret.xyz    += w[++i] * col.xyz;
         }
     }
-    return vec4( col.xyz * ( 1.0 / float( size * size ) ), 1 );
+    return vec4( ret.xyz, 1 );
 }
 
 void main() {
@@ -63,7 +67,6 @@ void main() {
     for( int i = 0; i < int( light_count ); ++i ) {
         float intensity      = light_intensity[i];
         float distance       = distance( light_pos[i], pos.xyz );
-        // if( distance > light_radius[i] ) {}
 
         vec3 light_dir       = normalize( light_pos[i] - pos.xyz );
         vec3 eye_dir         = normalize( vec3( pos.rgb ) - cam_pos );
@@ -83,7 +86,7 @@ void main() {
     }
     
     gl_FragColor = color * ( col_ambient + col_diffuse + col_specular );
-    
+
     if( debug == 1.0 ) {
         gl_FragColor = depth;
     }

@@ -12,7 +12,7 @@
 namespace ace {
 
 class ObjectInterface {
-private:
+protected:
 	glm::mat4 m_transformation;
 
 public:
