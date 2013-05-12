@@ -23,9 +23,19 @@
 	ace::Mesh 	*mesh1;
 	ace::Mesh 	*mesh3;
 	ace::Light  *light1;
+	ace::Light  *light2;
+
+	float light_pos = -5;
 
 	void render_loop() {
-		mesh1->rotate( 0.05f, 1, 1, 0 );
+
+		light_pos += 0.1f;
+		if( light_pos > 5.f ) light_pos = -5.f;
+
+		light1->setPosition( 3, 3, light_pos );
+		light2->setPosition( -3, 3, light_pos -5 );
+
+		mesh1->rotate( 0.5f, 1, 0, 0 );
 		AceEngine->render();
 	}  
 	void input() {
@@ -251,17 +261,19 @@ int main() {
 	mesh1->makeCube();
 	mesh3 = new ace::Mesh();
 	mesh3->makeQuad();
-	light1 = new ace::Light();
+	
+	light1 = new ace::Light( 1, 1, 0 );
+	light2 = new ace::Light( 1, 1, 1 );
 
 	mesh1->scale( 1, 1, 1 );
-
-	mesh3->translate( 0, -3, 0 );
+	mesh3->translate( 0, -3, -2 );
 	mesh3->scale( 10, 10, 10 );
-	mesh3->rotate( 90, 1, 0, 0 );
+	mesh3->rotate( -90, 1, 0, 0 );
 
 	AceEngine->Scene()->add( mesh1 );
 	AceEngine->Scene()->add( mesh3 );
 	AceEngine->Scene()->add( light1 );
+	AceEngine->Scene()->add( light2 );
 	AceEngine->start();
 #endif
 

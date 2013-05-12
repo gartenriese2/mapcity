@@ -114,10 +114,18 @@ void GBuffer::render() {
         m_shader->addAttribute( "vertPos_modelspace", cfg::ACE_ATTRIB_VERT );
         m_shader->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
 
+        // pass lights to the shader
+        int i = 0;
+        glm::vec3 light_positions[100];
+        glm::vec3 light_colors[100];
         for( auto l : a->Scene()->getLights() ) {
-            m_shader->addUniform( "light_pos", l->getPosition() );
-            m_shader->addUniform( "light_radius", l->getRadius() );
+            light_positions[i] = l->getPosition();
+            light_colors[i]    = l->getColor();
+            ++i;
         }
+        m_shader->addUniform( "light_count", float( i ) );
+        m_shader->addUniformArray( "light_pos", i, light_positions );
+        m_shader->addUniformArray( "light_color", i, light_colors );
 
         // draw gbuffer quad
         m_renderQuad->draw();

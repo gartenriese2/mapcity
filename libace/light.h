@@ -10,6 +10,7 @@
 
 #include "ogl.h"
 #include "glm.h"
+#include "stl.h"
 
 // Libace
 
@@ -18,22 +19,15 @@ namespace ace {
 class Light {
 private:
 	glm::vec3 m_pos;
-	float m_radius; 
-
-	glm::vec4 m_col_diffuse;
-	glm::vec4 m_col_specular;
-	glm::vec4 m_col_ambient;
-
-	float m_intensity_diffuse;
-	float m_intensity_specular;
-	float m_intensity_ambient;
+	glm::vec3 m_col;
 
 public:
-    Light();
+    Light( float red, float green, float blue );
     ~Light();
 
+    inline void setPosition( float x, float y, float z ) { m_pos = glm::vec3( x, y, z ); }
     inline glm::vec3& getPosition() { return m_pos; }
-    inline float getRadius() { return m_radius; }
+    inline glm::vec3& getColor() { return m_col; }
 };
 
 }

@@ -25,6 +25,7 @@ public:
 	};
 
 	void rotate( float angle, float x, float y, float z ) {
+		angle = angle / 180.0 * 3.14159265358;
 		m_transformation = glm::rotate( m_transformation, angle, glm::vec3( x, y, z ) );
 	};
 

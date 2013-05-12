@@ -170,5 +170,10 @@ void Shader::addUniform( const std::string uniform, glm::vec4& v ) {
    glUniform4fv( m_uniformList[ uniform ], 1, glm::value_ptr( v ) );
 }
 
+void Shader::addUniformArray( const std::string uniform, int count, glm::vec3 *v ) {
+   m_uniformList[ uniform ] = glGetUniformLocation( program, uniform.c_str() );
+   glUniform3fv( m_uniformList[ uniform ], count, glm::value_ptr( *v ) );  
+}
+
 
 }
