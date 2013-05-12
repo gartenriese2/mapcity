@@ -41,6 +41,28 @@
 	void input() {
 		if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
 	}
+	void ace_test() {
+		AceEngine->init( render_loop, input );
+	
+		mesh1 = new ace::Mesh();
+		mesh1->makeCube();
+		mesh3 = new ace::Mesh();
+		mesh3->makeQuad();
+		
+		light1 = new ace::Light( 1, 1, 0 );
+		light2 = new ace::Light( 1, 1, 1 );
+
+		mesh1->scale( 1, 1, 1 );
+		mesh3->translate( 0, -3, -2 );
+		mesh3->scale( 10, 10, 10 );
+		mesh3->rotate( -90, 1, 0, 0 );
+
+		AceEngine->Scene()->add( mesh1 );
+		AceEngine->Scene()->add( mesh3 );
+		AceEngine->Scene()->add( light1 );
+		AceEngine->Scene()->add( light2 );
+		AceEngine->start();
+	}
 #endif
 
 using namespace std;
@@ -255,26 +277,7 @@ int main() {
 
 // BEGIN TEST
 #ifdef LIBACE_TEST
-	AceEngine->init( render_loop, input );
-	
-	mesh1 = new ace::Mesh();
-	mesh1->makeCube();
-	mesh3 = new ace::Mesh();
-	mesh3->makeQuad();
-	
-	light1 = new ace::Light( 1, 1, 0 );
-	light2 = new ace::Light( 1, 1, 1 );
-
-	mesh1->scale( 1, 1, 1 );
-	mesh3->translate( 0, -3, -2 );
-	mesh3->scale( 10, 10, 10 );
-	mesh3->rotate( -90, 1, 0, 0 );
-
-	AceEngine->Scene()->add( mesh1 );
-	AceEngine->Scene()->add( mesh3 );
-	AceEngine->Scene()->add( light1 );
-	AceEngine->Scene()->add( light2 );
-	AceEngine->start();
+	ace_test();
 #endif
 
 #ifdef __linux__
