@@ -54,7 +54,7 @@ public:
 	void addUniform( const std::string uniform, glm::vec4& v );
 
 	void addUniformArray( const std::string uniform, int count, glm::vec3 *v );
-
+	void addUniformArray( const std::string uniform, int count, float *v );
 };
 
 }

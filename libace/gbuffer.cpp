@@ -118,14 +118,20 @@ void GBuffer::render() {
         int i = 0;
         glm::vec3 light_positions[100];
         glm::vec3 light_colors[100];
+        float light_intensity[100];
+        float light_radius[100];
         for( auto l : a->Scene()->getLights() ) {
             light_positions[i] = l->getPosition();
             light_colors[i]    = l->getColor();
+            light_radius[i]    = l->getRadius();
+            light_intensity[i] = l->getIntensity();
             ++i;
         }
         m_shader->addUniform( "light_count", float( i ) );
         m_shader->addUniformArray( "light_pos", i, light_positions );
         m_shader->addUniformArray( "light_color", i, light_colors );
+        m_shader->addUniformArray( "light_intensity", i, light_intensity );
+        m_shader->addUniformArray( "light_radius", i, light_radius );
 
         // draw gbuffer quad
         m_renderQuad->draw();

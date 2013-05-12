@@ -49,8 +49,8 @@
 		mesh3 = new ace::Mesh();
 		mesh3->makeQuad();
 		
-		light1 = new ace::Light( 1, 1, 0 );
-		light2 = new ace::Light( 1, 1, 1 );
+		light1 = new ace::Light( 1, 1, 0, 1, 15 );
+		light2 = new ace::Light( 1, 1, 1, 1, 25 );
 
 		mesh1->scale( 1, 1, 1 );
 		mesh3->translate( 0, -3, -2 );

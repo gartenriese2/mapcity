@@ -28,6 +28,8 @@ uniform sampler2D positionTexture;
 
 uniform vec3  light_pos[100];
 uniform vec3  light_color[100];
+uniform float  light_radius[100];
+uniform float  light_intensity[100];
 uniform float light_count;
 
 uniform float debug;
@@ -41,24 +43,30 @@ void main() {
     vec4 normal = texture2D( normalTexture,   tex_coords );
     vec4 color  = texture2D( colorTexture,    tex_coords );
 
-    vec4 col_ambient     = vec4( 0.1, 0.1, 0.1, 1.0 );
+    vec4 col_ambient     = vec4( 0.2, 0.2, 0.2, 1.0 );
     vec4 col_diffuse     = vec4( 0.0 );
     vec4 col_specular    = vec4( 0.0 );
 
     for( int i = 0; i < int( light_count ); ++i ) {
+        float distance       = distance( light_pos[i], pos.xyz );
+        if( distance > light_radius[i] ) {
+            // TODO
+            continue;
+        }
+
         vec3 light_dir       = normalize( light_pos[i] - pos.xyz );
         vec3 eye_dir         = normalize( vec3( pos.rgb ) - cam_pos );
 
         float diffuse_factor = dot( normal.xyz, light_dir );
 
         if( diffuse_factor > 0.0 ) {
-            col_diffuse += vec4( light_color[i], 1.0 ) * diffuse_factor / light_count;
+            col_diffuse += vec4( light_color[i], 1.0 ) * diffuse_factor * light_intensity[i];
 
             vec3 light_reflect    = normalize( reflect( -light_dir, normal.xyz ) );
             vec3 v_half_vector    = normalize( light_dir + eye_dir );
             float specular_factor = pow( dot( v_half_vector, light_reflect ), 10.0 );  
             if( specular_factor > 0.0 ) {
-                col_specular += vec4( light_color[i], 1.0 ) * specular_factor / light_count;
+                col_specular += vec4( light_color[i], 1.0 ) * specular_factor * light_intensity[i];
             }
         }
     }
