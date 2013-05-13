@@ -27,6 +27,8 @@
 	ace::Light  *light1;
 	ace::Light  *light2;
 
+	ace::Object *obj1;
+
 	float light_pos = -10;
 
 	void render_loop() {
@@ -55,7 +57,10 @@
 		mesh4 = new ace::Mesh();
 		mesh4->makeCube();
 		
-		light1 = new ace::Light( 1, 1, 1, 1, 50 );
+		obj1 = new ace::Object( "assets/monkey.obj" );
+		obj1->translate( 0, 0, -10 );
+
+		light1 = new ace::Light( 1, 1, 0, 1, 50 );
 		light2 = new ace::Light( 1, 1, 1, 1, 50 );
 
 		mesh1->scale( 1, 1, 1 );
@@ -75,6 +80,7 @@
 		AceEngine->Scene()->add( mesh2 );
 		AceEngine->Scene()->add( mesh3 );
 		AceEngine->Scene()->add( mesh4 );
+		AceEngine->Scene()->add( obj1 );
 		AceEngine->Scene()->add( light1 );
 		AceEngine->Scene()->add( light2 );
 		AceEngine->start();

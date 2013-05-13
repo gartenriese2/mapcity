@@ -37,21 +37,50 @@ uniform float debug;
 varying vec2 tex_coords;
 varying vec3 cam_pos;
 
-vec4 gauss( sampler2D tex, vec2 coords ) {
-    int i = 0;
-    float w[9];
-    w[0] = 1.0 / 9.0; w[3] = 2.0 / 9.0; w[6] = 1.0 / 9.0;
-    w[1] = 2.0 / 9.0; w[4] = 4.0 / 9.0; w[7] = 2.0 / 9.0;
-    w[2] = 1.0 / 9.0; w[5] = 2.0 / 9.0; w[8] = 1.0 / 9.0;
-    vec3 ret = vec3( 0, 0, 0 );
-    for( int x = -1; x <= 1; ++x ) {
-        for( int y = -1; y <= 1; ++y ) {
-            vec2 offset = vec2( float(x)/640.0, float(y)/480.0 );
-            vec4 col    = texture2D( tex, coords + offset ); 
-            ret.xyz    += w[++i] * col.xyz;
+vec4 bloom( sampler2D tex, vec2 coords ) {
+    vec4 sum = vec4(0);
+    int size = 3;
+    for( int i = -size; i < size; ++i ) {
+        for( int j = -size; j < size; ++j ) {
+            sum += texture2D( tex, tex_coords + vec2( j, i ) * 0.004 ) * 0.25;
         }
     }
-    return vec4( ret.xyz, 1 );
+    
+    if( texture2D( tex, tex_coords ).r < 0.3) {
+       sum = sum * sum * 0.012 + texture2D( tex, tex_coords );
+    }
+    else {
+        if ( texture2D( tex, tex_coords ).r < 0.5) {
+            sum = sum * sum * 0.009 + texture2D( tex, tex_coords );
+        }
+        else {
+            sum = sum * sum * 0.0075 + texture2D( tex, tex_coords );
+        }
+    }
+
+    return sum;
+}
+
+float ssao( sampler2D P, sampler2D N, vec2 coords ) {
+    vec4 refpos     = texture2D( P, coords );
+    float occlusion = 0.0;
+
+    int k = 1;
+    for( int x = -k; x <= k; ++x ) {
+        for( int y = -k; y <= k; ++y ) {
+            vec2 offset    = vec2( float(x)/640.0, float(y)/480.0 );
+
+            vec4 pos       = texture2D( P, coords + offset ); 
+            vec4 normal    = texture2D( N, coords + offset ); 
+
+            vec4 V         = normalize( refpos - pos );
+            float d        = distance( refpos, pos );
+
+            occlusion = max( dot( normal, V ), 0.0 ) * ( 1.0 / ( 1.0 + d ) );
+        }
+    }
+
+    return occlusion;
 }
 
 void main() {
@@ -79,8 +108,11 @@ void main() {
         col_specular += vec4( light_color[i], 1.0 ) * specular_factor * attenuation;
         col_diffuse  += vec4( light_color[i], 1.0 ) * diffuse_factor * attenuation;
     }
-    
-    gl_FragColor = color * ( col_ambient + col_diffuse + col_specular );
+
+    // float o = ssao( positionTexture, normalTexture, tex_coords );
+    // col_ambient -= vec4( o );
+    vec4 b  = bloom( colorTexture, tex_coords );
+    gl_FragColor = b * ( col_ambient + col_diffuse + col_specular );
 
     if( debug == 1.0 ) {
         gl_FragColor = depth;
