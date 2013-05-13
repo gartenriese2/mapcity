@@ -17,7 +17,7 @@ varying vec3 frag_position;
 void main() {
     gl_Position     = proj * view * model * gl_Vertex;
     frag_tex_coords = in_uv;
-    frag_normal     = normalize( ( model * vec4( in_vn, 1 ) ).xyz );
+    frag_normal     = normalize( ( model * vec4( in_vn, 0.0 ) ).xyz );
     frag_position   = vec3( model * gl_Vertex );
 }
 

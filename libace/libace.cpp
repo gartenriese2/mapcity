@@ -42,19 +42,6 @@ void Ace::render() {
         m->draw();
     }
 
-    for( auto m : m_scenegraph->getLights() ) {
-        g->getRecShader()->addUniform( "model", m->getTrafo() );
-        g->getRecShader()->addUniform( "proj", cam->getProjectionMatrix() );
-        g->getRecShader()->addUniform( "view", cam->getViewMatrix() );
-        g->getRecShader()->addUniform( "tex", m->getTextureId() );
-
-        g->getRecShader()->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
-        g->getRecShader()->addAttribute( "in_vn", cfg::ACE_ATTRIB_NORM );
-        g->getRecShader()->addAttribute( "in_pos", cfg::ACE_ATTRIB_VERT );
-
-        m->draw();
-    }
-
     g->stopRecording();    
     g->render();
 }
@@ -181,8 +168,8 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
 #endif
 
     // back face culling
-    //glEnable( GL_CULL_FACE );
-    //glCullFace( GL_FRONT );
+    // glEnable( GL_CULL_FACE );
+    // glCullFace( GL_BACK );
 
     // alpha blending
     glEnable( GL_BLEND );

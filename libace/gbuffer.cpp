@@ -125,6 +125,7 @@ void GBuffer::render() {
             light_colors[i]    = l->getColor();
             light_radius[i]    = l->getRadius();
             light_intensity[i] = l->getIntensity();
+            // std::cout << light_positions[i].x << ", " << light_positions[i].y << ", "<< light_positions[i].z << std::endl << std::endl;
             ++i;
         }
         m_shader->addUniform( "light_count", float( i ) );

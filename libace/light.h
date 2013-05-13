@@ -14,12 +14,12 @@
 
 // Libace
 #include "mesh.h"
+#include "objectinterface.h"
 
 namespace ace {
 
-class Light : public Mesh {
+class Light : public ObjectInterface {
 private:
-	glm::vec3 m_pos;
 	glm::vec3 m_col;
 
 	float m_intensity;
@@ -29,8 +29,6 @@ public:
     Light( float red, float green, float blue, float intensity, float radius );
     ~Light();
 
-    void setPosition( float x, float y, float z );
-    glm::vec3& getPosition();
     inline glm::vec3& getColor() { return m_col; }
     inline float getRadius() { return m_radius; }
     inline float getIntensity() { return m_intensity; }

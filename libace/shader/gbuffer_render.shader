@@ -66,23 +66,18 @@ void main() {
 
     for( int i = 0; i < int( light_count ); ++i ) {
         float intensity      = light_intensity[i];
-        float distance       = distance( light_pos[i], pos.xyz );
+        float distance       = max( distance( light_pos[i], pos.xyz ), 0.0 );
+        float attenuation    = 1.0 / pow( distance / light_radius[i] + 1.0, 2.0 );
 
-        vec3 light_dir       = normalize( light_pos[i] - pos.xyz );
-        vec3 eye_dir         = normalize( vec3( pos.rgb ) - cam_pos );
+        vec3 L               = normalize( light_pos[i] - pos.xyz );
+        vec3 eye_dir         = normalize( cam_pos - pos.xyz );
+        vec3 v_half_vector   = normalize( L + eye_dir );
+        
+        float diffuse_factor = max( dot( normal.xyz, L ), 0.0 );
+        float specular_factor= pow( max( dot( normal.xyz, v_half_vector ), 0.0 ), 10.0 );
 
-        float diffuse_factor = dot( normal.xyz, light_dir );
-
-        if( diffuse_factor > 0.0 ) {
-            col_diffuse += vec4( light_color[i], 1.0 ) * diffuse_factor * intensity;
-
-            vec3 light_reflect    = normalize( reflect( -light_dir, normal.xyz ) );
-            vec3 v_half_vector    = normalize( light_dir + eye_dir );
-            float specular_factor = pow( dot( v_half_vector, light_reflect ), 10.0 );  
-            if( specular_factor > 0.0 ) {
-                col_specular += vec4( light_color[i], 1.0 ) * specular_factor * intensity;
-            }
-        }
+        col_specular += vec4( light_color[i], 1.0 ) * specular_factor * attenuation;
+        col_diffuse  += vec4( light_color[i], 1.0 ) * diffuse_factor * attenuation;
     }
     
     gl_FragColor = color * ( col_ambient + col_diffuse + col_specular );

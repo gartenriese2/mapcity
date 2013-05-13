@@ -23,6 +23,7 @@
 	ace::Mesh 	*mesh1;
 	ace::Mesh 	*mesh2;
 	ace::Mesh 	*mesh3;
+	ace::Mesh 	*mesh4;
 	ace::Light  *light1;
 	ace::Light  *light2;
 
@@ -40,7 +41,7 @@
 		AceEngine->render();
 	}  
 	void input() {
-
+		if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
 	}
 	void ace_test() {
 		AceEngine->init( render_loop, input );
@@ -51,9 +52,11 @@
 		mesh2->makeQuad();
 		mesh3 = new ace::Mesh();
 		mesh3->makeQuad();
+		mesh4 = new ace::Mesh();
+		mesh4->makeCube();
 		
-		light1 = new ace::Light( 1, 1, 0, 1, 15 );
-		light2 = new ace::Light( 1, 1, 1, 1, 25 );
+		light1 = new ace::Light( 1, 1, 1, 1, 50 );
+		light2 = new ace::Light( 1, 1, 1, 1, 50 );
 
 		mesh1->scale( 1, 1, 1 );
 
@@ -65,9 +68,13 @@
 		mesh3->scale( 50 );
 		mesh3->rotate( -90, 1, 0, 0 );
 
+		mesh4->translate( -20, 5, -15 );
+		mesh4->scale( 10 );
+
 		AceEngine->Scene()->add( mesh1 );
 		AceEngine->Scene()->add( mesh2 );
 		AceEngine->Scene()->add( mesh3 );
+		AceEngine->Scene()->add( mesh4 );
 		AceEngine->Scene()->add( light1 );
 		AceEngine->Scene()->add( light2 );
 		AceEngine->start();

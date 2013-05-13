@@ -13,6 +13,7 @@ namespace ace {
 
 class ObjectInterface {
 protected:
+	glm::vec3 m_pos;
 	glm::mat4 m_transformation;
 
 public:
@@ -30,12 +31,17 @@ public:
 	};
 
 	void translate( float x, float y, float z ) {
+		m_pos += glm::vec3( x, y, z );
 		m_transformation = glm::translate( m_transformation, glm::vec3( x, y, z ) );
 	};
 
-	inline glm::mat4& getTrafo() { return m_transformation; };
+	void setPosition( float x, float y, float z ) {
+		m_transformation = glm::translate( m_transformation, glm::vec3( x - m_pos.x, y - m_pos.y, z - m_pos.z ) );
+		m_pos = glm::vec3( x, y, z );
+	}
 
-	virtual void draw() = 0;
+	inline glm::mat4& getTrafo() { return m_transformation; };
+	inline glm::vec3& getPosition() { return m_pos; }
 };
 
 };
