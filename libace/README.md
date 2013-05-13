@@ -1,6 +1,12 @@
 Libace
 ======
 
+Changelog
+---------
+- 12.05.13: Light class working basically, prepared billboards
+
+HowTo
+-----
 To get started, create an instance of the engine.    
 `ace::Ace *AceEngine = ace::Ace::getEngine();`
 
@@ -14,9 +20,6 @@ Initialize the engine, create a camera and a window.
 To finally start the engine, type    
 `AceEngine->start()`
 
-Changelog
----------
-- 12.05.13: Light class working basically, prepared billboards
 
 TODOS
 -----
@@ -31,7 +34,7 @@ Maybe *billboards* or *volumetric lightning* will solve this problem.
 ### Shadowing
 Same problems as with the light. Two ways are possible:
 - *Shadow mapping*, easier to implement but not working for point lights so point lights have to be discarded.
-- *Stencil shadow volumes* (_Carmacks reverse_), hard to implement but quite nice (see Doom 3), requires
+- *Stencil shadow volumes* (see Carmacks reverse), hard to implement but quite nice (see Doom 3), requires
 *light volumes*
 
 ### Further improvements
