@@ -10,6 +10,11 @@ Changelog
 
 TODOS
 -----
+### General
+- fix Timer (use glfw's)
+- fix FPS: http://r3dux.org/2012/07/a-simple-glfw-fps-counter/
+- set FPS to 60
+
 ### Shaders
 Uniforms and attributes can be added easily. Not all data types are supported yet.
 
