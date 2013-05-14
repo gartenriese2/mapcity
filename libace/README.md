@@ -31,7 +31,7 @@ Same problems as with the light. Two ways are possible:
 
 ### Further improvements
 - implement SceneGraph class to render stuff: done, but so far it is just a simple list
-- delete TGA loader and use libpng instead
+- delete TGA loader (glfw already has one: switch!)
 - implement class for Terrain (simple LOD: http://wiki.delphigl.com/index.php/Tutorial_Terrain3)
 - implement class for different Materials (and bump mapping)
 - improve Wavefront Object loader
