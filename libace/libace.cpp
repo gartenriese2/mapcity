@@ -184,6 +184,7 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
     glfwEnable( GLFW_KEY_REPEAT );
     glfwDisable( GLFW_MOUSE_CURSOR );
     glfwSetMousePos( cfg::screenwidth / 2.0, cfg::screenheight / 2.0 );
+    // glfwSwapInterval( 1 ); // enable v-sync
 
     // camera
     glm::vec3 pos( 0, 1, 10 ); 
