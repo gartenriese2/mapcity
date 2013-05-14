@@ -20,8 +20,7 @@ Uniforms and attributes can be added easily. Not all data types are supported ye
 
 ### Lights
 Lights are implemented directly in the shader code. So far ambient, diffuse and specular lightning are basically
-working. But the light goes through solid material and illuminates all backsides as well. 
-Maybe *billboards* or *volumetric lightning* will solve this problem.
+working. But the light goes through solid material and illuminates all meshes that are occluded as well.
 
 ### Shadowing
 Same problems as with the light. Two ways are possible:
