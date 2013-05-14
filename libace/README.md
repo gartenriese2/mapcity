@@ -6,6 +6,31 @@ Changelog
 - 13.05.13: killed billboard idea, fixed specular light bug, imported monkey.obj, implemented bloom and prepared SSAO
 - 12.05.13: Light class working basically, prepared billboards
 
+TODOS
+-----
+### Shaders
+Uniforms and attributes can be added easily. Not all data types are supported yet.
+
+### Lights
+Lights are implemented directly in the shader code. So far ambient, diffuse and specular lightning are basically
+working. But the light goes through solid material and illuminates all backsides as well. 
+Maybe *billboards* or *volumetric lightning* will solve this problem.
+
+### Shadowing
+Same problems as with the light. Two ways are possible:
+- *Shadow mapping*, easier to implement _and_ working for point lights 
+- (*Stencil shadow volumes* (see Carmacks reverse), hard to implement but really nice ;) (see Doom 3), requires
+*light volumes*)
+
+### Further improvements
+- implement SceneGraph class to render stuff: done, but so far it is just a simple list
+- delete TGA loader and use libpng instead
+- implement class for Terrain (simple LOD: http://wiki.delphigl.com/index.php/Tutorial_Terrain3)
+- implement class for different Materials (and bump mapping)
+- improve Wavefront Object loader
+- particle engine
+
+
 HowTo
 -----
 To get started, create an instance of the engine.    
@@ -21,27 +46,93 @@ Initialize the engine, create a camera and a window.
 To finally start the engine, type    
 `AceEngine->start()`
 
+Detailed HowTo
+--------------
+```c
+#include "../libace/libace.h" // include libace
+ace::Ace *AceEngine = ace::Ace::getEngine(); // get pointer to singleton engine
 
-TODOS
------
-### Shaders
-Uniforms and attributes can be added easily. Not all data types are supported yet.
+// create some objects for the scene
+ace::Mesh *mesh1; // mesh: can be everything that is drawable
+ace::Mesh *mesh2;
+ace::Mesh *mesh3;
+ace::Mesh *mesh4;
+ace::Light *light1; // light: similiar to a mesh, not drawable, not scalable etc
+ace::Light *light2;
 
-### Lights
-Lights are implemented directly in the shader code. So far ambient, diffuse and specular lightning are basically
-working. But the light goes through solid material and illuminates all backsides as well. 
-Maybe *billboards* or *volumetric lightning* will solve this problem.
+ace::Object *obj1; // object: mesh which is created from a 3D .obj file
 
-### Shadowing
-Same problems as with the light. Two ways are possible:
-- *Shadow mapping*, easier to implement but not working for point lights so point lights have to be discarded.
-- *Stencil shadow volumes* (see Carmacks reverse), hard to implement but quite nice (see Doom 3), requires
-*light volumes*
+float light_pos = -10;
 
-### Further improvements
-- implement SceneGraph class to render stuff: done, but so far it is just a simple list
-- delete TGA loader and use libpng instead
-- implement class for Terrain
-- implement class for different Materials (and bump mapping)
-- improve Wavefront Object loader
-- particle engine
+// main render loop which is called 60x per sec
+void render_loop() {
+
+// calculate new light position
+light_pos += 0.1f;
+if( light_pos > 10.f ) light_pos = -10.f;
+
+// move light
+light1->setPosition( 6, 3, light_pos );
+light2->setPosition( -6, 3, light_pos -5 );
+
+// rotate the cube mesh around its X-axis
+mesh1->rotate( 0.5f, 1, 0, 0 );
+// update
+AceEngine->render();
+}
+
+// keyboard input
+void input() {
+// step through the gbuffer
+if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
+}
+
+// main function
+void ace_test() {
+
+// init the engine with the main render loop function and the input function from above
+AceEngine->init( render_loop, input );
+
+// create the meshes and objects
+mesh1 = new ace::Mesh();
+mesh1->makeCube();
+mesh2 = new ace::Mesh();
+mesh2->makeQuad();
+mesh3 = new ace::Mesh();
+mesh3->makeQuad();
+mesh4 = new ace::Mesh();
+mesh4->makeCube();
+
+obj1 = new ace::Object( "assets/monkey.obj" );
+obj1->translate( 0, 0, -10 );
+
+// Light( red, green, blue, intensity, radius )
+light1 = new ace::Light( 1, 1, 0, 1, 50 );
+light2 = new ace::Light( 1, 1, 1, 1, 50 );
+
+mesh1->scale( 1, 1, 1 );
+
+mesh2->translate( 15, 0, -10 );
+mesh2->scale( 20 );
+mesh2->rotate( -90, 0, 1, 0 );
+
+mesh3->translate( 0, -3, -2 );
+mesh3->scale( 50 );
+mesh3->rotate( -90, 1, 0, 0 );
+
+mesh4->translate( -20, 5, -15 );
+mesh4->scale( 10 );
+
+// add all the objects to the render pool
+AceEngine->Scene()->add( mesh1 );
+AceEngine->Scene()->add( mesh2 );
+AceEngine->Scene()->add( mesh3 );
+AceEngine->Scene()->add( mesh4 );
+AceEngine->Scene()->add( obj1 );
+AceEngine->Scene()->add( light1 );
+AceEngine->Scene()->add( light2 );
+
+// start the render_loop function
+AceEngine->start();
+}
+```
