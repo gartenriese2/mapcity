@@ -35,6 +35,7 @@ Same problems as with the light. Two ways are possible:
 - implement class for different Materials (and bump mapping)
 - improve Wavefront Object loader
 - particle engine
+- post-processing like anti-aliasing, bloom, motion blur
 
 
 HowTo
