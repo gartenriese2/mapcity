@@ -1,6 +1,8 @@
 Libace
 ======
 
+Screenshots: http://jandoerntlein.github.io/
+
 Changelog
 ---------
 - 13.05.13: killed billboard idea, fixed specular light bug, imported monkey.obj, implemented bloom and prepared SSAO
