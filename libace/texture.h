@@ -10,6 +10,9 @@
 
 #include "ogl.h"
 #include "stl.h"
+#ifdef __linux__
+    #include <cstring>
+#endif
 
 // Libace
 #include "error.h"

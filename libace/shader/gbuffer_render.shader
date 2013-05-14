@@ -111,8 +111,8 @@ void main() {
 
     // float o = ssao( positionTexture, normalTexture, tex_coords );
     // col_ambient -= vec4( o );
-    vec4 b  = bloom( colorTexture, tex_coords );
-    gl_FragColor = b * ( col_ambient + col_diffuse + col_specular );
+    // vec4 b  = bloom( colorTexture, tex_coords );
+    gl_FragColor = color * ( col_ambient + col_diffuse + col_specular );
 
     if( debug == 1.0 ) {
         gl_FragColor = depth;
