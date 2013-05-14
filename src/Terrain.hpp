@@ -4,7 +4,7 @@
 #include "Bitmap.hpp"
 #include <vector>
 #include <iostream>
-#include <glm/glm.hpp>
+#include "../glm-0.9.4.3/glm/glm.hpp"
 
 class Terrain {
 	public:

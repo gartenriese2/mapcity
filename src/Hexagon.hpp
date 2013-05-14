@@ -1,7 +1,7 @@
 #ifndef HEXAGON_HPP
 #define HEXAGON_HPP
 
-#include <glm/glm.hpp>
+#include "../glm-0.9.4.3/glm/glm.hpp"
 #include <vector>
 #include <iostream>
 #include "ResidentialZone.hpp"
