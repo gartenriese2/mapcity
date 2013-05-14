@@ -8,7 +8,12 @@
 cmake_minimum_required( VERSION 2.8 )
 
 # compiler stuff
-add_definitions( -std=c++11 )
+if( APPLE )
+	add_definitions( -std=c++11 )
+else()
+	add_definitions( -std=c++0x )
+endif( APPLE )
+
 
 # main options
 SET( PROJECT_NAME "MapCity" )
