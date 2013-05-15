@@ -11,6 +11,7 @@ Changelog
 TODOS
 -----
 ### General
+- setColor() for cubes ;)
 - fix Timer (use glfw's)
 - fix FPS: http://r3dux.org/2012/07/a-simple-glfw-fps-counter/
 - set FPS to 60
