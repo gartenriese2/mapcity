@@ -84,6 +84,8 @@ float ssao( sampler2D P, sampler2D N, vec2 coords ) {
 }
 
 void main() {
+    // avoid branching [if,for,while] wherever possible!
+
     vec4 depth  = texture2D( depthTexture,    tex_coords );
     vec4 pos    = texture2D( positionTexture, tex_coords );
     vec4 normal = texture2D( normalTexture,   tex_coords );
