@@ -15,7 +15,7 @@
 #include <time.h>
 
 // BEGIN TEST
-#define LIBACE_TEST // uncomment this to test libace
+// #define LIBACE_TEST // uncomment this to test libace
 #ifdef LIBACE_TEST
 	#include "../libace/libace.h"
 	ace::Ace *AceEngine = ace::Ace::getEngine();
