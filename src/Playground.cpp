@@ -9,20 +9,20 @@ static ace::Mesh 	*quad1;
 static ace::Light  *light1;
 long count = 0;
 
-void render_loop(){ 
+// void render_loop(){ 
 	
-	mesh1->scale(1.f);
-	AceEngine->render(); 
-}
+// 	mesh1->scale(1.f);
+// 	AceEngine->render(); 
+// }
 
-void input(){
-	if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
-}
+// void input(){
+// 	if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
+// }
 
 Playground::Playground() {
 	
 	AceEngine = ace::Ace::getEngine();
-	AceEngine->init( render_loop, input );
+	// AceEngine->init( render_loop, input );
 	mesh1 = new ace::Mesh();
 	mesh2 = new ace::Mesh();
 	mesh3 = new ace::Mesh();
