@@ -8,14 +8,15 @@
 #include "Einfamilienhaus.hpp"
 #include "Bitmap.hpp"
 #include "Terrain.hpp"
-//#include "Playground.hpp"
+#include "Playground.hpp"
+#include "Camera.hpp"
 
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
 // BEGIN TEST
-#define LIBACE_TEST // uncomment this to test libace
+// #define LIBACE_TEST // uncomment this to test libace
 #ifdef LIBACE_TEST
 	#include "../libace/libace.h"
 	ace::Ace *AceEngine = ace::Ace::getEngine();
@@ -167,12 +168,18 @@ void demandFunctionTest() {
 }
 
 void windowTest() {
-	Window w = Window();
-	w.createWindow(500, 500);
+	
+	int height = 500, width = 500;
+	
+	Window w(height, width);
+	
+	Camera c(glm::vec3(5.f, 5.f, 5.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
+		60.f, static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.f);
+
+	World &world = w.getWorld();
+	world.addTriangle(glm::vec3(-1.f,-1.f,0.f), glm::vec3(1.f,-1.f,0.f), glm::vec3(0.f,1.f,0.f));
 
 	w.loop();
-
-	glfwTerminate();
 }
 
 void zoneTest() {
@@ -307,17 +314,16 @@ int main() {
 	clock_gettime(CLOCK_MONOTONIC, &time1);
 	srand(time1.tv_nsec);
 #endif
-
+	
 	// findHexagonTest();
 	// demandFunctionTest();
-	// windowTest();
+	windowTest();
 	// zoneTest();
 	// householdTest();
 	// bebauteZonenTest();
 	// terrainTest();
 
-	// Playground p = Playground();
-	// p.playground();
+	// Playground p;
 
 	return 0;
 }
