@@ -18,7 +18,7 @@ void World::render() {
 
 #ifdef __MACH__
 		glBindVertexArrayAPPLE(o.vertexArray);
-#elif
+#elseif
 		glBindVertexArray(o.vertexArray);
 #endif
 		glDrawArrays(GL_TRIANGLES, 0, 3 * o.triangles);
@@ -34,7 +34,7 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c) {
 #ifdef __MACH__
 	glGenVertexArraysAPPLE(1, &o.vertexArray);
 	glBindVertexArrayAPPLE(o.vertexArray);
-#elif
+#elseif
 	glGenVertexArrays(1, &o.vertexArray);
 	glBindVertexArray(o.vertexArray);
 #endif
@@ -67,7 +67,7 @@ void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d) {
 #ifdef __MACH__
 	glGenVertexArraysAPPLE(1, &o.vertexArray);
 	glBindVertexArrayAPPLE(o.vertexArray);
-#elif
+#elseif
 	glGenVertexArrays(1, &o.vertexArray);
 	glBindVertexArray(o.vertexArray);
 #endif
