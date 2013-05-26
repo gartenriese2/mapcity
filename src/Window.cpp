@@ -17,10 +17,10 @@ int Window::createWindow(int w, int h) {
 	    return -1;
 	}
 
-	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); // 4x antialiasing
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4); // We want OpenGL 4.2
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
+	// glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); // 4x antialiasing
+	// glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4); // We want OpenGL 4.2
+	// glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+	// glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
 	// Open a window and create its OpenGL context
 	if( !glfwOpenWindow( w, h, 0,0,0,0, 32,0, GLFW_WINDOW ) )
