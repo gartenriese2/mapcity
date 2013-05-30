@@ -5,10 +5,12 @@
 #include <vector>
 #include "glm.h"
 #include <iostream>
+#include "Camera.hpp"
 
 struct Object {
-	GLfloat * vertexData;
 	GLuint vertexBuffer;
+	GLuint normalBuffer;
+	GLuint elementBuffer;
 	GLuint vertexArray;
 	int triangles;
 	glm::mat4 modelMatrix;
@@ -22,10 +24,17 @@ public:
 	void render();
 	void addTriangle(glm::vec3, glm::vec3, glm::vec3);
 	void addQuad(glm::vec3, glm::vec3, glm::vec3, glm::vec3);
+	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3);
 	inline std::vector<Object> getObjects() { return objects; }
+	inline void setMVPLocation(GLuint mvp) { mvpID = mvp; }
+	inline void setLightLocation(GLuint light) { lightID = light; }
+	inline Camera& getCamera() { return this->cam; }
 	
 private:
 	std::vector<Object> objects;
+	Camera cam;
+	GLuint mvpID;
+	GLuint lightID;
 };
 
 #endif

@@ -47,8 +47,6 @@ int Window::createWindow(int width, int height) {
         return -1;
     }
 
-
-
     glfwSetWindowTitle( "MapCity" );
 
     glewExperimental=true;
@@ -58,29 +56,63 @@ int Window::createWindow(int width, int height) {
         return -1;
     }
 
+    simpleShader = shader.loadShaders( "../shader/SimpleVert.shader", "../shader/SimpleFrag.shader" );
+
     return 1;
 
 }
 
 void Window::loop() {
 
-    GLuint simpleShader = shader.loadShaders( "../shader/SimpleVert.shader", "../shader/SimpleFrag.shader" );
+    glClearColor(0,0,0,0);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    glUseProgram(simpleShader);
+
+    GLuint MatrixID = glGetUniformLocation(simpleShader, "MVP");
+    GLuint LightID = glGetUniformLocation(simpleShader, "Light");
+    world.setMVPLocation(MatrixID);
+    world.setLightLocation(LightID);
 
     do{
         
-        // DRAW
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(1,1,1,1);
 
-        glUseProgram(simpleShader);
+        keyhandler();
+        mousehandler();
 
         world.render();
         
         glfwSwapBuffers();
      
-    } // Check if the ESC key was pressed or the window was closed
-    while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
-    glfwGetWindowParam( GLFW_OPENED ) );
+    } while(glfwGetKey(GLFW_KEY_ESC) != GLFW_PRESS && glfwGetWindowParam(GLFW_OPENED));
+
+}
+
+void Window::keyhandler() {
+
+    if (glfwGetKey('W') == GLFW_PRESS) {
+        world.getCamera().move(0.01, 0.0, 0.0);
+    }
+    if (glfwGetKey('S') == GLFW_PRESS) {
+        world.getCamera().move(-0.01, 0.0, 0.0);
+    }
+    if (glfwGetKey('A') == GLFW_PRESS) {
+        world.getCamera().move(0.0, -0.01, 0.0);
+    }
+    if (glfwGetKey('D') == GLFW_PRESS) {
+        world.getCamera().move(0.0, 0.01, 0.0);
+    }
+    if (glfwGetKey('Q') == GLFW_PRESS) {
+        world.getCamera().move(0.0, 0.0, 0.01);
+    }
+    if (glfwGetKey('E') == GLFW_PRESS) {
+        world.getCamera().move(0.0, 0.0, -0.01);
+    }
+
+}
+
+void Window::mousehandler() {
 
 }

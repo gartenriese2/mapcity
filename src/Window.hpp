@@ -16,6 +16,8 @@ public:
 	int init();
 	int createWindow(int, int);
 	void loop();
+	void keyhandler();
+	void mousehandler();
 
 	inline World& getWorld() { return this->world; }
 private:
@@ -24,6 +26,7 @@ private:
 	int m_height;
 	Shader shader;
 	World world;
+	GLuint simpleShader;
 };
 
 #endif

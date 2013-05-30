@@ -172,12 +172,12 @@ void windowTest() {
 	int height = 500, width = 500;
 	
 	Window w(height, width);
-	
-	Camera c(glm::vec3(5.f, 5.f, 5.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
-		60.f, static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.f);
 
 	World &world = w.getWorld();
-	world.addTriangle(glm::vec3(-1.f,-1.f,0.f), glm::vec3(1.f,-1.f,0.f), glm::vec3(0.f,1.f,0.f));
+	
+	world.addCuboid(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(0,0,1));
+	// world.addTriangle(glm::vec3(1,0,0), glm::vec3(2,0,-1), glm::vec3(1.5,1,-0.5));
+	// world.addQuad(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec3(0,1,-1), glm::vec3(-0.5,1,0));
 
 	w.loop();
 }
