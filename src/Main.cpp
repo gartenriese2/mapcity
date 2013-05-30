@@ -169,16 +169,19 @@ void demandFunctionTest() {
 
 void windowTest() {
 	
-	int height = 500, width = 500;
+	int height = 1000, width = 1000;
 	
 	Window w(height, width);
 
 	World &world = w.getWorld();
 	
-	world.addCuboid(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec3(1,0,0));
-	world.addCuboid(glm::vec3(0,0,-2), glm::vec3(1,0,-2), glm::vec3(0,1,-2), glm::vec3(0,0,-1));
-	// world.addTriangle(glm::vec3(1,0,0), glm::vec3(2,0,-1), glm::vec3(1.5,1,-0.5));
-	// world.addQuad(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec3(0,1,-1), glm::vec3(-0.5,1,0));
+	world.addCuboid(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,0.8,0), glm::vec3(0,0,1.5), glm::vec3(0,1,0));
+	world.addCuboid(glm::vec3(0,0,-1), glm::vec3(1,0,-1), glm::vec3(0,1.2,-1), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	world.addCuboid(glm::vec3(-1,0,0.5), glm::vec3(0,0,0.5), glm::vec3(-1,1,0.5), glm::vec3(-1,0,1.5), glm::vec3(0,1,0));
+	world.addCuboid(glm::vec3(0,0,3.5), glm::vec3(1,0,4.5), glm::vec3(0,3,3.5), glm::vec3(-1,0,4.5), glm::vec3(0,1,0));
+	world.addCuboid(glm::vec3(0,0,-2), glm::vec3(1,0,-2), glm::vec3(0,1,-2), glm::vec3(0,0,-1), glm::vec3(0,0,1));
+	world.addQuad(glm::vec3(1.5,0.01,5), glm::vec3(2.5,0.01,5), glm::vec3(2.5,0.01,-5), glm::vec3(1.5,0.01,-5), glm::vec3(1,1,0));
+	world.addQuad(glm::vec3(1.5,0.01,3), glm::vec3(1.5,0.01,2), glm::vec3(-3,0.01,2), glm::vec3(-3,0.01,3), glm::vec3(1,1,0));
 	world.addQuad(glm::vec3(-10,0,-10), glm::vec3(-10,0,10), glm::vec3(10,0,10), glm::vec3(10,0,-10));
 
 	w.loop();

@@ -11,7 +11,7 @@ Window::Window(int height, int width) {
         createWindow(m_height, m_width);
     }
 
-    world.init();
+    world.init(height, width);
 
 }
 
@@ -100,22 +100,22 @@ void Window::loop() {
 void Window::keyhandler() {
 
     if (glfwGetKey('W') == GLFW_PRESS) {
-        world.getCamera().move(0.01, 0.0, 0.0);
+        world.getCamera().move(0.02, 0.0, 0.0);
     }
     if (glfwGetKey('S') == GLFW_PRESS) {
-        world.getCamera().move(-0.01, 0.0, 0.0);
+        world.getCamera().move(-0.02, 0.0, 0.0);
     }
     if (glfwGetKey('A') == GLFW_PRESS) {
-        world.getCamera().move(0.0, -0.01, 0.0);
+        world.getCamera().move(0.0, -0.02, 0.0);
     }
     if (glfwGetKey('D') == GLFW_PRESS) {
-        world.getCamera().move(0.0, 0.01, 0.0);
+        world.getCamera().move(0.0, 0.02, 0.0);
     }
     if (glfwGetKey('Q') == GLFW_PRESS) {
-        world.getCamera().move(0.0, 0.0, 0.01);
+        world.getCamera().move(0.0, 0.0, 0.02);
     }
     if (glfwGetKey('E') == GLFW_PRESS) {
-        world.getCamera().move(0.0, 0.0, -0.01);
+        world.getCamera().move(0.0, 0.0, -0.02);
     }
 
 }

@@ -6,10 +6,10 @@ World::World() {
 
 }
 
-void World::init() {
+void World::init(int width, int height) {
 
-	cam = Camera(glm::vec3(4.f, 3.f, 3.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
-		45.f, static_cast<float>(500) / static_cast<float>(500), 0.1f, 100.f);
+	cam = Camera(glm::vec3(10.f, 10.f, 10.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
+		45.f, static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.f);
 
 }
 
@@ -17,16 +17,12 @@ void World::render() {
 
 	for (std::vector<Object>::iterator o = objects.begin(); o != objects.end(); o++) {
 
-#ifdef __MACH__
-		glBindVertexArrayAPPLE(o->vertexArray);
-#else
 		glBindVertexArray(o->vertexArray);
-#endif
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->modelMatrix;
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, &MVP[0][0]);
-		glUniform3f(lightID, glm::sin(static_cast<float>(counter) / 1000.0) * 4,
-							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 4,
+		glUniform3f(lightID, glm::sin(static_cast<float>(counter) / 1000.0) * 10,
+							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 10,
 							0);
 		glDrawArrays(GL_TRIANGLES, 0, 3 * o->triangles);
 
@@ -36,17 +32,9 @@ void World::render() {
 
 }
 
-void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c) {
+void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 	
 	Object o;
-
-#ifdef __MACH__
-	glGenVertexArraysAPPLE(1, &o.vertexArray);
-	glBindVertexArrayAPPLE(o.vertexArray);
-#else
-	glGenVertexArrays(1, &o.vertexArray);
-	glBindVertexArray(o.vertexArray);
-#endif
 
 	GLfloat * vertexData = new GLfloat[9];
 	for (int i = 0; i < 3; i++) {
@@ -64,33 +52,13 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c) {
 	}
 
 	GLfloat * colorData = new GLfloat[9];
-	glm::vec3 col(1,1,1);
 	for (int i = 0; i < 9; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
 	}
 
-	glGenBuffers(1, &o.vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertexData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &o.normalBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.normalBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, normalData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-
-	glGenBuffers(1, &o.colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, colorData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, 0, (void*)0);
-	glEnableVertexAttribArray(2);	
+	fillBuffers(o, 9, vertexData, normalData, colorData);
 
 	o.modelMatrix = glm::mat4(1.f);
 	o.triangles = 1;
@@ -99,17 +67,9 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c) {
 	
 }
 
-void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d) {
+void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 col) {
 
 	Object o;
-
-#ifdef __MACH__
-	glGenVertexArraysAPPLE(1, &o.vertexArray);
-	glBindVertexArrayAPPLE(o.vertexArray);
-#else
-	glGenVertexArrays(1, &o.vertexArray);
-	glBindVertexArray(o.vertexArray);
-#endif
 
 	GLfloat * vertexData = new GLfloat[18];
 	for (int i = 0; i < 3; i++) {
@@ -134,33 +94,13 @@ void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d) {
 	}
 
 	GLfloat * colorData = new GLfloat[18];
-	glm::vec3 col(1,1,1);
 	for (int i = 0; i < 18; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
 	}
 
-	glGenBuffers(1, &o.vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, vertexData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &o.normalBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.normalBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, normalData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-
-	glGenBuffers(1, &o.colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, colorData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, 0, (void*)0);
-	glEnableVertexAttribArray(2);
+	fillBuffers(o, 18, vertexData, normalData, colorData);
 
 	o.modelMatrix = glm::mat4(1.f);
 	o.triangles = 2;
@@ -169,104 +109,22 @@ void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d) {
 
 }
 
-void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d) {
-
-	Object o;
-
-#ifdef __MACH__
-	glGenVertexArraysAPPLE(1, &o.vertexArray);
-	glBindVertexArrayAPPLE(o.vertexArray);
-#else
-	glGenVertexArrays(1, &o.vertexArray);
-	glBindVertexArray(o.vertexArray);
-#endif
-
-	
-	GLfloat * vertexData;
-	GLfloat * normalData;
-	createCuboidData(a, b, c, d, vertexData, normalData);
-
-	GLfloat * colorData = new GLfloat[6*18];
-	glm::vec3 col(1,1,1);
-	for (int i = 0; i < 6*18; i += 3) {
-		colorData[i] = col[0];
-		colorData[i + 1] = col[1];
-		colorData[i + 2] = col[2];
-	}
-
-	glGenBuffers(1, &o.vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6*18, vertexData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &o.normalBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.normalBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6*18, normalData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-
-	glGenBuffers(1, &o.colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6*18, colorData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(2);
-
-	o.modelMatrix = glm::mat4(1.f);
-	o.triangles = 12;
-
-	objects.push_back(o);
-
-}
-
 void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 col) {
 
 	Object o;
-
-#ifdef __MACH__
-	glGenVertexArraysAPPLE(1, &o.vertexArray);
-	glBindVertexArrayAPPLE(o.vertexArray);
-#else
-	glGenVertexArrays(1, &o.vertexArray);
-	glBindVertexArray(o.vertexArray);
-#endif
-
 	
 	GLfloat * vertexData;
 	GLfloat * normalData;
 	createCuboidData(a, b, c, d, vertexData, normalData);
 
 	GLfloat * colorData = new GLfloat[6*18];
-	
 	for (int i = 0; i < 6*18; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
 	}
 
-	glGenBuffers(1, &o.vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6*18, vertexData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &o.normalBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.normalBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6*18, normalData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-
-	glGenBuffers(1, &o.colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6*18, colorData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(2);
+	fillBuffers(o, 6*18, vertexData, normalData, colorData);
 
 	o.modelMatrix = glm::mat4(1.f);
 	o.triangles = 12;
@@ -276,6 +134,7 @@ void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::v
 }
 
 void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const glm::vec3 &d, GLfloat * &vertexData, GLfloat * &normalData) {
+	
 	vertexData = new GLfloat[6*18];
 	normalData = new GLfloat[6*18];
 
@@ -372,5 +231,35 @@ void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::
 		normalData[i + 99] = -n1[i];
 		normalData[i + 102] = -n1[i];
 		normalData[i + 105] = -n1[i];
+
 	}
+
+}
+
+void World::fillBuffers(Object &o, int size, GLfloat * &vertexData, GLfloat * &normalData, GLfloat * &colorData) {
+
+	glGenVertexArrays(1, &o.vertexArray);
+	glBindVertexArray(o.vertexArray);
+
+	glGenBuffers(1, &o.vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, o.vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * size, vertexData, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &o.normalBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, o.normalBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * size, normalData, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(1);
+
+	glGenBuffers(1, &o.colorBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, o.colorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * size, colorData, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(2);
+
 }

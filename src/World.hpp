@@ -20,13 +20,16 @@ class World {
 public:
 	World();
 
-	void init();
+	void init(int, int);
 	void render();
-	void addTriangle(glm::vec3, glm::vec3, glm::vec3);
-	void addQuad(glm::vec3, glm::vec3, glm::vec3, glm::vec3);
-	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3);
-	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3);
+
+	void addTriangle(glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
+	void addQuad(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
+	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
+	
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &);
+	void fillBuffers(Object &, int, GLfloat * &, GLfloat * &, GLfloat * &);
+
 	inline std::vector<Object> getObjects() { return objects; }
 	inline void setMVPLocation(GLuint mvp) { mvpID = mvp; }
 	inline void setLightLocation(GLuint light) { lightID = light; }
