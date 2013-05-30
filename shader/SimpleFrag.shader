@@ -2,9 +2,10 @@
 
 in vec3 n;
 in vec3 l;
+in vec3 c;
 out vec3 color;
  
 void main(){
     float cosTheta = clamp(dot(n,l), 0, 1);
-    color = vec3(1,0,0) * cosTheta + vec3(0.1,0,0);
+    color = c * (cosTheta + 0.1);
 }

@@ -175,9 +175,11 @@ void windowTest() {
 
 	World &world = w.getWorld();
 	
-	world.addCuboid(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(0,0,1));
+	world.addCuboid(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(0,0,1), glm::vec3(1,0,0));
+	world.addCuboid(glm::vec3(0,0,-2), glm::vec3(1,0,-2), glm::vec3(0,1,-2), glm::vec3(0,0,-1));
 	// world.addTriangle(glm::vec3(1,0,0), glm::vec3(2,0,-1), glm::vec3(1.5,1,-0.5));
 	// world.addQuad(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec3(0,1,-1), glm::vec3(-0.5,1,0));
+	world.addQuad(glm::vec3(-10,0,-10), glm::vec3(-10,0,10), glm::vec3(10,0,10), glm::vec3(10,0,-10));
 
 	w.loop();
 }
