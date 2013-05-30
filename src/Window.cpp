@@ -27,10 +27,15 @@ int Window::init() {
         return -1;
     }
 
+#ifndef __MACH__
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#else
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+#endif
 
     return 1;
 
@@ -49,12 +54,14 @@ int Window::createWindow(int width, int height) {
 
     glfwSetWindowTitle( "MapCity" );
 
+#ifndef __MACH__
     glewExperimental=true;
     int err = glewInit();
     if (err != GLEW_OK) {
         fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
         return -1;
     }
+#endif
 
     simpleShader = shader.loadShaders( "../shader/SimpleVert.shader", "../shader/SimpleFrag.shader" );
 

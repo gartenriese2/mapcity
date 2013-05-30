@@ -27,7 +27,7 @@ endif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
 # Mac OSX
 if( APPLE )
 	include_directories( ${OPENGL_INCLUDE_DIRS} )
-	target_link_libraries( ${OUTPUT_NAME} ${OPENGL_LIBRARIES} )
+	target_link_libraries( ${OUTPUT_NAME} ${OPENGL_LIBRARIES} GLEW )
 
 	# GLFW doesn't run without these on OSX 10.7
 	find_library( IOKit IOKit ) 
