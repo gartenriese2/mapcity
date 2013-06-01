@@ -18,7 +18,6 @@ void World::render() {
 	for (std::vector<Object>::iterator o = objects.begin(); o != objects.end(); o++) {
 
 		glBindVertexArray(o->vertexArray);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, o->indexBuffer);
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->modelMatrix;
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, &MVP[0][0]);
