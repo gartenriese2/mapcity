@@ -18,13 +18,15 @@ void World::render() {
 	for (std::vector<Object>::iterator o = objects.begin(); o != objects.end(); o++) {
 
 		glBindVertexArray(o->vertexArray);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, o->indexBuffer);
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->modelMatrix;
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, &MVP[0][0]);
 		glUniform3f(lightID, glm::sin(static_cast<float>(counter) / 1000.0) * 10,
-							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 10,
+							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 10 + 3,
 							0);
-		glDrawArrays(GL_TRIANGLES, 0, 3 * o->triangles);
+
+		glDrawElements(GL_TRIANGLES, 3 * o->triangles, GL_UNSIGNED_SHORT, (void*)0);
 
 	}
 
@@ -58,7 +60,12 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 		colorData[i + 2] = col[2];
 	}
 
-	fillBuffers(o, 9, vertexData, normalData, colorData);
+	GLushort * indexData = new GLushort[3];
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+
+	fillBuffers(o, 9, 3, vertexData, normalData, colorData, indexData);
 
 	o.modelMatrix = glm::mat4(1.f);
 	o.triangles = 1;
@@ -67,43 +74,124 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 	
 }
 
-void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 col) {
+void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 d, glm::vec3 col) {
 
 	Object o;
 
-	GLfloat * vertexData = new GLfloat[18];
+	glm::vec3 c = b + (d - a);
+
+	GLfloat * vertexData = new GLfloat[12];
 	for (int i = 0; i < 3; i++) {
 		vertexData[i] = a[i];
 		vertexData[i + 3] = b[i];
 		vertexData[i + 6] = c[i];
-		vertexData[i + 9] = c[i];
-		vertexData[i + 12] = d[i];
-		vertexData[i + 15] = a[i];
+		vertexData[i + 9] = d[i];
 	}
 
-	GLfloat * normalData = new GLfloat[18];
-	glm::vec3 n1 = glm::normalize(glm::cross(c - b, a - b));
-	glm::vec3 n2 = glm::normalize(glm::cross(d - a, d - c));
+	GLfloat * normalData = new GLfloat[12];
+	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
 	for (int i = 0; i < 3; i++) {
-		normalData[i] = n1[i];
-		normalData[i + 3] = n1[i];
-		normalData[i + 6] = n1[i];
-		normalData[i + 9] = n2[i];
-		normalData[i + 12] = n2[i];
-		normalData[i + 15] = n2[i];
+		normalData[i] = n[i];
+		normalData[i + 3] = n[i];
+		normalData[i + 6] = n[i];
+		normalData[i + 9] = n[i];
 	}
 
-	GLfloat * colorData = new GLfloat[18];
-	for (int i = 0; i < 18; i += 3) {
+	GLfloat * colorData = new GLfloat[12];
+	for (int i = 0; i < 12; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
 	}
 
-	fillBuffers(o, 18, vertexData, normalData, colorData);
+	GLushort * indexData = new GLushort[6];
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+	indexData[3] = 2;
+	indexData[4] = 3;
+	indexData[5] = 0;
+
+	fillBuffers(o, 12, 6, vertexData, normalData, colorData, indexData);
 
 	o.modelMatrix = glm::mat4(1.f);
 	o.triangles = 2;
+
+	objects.push_back(o);
+
+}
+
+void World::addHexagon(glm::vec3 center, glm::vec3 left, glm::vec3 col) {
+
+	Object o;
+
+	GLfloat * vertexData = new GLfloat[21];
+	GLfloat * normalData = new GLfloat[21];
+	GLfloat * colorData = new GLfloat[21];
+
+	glm::vec3 side = left - center;
+	float factor = glm::sqrt((glm::pow(side.x, 2.f) + glm::pow(side.y, 2.f) + glm::pow(side.z, 2.f)) * 3.f) / 2.f;
+	glm::vec3 up = glm::normalize(glm::vec3(side.z, 0, side.x));
+	up *= factor;
+	
+	glm::vec3 upperleft = center + side / 2.f + up;
+	glm::vec3 upperright = center - side / 2.f + up;
+	glm::vec3 right = center - side;
+	glm::vec3 lowerright = center - side / 2.f - up;
+	glm::vec3 lowerleft = center + side / 2.f - up;
+
+	glm::vec3 normal = glm::normalize(glm::cross(up, side));
+
+	for (int i = 0; i < 3; i++) {
+
+		vertexData[i] = center[i];
+		vertexData[i + 3] = left[i];
+		vertexData[i + 6] = lowerleft[i];
+		vertexData[i + 9] = lowerright[i];
+		vertexData[i + 12] = right[i];
+		vertexData[i + 15] = upperright[i];
+		vertexData[i + 18] = upperleft[i];
+
+	}
+
+	for (int i = 0; i < 21; i += 3) {
+		normalData[i] = normal.x;
+		normalData[i + 1] = normal.y;
+		normalData[i + 2] = normal.z;
+		colorData[i] = col.x;
+		colorData[i + 1] = col.y;
+		colorData[i + 2] = col.z;
+	}
+
+	GLushort * indexData = new GLushort[18];
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+
+	indexData[3] = 0;
+	indexData[4] = 2;
+	indexData[5] = 3;
+
+	indexData[6] = 0;
+	indexData[7] = 3;
+	indexData[8] = 4;
+
+	indexData[9] = 0;
+	indexData[10] = 4;
+	indexData[11] = 5;
+
+	indexData[12] = 0;
+	indexData[13] = 5;
+	indexData[14] = 6;
+
+	indexData[15] = 0;
+	indexData[16] = 6;
+	indexData[17] = 1;
+
+	fillBuffers(o, 21, 18, vertexData, normalData, colorData, indexData);
+
+	o.modelMatrix = glm::mat4(1.f);
+	o.triangles = 6;
 
 	objects.push_back(o);
 
@@ -115,16 +203,17 @@ void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::v
 	
 	GLfloat * vertexData;
 	GLfloat * normalData;
-	createCuboidData(a, b, c, d, vertexData, normalData);
+	GLushort * indexData;
+	createCuboidData(a, b, c, d, vertexData, normalData, indexData);
 
-	GLfloat * colorData = new GLfloat[6*18];
-	for (int i = 0; i < 6*18; i += 3) {
+	GLfloat * colorData = new GLfloat[72];
+	for (int i = 0; i < 72; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
 	}
 
-	fillBuffers(o, 6*18, vertexData, normalData, colorData);
+	fillBuffers(o, 72, 36, vertexData, normalData, colorData, indexData);
 
 	o.modelMatrix = glm::mat4(1.f);
 	o.triangles = 12;
@@ -133,10 +222,12 @@ void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::v
 
 }
 
-void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, const glm::vec3 &d, GLfloat * &vertexData, GLfloat * &normalData) {
+void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, 
+						const glm::vec3 &d, GLfloat * &vertexData, GLfloat * &normalData, GLushort * &indexData) {
 	
-	vertexData = new GLfloat[6*18];
-	normalData = new GLfloat[6*18];
+	vertexData = new GLfloat[72];
+	normalData = new GLfloat[72];
+	indexData = new GLushort[36];
 
 	glm::vec3 e = c + (b - a);
 	glm::vec3 f = d + (c - a);
@@ -148,95 +239,108 @@ void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::
 
 	for (int i = 0; i < 3; i++) {
 		
-		vertexData[i] = a[i];
+		vertexData[i + 0] = a[i];
 		vertexData[i + 3] = b[i];
-		vertexData[i + 6] = c[i];
-		normalData[i] = n1[i];
+		vertexData[i + 6] = e[i];
+		vertexData[i + 9] = c[i];
+		normalData[i + 0] = n1[i];
 		normalData[i + 3] = n1[i];
 		normalData[i + 6] = n1[i];
-
-		vertexData[i + 9] = c[i];
-		vertexData[i + 12] = b[i];
-		vertexData[i + 15] = e[i];
 		normalData[i + 9] = n1[i];
-		normalData[i + 12] = n1[i];
-		normalData[i + 15] = n1[i];
 
-		vertexData[i + 18] = a[i];
-		vertexData[i + 21] = c[i];
-		vertexData[i + 24] = f[i];
+		vertexData[i + 12] = a[i];
+		vertexData[i + 15] = c[i];
+		vertexData[i + 18] = f[i];
+		vertexData[i + 21] = d[i];
+		normalData[i + 12] = n2[i];
+		normalData[i + 15] = n2[i];
 		normalData[i + 18] = n2[i];
 		normalData[i + 21] = n2[i];
-		normalData[i + 24] = n2[i];
 
-		vertexData[i + 27] = f[i];
-		vertexData[i + 30] = d[i];
-		vertexData[i + 33] = a[i];
-		normalData[i + 27] = n2[i];
-		normalData[i + 30] = n2[i];
-		normalData[i + 33] = n2[i];
+		vertexData[i + 24] = c[i];
+		vertexData[i + 27] = e[i];
+		vertexData[i + 30] = g[i];
+		vertexData[i + 33] = f[i];
+		normalData[i + 24] = n3[i];
+		normalData[i + 27] = n3[i];
+		normalData[i + 30] = n3[i];
+		normalData[i + 33] = n3[i];
 
-		vertexData[i + 36] = c[i];
-		vertexData[i + 39] = e[i];
-		vertexData[i + 42] = f[i];
-		normalData[i + 36] = n3[i];
-		normalData[i + 39] = n3[i];
-		normalData[i + 42] = n3[i];
-
-		vertexData[i + 45] = f[i];
+		vertexData[i + 36] = a[i];
+		vertexData[i + 39] = d[i];
+		vertexData[i + 42] = h[i];
+		vertexData[i + 45] = b[i];
+		normalData[i + 36] = -n3[i];
+		normalData[i + 39] = -n3[i];
+		normalData[i + 42] = -n3[i];
+		normalData[i + 45] = -n3[i];
+		
 		vertexData[i + 48] = e[i];
-		vertexData[i + 51] = g[i];
-		normalData[i + 45] = n3[i];
-		normalData[i + 48] = n3[i];
-		normalData[i + 51] = n3[i];
+		vertexData[i + 51] = b[i];
+		vertexData[i + 54] = h[i];
+		vertexData[i + 57] = g[i];
+		normalData[i + 48] = -n2[i];
+		normalData[i + 51] = -n2[i];
+		normalData[i + 54] = -n2[i];
+		normalData[i + 57] = -n2[i];
 
-		vertexData[i + 54] = a[i];
-		vertexData[i + 57] = d[i];
-		vertexData[i + 60] = b[i];
-		normalData[i + 54] = -n3[i];
-		normalData[i + 57] = -n3[i];
-		normalData[i + 60] = -n3[i];
-		
-		vertexData[i + 63] = b[i];
-		vertexData[i + 66] = d[i];
-		vertexData[i + 69] = h[i];
-		normalData[i + 63] = -n3[i];
-		normalData[i + 66] = -n3[i];
-		normalData[i + 69] = -n3[i];
-
-		vertexData[i + 72] = e[i];
-		vertexData[i + 75] = b[i];
-		vertexData[i + 78] = g[i];
-		normalData[i + 72] = -n2[i];
-		normalData[i + 75] = -n2[i];
-		normalData[i + 78] = -n2[i];
-
-		vertexData[i + 81] = g[i];
-		vertexData[i + 84] = b[i];
-		vertexData[i + 87] = h[i];
-		normalData[i + 81] = -n2[i];
-		normalData[i + 84] = -n2[i];
-		normalData[i + 87] = -n2[i];
-
-		vertexData[i + 90] = f[i];
-		vertexData[i + 93] = g[i];
-		vertexData[i + 96] = h[i];
-		normalData[i + 90] = -n1[i];
-		normalData[i + 93] = -n1[i];
-		normalData[i + 96] = -n1[i];
-		
-		vertexData[i + 99] = f[i];
-		vertexData[i + 102] = h[i];
-		vertexData[i + 105] = d[i];
-		normalData[i + 99] = -n1[i];
-		normalData[i + 102] = -n1[i];
-		normalData[i + 105] = -n1[i];
+		vertexData[i + 60] = f[i];
+		vertexData[i + 63] = g[i];
+		vertexData[i + 66] = h[i];
+		vertexData[i + 69] = d[i];
+		normalData[i + 60] = -n1[i];
+		normalData[i + 63] = -n1[i];
+		normalData[i + 66] = -n1[i];
+		normalData[i + 69] = -n1[i];
 
 	}
 
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+	indexData[3] = 2;
+	indexData[4] = 3;
+	indexData[5] = 0;
+
+	indexData[6] = 4;
+	indexData[7] = 5;
+	indexData[8] = 6;
+	indexData[9] = 6;
+	indexData[10] = 7;
+	indexData[11] = 4;
+
+	indexData[12] = 8;
+	indexData[13] = 9;
+	indexData[14] = 10;
+	indexData[15] = 10;
+	indexData[16] = 11;
+	indexData[17] = 8;
+
+	indexData[18] = 12;
+	indexData[19] = 13;
+	indexData[20] = 14;
+	indexData[21] = 14;
+	indexData[22] = 15;
+	indexData[23] = 12;
+
+	indexData[24] = 16;
+	indexData[25] = 17;
+	indexData[26] = 18;
+	indexData[27] = 18;
+	indexData[28] = 19;
+	indexData[29] = 16;
+
+	indexData[30] = 20;
+	indexData[31] = 21;
+	indexData[32] = 22;
+	indexData[33] = 22;
+	indexData[34] = 23;
+	indexData[35] = 20;
+
 }
 
-void World::fillBuffers(Object &o, int size, GLfloat * &vertexData, GLfloat * &normalData, GLfloat * &colorData) {
+void World::fillBuffers(Object &o, int size, int indices, GLfloat * &vertexData, 
+					GLfloat * &normalData, GLfloat * &colorData, GLushort * &indexData) {
 
 	glGenVertexArrays(1, &o.vertexArray);
 	glBindVertexArray(o.vertexArray);
@@ -261,5 +365,9 @@ void World::fillBuffers(Object &o, int size, GLfloat * &vertexData, GLfloat * &n
 
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(2);
+
+	glGenBuffers(1, &o.indexBuffer);
+ 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, o.indexBuffer);
+ 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indices, indexData, GL_STATIC_DRAW);
 
 }

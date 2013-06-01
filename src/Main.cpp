@@ -180,9 +180,18 @@ void windowTest() {
 	world.addCuboid(glm::vec3(-1,0,0.5), glm::vec3(0,0,0.5), glm::vec3(-1,1,0.5), glm::vec3(-1,0,1.5), glm::vec3(0,1,0));
 	world.addCuboid(glm::vec3(0,0,3.5), glm::vec3(1,0,4.5), glm::vec3(0,3,3.5), glm::vec3(-1,0,4.5), glm::vec3(0,1,0));
 	world.addCuboid(glm::vec3(0,0,-2), glm::vec3(1,0,-2), glm::vec3(0,1,-2), glm::vec3(0,0,-1), glm::vec3(0,0,1));
-	world.addQuad(glm::vec3(1.5,0.01,5), glm::vec3(2.5,0.01,5), glm::vec3(2.5,0.01,-5), glm::vec3(1.5,0.01,-5), glm::vec3(1,1,0));
-	world.addQuad(glm::vec3(1.5,0.01,3), glm::vec3(1.5,0.01,2), glm::vec3(-3,0.01,2), glm::vec3(-3,0.01,3), glm::vec3(1,1,0));
-	world.addQuad(glm::vec3(-10,0,-10), glm::vec3(-10,0,10), glm::vec3(10,0,10), glm::vec3(10,0,-10));
+	world.addQuad(glm::vec3(1.5,0.01,5), glm::vec3(2.5,0.01,5), glm::vec3(1.5,0.01,-5), glm::vec3(1,1,0));
+	world.addQuad(glm::vec3(1.5,0.01,3), glm::vec3(1.5,0.01,2), glm::vec3(-3,0.01,3), glm::vec3(1,1,0));
+	
+	for (int i = -12; i < 12; i += 3) {
+		for (int j = -12; j < 12; j += 3) {
+			if (i % 6 == 0) {
+				world.addHexagon(glm::vec3(i,0,j), glm::vec3(i-2,0,j));
+			} else {
+				world.addHexagon(glm::vec3(i,0,j+sqrt(3.f)), glm::vec3(i-2,0,j+sqrt(3.f)));
+			}
+		}
+	}
 
 	w.loop();
 }

@@ -2,6 +2,7 @@
 #define WINDOW_HPP
 
 #include <stdio.h>
+#include <time.h>
 
 #include "Shader.hpp"
 #include "World.hpp"
@@ -18,6 +19,7 @@ public:
 	void loop();
 	void keyhandler();
 	void mousehandler();
+	void FPS(time_t &, int &, int &);
 
 	inline World& getWorld() { return this->world; }
 private:

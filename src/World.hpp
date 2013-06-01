@@ -11,7 +11,10 @@ struct Object {
 	GLuint vertexBuffer;
 	GLuint normalBuffer;
 	GLuint colorBuffer;
+	GLuint indexBuffer;
+
 	GLuint vertexArray;
+	
 	int triangles;
 	glm::mat4 modelMatrix;
 };
@@ -24,11 +27,12 @@ public:
 	void render();
 
 	void addTriangle(glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
-	void addQuad(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
+	void addQuad(glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
+	void addHexagon(glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
 	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
 	
-	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &);
-	void fillBuffers(Object &, int, GLfloat * &, GLfloat * &, GLfloat * &);
+	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
+	void fillBuffers(Object &, const int, const int, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
 
 	inline std::vector<Object> getObjects() { return objects; }
 	inline void setMVPLocation(GLuint mvp) { mvpID = mvp; }
