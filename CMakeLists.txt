@@ -7,6 +7,9 @@
 # specify minimum cmake version
 cmake_minimum_required( VERSION 2.8 )
 
+# add cmake modules
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules;${CMAKE_MODULE_PATH}")
+
 # compiler stuff
 if( APPLE )
 	add_definitions( -std=c++11 )
@@ -32,3 +35,8 @@ add_subdirectory( "src" )
 
 # Doxygen
 add_subdirectory( "doc" )
+
+# add libace
+SET( PROJECT_NAME "demo" )
+SET( OUTPUT_NAME "demo" )
+add_subdirectory( "libace" )
