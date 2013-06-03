@@ -72,7 +72,7 @@ if(APPLE)
   target_link_libraries(ace ${Cocoa})
   Message( "-- Linking against " ${Cocoa})
 
-  target_link_libraries(ace ${CMAKE_SOURCE_DIR}/3rdparty/glfw-2.7.7/lib/cocoa/libglfw.a)
+  target_link_libraries(ace glfw)
   target_link_libraries(ace ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 endif(APPLE)
 

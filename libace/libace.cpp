@@ -158,9 +158,11 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
     }
     
     // force opengl 3.2 
-    // glfwOpenWindowHint( GLFW_OPENGL_VERSION_MAJOR, 3 );
-    // glfwOpenWindowHint( GLFW_OPENGL_VERSION_MINOR, 2 );
-    // glfwOpenWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+#ifdef __MACH__
+    glfwOpenWindowHint( GLFW_OPENGL_VERSION_MAJOR, 3 );
+    glfwOpenWindowHint( GLFW_OPENGL_VERSION_MINOR, 2 );
+    glfwOpenWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+#endif
 
     if( !glfwOpenWindow( cfg::screenwidth, cfg::screenheight,
                          cfg::rgbbits, cfg::rgbbits, cfg::rgbbits, cfg::rgbbits,
