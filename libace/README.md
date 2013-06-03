@@ -1,10 +1,13 @@
 Libace
 ======
 
-Screenshots: http://jandoerntlein.github.io/
+![libace01](http://jandoerntlein.github.io/screenshots/screen3.jpg)
+
+More screenshots: http://jandoerntlein.github.io/
 
 Changelog
 ---------
+- 03.06.13: upgraded to OpenGL 4, prepared shadow maps, added postprocessing shader (bloom, antialiasing, ssao), fixed light bug, added fps counter
 - 13.05.13: killed billboard idea, fixed specular light bug, imported monkey.obj, implemented bloom and prepared SSAO
 - 12.05.13: Light class working basically, prepared billboards
 
@@ -12,9 +15,6 @@ TODOS
 -----
 ### General
 - setColor() for cubes ;)
-- fix Timer (use glfw's)
-- fix FPS: http://r3dux.org/2012/07/a-simple-glfw-fps-counter/
-- set FPS to 60
 
 ### Shaders
 Uniforms and attributes can be added easily. Not all data types are supported yet.

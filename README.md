@@ -13,6 +13,6 @@ Building
 
 - cd build/
 - cmake ../
-- make
+- make -j # -j builds with multiple threads and is much faster!
 - ./mapcity
 
