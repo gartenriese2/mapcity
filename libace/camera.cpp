@@ -11,6 +11,7 @@ namespace ace {
 
 // static initializers
 int Camera::s_nextId = 0;
+int Camera::s_active = 0;
 std::vector<Camera*> Camera::s_camContainer;
 
 // global function: get camera by its id
@@ -29,7 +30,7 @@ Camera* Camera::get( int id ) {
 Camera* Camera::getActive() {
     Camera* p;
     for( auto c : s_camContainer ) {
-        if( c->getId() == s_nextId - 1 ) {
+        if( c->getId() == s_active ) {
             p = c;
             return p;
         }
@@ -37,12 +38,17 @@ Camera* Camera::getActive() {
     return p;
 }
 
+void Camera::setActive() {
+    s_active = m_id;
+}
+
 // constructors
 Camera::Camera( glm::vec3& pos, glm::vec3& dir, glm::vec3& up, float fov,
                 float aspect, float near, float far ) {
     
     // fill static camera container
-    m_id = s_nextId++;
+    m_id     = s_nextId++;
+    setActive();
     s_camContainer.push_back( this );
 
     // perspective params
@@ -72,17 +78,21 @@ Camera::Camera( glm::vec3& pos, glm::vec3& dir, glm::vec3& up, float fov,
     m_isPerspectiveCam = true;
 }
 
-Camera::Camera( float left, float right, float bottom, float top ) {
+Camera::Camera( glm::vec3& pos, glm::vec3& dir, glm::vec3& up, 
+    float left, float right, float bottom, float top, float near, float far ) {
 
     // fill static camera container
     m_id = s_nextId++;
     s_camContainer.push_back( this );
 
     // perspective params
-    m_fov  = 0;
-    m_near = 0;
-    m_far  = 0;
+    m_pos  = pos;
+    m_dir  = dir;
+    m_up   = up;
+    m_near = near;
+    m_far  = far;
     m_aspectratio = 0;
+    m_fov  = 0;
 
     // orthographic cam
     m_left   = left;
@@ -97,14 +107,13 @@ Camera::Camera( float left, float right, float bottom, float top ) {
 
     // create camera
     Ortho();
+    Lookat();
 
     m_isPerspectiveCam = false;
-}
+} 
 
 void Camera::update() {
-    if( m_isPerspectiveCam ) {
-        Lookat();
-    } 
+    Lookat();
 }
 
 glm::mat4& Camera::getProjectionMatrix() {
@@ -128,7 +137,7 @@ void Camera::Perspective() {
 }
 
 void Camera::Ortho() {
-    m_view = glm::ortho( m_left, m_right, m_bottom, m_top );
+    m_projection = glm::ortho( m_left, m_right, m_bottom, m_top, m_near, m_far );
 }
 
 void Camera::move( float v ) {

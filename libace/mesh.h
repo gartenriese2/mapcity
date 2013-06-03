@@ -20,6 +20,10 @@ namespace ace {
 
 class Mesh : public ObjectInterface {
 protected:
+	GLuint vao_vert;
+	GLuint vao_uv;
+	GLuint vao_vn;
+
 	GLuint vert_buffer;
 	GLuint uv_buffer;
 	GLuint vn_buffer;

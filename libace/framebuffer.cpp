@@ -34,7 +34,9 @@ Framebuffer::Framebuffer( GLuint width, GLuint height, GLenum type ) {
 	m_type      = type;
 	
 	glGenFramebuffers( 1, &m_idFBO );
+	glBindFramebuffer( GL_FRAMEBUFFER, m_idFBO );
 	glGenRenderbuffers( 1, &m_idRBO );
+	glBindRenderbuffer( GL_RENDERBUFFER, m_idRBO );
 
 	glRenderbufferStorage( GL_RENDERBUFFER, m_type, m_width, m_height );
 	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_idRBO );

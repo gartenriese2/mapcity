@@ -20,6 +20,7 @@ private:
 	// statics: global camera container
 	static std::vector<Camera*> s_camContainer;
 	static int s_nextId;
+	static int s_active;
 
 	// camera specific
 	int  m_id;
@@ -52,7 +53,8 @@ private:
 public:
 	Camera( glm::vec3& pos, glm::vec3& dir, glm::vec3& up, float fov,
 			float aspect, float near, float far );
-	Camera( float left, float right, float bottom, float top );
+	Camera(  glm::vec3& pos, glm::vec3& dir, glm::vec3& up,
+		    float left, float right, float bottom, float top, float near, float far );
 	~Camera();
 	
 	void update();
@@ -81,6 +83,7 @@ public:
 
 	static Camera* get( int id );
 	static Camera* getActive();
+	void setActive();
 	inline int getId() { return m_id; };
 };
 

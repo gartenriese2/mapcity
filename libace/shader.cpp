@@ -74,30 +74,26 @@ bool Shader::load( const std::string filename ) {
       // switch mode
       if( ln == "#<vertex-shader>" ) {
          mode = VERTEX_MODE;
+         continue;
       } 
       else if ( ln == "#<fragment-shader>" ) {
          mode = FRAGMENT_MODE;
+         continue;
       } 
 
-      // check comment
-      if( ln.find( "#" ) != ln.npos ) {
-
-        // ignore
-
-      } else {
-
-         // check what to do
-         if( mode == VERTEX_MODE ) {
-            m_vertex += ln + "\n";
-         } 
-         else if( mode == FRAGMENT_MODE ) {
-            m_fragment += ln + "\n";
-         }
-
+      // parse
+      if( mode == VERTEX_MODE ) {
+        m_vertex += ln + "\n";
+      } 
+      else if( mode == FRAGMENT_MODE ) {
+        m_fragment += ln + "\n";
       }
    }
 
    file.close();
+
+   // std::cout << m_vertex << std::endl << std::endl;
+   // std::cout << m_fragment << std::endl << std::endl;
 
    return compile();
 }

@@ -1,30 +1,32 @@
 #<vertex-shader>
-#version 120
+#version 410
 
 // input variables
-attribute vec3 vertPos_modelspace;
-attribute vec2 in_uv;
+layout( location = 0 ) in vec3 vertPos_modelspace;
+layout( location = 1 ) in vec3 in_uv;
 
 uniform mat4 model;
 uniform mat4 proj;
 uniform mat4 view;
 
-varying vec2 tex_coords;
-varying vec3 cam_pos;
+out vec2 tex_coords;
+out vec3 cam_pos;
 
 void main() {
-    gl_Position = vec4( vertPos_modelspace, 1 );
-    tex_coords  = ( vertPos_modelspace.xy + vec2( 1, 1 ) ) * 0.5;
+    gl_Position = vec4( vertPos_modelspace, 1.0 );
+    tex_coords  = ( vertPos_modelspace.xy + vec2( 1.0, 1.0 ) ) * 0.5;
     cam_pos     = vec3( view[0][3], view[1][3], view[2][3] );
 }
 
 #<fragment-shader>
-#version 120
+#version 410
 
 uniform sampler2D depthTexture;
 uniform sampler2D colorTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D positionTexture;
+
+uniform sampler2D randomTexture;
 
 uniform vec3  light_pos[100];
 uniform vec3  light_color[100];
@@ -32,64 +34,63 @@ uniform float light_radius[100];
 uniform float light_intensity[100];
 uniform float light_count;
 
+uniform float screenwidth;
+uniform float screenheight;
+
 uniform float debug;
 
-varying vec2 tex_coords;
-varying vec3 cam_pos;
+in vec2 tex_coords;
+in vec3 cam_pos;
 
-vec4 bloom( sampler2D tex, vec2 coords ) {
-    vec4 sum = vec4(0);
-    int size = 3;
-    for( int i = -size; i < size; ++i ) {
-        for( int j = -size; j < size; ++j ) {
-            sum += texture2D( tex, tex_coords + vec2( j, i ) * 0.004 ) * 0.25;
-        }
-    }
-    
-    if( texture2D( tex, tex_coords ).r < 0.3) {
-       sum = sum * sum * 0.012 + texture2D( tex, tex_coords );
-    }
-    else {
-        if ( texture2D( tex, tex_coords ).r < 0.5) {
-            sum = sum * sum * 0.009 + texture2D( tex, tex_coords );
-        }
-        else {
-            sum = sum * sum * 0.0075 + texture2D( tex, tex_coords );
-        }
-    }
+out vec4 FragColor;
 
-    return sum;
+float doao( vec2 coords, vec2 v, sampler2D P, sampler2D N ) {
+    float scale     = 0.001;
+    float bias      = 0.01;
+    float intensity = 0.5;
+
+    vec3 pt = texture( P, coords ).xyz; // position
+    vec3 nt = texture( N, coords ).xyz; // normal
+    vec3 pr = texture( P, coords + v ).xyz;
+    vec3 d  = normalize( pr - pt );
+    float l = distance( pr, pt );
+
+    return max( dot( nt, d ) - bias, 0.0 ) * ( 1.0 / ( 1.0 + l ) ) * intensity;
 }
 
-float ssao( sampler2D P, sampler2D N, vec2 coords ) {
-    vec4 refpos     = texture2D( P, coords );
-    float occlusion = 0.0;
+vec4 ssao( sampler2D P, sampler2D N, sampler2D R, vec2 coords, vec2 p ) {
+    float ao     = 0.0;
+    float radius = 0.1;
+    vec4 pt = texture( P, coords ); // position
+    vec4 nt = texture( N, coords ); // normal
+    vec4 rt = texture( R, coords * p * vec2( 64.0, 64.0) ); // random
 
-    int k = 1;
-    for( int x = -k; x <= k; ++x ) {
-        for( int y = -k; y <= k; ++y ) {
-            vec2 offset    = vec2( float(x)/640.0, float(y)/480.0 );
+    vec2[4] vr = vec2[]( vec2( 1, 0 ), vec2( -1, 0 ), vec2( 0, 1 ), vec2( 0, -1 ) );
 
-            vec4 pos       = texture2D( P, coords + offset ); 
-            vec4 normal    = texture2D( N, coords + offset ); 
+    radius /= pt.z; 
 
-            vec4 V         = normalize( refpos - pos );
-            float d        = distance( refpos, pos );
+    int iter = 4;
+    for( int i = 0; i < iter; ++i ) {
+        vec2 c1 = reflect( vr[i], rt.xy ) * radius;
+        vec2 c2 = vec2( c1.x*0.707 - c1.y*0.707, c1.x*0.707 + c1.y*0.707 );
 
-            occlusion = max( dot( normal, V ), 0.0 ) * ( 1.0 / ( 1.0 + d ) );
-        }
+        ao += doao( coords, c1*0.25, P, N );
+        ao += doao( coords, c2*0.5, P, N );
+        ao += doao( coords, c1*0.75, P, N );
+        ao += doao( coords, c2, P, N );
     }
 
-    return occlusion;
+    ao /= ( iter*4 );
+    return vec4( ao, ao, ao, 1.0 );
 }
 
 void main() {
     // avoid branching [if,for,while] wherever possible!
 
-    vec4 depth  = texture2D( depthTexture,    tex_coords );
-    vec4 pos    = texture2D( positionTexture, tex_coords );
-    vec4 normal = texture2D( normalTexture,   tex_coords );
-    vec4 color  = texture2D( colorTexture,    tex_coords );
+    vec4 depth  = texture( depthTexture,    tex_coords );
+    vec4 pos    = texture( positionTexture, tex_coords );
+    vec4 normal = texture( normalTexture,   tex_coords );
+    vec4 color  = texture( colorTexture,    tex_coords );
 
     vec4 col_ambient     = vec4( 0.05, 0.05, 0.05, 1.0 );
     vec4 col_diffuse     = vec4( 0.0 );
@@ -100,32 +101,36 @@ void main() {
         float distance       = max( distance( light_pos[i], pos.xyz ), 0.0 );
         float attenuation    = 1.0 / pow( distance / light_radius[i] + 1.0, 2.0 );
 
-        vec3 L               = normalize( light_pos[i] - pos.xyz );
-        vec3 eye_dir         = normalize( cam_pos - pos.xyz );
-        vec3 v_half_vector   = normalize( L + eye_dir );
+        vec3 N = normalize( normal.xyz );
+        vec3 L = normalize( light_pos[i] - pos.xyz );
+        vec3 V = normalize( cam_pos - pos.xyz );
+        vec3 R = normalize( reflect( L, N ) );
         
-        float diffuse_factor = max( dot( normal.xyz, L ), 0.0 );
-        float specular_factor= pow( max( dot( normal.xyz, v_half_vector ), 0.0 ), 10.0 );
+        float diffuse_factor = max( dot( N, L ), 0.0 );
+        float specular_factor= pow( max( dot( R, V ), 0.0 ), 8.0 );
 
         col_specular += vec4( light_color[i], 1.0 ) * specular_factor * attenuation;
         col_diffuse  += vec4( light_color[i], 1.0 ) * diffuse_factor * attenuation;
     }
 
-    // float o = ssao( positionTexture, normalTexture, tex_coords );
-    // col_ambient -= vec4( o );
-    // vec4 b  = bloom( colorTexture, tex_coords );
-    gl_FragColor = color * ( col_ambient + col_diffuse + col_specular );
+    vec2 pixelsize = vec2( 1.0 / screenwidth, 1.0 / screenheight );
+    vec4 ao  = ssao( positionTexture, normalTexture, randomTexture, tex_coords, pixelsize );
+
+    FragColor = color * ( ( col_ambient - 0.3*ao ) + col_diffuse + col_specular );
 
     if( debug == 1.0 ) {
-        gl_FragColor = depth;
+        FragColor = depth;
     }
     else if( debug == 2.0 ) {
-        gl_FragColor = pos;
+        FragColor = pos;
     }
     else if( debug == 3.0 ) {
-        gl_FragColor = normal;
+        FragColor = normal;
     }
     else if( debug == 4.0 ) {
-        gl_FragColor = color;
+        FragColor = color;
+    }
+    else if( debug == 5.0 ) {
+        FragColor = ao;
     }
 }

@@ -82,7 +82,12 @@ void Texture::init() {
 
     bind();
 
-    glTexImage2D( GL_TEXTURE_2D, 0, m_rgb_type, m_width, m_height, 0, m_rgb_type, m_format, m_data );
+    // this is obviously a bad way... :)
+    GLuint type = GL_RGBA;
+    if( m_rgb_type == GL_DEPTH_COMPONENT ) type = GL_DEPTH_COMPONENT;
+    if( m_rgb_type == GL_RGB ) type = GL_RGB;
+
+    glTexImage2D( GL_TEXTURE_2D, 0, m_rgb_type, m_width, m_height, 0, type, m_format, m_data );
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );

@@ -1,6 +1,6 @@
 /*
 *
-*	AcceleratorEngine - libace
+*   AcceleratorEngine - libace
 *   Copyright (c) 2013, Jan Doerntlein.
 *   All rights reserved.
 *
@@ -10,39 +10,40 @@
 namespace ace {
 
 Ace::Ace() {
-	m_CurrentDirection = cfg::CAM_DIR_OFF;
+    m_CurrentDirection = cfg::CAM_DIR_OFF;
     m_Wireframe = false;
 
     m_scenegraph = new Scenegraph();
 }
 
 Ace* Ace::getEngine() {
-	static Ace instance;
-	return &instance;
+    static Ace instance;
+    return &instance;
 }
 
 Scenegraph *Ace::Scene() {
     return m_scenegraph;
 }
 
-void Ace::render() {
-    GBuffer *g = GBuffer::getGBuffer();
-    g->startRecording();
-
+void Ace::renderScene( Shader& s ) {
+    Camera  *c = Camera::getActive();
+    s.bind();
     for( auto m : m_scenegraph->getObjects() ) {
-        g->getRecShader()->addUniform( "model", m->getTrafo() );
-        g->getRecShader()->addUniform( "proj", cam->getProjectionMatrix() );
-        g->getRecShader()->addUniform( "view", cam->getViewMatrix() );
-        g->getRecShader()->addUniform( "tex", m->getTextureId() );
+        s.addUniform( "model", m->getTrafo() );
+        s.addUniform( "proj", c->getProjectionMatrix() );
+        s.addUniform( "view", c->getViewMatrix() );
+        s.addUniform( "tex", m->getTextureId() );
 
-        g->getRecShader()->addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
-        g->getRecShader()->addAttribute( "in_vn", cfg::ACE_ATTRIB_NORM );
-        g->getRecShader()->addAttribute( "in_pos", cfg::ACE_ATTRIB_VERT );
+        s.addAttribute( "in_uv", cfg::ACE_ATTRIB_UV );
+        s.addAttribute( "in_vn", cfg::ACE_ATTRIB_NORM );
+        s.addAttribute( "in_pos", cfg::ACE_ATTRIB_VERT );
 
         m->draw();
     }
+}
 
-    g->stopRecording();    
+void Ace::render() {
+    GBuffer *g = GBuffer::getGBuffer();  
     g->render();
 }
 
@@ -60,19 +61,21 @@ int Ace::keyPressed( int key ) {
 }
 
 void Ace::mouse() {
+    Camera  *c = Camera::getActive();
+
     int x, y;
     glfwGetMousePos( &x, &y );
 
     glm::vec2 mousediff = glm::vec2( x - cfg::screenwidth / 2.0, y - cfg::screenheight / 2.0 );
     glm::normalize( mousediff );
-    cam->pitch( -mousediff.x * cfg::mouse_speed );
-    cam->yaw( mousediff.y * cfg::mouse_speed );
+    c->pitch( -mousediff.x * cfg::mouse_speed );
+    c->yaw( mousediff.y * cfg::mouse_speed );
 
     glfwSetMousePos( cfg::screenwidth / 2.0, cfg::screenheight / 2.0 );
 }
 
 void Ace::keyboard() {
-	m_extKeyboard();
+    m_extKeyboard();
 
     if( keyPressed( 'W' ) ) {
         m_CurrentDirection = cfg::CAM_DIR_FWD;
@@ -103,33 +106,39 @@ void Ace::keyboard() {
 }
 
 void Ace::display() {
-    bool running = true;
+    bool running          = true;
+    double time_start     = glfwGetTime();
+    int frames            = 0;
+    std::string wnd_title = "AcceleratorEngine";
 
     while( running ) {
-        m_Frames++;
-        // if( m_Timer->look() > 1000.0 ) {
-        //     std::cout << "FPS: " << m_Frames << std::endl;
-        //     m_Frames = 0;
-        //     m_Timer->start();
-        // }
+        Camera  *c = Camera::getActive();
+        frames++;
+        if( glfwGetTime() - time_start > 1.0 ) {
+            time_start = glfwGetTime();
+            std::stringstream oss;
+            oss << wnd_title << " " << frames << " FPS";
+            glfwSetWindowTitle( oss.str().c_str() );
+            frames = 0;
+        }
 
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
         // camera
         if( m_CurrentDirection == cfg::CAM_DIR_FWD ) {
-            cam->move( cfg::cam_speed_fwd_rwn );
+            c->move( cfg::cam_speed_fwd_rwn );
         }
         else if( m_CurrentDirection == cfg::CAM_DIR_RWN ) {
-            cam->move( -cfg::cam_speed_fwd_rwn );
+            c->move( -cfg::cam_speed_fwd_rwn );
         }
         else if( m_CurrentDirection == cfg::CAM_DIR_RGT ) {
-            cam->strafe( cfg::cam_speed_lft_rgt );
+            c->strafe( cfg::cam_speed_lft_rgt );
         }
         else if( m_CurrentDirection == cfg::CAM_DIR_LFT ) {
-            cam->strafe( -cfg::cam_speed_lft_rgt );
+            c->strafe( -cfg::cam_speed_lft_rgt );
         }
 
-    	m_extDisplay();
+        m_extDisplay();
 
         glfwSwapBuffers();
         running = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
@@ -148,6 +157,11 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
         // Error
     }
     
+    // force opengl 3.2 
+    // glfwOpenWindowHint( GLFW_OPENGL_VERSION_MAJOR, 3 );
+    // glfwOpenWindowHint( GLFW_OPENGL_VERSION_MINOR, 2 );
+    // glfwOpenWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+
     if( !glfwOpenWindow( cfg::screenwidth, cfg::screenheight,
                          cfg::rgbbits, cfg::rgbbits, cfg::rgbbits, cfg::rgbbits,
                          cfg::depthbits, cfg::stencilbits,
@@ -159,7 +173,7 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
     glfwSetWindowTitle( "AcceleratorEngine" );
 
     // check if our stuff works on linux platforms
-#ifdef __linux__
+#ifndef __MACH__
     GLenum err = glewInit();
     
     if ( GLEW_OK != err ) {
@@ -184,24 +198,19 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
     glfwEnable( GLFW_KEY_REPEAT );
     glfwDisable( GLFW_MOUSE_CURSOR );
     glfwSetMousePos( cfg::screenwidth / 2.0, cfg::screenheight / 2.0 );
-    glfwSwapInterval( 1 ); // enable v-sync
+    // glfwSwapInterval( 1 ); // enable v-sync
 
     // camera
     glm::vec3 pos( 0, 1, 10 ); 
     glm::vec3 dir( 0, 0, -1 );
     glm::vec3 up( 0, 1, 0 );
     cam = new Camera(   pos, 
-						dir,
-						up, 
-						cfg::fov, 
-						cfg::aspectratio, 
-						1.0f, 
-						1000.0f );
-    cam->update();
-
-    // Timer
-    // m_Timer = new Timer();
-    // m_Timer->start();
+                        dir,
+                        up, 
+                        cfg::fov, 
+                        cfg::aspectratio, 
+                        1.0f, 
+                        1000.0f );
 }
 
 }

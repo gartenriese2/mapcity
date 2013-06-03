@@ -14,6 +14,9 @@ Mesh::Mesh() {
 }
 
 void Mesh::update() {
+	glGenVertexArrays( 1, &vao_vert );
+    glBindVertexArray( vao_vert );
+
 	glGenBuffers( 1, &vert_buffer );
 	glBindBuffer( GL_ARRAY_BUFFER, vert_buffer );
 	glBufferData( GL_ARRAY_BUFFER, m_vt.size() * sizeof( glm::vec3 ), &m_vt[0], GL_STATIC_DRAW );
@@ -36,12 +39,14 @@ Mesh::~Mesh() {
 	glDeleteBuffers( 1, &uv_buffer );
 	glDeleteBuffers( 1, &vn_buffer );
 	glDeleteBuffers( 1, &vert_index );
+
+	// glDeleteVertexArraysApple( 1, &vao_vert );
 }
 
 void Mesh::draw() {
 	// verts
 	if( m_vt.size() > 0 ) {
-		glEnableVertexAttribArray( 0 );
+		glEnableVertexAttribArray( cfg::ACE_ATTRIB_VERT );
 		glBindBuffer( GL_ARRAY_BUFFER, vert_buffer );
 		glVertexAttribPointer(  cfg::ACE_ATTRIB_VERT, 
 								3, // glm::vec3
@@ -53,7 +58,7 @@ void Mesh::draw() {
 
 	// uvs
 	if( m_uv.size() > 0 ) {
-		glEnableVertexAttribArray( 1 );
+		glEnableVertexAttribArray( cfg::ACE_ATTRIB_UV );
 		glBindBuffer( GL_ARRAY_BUFFER, uv_buffer );
 		glVertexAttribPointer(  cfg::ACE_ATTRIB_UV, 
 								2, // glm::vec2
@@ -65,7 +70,7 @@ void Mesh::draw() {
 
 	// normals
 	if( m_vn.size() > 0 ) {
-		glEnableVertexAttribArray( 2 );
+		glEnableVertexAttribArray( cfg::ACE_ATTRIB_NORM );
 		glBindBuffer( GL_ARRAY_BUFFER, vn_buffer );
 		glVertexAttribPointer(  cfg::ACE_ATTRIB_NORM, 
 								3, // glm::vec3
@@ -78,11 +83,10 @@ void Mesh::draw() {
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, vert_index );
 	glDrawElements( GL_TRIANGLES, m_idx.size(), GL_UNSIGNED_INT, 0 );
 		
-
 	// clean up
-	glDisableVertexAttribArray( 2 );
-	glDisableVertexAttribArray( 1 );
-	glDisableVertexAttribArray( 0 );
+	glDisableVertexAttribArray( cfg::ACE_ATTRIB_NORM );
+	glDisableVertexAttribArray( cfg::ACE_ATTRIB_UV );
+	glDisableVertexAttribArray( cfg::ACE_ATTRIB_VERT );
 }
 
 void Mesh::makeCube() {

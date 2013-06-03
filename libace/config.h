@@ -12,13 +12,13 @@ namespace ace {
 
     namespace cfg {
 
-        const float screenwidth   = 640;
-        const float screenheight  = 480;
+        const float screenwidth   = 1024;
+        const float screenheight  = 768;
         const float fov           = 70;
         const float aspectratio   = 1.0;
         const bool  fullscreen    = false;
 
-        const int   rgbbits       = 8;
+        const int   rgbbits       = 0;//8;
         const int   depthbits     = 8;
         const int   stencilbits   = 8;
 

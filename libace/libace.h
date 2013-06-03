@@ -1,6 +1,6 @@
 /*
 *
-*	AcceleratorEngine - libace
+*   AcceleratorEngine - libace
 *   Copyright (c) 2013, Jan Doerntlein.
 *   All rights reserved.
 *
@@ -18,23 +18,22 @@
 #include "error.h"
 #include "shader.h"
 #include "object.h"
-#include "gbuffer.h"
 #include "texture.h"
 #include "scenegraph.h"
-#include "light.h"
+#include "gbuffer.h"
 
 namespace ace {
 
 /**
-*	@class Ace
+*   @class Ace
 *
-*	@brief Singleton class which represents the whole engine.
+*   @brief Singleton class which represents the whole engine.
 */
 class Ace {
 
 private: 
 
-	void ( *m_extDisplay )();
+    void ( *m_extDisplay )();
     void ( *m_extKeyboard )();
 
     // global functions
@@ -51,12 +50,12 @@ private:
 
 public:
 
-	/**
-	* @brief Starting point: returns the singleton engine instance.
-	*/
-	static Ace* getEngine();
+    /**
+    * @brief Starting point: returns the singleton engine instance.
+    */
+    static Ace* getEngine();
 
-	Camera  *cam;
+    Camera  *cam;
 
     Scenegraph *Scene();
 
@@ -67,6 +66,7 @@ public:
     void init( void ( *display )(), void ( *keyboard )() );
     void start();
     void render();
+    void renderScene( Shader& );
     void nextDebugMode();
 };
 

@@ -25,11 +25,18 @@ private:
 	Texture*		m_colorTexture;
 	Texture*		m_normalTexture;
 	Texture*		m_positionTexture;
+	Texture*		m_randomTexture;
+	Texture*		m_postprocessingTexture;
+	Texture*		m_shadowmappingTexture;
 
 	Framebuffer* 	m_framebuffer;
+	Framebuffer*	m_postprocessingFramebuffer;
+	Framebuffer*    m_shadowmappingFramebuffer;
 
-	Shader*			m_shader;
+	Shader*			m_renderShader;
 	Shader*			m_recShader;
+	Shader*			m_postprocessingShader;
+	Shader*			m_shadowmappingShader;
 
 	int 			m_debugMode;
 
@@ -43,7 +50,10 @@ public:
 
 	void startRecording();
 	void stopRecording();
+	void illuminationpass();
+	void shadowpass();
 	void render();
+	void populate();
 	void nextDebugMode();
 	~GBuffer();
 };

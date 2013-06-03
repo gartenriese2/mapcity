@@ -1,7 +1,7 @@
 // OpenGL 
 #ifdef __MACH__
-    #include <OpenGL/gl.h>
-    #include <OpenGL/glu.h>
+    #include <OpenGL/gl3.h>
+    #include <OpenGL/gl3ext.h>
     #include <GL/glfw.h>
 #elif __linux__ 
     #include <GL/glew.h>
