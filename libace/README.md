@@ -7,7 +7,7 @@ More screenshots: http://jandoerntlein.github.io/
 
 Changelog
 ---------
-- 03.06.13: prepared shadow maps, added postprocessing shader (bloom, antialiasing, ssao), fixed light bug, added fps counter
+- 03.06.13: upgraded to OpenGL 4, prepared shadow maps, added postprocessing shader (bloom, antialiasing, ssao), fixed light bug, added fps counter
 - 13.05.13: killed billboard idea, fixed specular light bug, imported monkey.obj, implemented bloom and prepared SSAO
 - 12.05.13: Light class working basically, prepared billboards
 
