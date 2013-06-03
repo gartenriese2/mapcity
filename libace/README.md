@@ -1,7 +1,9 @@
 Libace
 ======
 
-Screenshots: http://jandoerntlein.github.io/
+![libace01](http://jandoerntlein.github.io/screenshots/screen2.png)
+
+More screenshots: http://jandoerntlein.github.io/
 
 Changelog
 ---------
