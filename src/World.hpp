@@ -6,24 +6,15 @@
 #include "glm.h"
 #include <iostream>
 #include "Camera.hpp"
+#include "Object.hpp"
 
-struct Object {
-	GLuint vertexBuffer;
-	GLuint normalBuffer;
-	GLuint colorBuffer;
-	GLuint indexBuffer;
-
-	GLuint vertexArray;
-	
-	int triangles;
-	glm::mat4 modelMatrix;
-};
+#include "Map.hpp"
 
 class World {
 public:
-	World();
+	World(int, int);
+	void createMap(int, int);
 
-	void init(int, int);
 	void render();
 
 	void addTriangle(glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
@@ -32,16 +23,18 @@ public:
 	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
 	
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
-	void fillBuffers(Object &, const int, const int, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
 
 	inline std::vector<Object> getObjects() { return objects; }
 	inline void setMVPLocation(GLuint mvp) { mvpID = mvp; }
 	inline void setLightLocation(GLuint light) { lightID = light; }
-	inline Camera& getCamera() { return this->cam; }
+	inline void setCamera(Camera * c) { cam = c; }
 	
 private:
+	
 	std::vector<Object> objects;
-	Camera cam;
+	Camera * cam;
+	Map * map;
+
 	GLuint mvpID;
 	GLuint lightID;
 };

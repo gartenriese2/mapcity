@@ -6,6 +6,7 @@
 
 #include "Shader.hpp"
 #include "World.hpp"
+#include "Camera.hpp"
 
 using namespace glm;
 using namespace std;
@@ -14,21 +15,26 @@ class Window {
 public:
 	Window(int, int);
 	~Window();
-	int init();
-	int createWindow(int, int);
+	void initCam(int, int);
 	void loop();
-	void keyhandler();
-	void mousehandler();
-	void FPS(time_t &, int &, int &);
-
-	inline World& getWorld() { return this->world; }
+	inline Camera * getCam() { return this->cam; }
+	inline void setWorld(World * world) { this->world = world; }
 private:
 
 	int m_width;
 	int m_height;
+	
 	Shader shader;
-	World world;
+	World * world;
+	Camera * cam;
 	GLuint simpleShader;
+
+	int init();
+	int createWindow(int, int);
+
+	void keyhandler();
+	void mousehandler();
+	void FPS(time_t &, int &, int &);
 };
 
 #endif

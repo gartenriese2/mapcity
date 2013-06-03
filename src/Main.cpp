@@ -10,6 +10,7 @@
 #include "Terrain.hpp"
 #include "Playground.hpp"
 #include "Camera.hpp"
+#include "Game.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -92,13 +93,16 @@ using namespace std;
 
 void findHexagonTest() {
 
+	Hexagon h(glm::vec3(0,0,0));
+	cout << h.isInside(glm::vec3(90,0,-15)) << endl;
+
 #ifdef __linux__
 	timespec time1, time2;
 #endif
 
 	int mapX = 5000;
-	int mapY = 5000;
-	Map m(mapX,mapY);
+	int mapZ = 5000;
+	Map m(mapX,mapZ);
 	
 	int falses = 0;
 	int counts = 100000;
@@ -109,10 +113,10 @@ void findHexagonTest() {
 
 	for (int i = 0; i < counts; i++) {
 		float x = (float)(rand() % (mapX*100)) / 100;
-		float y = (float)(rand() % (mapY*100)) / 100;
+		float z = (float)(rand() % (mapZ*100)) / 100;
 		// cout << "x: " << x << " ,y: " << y << endl;
 		try {
-			m.getCorrespondingHexagon(glm::vec3(x,y,0));
+			m.getCorrespondingHexagon(glm::vec3(x,0,-z));
 		} catch (const char * msg) {
 			cout << msg << endl;
 			falses++;
@@ -167,33 +171,20 @@ void demandFunctionTest() {
 	}
 }
 
-void windowTest() {
+void gameTest() {
 	
 	int height = 1000, width = 1000;
+	Game game(width, height, 1000, 1000);
 	
-	Window w(height, width);
+	game.getWorld()->addCuboid(glm::vec3(300,0,-300), glm::vec3(310,0,-300), glm::vec3(300,8,-300), glm::vec3(300,0,-285), glm::vec3(0,1,0));
+	game.getWorld()->addCuboid(glm::vec3(300,0,-310), glm::vec3(310,0,-310), glm::vec3(300,12,-310), glm::vec3(300,0,-300), glm::vec3(0,1,0));
+	game.getWorld()->addCuboid(glm::vec3(290,0,-295), glm::vec3(300,0,-295), glm::vec3(290,10,-295), glm::vec3(290,0,-285), glm::vec3(0,1,0));
+	game.getWorld()->addCuboid(glm::vec3(300,0,-265), glm::vec3(310,0,-255), glm::vec3(300,30,-265), glm::vec3(290,0,-255), glm::vec3(0,1,0));
+	game.getWorld()->addCuboid(glm::vec3(300,0,-320), glm::vec3(310,0,-320), glm::vec3(300,10,-320), glm::vec3(300,0,-310), glm::vec3(0,0,1));
+	game.getWorld()->addQuad(glm::vec3(315,0.1,-250), glm::vec3(325,0.1,-250), glm::vec3(315,0.1,-350), glm::vec3(1,1,0));
+	game.getWorld()->addQuad(glm::vec3(315,0.1,-270), glm::vec3(315,0.1,-280), glm::vec3(270,0.1,-270), glm::vec3(1,1,0));
 
-	World &world = w.getWorld();
-	
-	world.addCuboid(glm::vec3(0,0,0), glm::vec3(1,0,0), glm::vec3(0,0.8,0), glm::vec3(0,0,1.5), glm::vec3(0,1,0));
-	world.addCuboid(glm::vec3(0,0,-1), glm::vec3(1,0,-1), glm::vec3(0,1.2,-1), glm::vec3(0,0,0), glm::vec3(0,1,0));
-	world.addCuboid(glm::vec3(-1,0,0.5), glm::vec3(0,0,0.5), glm::vec3(-1,1,0.5), glm::vec3(-1,0,1.5), glm::vec3(0,1,0));
-	world.addCuboid(glm::vec3(0,0,3.5), glm::vec3(1,0,4.5), glm::vec3(0,3,3.5), glm::vec3(-1,0,4.5), glm::vec3(0,1,0));
-	world.addCuboid(glm::vec3(0,0,-2), glm::vec3(1,0,-2), glm::vec3(0,1,-2), glm::vec3(0,0,-1), glm::vec3(0,0,1));
-	world.addQuad(glm::vec3(1.5,0.01,5), glm::vec3(2.5,0.01,5), glm::vec3(1.5,0.01,-5), glm::vec3(1,1,0));
-	world.addQuad(glm::vec3(1.5,0.01,3), glm::vec3(1.5,0.01,2), glm::vec3(-3,0.01,3), glm::vec3(1,1,0));
-	
-	for (int i = -12; i < 12; i += 3) {
-		for (int j = -12; j < 12; j += 3) {
-			if (i % 6 == 0) {
-				world.addHexagon(glm::vec3(i,0,j), glm::vec3(i-2,0,j));
-			} else {
-				world.addHexagon(glm::vec3(i,0,j+sqrt(3.f)), glm::vec3(i-2,0,j+sqrt(3.f)));
-			}
-		}
-	}
-
-	w.loop();
+	game.start();
 }
 
 void zoneTest() {
@@ -201,16 +192,16 @@ void zoneTest() {
 	Map m(5000,5000);
 
 	vector<glm::vec3> v;
-	v.push_back(glm::vec3(201,196,0));
-	v.push_back(glm::vec3(284,111,0));
-	v.push_back(glm::vec3(101,123,0));
-	v.push_back(glm::vec3(98,182,0));
+	v.push_back(glm::vec3(201,0,-196));
+	v.push_back(glm::vec3(284,0,-111));
+	v.push_back(glm::vec3(101,0,-123));
+	v.push_back(glm::vec3(98,0,-182));
 	
 
 	vector<ResidentialZone> z;
 	z.push_back(EinfamilienhausZone(v));
 	cout << "ID: " << z[0].getID() << endl;
-	cout << "Center: " << z[0].getCenter().x << "|" << z[0].getCenter().y << endl;
+	cout << "Center: " << z[0].getCenter().x << "|" << z[0].getCenter().z << endl;
 
 	m.getCorrespondingHexagon(z[0].getCenter()).addResidentialZone(z[0]);
 
@@ -331,7 +322,7 @@ int main() {
 	
 	// findHexagonTest();
 	// demandFunctionTest();
-	windowTest();
+	gameTest();
 	// zoneTest();
 	// householdTest();
 	// bebauteZonenTest();

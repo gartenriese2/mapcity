@@ -2,30 +2,30 @@
 
 long counter  = 0;
 
-World::World() {
-
+World::World(int height, int width) {
+	createMap(height, width);
 }
 
-void World::init(int width, int height) {
+void World::createMap(int height, int width) {
+	map = new Map(height, width);
 
-	cam = Camera(glm::vec3(10.f, 10.f, 10.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
-		45.f, static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.f);
-
+	std::vector<Hexagon> v = map->getHexaVector();
+	for (std::vector<Hexagon>::iterator h = v.begin(); h != v.end(); ++h) {
+		addHexagon(h->getCenter(), h->getLeft());
+	}
 }
 
 void World::render() {
 
 	for (std::vector<Object>::iterator o = objects.begin(); o != objects.end(); o++) {
 
-		glBindVertexArray(o->vertexArray);
-
-		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->modelMatrix;
+		glm::mat4 MVP = cam->getProjMat() * cam->getViewMat() * o->getModelMatrix();
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, &MVP[0][0]);
-		glUniform3f(lightID, glm::sin(static_cast<float>(counter) / 1000.0) * 10,
-							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 10 + 3,
+		glUniform3f(lightID, glm::sin(static_cast<float>(counter) / 1000.0) * 1000,
+							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 1000 + 100,
 							0);
 
-		glDrawElements(GL_TRIANGLES, 3 * o->triangles, GL_UNSIGNED_SHORT, (void*)0);
+		o->draw();
 
 	}
 
@@ -35,7 +35,7 @@ void World::render() {
 
 void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 	
-	Object o;
+	Object o = Object();
 
 	GLfloat * vertexData = new GLfloat[9];
 	for (int i = 0; i < 3; i++) {
@@ -64,10 +64,9 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 	indexData[1] = 1;
 	indexData[2] = 2;
 
-	fillBuffers(o, 9, 3, vertexData, normalData, colorData, indexData);
+	o.fillBuffers(9, 3, vertexData, normalData, colorData, indexData);
 
-	o.modelMatrix = glm::mat4(1.f);
-	o.triangles = 1;
+	o.setTriangles(1);
 
 	objects.push_back(o);
 	
@@ -75,7 +74,7 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 
 void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 d, glm::vec3 col) {
 
-	Object o;
+	Object o = Object();
 
 	glm::vec3 c = b + (d - a);
 
@@ -111,10 +110,9 @@ void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 d, glm::vec3 col) {
 	indexData[4] = 3;
 	indexData[5] = 0;
 
-	fillBuffers(o, 12, 6, vertexData, normalData, colorData, indexData);
+	o.fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
 
-	o.modelMatrix = glm::mat4(1.f);
-	o.triangles = 2;
+	o.setTriangles(2);
 
 	objects.push_back(o);
 
@@ -122,7 +120,7 @@ void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 d, glm::vec3 col) {
 
 void World::addHexagon(glm::vec3 center, glm::vec3 left, glm::vec3 col) {
 
-	Object o;
+	Object o = Object();
 
 	GLfloat * vertexData = new GLfloat[21];
 	GLfloat * normalData = new GLfloat[21];
@@ -187,10 +185,9 @@ void World::addHexagon(glm::vec3 center, glm::vec3 left, glm::vec3 col) {
 	indexData[16] = 6;
 	indexData[17] = 1;
 
-	fillBuffers(o, 21, 18, vertexData, normalData, colorData, indexData);
+	o.fillBuffers(21, 18, vertexData, normalData, colorData, indexData);
 
-	o.modelMatrix = glm::mat4(1.f);
-	o.triangles = 6;
+	o.setTriangles(6);
 
 	objects.push_back(o);
 
@@ -212,10 +209,9 @@ void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::v
 		colorData[i + 2] = col[2];
 	}
 
-	fillBuffers(o, 72, 36, vertexData, normalData, colorData, indexData);
+	o.fillBuffers(72, 36, vertexData, normalData, colorData, indexData);
 
-	o.modelMatrix = glm::mat4(1.f);
-	o.triangles = 12;
+	o.setTriangles(12);
 
 	objects.push_back(o);
 
@@ -335,38 +331,5 @@ void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::
 	indexData[33] = 22;
 	indexData[34] = 23;
 	indexData[35] = 20;
-
-}
-
-void World::fillBuffers(Object &o, int size, int indices, GLfloat * &vertexData, 
-					GLfloat * &normalData, GLfloat * &colorData, GLushort * &indexData) {
-
-	glGenVertexArrays(1, &o.vertexArray);
-	glBindVertexArray(o.vertexArray);
-
-	glGenBuffers(1, &o.vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * size, vertexData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &o.normalBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.normalBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * size, normalData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-
-	glGenBuffers(1, &o.colorBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, o.colorBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * size, colorData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(2);
-
-	glGenBuffers(1, &o.indexBuffer);
- 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, o.indexBuffer);
- 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indices, indexData, GL_STATIC_DRAW);
 
 }

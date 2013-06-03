@@ -17,32 +17,32 @@ Hexagon::~Hexagon() {
 void Hexagon::setVertices() {
 	
 	vertices.push_back(center + glm::vec3(-hexaSideLength,0,0));
-	vertices.push_back(center + glm::vec3(-hexaSideLength/2,hexaHeight/2,0));
-	vertices.push_back(center + glm::vec3(hexaSideLength/2,hexaHeight/2,0));
+	vertices.push_back(center + glm::vec3(-hexaSideLength/2,0,hexaHeight/2));
+	vertices.push_back(center + glm::vec3(hexaSideLength/2,0,hexaHeight/2));
 	vertices.push_back(center + glm::vec3(hexaSideLength,0,0));
-	vertices.push_back(center + glm::vec3(hexaSideLength/2,-hexaHeight/2,0));
-	vertices.push_back(center + glm::vec3(-hexaSideLength/2,-hexaHeight/2,0));
+	vertices.push_back(center + glm::vec3(hexaSideLength/2,0,-hexaHeight/2));
+	vertices.push_back(center + glm::vec3(-hexaSideLength/2,0,-hexaHeight/2));
 
 }
 
 bool Hexagon::isInside(glm::vec3 p) {
 
-	// transform point to upper right quadrant
-	if (p.y < center.y) p.y += 2*(center.y-p.y);
+	// transform point to lower right quadrant
+	if (p.z < center.z) p.z += 2*(center.z-p.z);
 	if (p.x < center.x) p.x += 2*(center.x-p.x);
 
 	// check against bounding box
 	if (p.x > vertices[3].x) return false;
-	if (p.y > vertices[2].y) return false;
+	if (p.z > vertices[2].z) return false;
 	if (p.x < vertices[2].x) return true;
 
 	// normal to sloped edge
-	glm::vec3 n = glm::vec3(-hexaHeight/2, -hexaSideLength/2, 0);
+	glm::vec3 n = glm::vec3(-hexaHeight/2, 0, -hexaSideLength/2);
 
 	// vector from right vertex to point p
-	glm::vec3 v = glm::vec3(p.x - (vertices[3].x), p.y - center.y, 0);
+	glm::vec3 v = vertices[3] - p;
 
-	if (glm::dot(n,v) < 0) return false;
+	if (glm::dot(n,v) > 0) return false;
 	return true;
 
 }

@@ -17,11 +17,12 @@ public:
 	Hexagon& getCorrespondingHexagon(glm::vec3);
 	
 private:
+
 	int height;
 	int width;
 	int hexagons;
 	int xHexas;
-	int yHexas;
+	int zHexas;
 	std::vector<Hexagon> hexaVector;
 
 	int createHexagons();
