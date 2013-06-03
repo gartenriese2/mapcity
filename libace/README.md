@@ -1,7 +1,7 @@
 Libace
 ======
 
-![libace01](http://jandoerntlein.github.io/screenshots/screen2.png)
+![libace01](http://jandoerntlein.github.io/screenshots/screen3.jpg)
 
 More screenshots: http://jandoerntlein.github.io/
 
