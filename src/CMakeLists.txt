@@ -4,9 +4,6 @@
 #
 ################################################################################
 
-# add externel cmake modules
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/" )
-
 # check these!
 find_package( OpenGL REQUIRED )
 find_package( GLFW REQUIRED )
@@ -15,7 +12,6 @@ find_package( GLEW REQUIRED )
 include_directories( ${GLM_INCLUDE_DIRS} )
 
 FILE( GLOB_RECURSE files "*.cpp" "*.hpp" )
-FILE( GLOB_RECURSE files_libace "../libace/*.cpp" "../libace/*.hpp" "../libace/*.h" )
 
 add_executable( ${OUTPUT_NAME} ${files} ${files_libace} )
 
