@@ -123,7 +123,7 @@ void GBuffer::render() {
 
     // render to screen quad
     m_postprocessingFramebuffer->bind();
-        shadowpass();
+        // shadowpass();
         illuminationpass();
     m_postprocessingFramebuffer->unbind();
 
