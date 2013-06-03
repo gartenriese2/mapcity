@@ -72,7 +72,7 @@ vec4 antialiasing( sampler2D normal, sampler2D color, vec2 coords, vec2 p ) {
         }
     }
 
-    return ( col + 2.0 * c ) * 0.1;
+    return ( col + 3.0 * c ) * 0.1;
 }
 
 void main() {
