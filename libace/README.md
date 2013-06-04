@@ -37,6 +37,7 @@ Same problems as with the light. Two ways are possible:
 - improve Wavefront Object loader
 - particle engine
 - post-processing like anti-aliasing, bloom, motion blur
+- god rays resp. light scattering
 
 
 HowTo
