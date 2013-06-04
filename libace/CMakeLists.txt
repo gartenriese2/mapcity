@@ -53,7 +53,7 @@ add_library(ace SHARED ${files})
 
 # ==============================================================================
 # Finally link executable
-target_link_libraries(ace ${ASSIMP_LIBRARIES} glfw)
+target_link_libraries(ace glfw)
 
 if(APPLE)
   target_link_libraries(ace ${OPENGL_LIBRARIES})
@@ -68,11 +68,9 @@ if(APPLE)
   target_link_libraries(ace ${Cocoa})
   Message( "-- Linking against " ${Cocoa})
 
-  target_link_libraries(ace glfw)
   target_link_libraries(ace ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 endif(APPLE)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	target_link_libraries(ace ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
-  #target_link_libraries(ace ${CMAKE_SOURCE_DIR}/3rdparty/glfw-2.7.7/lib/x11/libglfw.a)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
