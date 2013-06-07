@@ -48,8 +48,8 @@ FOREACH(item ${files})
 ENDFOREACH(item)
 
 # choose dynamic or static version
-# add_library(ace STATIC ${files})
-add_library(ace SHARED ${files})
+add_library(ace STATIC ${files})
+# add_library(ace SHARED ${files})
 
 # ==============================================================================
 # Finally link executable
