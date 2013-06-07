@@ -59,9 +59,7 @@ int Window::createWindow(int width, int height) {
     }
 #endif
 
-    //glfwSwapInterval(0);
-
-    simpleShader = shader.loadShaders( "../shader/SimpleVert.shader", "../shader/SimpleFrag.shader" );
+    glfwSwapInterval(0);
 
     return 1;
 
@@ -69,23 +67,19 @@ int Window::createWindow(int width, int height) {
 
 void Window::initCam(int width, int height) {
 
-    cam = new Camera(glm::vec3(400.f, 100.f, -200.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
+    m_cam = new Camera(glm::vec3(400.f, 100.f, -200.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
         45.f, width, height, 0.1f, 10000.f);
 
 }
 
 void Window::loop() {
 
+    m_render = new Render(m_world);
+    m_render->init();
+
     glClearColor(0,0,0,0);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-
-    glUseProgram(simpleShader);
-
-    GLuint MatrixID = glGetUniformLocation(simpleShader, "MVP");
-    GLuint LightID = glGetUniformLocation(simpleShader, "Light");
-    world->setMVPLocation(MatrixID);
-    world->setLightLocation(LightID);
 
     int frames = 0;
     time_t timer;
@@ -96,11 +90,11 @@ void Window::loop() {
         
         FPS(timer, oldTime, frames);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         keyhandler();
         mousehandler();
-        world->render();
+
+        m_render->depthPlayerPass(* m_cam);
+        m_render->simplePass(* m_cam);
         
         glfwSwapBuffers();
      
@@ -111,31 +105,31 @@ void Window::loop() {
 void Window::keyhandler() {
 
     if (glfwGetKey('W') == GLFW_PRESS) {
-        cam->move(1.f, 0.0, 0.0);
+        m_cam->move(1.f, 0.0, 0.0);
     }
     if (glfwGetKey('S') == GLFW_PRESS) {
-        cam->move(-1.f, 0.0, 0.0);
+        m_cam->move(-1.f, 0.0, 0.0);
     }
     if (glfwGetKey('A') == GLFW_PRESS) {
-        cam->move(0.0, -1.f, 0.0);
+        m_cam->move(0.0, -1.f, 0.0);
     }
     if (glfwGetKey('D') == GLFW_PRESS) {
-        cam->move(0.0, 1.f, 0.0);
+        m_cam->move(0.0, 1.f, 0.0);
     }
     if (glfwGetKey('Q') == GLFW_PRESS) {
-        cam->move(0.0, 0.0, 1.f);
+        m_cam->move(0.0, 0.0, 1.f);
     }
     if (glfwGetKey('E') == GLFW_PRESS) {
-        cam->move(0.0, 0.0, -1.f);
+        m_cam->move(0.0, 0.0, -1.f);
     }
     if (glfwGetKey('R') == GLFW_PRESS) {
-        cam->reset();
+        m_cam->reset();
     }
     if (glfwGetKey(GLFW_KEY_INSERT) == GLFW_PRESS) {
-        cam->rotateAround(0.2f);
+        m_cam->rotateAround(0.2f);
     }
     if (glfwGetKey(GLFW_KEY_DEL) == GLFW_PRESS) {
-        cam->rotateAround(-0.2f);
+        m_cam->rotateAround(-0.2f);
     }
 
 }
@@ -149,7 +143,7 @@ void Window::mousehandler() {
 
         if (m_mousePosX != newX || m_mousePosY != newY) {
             
-            cam->rotate(static_cast<float>(m_mousePosX-newX), static_cast<float>(m_mousePosY-newY));
+            m_cam->rotate(static_cast<float>(m_mousePosX-newX), static_cast<float>(m_mousePosY-newY));
             m_mousePosX = newX;
             m_mousePosY = newY;
 
@@ -161,7 +155,7 @@ void Window::mousehandler() {
 
     int i = glfwGetMouseWheel();
     if (i != m_mouseWheelPos) {
-        cam->zoom(i - m_mouseWheelPos);
+        m_cam->zoom(i - m_mouseWheelPos);
         m_mouseWheelPos = i;
     }
 

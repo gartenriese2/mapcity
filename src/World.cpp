@@ -15,24 +15,6 @@ void World::createMap(int height, int width) {
 	}
 }
 
-void World::render() {
-
-	for (std::vector<Object>::iterator o = objects.begin(); o != objects.end(); o++) {
-
-		glm::mat4 MVP = cam->getProjMat() * cam->getViewMat() * o->getModelMatrix();
-		glUniformMatrix4fv(mvpID, 1, GL_FALSE, &MVP[0][0]);
-		glUniform3f(lightID, glm::sin(static_cast<float>(counter) / 1000.0) * 1000,
-							glm::abs(glm::cos(static_cast<float>(counter) / 1000.0)) * 1000 + 100,
-							0);
-
-		o->draw();
-
-	}
-
-	counter++;
-
-}
-
 void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 	
 	Object o = Object();

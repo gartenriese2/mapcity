@@ -13,6 +13,9 @@ public:
 	inline glm::mat4 getViewMat() { return m_view; }
 	inline glm::mat4 getProjMat() { return m_proj; }
 
+	inline int getWidth() { return m_width; }
+	inline int getHeight() { return m_height; }
+
 	void reset();
 	void move(float, float, float);
 	void rotate(float, float);

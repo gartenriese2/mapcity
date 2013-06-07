@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "Shader.hpp"
 #include "World.hpp"
 #include "Camera.hpp"
+#include "Render.hpp"
 
 using namespace glm;
 using namespace std;
@@ -17,8 +17,8 @@ public:
 	~Window();
 	void initCam(int, int);
 	void loop();
-	inline Camera * getCam() { return this->cam; }
-	inline void setWorld(World * world) { this->world = world; }
+	inline Camera * getCam() { return m_cam; }
+	inline void setWorld(World * world) { m_world = world; }
 private:
 
 	int m_width;
@@ -26,10 +26,9 @@ private:
 
 	int m_mousePosX, m_mousePosY, m_mouseWheelPos;
 	
-	Shader shader;
-	World * world;
-	Camera * cam;
-	GLuint simpleShader;
+	World * m_world;
+	Camera * m_cam;
+	Render * m_render;
 
 	int init();
 	int createWindow(int, int);

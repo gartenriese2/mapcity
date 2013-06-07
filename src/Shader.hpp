@@ -10,10 +10,21 @@
 
 class Shader {
 public:
-	Shader();
-	GLuint loadShaders(const char *,const char *);
-private:
 	
+	Shader(const char *, const char *);
+
+	inline GLuint GetShaderID() { return m_shaderID; }
+    inline void Use() { glUseProgram(m_shaderID); }
+
+	GLuint addUniformMatrix4f(const char *);
+	void linkMatrix4f(GLuint, const glm::mat4);
+	GLuint addUniform3f(const char *);
+	void link3f(GLuint, const float, const float, const float);
+
+private:
+	GLuint m_shaderID;
+
+	GLuint loadShaders(const char *,const char *);
 };
 
 #endif

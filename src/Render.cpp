@@ -1,57 +1,73 @@
 #include "Render.hpp"
 
-Render::Render() {
-
+Render::Render(World * world) {
+	m_world = world;
 }
 
 Render::~Render() {
 
 }
 
-// muss in Methoden ausgelagert werden, z.B. Gebäude
-void Render::setTriangle() {
+void Render::init() {
 	
-	GLuint VertexArrayID;
-#ifdef __linux__
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-#elif __MACH__
-	glGenVertexArraysAPPLE(1, &VertexArrayID);
-	glBindVertexArrayAPPLE(VertexArrayID);	
-#endif
+	m_fbo = new Fbo();
 
-	// An array of 3 vectors which represents 3 vertices
-	GLfloat g_vertex_buffer_data[] = {
-	   -1.0f, -1.0f, 0.0f,
-	   1.0f, -1.0f, 0.0f,
-	   0.0f,  1.0f, 0.0f,
-	};
-	 
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-	 
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	 
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	m_simpleShader = new Shader("../shader/SimpleVert.shader", "../shader/SimpleFrag.shader");
+	m_MVP_simplePass = m_simpleShader->addUniformMatrix4f("MVP");
+	m_Light_simplePass = m_simpleShader->addUniform3f("Light");
+
+	m_depthShader = new Shader("../shader/DepthVert.shader", "../shader/DepthFrag.shader");
+	m_MVP_depthPass = m_depthShader->addUniformMatrix4f("MVP");
+	m_depthTextureWidth = 1024;
+	m_depthTextureHeight = 1024;
+
+
 }
 
-void Render::renderTriangle() {
-	// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-	   0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-	   3,                  // size
-	   GL_FLOAT,           // type
-	   GL_FALSE,           // normalized?
-	   0,                  // stride
-	   (void*)0            // array buffer offset
-	);
-	 
-	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-	 
-	glDisableVertexAttribArray(0);
+void Render::simplePass(Camera &cam) {
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_simpleShader->Use();
+
+	for (std::vector<Object>::iterator o = m_world->getObjects().begin(); o != m_world->getObjects().end(); o++) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->getModelMatrix();
+		m_simpleShader->linkMatrix4f(m_MVP_simplePass, MVP);
+		m_simpleShader->link3f(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o->draw();
+
+	}
+
+}
+
+void Render::depthPlayerPass(Camera &cam) {
+
+	m_fbo->bind();
+    glViewport(0, 0, m_depthTextureWidth, m_depthTextureHeight);
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    m_depthShader->Use();
+
+    for (std::vector<Object>::iterator o = m_world->getObjects().begin(); o != m_world->getObjects().end(); o++) {
+
+    	glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->getModelMatrix();
+    	m_depthShader->linkMatrix4f(m_MVP_depthPass, MVP);
+
+    	o->draw();
+
+    }
+
+    m_fbo->unbind();
+    glViewport(0, 0, cam.getWidth(), cam.getHeight());
+
+}
+
+void Render::depthLightPass(Camera &cam) {
+
+	m_fbo->bind();
+	glViewport(0, 0, m_depthTextureWidth, m_depthTextureHeight);
+
 }
