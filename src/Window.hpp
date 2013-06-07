@@ -23,6 +23,8 @@ private:
 
 	int m_width;
 	int m_height;
+
+	int m_mousePosX, m_mousePosY, m_mouseWheelPos;
 	
 	Shader shader;
 	World * world;
