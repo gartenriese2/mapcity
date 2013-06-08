@@ -43,8 +43,6 @@ private:
 
     Scenegraph *m_scenegraph;
 
-    // Timer *m_Timer;
-
     Ace();
     Ace( const Ace& ) {};
 

@@ -9,6 +9,7 @@
 #define ERROR_H
 
 #include "stl.h"
+#include "ogl.h"
 
 namespace ace {
 
@@ -21,6 +22,7 @@ public:
 	void setError( std::string );
 	std::string getError();
 	bool isError();
+	void checkGLError( std::string );
 	void print();
 };
 

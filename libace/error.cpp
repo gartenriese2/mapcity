@@ -31,6 +31,16 @@ bool Error::isError() {
 	return m_error.length() > 0 ? true : false;
 }
 
+void Error::checkGLError( std::string hint ) {
+	GLenum errCode;
+	std::string errString;
+
+	if ( ( errCode = glGetError() ) != GL_NO_ERROR ) {
+    	errString = ( const char * )gluErrorString( errCode );
+    	setError( hint + errString );
+	}
+}
+
 void Error::print(){
 	std::cerr << "[ACE-LOG] --" << m_error << std::endl;
 }

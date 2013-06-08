@@ -183,6 +183,8 @@ void Ace::init( void ( *display )(), void ( *keyboard )() ) {
     }
 #endif
 
+    g_AceLog.checkGLError( "Window initialization" );
+
     // back face culling
     // glEnable( GL_CULL_FACE );
     // glCullFace( GL_BACK );
