@@ -43,9 +43,9 @@ FOREACH(item ${files})
 ENDFOREACH(item)
 
 # debug: print all files
-FOREACH(item ${files})
-	MESSAGE( "-- added " ${item})
-ENDFOREACH(item)
+#FOREACH(item ${files})
+#	MESSAGE( "-- added " ${item})
+#ENDFOREACH(item)
 
 # choose dynamic or static version
 add_library(ace STATIC ${files})

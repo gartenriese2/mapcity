@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <sstream>
 
 #include "World.hpp"
 #include "Camera.hpp"

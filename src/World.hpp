@@ -23,12 +23,10 @@ public:
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
 
 	inline std::vector<Object> getObjects() { return objects; }
-	inline void setCamera(Camera * c) { cam = c; }
 	
 private:
 	
 	std::vector<Object> objects;
-	Camera * cam;
 	Map * map;
 
 };

@@ -1,7 +1,7 @@
 #ifndef BUILDING_HPP
 #define BUILDING_HPP
 
-#include "../glm-0.9.4.3/glm/glm.hpp"
+#include "glm.h"
 #include <vector>
 
 class Building {

@@ -31,6 +31,7 @@ int Window::init() {
 #else
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
 
     return 1;
@@ -93,9 +94,10 @@ void Window::loop() {
         keyhandler();
         mousehandler();
 
+        // switch(option):
+        // case
         m_render->depthPlayerPass(* m_cam);
         m_render->simplePass(* m_cam);
-        
         glfwSwapBuffers();
      
     } while(glfwGetKey(GLFW_KEY_ESC) != GLFW_PRESS && glfwGetWindowParam(GLFW_OPENED));
@@ -165,7 +167,10 @@ void Window::FPS(time_t &timer, int &oldTime, int &frames) {
     frames++;
     time(&timer);
     if (timer > oldTime) {
-        cout << frames << " fps.\n";
+        // cout << frames << " fps.\n";
+        std::stringstream oss;
+        oss << "MapCity: " << frames << " FPS.";
+        glfwSetWindowTitle(oss.str().c_str());
         frames = 0;
     }
     oldTime = timer;

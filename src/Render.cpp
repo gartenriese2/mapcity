@@ -30,16 +30,15 @@ void Render::simplePass(Camera &cam) {
 
 	m_simpleShader->Use();
 
-	for (std::vector<Object>::iterator o = m_world->getObjects().begin(); o != m_world->getObjects().end(); o++) {
+	for (auto o : m_world->getObjects()) {
 
-		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->getModelMatrix();
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
 		m_simpleShader->linkMatrix4f(m_MVP_simplePass, MVP);
 		m_simpleShader->link3f(m_Light_simplePass, 500.f, 600.f, 0.f);
 
-		o->draw();
+		o.draw();
 
 	}
-
 }
 
 void Render::depthPlayerPass(Camera &cam) {
@@ -50,16 +49,14 @@ void Render::depthPlayerPass(Camera &cam) {
     glClear(GL_DEPTH_BUFFER_BIT);
 
     m_depthShader->Use();
+    for (auto o : m_world->getObjects()) {
 
-    for (std::vector<Object>::iterator o = m_world->getObjects().begin(); o != m_world->getObjects().end(); o++) {
-
-    	glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o->getModelMatrix();
+    	glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
     	m_depthShader->linkMatrix4f(m_MVP_depthPass, MVP);
 
-    	o->draw();
+    	o.draw();
 
     }
-
     m_fbo->unbind();
     glViewport(0, 0, cam.getWidth(), cam.getHeight());
 

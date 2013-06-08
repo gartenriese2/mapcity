@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 layout(pixel_center_integer) in vec4 gl_FragCoord;
 

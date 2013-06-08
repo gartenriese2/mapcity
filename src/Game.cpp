@@ -8,7 +8,6 @@ Game::Game(int windowWidth, int windowHeight, int mapWidth, int mapHeight) {
 	m_world = new World(mapHeight, mapWidth);
 
 	m_window->setWorld(m_world);
-	m_world->setCamera(m_window->getCam());
 
 }	
 
