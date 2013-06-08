@@ -59,15 +59,15 @@ GBuffer::GBuffer() {
     }
 
     // shadow mapping 
-    int size = 512;
-    m_shadowmappingTexture     = new Texture( size, size, GL_DEPTH_COMPONENT, GL_FLOAT );
-    m_shadowmappingFramebuffer = new Framebuffer( size, size );
-    m_shadowmappingFramebuffer->attachDepthTexture( *m_shadowmappingTexture );
+    // int size = 512;
+    // m_shadowmappingTexture     = new Texture( size, size, GL_DEPTH_COMPONENT, GL_FLOAT );
+    // m_shadowmappingFramebuffer = new Framebuffer( size, size );
+    // m_shadowmappingFramebuffer->attachDepthTexture( *m_shadowmappingTexture );
 
-    if( !m_shadowmappingFramebuffer->good() ) {
-        g_AceLog.setError( "Shadowmapping framebuffer initialization failed." );
-        return;
-    }
+    // if( !m_shadowmappingFramebuffer->good() ) {
+    //     g_AceLog.setError( "Shadowmapping framebuffer initialization failed." );
+    //     return;
+    // }
 
     // everything went well: load shader
     m_renderShader         = new Shader( "assets/shader/gbuffer_render.shader" );
@@ -151,23 +151,23 @@ void GBuffer::render() {
 }
 
 void GBuffer::shadowpass() {
-    Ace *a    = Ace::getEngine();
-    Camera *o = Camera::getActive();
+    // Ace *a    = Ace::getEngine();
+    // Camera *o = Camera::getActive();
 
-    m_shadowmappingTexture->bind();
-    m_shadowmappingFramebuffer->bind();
+    // m_shadowmappingTexture->bind();
+    // m_shadowmappingFramebuffer->bind();
 
-    for( auto l : a->Scene()->getLights() ) {
-        glm::vec3 dir( 0, 0, -1 );
-        glm::vec3 up( 0, 1, 0 );
-        Camera c( l->getPosition(), dir, up, 0, 10, 0, 10, 1.0f, 1000.0f );
+    // for( auto l : a->Scene()->getLights() ) {
+    //     glm::vec3 dir( 0, 0, -1 );
+    //     glm::vec3 up( 0, 1, 0 );
+    //     Camera c( l->getPosition(), dir, up, 0, 10, 0, 10, 1.0f, 1000.0f );
 
-        a->renderScene( *m_shadowmappingShader );
-    }
+    //     a->renderScene( *m_shadowmappingShader );
+    // }
 
-    m_shadowmappingFramebuffer->unbind();
+    // m_shadowmappingFramebuffer->unbind();
 
-    o->setActive();
+    // o->setActive();
 }
 
 void GBuffer::illuminationpass() {
