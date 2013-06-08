@@ -28,10 +28,10 @@ if( APPLE )
 	add_definitions( -std=c++11 )
 else()
 	add_definitions( -std=c++0x )
-
-	# add source directory
-	add_subdirectory( "src" )
 endif( APPLE )
+
+# add source directory
+add_subdirectory( "src" )
 
 # Doxygen
 add_subdirectory( "doc" )
