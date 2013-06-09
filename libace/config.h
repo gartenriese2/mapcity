@@ -12,8 +12,8 @@ namespace ace {
 
     namespace cfg {
 
-        const float screenwidth   = 640;
-        const float screenheight  = 480;
+        const float screenwidth   = 1024;
+        const float screenheight  = 768;
         const float fov           = 70;
         const float aspectratio   = 1.0;
         const bool  fullscreen    = false;

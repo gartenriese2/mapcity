@@ -3,9 +3,7 @@
 ace::Ace *AceEngine = ace::Ace::getEngine();
 
 ace::Mesh   *mesh1;
-ace::Mesh   *mesh2;
-ace::Mesh   *mesh3;
-ace::Mesh   *mesh4;
+
 ace::Light  *light1;
 ace::Light  *light2;
 ace::Light  *light3;
@@ -24,7 +22,6 @@ void render_loop() {
     light1->setPosition( 6, 4, light_pos );
     light2->setPosition( -6, 4, light_pos -5 );
 
-    mesh1->rotate( 0.5f, 1, 0, 0 );
     AceEngine->render();
 }  
 
@@ -36,21 +33,20 @@ int main() {
     AceEngine->init( render_loop, input );
 
     mesh1 = new ace::Mesh();
-    mesh1->makeCube();
-    mesh2 = new ace::Mesh();
-    mesh2->makeQuad();
-    mesh3 = new ace::Mesh();
-    mesh3->makeQuad();
-    mesh4 = new ace::Mesh();
-    mesh4->makeCube();
+    mesh1->setTexture( "assets/tex_grass.tga" );
+    mesh1->makeQuad();
+    mesh1->translate( 0, -3, -2 );
+    mesh1->scale( 50 );
+    mesh1->rotate( -90, 1, 0, 0 );
     
-    obj1 = new ace::Object( "assets/monkey.obj" );
-    obj1->scale( 2 );
-    obj1->translate( 0, 0, -10 );
+    obj1 = new ace::Object( "assets/house01.obj" );
+    obj1->setTexture( "assets/house01.tga" );
+    obj1->scale( 3 );
+    obj1->translate( 0, -1.1, -5 );
 
-    obj2 = new ace::Object( "assets/house.obj" );
-    obj2->scale( 2 );
-    obj2->translate( -10, -1.5, 10 );
+    obj2 = new ace::Object( "assets/house02.obj" );
+    obj2->setTexture( "assets/house02.tga" );
+    obj2->translate( -15, -3.5, 15 );
 
     light1 = new ace::Light( 1, 1, 0, 1, 5 );
     light2 = new ace::Light( 1, 1, 1, 1, 5 );
@@ -61,23 +57,7 @@ int main() {
     light4 = new ace::Light( 1, 1, 1, 1, 15 );
     light4->translate( -35, 6, 35 );
 
-    mesh1->scale( 1, 1, 1 );
-
-    mesh2->translate( 15, 0, -10 );
-    mesh2->scale( 20 );
-    mesh2->rotate( -90, 0, 1, 0 );
-    
-    mesh3->translate( 0, -3, -2 );
-    mesh3->scale( 50 );
-    mesh3->rotate( -90, 1, 0, 0 );
-
-    mesh4->translate( -20, 5, -15 );
-    mesh4->scale( 10 );
-
     AceEngine->Scene()->add( mesh1 );
-    AceEngine->Scene()->add( mesh2 );
-    AceEngine->Scene()->add( mesh3 );
-    AceEngine->Scene()->add( mesh4 );
     AceEngine->Scene()->add( obj1 );
     AceEngine->Scene()->add( obj2 );
     AceEngine->Scene()->add( light1 );

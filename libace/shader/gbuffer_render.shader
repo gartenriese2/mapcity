@@ -116,7 +116,7 @@ void main() {
     vec2 pixelsize = vec2( 1.0 / screenwidth, 1.0 / screenheight );
     vec4 ao  = ssao( positionTexture, normalTexture, randomTexture, tex_coords, pixelsize );
 
-    FragColor = color * ( ( col_ambient - 0.3*ao ) + col_diffuse + col_specular );
+    FragColor = color * ( ( col_ambient - 0.2*ao ) + col_diffuse + col_specular );
 
     if( debug == 1.0 ) {
         FragColor = depth;

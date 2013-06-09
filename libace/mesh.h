@@ -57,6 +57,7 @@ public:
 	inline unsigned int getVerticesCount() { return m_idx.size(); }
 
 	inline unsigned int getTextureId() { return m_texture->getId(); }
+	inline void setTexture( std::string tex ) { delete m_texture; m_texture = new Texture( tex ); }
 
 	void makeCube();
 	void makeQuad();
