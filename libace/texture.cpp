@@ -110,152 +110,16 @@ void Texture::unbind() {
 }
 
 bool Texture::loadTGA( std::string filename ) {
-    m_format = GL_UNSIGNED_BYTE;
+    int ret = glfwReadImage( filename.c_str(), &m_img, 0 );
 
-    std::ifstream file( filename.c_str(), std::ios::binary );
-    if( !file.good() ) {
-        std::string error = "Could not load texture " + filename;
-        g_AceLog.setError( error );
-        return false; 
-    }
+    m_rgb_type = m_img.Format;
+    m_format   = GL_UNSIGNED_BYTE;
+    m_width    = m_img.Width;
+    m_height   = m_img.Height;
+    m_bpp      = m_img.BytesPerPixel;
+    m_data     = m_img.Data;
 
-    // check tga header to detect compressed version
-    GLubyte cmp_tga[ 12 ]       = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    GLubyte cmp_tga_ucomp[ 12 ] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    GLubyte cmp_tga_compr[ 12 ] = { 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-    file.read( reinterpret_cast<char*>( cmp_tga ), sizeof( cmp_tga ) );
-
-    if( memcmp( cmp_tga_ucomp, &cmp_tga, sizeof( cmp_tga ) ) == 0 ) {
-        return loadUncompressedTGA( file );
-    } 
-    else if( memcmp( cmp_tga_compr, &cmp_tga, sizeof( cmp_tga ) ) == 0 ) {
-        return loadCompressedTGA( file );
-    } 
-    else {
-        return false;
-    }
-
-    return false;
-}
-
-bool Texture::loadUncompressedTGA( std::ifstream& file ) {
-    char header[ 6 ];
-    unsigned int bytespp = 0;
-    unsigned int size = 0;
-
-    file.read( header, sizeof( header ) );
-
-    m_width  = header[ 1 ] * 256 + header[ 0 ];
-    m_height = header[ 3 ] * 256 + header[ 2 ];
-    m_bpp    = header[ 4 ];
-
-    if( m_width < 1 || m_height < 1 || ( m_bpp != 24 && m_bpp != 32 ) ) {
-        return false;
-    }
-
-    if( m_bpp == 24 ) {
-        m_rgb_type = GL_RGB;
-    } 
-    else if( m_bpp == 32 ) {
-        m_rgb_type = GL_RGBA;
-    }
-
-    bytespp = m_bpp / 8;
-    size    = m_width * m_height * bytespp;
-    m_data  = new GLubyte[ size ];
-
-    file.read( reinterpret_cast<char*>( m_data ), size );
-
-    // convert BGR to RGB
-    for( int i = 0; i < size; i += bytespp ) {
-        m_data[ i ] ^= m_data[ i + 2 ] ^= 
-        m_data[ i ] ^= m_data[ i + 2 ];
-    }
-
-    file.close();
-
-    // cout << "Uncompressed: " << m_width << " * " << m_height << " * " << m_bpp << endl;
-    return true;
-}
-
-bool Texture::loadCompressedTGA( std::ifstream& file ) {
-    char header[ 6 ];
-    unsigned int bytespp    = 0;
-    unsigned int size       = 0;
-    unsigned int pixelcount = 0;
-    int currentpixel        = 0;
-    int currentbyte         = 0;
-    char *colorbuf          = 0;
-
-    file.read( header, sizeof( header ) );
-
-    m_width  = header[ 1 ] * 256 + header[ 0 ];
-    m_height = header[ 3 ] * 256 + header[ 2 ];
-    m_bpp    = header[ 4 ];
-
-    if( m_width < 1 || m_height < 1 || ( m_bpp != 24 && m_bpp != 32 ) ) {
-        return false;
-    }
-
-    if( m_bpp == 24 ) {
-        m_rgb_type = GL_RGB;
-    } 
-    else if( m_bpp == 32 ) {
-        m_rgb_type = GL_RGBA;
-    }
-
-    bytespp    = m_bpp / 8;
-    size       = m_width * m_height * bytespp;
-    m_data     = new GLubyte[ size ];
-    pixelcount = m_width * m_height;
-    colorbuf   = new char[ bytespp ];
-
-
-    do {
-        char chunkheader = 0;
-        file.read( &chunkheader, sizeof( chunkheader ) );
-
-        if( chunkheader < 128 ) {
-            chunkheader++;
-
-            for( int i = 0; i < chunkheader; ++i ) {
-                file.read( colorbuf, sizeof( colorbuf ) );
-                
-                m_data[ currentbyte ]     = colorbuf[ 2 ];
-                m_data[ currentbyte + 1 ] = colorbuf[ 1 ];
-                m_data[ currentbyte + 2 ] = colorbuf[ 0 ];
-
-                if( bytespp == 4 ) {
-                    m_data[ currentbyte + 3 ] = colorbuf[ 3 ];
-                }
-
-                currentbyte += bytespp;
-                currentpixel++;
-            }
-        } else {
-            chunkheader -= 127;
-            file.read( colorbuf, sizeof( colorbuf ) );
-
-            for( int i = 0; i < chunkheader; ++i ) {
-                m_data[ currentbyte ]     = colorbuf[ 2 ];
-                m_data[ currentbyte + 1 ] = colorbuf[ 1 ];
-                m_data[ currentbyte + 2 ] = colorbuf[ 0 ];
-
-                if( bytespp == 4 ) {
-                    m_data[ currentbyte + 3 ] = colorbuf[ 3 ];
-                }
-
-                currentbyte += bytespp;
-                currentpixel++;
-            }
-        }
-    } while( currentpixel < pixelcount );
-
-    file.close();
-
-    // cout << "Compressed: " << m_width << " * " << m_height << " * " << m_bpp << endl;
-    return true;
+    return ret == GL_TRUE;
 }
 
 }

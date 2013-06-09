@@ -28,12 +28,10 @@ private:
     GLuint   m_bpp;
     GLuint   m_rgb_type;
     GLenum   m_format;
+    GLFWimage m_img;
 
     // TGA stuff
     bool loadTGA( std::string );
-    bool loadCompressedTGA( std::ifstream& );
-    bool loadUncompressedTGA( std::ifstream& );
-
     void init();
 public:
     Texture();
