@@ -2,22 +2,22 @@
 
 long counter  = 0;
 
-World::World(int height, int width) {
+World::World(const int height, const int width) {
 	createMap(height, width);
 }
 
-void World::createMap(int height, int width) {
-	map = new Map(height, width);
+void World::createMap(const int height, const int width) {
+	m_map = new Map(height, width);
 
-	std::vector<Hexagon> v = map->getHexaVector();
-	for (std::vector<Hexagon>::iterator h = v.begin(); h != v.end(); ++h) {
-		addHexagon(h->getCenter(), h->getLeft());
+	std::vector<Hexagon> v = m_map->getHexaVector();
+	for (auto h : v) {
+		addHexagon(h.getCenter(), h.getLeft());
 	}
 }
 
-void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
+void World::addTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 col) {
 	
-	Object o = Object();
+	Object o;
 
 	GLfloat * vertexData = new GLfloat[9];
 	for (int i = 0; i < 3; i++) {
@@ -50,13 +50,13 @@ void World::addTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 col) {
 
 	o.setTriangles(1);
 
-	objects.push_back(o);
+	m_objects.push_back(o);
 	
 }
 
-void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 d, glm::vec3 col) {
+void World::addQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, const glm::vec3 col) {
 
-	Object o = Object();
+	Object o;
 
 	glm::vec3 c = b + (d - a);
 
@@ -96,13 +96,63 @@ void World::addQuad(glm::vec3 a, glm::vec3 b, glm::vec3 d, glm::vec3 col) {
 
 	o.setTriangles(2);
 
-	objects.push_back(o);
+	m_objects.push_back(o);
 
 }
 
-void World::addHexagon(glm::vec3 center, glm::vec3 left, glm::vec3 col) {
+void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float width, const glm::vec3 col) {
 
-	Object o = Object();
+	Object o;
+
+	glm::vec3 l = end - start;
+	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, start.y, -l.x)) * width / 2.f;
+	glm::vec3 b = start + glm::normalize(glm::vec3(-l.z, start.y, l.x)) * width / 2.f;
+	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, end.y, l.x)) * width / 2.f;
+	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, end.y, -l.x)) * width / 2.f;
+
+	GLfloat * vertexData = new GLfloat[12];
+	for (int i = 0; i < 3; i++) {
+		vertexData[i] = a[i];
+		vertexData[i + 3] = b[i];
+		vertexData[i + 6] = c[i];
+		vertexData[i + 9] = d[i];
+	}
+
+	GLfloat * normalData = new GLfloat[12];
+	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
+	for (int i = 0; i < 3; i++) {
+		normalData[i] = n[i];
+		normalData[i + 3] = n[i];
+		normalData[i + 6] = n[i];
+		normalData[i + 9] = n[i];
+	}
+
+	GLfloat * colorData = new GLfloat[12];
+	for (int i = 0; i < 12; i += 3) {
+		colorData[i] = col[0];
+		colorData[i + 1] = col[1];
+		colorData[i + 2] = col[2];
+	}
+
+	GLushort * indexData = new GLushort[6];
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+	indexData[3] = 2;
+	indexData[4] = 3;
+	indexData[5] = 0;
+
+	o.fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
+
+	o.setTriangles(2);
+
+	m_objects.push_back(o);
+
+}
+
+void World::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::vec3 col) {
+
+	Object o;
 
 	GLfloat * vertexData = new GLfloat[21];
 	GLfloat * normalData = new GLfloat[21];
@@ -171,11 +221,11 @@ void World::addHexagon(glm::vec3 center, glm::vec3 left, glm::vec3 col) {
 
 	o.setTriangles(6);
 
-	objects.push_back(o);
+	m_objects.push_back(o);
 
 }
 
-void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::vec3 col) {
+void World::addCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 d, const glm::vec3 col) {
 
 	Object o;
 	
@@ -195,7 +245,37 @@ void World::addCuboid(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 d, glm::v
 
 	o.setTriangles(12);
 
-	objects.push_back(o);
+	m_objects.push_back(o);
+
+}
+
+void World::addCuboid(const glm::vec3 center, const glm::vec3 dirX, const glm::vec3 dirZ, const float height, const glm::vec3 col) {
+
+	Object o;
+
+	GLfloat * vertexData;
+	GLfloat * normalData;
+	GLushort * indexData;
+
+	glm::vec3 a = center + dirX + dirZ;
+	glm::vec3 b = center + dirX - dirZ;
+	glm::vec3 c = a + glm::vec3(0,1,0) * height;
+	glm::vec3 d = center - dirX + dirZ;
+
+	createCuboidData(a, b, c, d, vertexData, normalData, indexData);
+
+	GLfloat * colorData = new GLfloat[72];
+	for (int i = 0; i < 72; i += 3) {
+		colorData[i] = col[0];
+		colorData[i + 1] = col[1];
+		colorData[i + 2] = col[2];
+	}
+
+	o.fillBuffers(72, 36, vertexData, normalData, colorData, indexData);
+
+	o.setTriangles(12);
+
+	m_objects.push_back(o);
 
 }
 
@@ -315,3 +395,56 @@ void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::
 	indexData[35] = 20;
 
 }
+
+void World::addSpline(std::vector<glm::vec3> pts, const float width, const glm::vec3 col) {
+
+	assert(pts.size() > 2);
+
+	if (pts.size() % 2 == 1) {
+		glm::vec3 tmp = pts[pts.size() - 1];
+		pts.pop_back();
+		pts.push_back(pts[pts.size() - 2] + (tmp - pts[pts.size() - 2]) * 0.5f);
+		pts.push_back(tmp);
+	}
+
+	for (int i = 3; i < pts.size(); i += 2) {
+
+		float len = glm::sqrt(glm::pow(pts[i].x - pts[i - 3].x, 2.f) 
+			+ glm::pow(pts[i].y - pts[i - 3].y, 2.f) + glm::pow(pts[i].z - pts[i - 3].z, 2.f));
+		float step = 1.f / len;
+		std::cout << step << "\n";
+		glm::vec3 old = pts[i - 3];
+		glm::vec3 tmp;
+		for (float t = 0.f; t < 1.f; t += step) {
+			tmp = drawBezier(pts[i - 3], pts[i - 2], pts[i - 1], pts[i], t);
+			glm::vec3 x = old + (tmp - old) * 1.1f;
+			addQuad(old, x, width, col);
+			old = tmp;
+		}
+		addQuad(tmp, pts[i], width, col);
+
+	}
+	
+}
+
+glm::vec3 World::drawBezier(glm::vec3 A, glm::vec3 B, glm::vec3 C, glm::vec3 D, float t) {
+    glm::vec3 P;
+
+    P.x = pow((1 - t), 3) * A.x + 3 * t * pow((1 -t), 2) * B.x + 3 * (1-t) * pow(t, 2)* C.x + pow (t, 3)* D.x;
+    P.y = pow((1 - t), 3) * A.y + 3 * t * pow((1 -t), 2) * B.y + 3 * (1-t) * pow(t, 2)* C.y + pow (t, 3)* D.y;
+    P.z = pow((1 - t), 3) * A.z + 3 * t * pow((1 -t), 2) * B.z + 3 * (1-t) * pow(t, 2)* C.z + pow (t, 3)* D.z;
+	// float t3 = glm::pow(t, 3.f);
+	// float t2 = glm::pow(t, 2.f);
+ //    return 0.5f * ((2.f * B) + (-A + C) * t + (2.f*A - 5.f*B + 4.f*C - D) * t2 + (-A + 3.f*B- 3.f*C + D) * t3);
+
+    return P;
+}
+
+// glm::vec3 World::drawHermite(glm::vec3 A, glm::vec3 B, float mA, float mB, float t) {
+
+// 	float t3 = glm::pow(t, 3.f);
+// 	float t2 = glm::pow(t, 2.f);
+
+// 	return (2*t3 - 3*t2 + 1) * A + 
+
+// }

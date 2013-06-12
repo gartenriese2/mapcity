@@ -16,6 +16,7 @@ public:
 	void simplePass(Camera &);
 	void depthPlayerPass(Camera &);
 	void depthLightPass(Camera &);
+	void shadowPass(Camera &);
 	
 private:
 	World * m_world;
@@ -29,6 +30,12 @@ private:
 	GLuint m_MVP_depthPass;
 	int m_depthTextureWidth;
 	int m_depthTextureHeight;
+	Camera * m_lightCam;
+
+	Shader * m_shadowShader;
+	GLuint m_MVP_shadowPass;
+	GLuint m_depthMVP_shadowPass;
+	GLuint m_shadowTexture;
 };
 
 #endif

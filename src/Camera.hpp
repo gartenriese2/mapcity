@@ -9,6 +9,7 @@ class Camera {
 public:
 	Camera() {};
 	Camera(glm::vec3, glm::vec3, glm::vec3, float, int, int, float, float);
+	Camera(glm::vec3, glm::vec3, glm::vec3, float, float, float, float);
 
 	inline glm::mat4 getViewMat() { return m_view; }
 	inline glm::mat4 getProjMat() { return m_proj; }

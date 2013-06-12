@@ -15,6 +15,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 // BEGIN TEST
 // #define LIBACE_TEST // uncomment this to test libace
@@ -181,8 +182,22 @@ void gameTest() {
 	game.getWorld()->addCuboid(glm::vec3(290,0,-295), glm::vec3(300,0,-295), glm::vec3(290,10,-295), glm::vec3(290,0,-285), glm::vec3(0,1,0));
 	game.getWorld()->addCuboid(glm::vec3(300,0,-265), glm::vec3(310,0,-255), glm::vec3(300,30,-265), glm::vec3(290,0,-255), glm::vec3(0,1,0));
 	game.getWorld()->addCuboid(glm::vec3(300,0,-320), glm::vec3(310,0,-320), glm::vec3(300,10,-320), glm::vec3(300,0,-310), glm::vec3(0,0,1));
-	game.getWorld()->addQuad(glm::vec3(315,0.1,-250), glm::vec3(325,0.1,-250), glm::vec3(315,0.1,-350), glm::vec3(1,1,0));
 	game.getWorld()->addQuad(glm::vec3(315,0.1,-270), glm::vec3(315,0.1,-280), glm::vec3(270,0.1,-270), glm::vec3(1,1,0));
+
+	game.getWorld()->addQuad(glm::vec3(320,0.1,-250), glm::vec3(320,0.1,-350), 15.f, glm::vec3(1,1,0));
+	game.getWorld()->addQuad(glm::vec3(320,0.1,-275), glm::vec3(270,0.1,-275), 8.f, glm::vec3(1,1,0));
+	game.getWorld()->addQuad(glm::vec3(320,0.1,-275), glm::vec3(420,0.1,-300), 8.f, glm::vec3(1,1,0));
+
+	game.getWorld()->addCuboid(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10), 10.f, glm::vec3(0,1,1));
+
+	std::vector<glm::vec3> v;
+	v.push_back(glm::vec3(100,1,-100));
+	v.push_back(glm::vec3(150,1,-100));
+	v.push_back(glm::vec3(200,1,-150));
+	v.push_back(glm::vec3(200,1,-200));
+	// v.push_back(glm::vec3(250,1,-250));
+	// v.push_back(glm::vec3(280,1,-200));
+	game.getWorld()->addSpline(v, 10.f, glm::vec3(1,0,0));
 
 	game.start();
 }

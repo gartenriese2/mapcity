@@ -3,6 +3,7 @@
 
 #include "glm.h"
 #include <vector>
+#include "Object.hpp"
 
 class Building {
 
@@ -11,18 +12,20 @@ class Building {
 	public:
 		Building();
 		virtual ~Building();
-		inline int getID() { return this->ID; };
+		inline int getID() { return ID; }
+		inline Object & getObject() { return o; }
 		
 	private:
 		int ID;
 		glm::vec3 center,alignment;
 		float height,width,length;
 		std::vector<glm::vec3> outline;
+		Object o;
 	protected:
 		void createOutline();
-		inline void setCenter(glm::vec3 v) { center = v; }
-		inline void setAlignment(glm::vec3 v) { alignment = v; }
-		inline void setSize(float h, float w, float l) { height = h; width = w; length = l; }
+		inline void setCenter(const glm::vec3 v) { center = v; }
+		inline void setAlignment(const glm::vec3 v) { alignment = v; }
+		inline void setSize(const float h, const float w, const float l) { height = h; width = w; length = l; }
 		
 };
 

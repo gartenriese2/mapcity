@@ -96,8 +96,9 @@ void Window::loop() {
 
         // switch(option):
         // case
-        m_render->depthPlayerPass(* m_cam);
+        // m_render->depthPlayerPass(* m_cam);
         m_render->simplePass(* m_cam);
+        // m_render->depthLightPass(* m_cam);
         glfwSwapBuffers();
      
     } while(glfwGetKey(GLFW_KEY_ESC) != GLFW_PRESS && glfwGetWindowParam(GLFW_OPENED));
@@ -128,10 +129,10 @@ void Window::keyhandler() {
         m_cam->reset();
     }
     if (glfwGetKey(GLFW_KEY_INSERT) == GLFW_PRESS) {
-        m_cam->rotateAround(0.2f);
+        m_cam->rotateAround(0.4f);
     }
     if (glfwGetKey(GLFW_KEY_DEL) == GLFW_PRESS) {
-        m_cam->rotateAround(-0.2f);
+        m_cam->rotateAround(-0.4f);
     }
 
 }

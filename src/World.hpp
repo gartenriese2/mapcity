@@ -12,22 +12,27 @@
 
 class World {
 public:
-	World(int, int);
-	void createMap(int, int);
+	World(const int, const int);
+	void createMap(const int, const int);
 
-	void addTriangle(glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
-	void addQuad(glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
-	void addHexagon(glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
-	void addCuboid(glm::vec3, glm::vec3, glm::vec3, glm::vec3, glm::vec3 col = glm::vec3(1,1,1));
+	void addTriangle(const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
+	void addQuad(const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
+	void addQuad(const glm::vec3, const glm::vec3, const float, const glm::vec3 col = glm::vec3(1,1,1));
+	void addHexagon(const glm::vec3, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
+	void addCuboid(const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
+	void addCuboid(const glm::vec3, const glm::vec3, const glm::vec3, const float, const glm::vec3 col = glm::vec3(1,1,1));
+	void addSpline(std::vector<glm::vec3>, const float, const glm::vec3 col = glm::vec3(1,1,1));
 	
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
+	glm::vec3 drawBezier(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);
+	// glm::vec3 drawHermite(glm::vec3, glm::vec3, float, float, float);
 
-	inline std::vector<Object> getObjects() { return objects; }
+	inline std::vector<Object> & getObjects() { return m_objects; }
 	
 private:
 	
-	std::vector<Object> objects;
-	Map * map;
+	std::vector<Object> m_objects;
+	Map * m_map;
 
 };
 

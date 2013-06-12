@@ -20,6 +20,21 @@ Camera::Camera(glm::vec3 pos, glm::vec3 look, glm::vec3 up, float fov, int width
 
 }
 
+Camera::Camera(glm::vec3 pos, glm::vec3 look, glm::vec3 up, float left, float right, float top, float bottom) {
+
+	m_pos = pos;
+	m_dir = glm::normalize(look);
+	m_up = glm::normalize(up);
+
+	m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
+	m_proj = glm::ortho(left, right, bottom, top);
+
+	m_initPos = m_pos;
+	m_initDir = m_dir;
+	m_initUp = m_up;
+
+}
+
 void Camera::reset() {
 
 	m_pos = m_initPos;
