@@ -105,10 +105,10 @@ void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widt
 	Object o;
 
 	glm::vec3 l = end - start;
-	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, start.y, -l.x)) * width / 2.f;
-	glm::vec3 b = start + glm::normalize(glm::vec3(-l.z, start.y, l.x)) * width / 2.f;
-	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, end.y, l.x)) * width / 2.f;
-	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, end.y, -l.x)) * width / 2.f;
+	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
+	glm::vec3 b = start + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
+	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
+	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
 
 	GLfloat * vertexData = new GLfloat[12];
 	for (int i = 0; i < 3; i++) {
@@ -398,53 +398,47 @@ void World::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::
 
 void World::addSpline(std::vector<glm::vec3> pts, const float width, const glm::vec3 col) {
 
-	assert(pts.size() > 2);
+	assert(pts.size() > 1);
 
-	if (pts.size() % 2 == 1) {
-		glm::vec3 tmp = pts[pts.size() - 1];
-		pts.pop_back();
-		pts.push_back(pts[pts.size() - 2] + (tmp - pts[pts.size() - 2]) * 0.5f);
-		pts.push_back(tmp);
-	}
+	float smoothness = 100.f;
 
-	for (int i = 3; i < pts.size(); i += 2) {
+	for (int i = 0; i < pts.size() - 1; i++) {
+		
+		glm::vec3 old = pts[i];
+		glm::vec3 tmp, tmp2, mA, mB;
 
-		float len = glm::sqrt(glm::pow(pts[i].x - pts[i - 3].x, 2.f) 
-			+ glm::pow(pts[i].y - pts[i - 3].y, 2.f) + glm::pow(pts[i].z - pts[i - 3].z, 2.f));
-		float step = 1.f / len;
-		std::cout << step << "\n";
-		glm::vec3 old = pts[i - 3];
-		glm::vec3 tmp;
+		float step = 1.f / glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
+
 		for (float t = 0.f; t < 1.f; t += step) {
-			tmp = drawBezier(pts[i - 3], pts[i - 2], pts[i - 1], pts[i], t);
-			glm::vec3 x = old + (tmp - old) * 1.1f;
-			addQuad(old, x, width, col);
+			
+			if (i == 0) mA = glm::normalize(pts[i+1] - pts[i]);
+			else mA = glm::normalize(pts[i+1] - pts[i-1]);
+			if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
+			else mB = glm::normalize(pts[i+2] - pts[i]);
+
+			float stretch = 2.f - glm::pow(glm::dot(mA, mB), 2.f);
+
+			tmp = drawHermite(pts[i] / smoothness, pts[i+1] / smoothness, mA, mB, t) * smoothness;
+			tmp.y = pts[i].y + (pts[i + 1].y - pts[i].y) * t;
+			glm::vec3 tmp2 = old + (tmp - old) * stretch;
+
+			addQuad(old, tmp2, width, col);
+
 			old = tmp;
+
 		}
-		addQuad(tmp, pts[i], width, col);
+
+		addQuad(old, pts[i + 1], width, col);
 
 	}
 	
 }
 
-glm::vec3 World::drawBezier(glm::vec3 A, glm::vec3 B, glm::vec3 C, glm::vec3 D, float t) {
-    glm::vec3 P;
+glm::vec3 World::drawHermite(glm::vec3 A, glm::vec3 B, glm::vec3 mA, glm::vec3 mB, float t) {
 
-    P.x = pow((1 - t), 3) * A.x + 3 * t * pow((1 -t), 2) * B.x + 3 * (1-t) * pow(t, 2)* C.x + pow (t, 3)* D.x;
-    P.y = pow((1 - t), 3) * A.y + 3 * t * pow((1 -t), 2) * B.y + 3 * (1-t) * pow(t, 2)* C.y + pow (t, 3)* D.y;
-    P.z = pow((1 - t), 3) * A.z + 3 * t * pow((1 -t), 2) * B.z + 3 * (1-t) * pow(t, 2)* C.z + pow (t, 3)* D.z;
-	// float t3 = glm::pow(t, 3.f);
-	// float t2 = glm::pow(t, 2.f);
- //    return 0.5f * ((2.f * B) + (-A + C) * t + (2.f*A - 5.f*B + 4.f*C - D) * t2 + (-A + 3.f*B- 3.f*C + D) * t3);
+	float t3 = glm::pow(t, 3.f);
+	float t2 = glm::pow(t, 2.f);
 
-    return P;
+	return (2*t3 - 3*t2 + 1) * A + (t3 - 2*t2 + t) * mA + (3*t2 - 2*t3) * B + (t3 - t2) * mB;
+
 }
-
-// glm::vec3 World::drawHermite(glm::vec3 A, glm::vec3 B, float mA, float mB, float t) {
-
-// 	float t3 = glm::pow(t, 3.f);
-// 	float t2 = glm::pow(t, 2.f);
-
-// 	return (2*t3 - 3*t2 + 1) * A + 
-
-// }

@@ -192,11 +192,12 @@ void gameTest() {
 
 	std::vector<glm::vec3> v;
 	v.push_back(glm::vec3(100,1,-100));
-	v.push_back(glm::vec3(150,1,-100));
-	v.push_back(glm::vec3(200,1,-150));
-	v.push_back(glm::vec3(200,1,-200));
-	// v.push_back(glm::vec3(250,1,-250));
-	// v.push_back(glm::vec3(280,1,-200));
+	v.push_back(glm::vec3(200,1,-100));
+	v.push_back(glm::vec3(200,15,-200));
+	v.push_back(glm::vec3(250,15,-250));
+	v.push_back(glm::vec3(280,1,-200));
+	v.push_back(glm::vec3(400,1,-100));
+	v.push_back(glm::vec3(500,1,-300));
 	game.getWorld()->addSpline(v, 10.f, glm::vec3(1,0,0));
 
 	game.start();

@@ -25,7 +25,7 @@ public:
 	
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
 	glm::vec3 drawBezier(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);
-	// glm::vec3 drawHermite(glm::vec3, glm::vec3, float, float, float);
+	glm::vec3 drawHermite(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);
 
 	inline std::vector<Object> & getObjects() { return m_objects; }
 	
