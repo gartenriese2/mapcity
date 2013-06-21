@@ -5,6 +5,7 @@ int Zone::count = 0;
 Zone::Zone() {
 	
 	this->ID = ++Zone::count;
+	isBuilt = false;
 	
 }
 

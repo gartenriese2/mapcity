@@ -47,7 +47,7 @@ class Zone {
 
 	protected:
 		
-		
+		bool isBuilt;
 
 		void setArea();
 		void setCenter();

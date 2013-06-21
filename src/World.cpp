@@ -6,6 +6,11 @@ World::World(const int height, const int width) {
 	createMap(height, width);
 }
 
+/**
+ * creates a map with width and height
+ * @param height height of map in meters
+ * @param width  width of map in meters
+ */
 void World::createMap(const int height, const int width) {
 	m_map = new Map(height, width);
 
@@ -15,6 +20,13 @@ void World::createMap(const int height, const int width) {
 	}
 }
 
+/**
+ * adds a triangle to the object vector
+ * @param a   first point
+ * @param b   second point (anticlockwise)
+ * @param c   third point (anticlockwise)
+ * @param col optional color
+ */
 void World::addTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 col) {
 	
 	Object o;
@@ -54,6 +66,13 @@ void World::addTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c,
 	
 }
 
+/**
+ * adds a quad to the object vector
+ * @param a   first point
+ * @param b   second point (anticlockwise)
+ * @param d   fourth point (anticlockwise)
+ * @param col optional color
+ */
 void World::addQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, const glm::vec3 col) {
 
 	Object o;
@@ -100,6 +119,13 @@ void World::addQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, con
 
 }
 
+/**
+ * adds a quad to the object vector
+ * @param start midpoint of the left side
+ * @param end   midpoint of the right side
+ * @param width length of left/right side
+ * @param col   optional color
+ */
 void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float width, const glm::vec3 col) {
 
 	Object o;
@@ -150,6 +176,70 @@ void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widt
 
 }
 
+/**
+ * adds a quad to the object vector
+ * @param start      midpoint of left side
+ * @param end        midpoint of right side
+ * @param widthStart length of left side
+ * @param widthEnd   length of right side
+ * @param col        optional color
+ */
+void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widthStart, const float widthEnd, const glm::vec3 col) {
+
+	Object o;
+
+	glm::vec3 l = end - start;
+	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * widthStart / 2.f;
+	glm::vec3 b = start + glm::normalize(glm::vec3(-l.z, 0, l.x)) * widthStart / 2.f;
+	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, 0, l.x)) * widthEnd / 2.f;
+	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * widthEnd / 2.f;
+
+	GLfloat * vertexData = new GLfloat[12];
+	for (int i = 0; i < 3; i++) {
+		vertexData[i] = a[i];
+		vertexData[i + 3] = b[i];
+		vertexData[i + 6] = c[i];
+		vertexData[i + 9] = d[i];
+	}
+
+	GLfloat * normalData = new GLfloat[12];
+	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
+	for (int i = 0; i < 3; i++) {
+		normalData[i] = n[i];
+		normalData[i + 3] = n[i];
+		normalData[i + 6] = n[i];
+		normalData[i + 9] = n[i];
+	}
+
+	GLfloat * colorData = new GLfloat[12];
+	for (int i = 0; i < 12; i += 3) {
+		colorData[i] = col[0];
+		colorData[i + 1] = col[1];
+		colorData[i + 2] = col[2];
+	}
+
+	GLushort * indexData = new GLushort[6];
+	indexData[0] = 0;
+	indexData[1] = 1;
+	indexData[2] = 2;
+	indexData[3] = 2;
+	indexData[4] = 3;
+	indexData[5] = 0;
+
+	o.fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
+
+	o.setTriangles(2);
+
+	m_objects.push_back(o);
+
+}
+
+/**
+ * adds a hexagon to the object vector
+ * @param center center of the hexagon
+ * @param left   left point of the hexagon
+ * @param col    optional color
+ */
 void World::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::vec3 col) {
 
 	Object o;
@@ -225,6 +315,14 @@ void World::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::
 
 }
 
+/**
+ * adds a cuboid to the object vector
+ * @param a   [description]
+ * @param b   [description]
+ * @param c   [description]
+ * @param d   [description]
+ * @param col [description]
+ */
 void World::addCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 d, const glm::vec3 col) {
 
 	Object o;
@@ -407,16 +505,16 @@ void World::addSpline(std::vector<glm::vec3> pts, const float width, const glm::
 		glm::vec3 old = pts[i];
 		glm::vec3 tmp, tmp2, mA, mB;
 
+		if (i == 0) mA = glm::normalize(pts[i+1] - pts[i]);
+		else mA = glm::normalize(pts[i+1] - pts[i-1]);
+		if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
+		else mB = glm::normalize(pts[i+2] - pts[i]);
+
+		float stretch = 2.f - glm::pow(glm::dot(mA, mB), 2.f);
+
 		float step = 1.f / glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
 
 		for (float t = 0.f; t < 1.f; t += step) {
-			
-			if (i == 0) mA = glm::normalize(pts[i+1] - pts[i]);
-			else mA = glm::normalize(pts[i+1] - pts[i-1]);
-			if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
-			else mB = glm::normalize(pts[i+2] - pts[i]);
-
-			float stretch = 2.f - glm::pow(glm::dot(mA, mB), 2.f);
 
 			tmp = drawHermite(pts[i] / smoothness, pts[i+1] / smoothness, mA, mB, t) * smoothness;
 			tmp.y = pts[i].y + (pts[i + 1].y - pts[i].y) * t;
