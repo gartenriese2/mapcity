@@ -6,36 +6,48 @@
 #include "Shader.hpp"
 #include "Fbo.hpp"
 #include <iostream>
+#include <memory>
 
 class Render {
 public:
-	Render(World *);
+	Render(std::shared_ptr<World>);
 	~Render();
 
 	void init();
 	void simplePass(Camera &);
+	void gbufferPass(Camera &);
+	void simpleTexPass();
 	void depthPlayerPass(Camera &);
 	void depthLightPass(Camera &);
 	void shadowPass(Camera &);
 	
 private:
-	World * m_world;
-	Fbo * m_fbo;
+	std::shared_ptr<World> m_world;
+	std::shared_ptr<Fbo> m_fbo;
 
-	Shader * m_simpleShader;
+	std::shared_ptr<Shader> m_simpleShader;
 	GLuint m_MVP_simplePass;
 	GLuint m_Light_simplePass;
 
-	Shader * m_depthShader;
+	std::shared_ptr<Shader> m_depthShader;
 	GLuint m_MVP_depthPass;
 	int m_depthTextureWidth;
 	int m_depthTextureHeight;
-	Camera * m_lightCam;
+	std::shared_ptr<Camera> m_lightCam;
 
-	Shader * m_shadowShader;
+	std::shared_ptr<Shader> m_shadowShader;
 	GLuint m_MVP_shadowPass;
 	GLuint m_depthMVP_shadowPass;
 	GLuint m_shadowTexture;
+
+	std::shared_ptr<Shader> m_gbufferShader;
+	GLuint m_MVP_gbufferPass;
+	GLuint m_Light_gbufferPass;
+	GLuint m_gbufferPositionTexture;
+	GLuint m_gbufferNormalTexture;
+	GLuint m_gbufferDepthTexture;
+	GLuint m_gbufferColorTexture;
+
 };
 
 #endif

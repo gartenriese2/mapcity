@@ -183,7 +183,6 @@ void gameTest() {
 	game.getWorld()->addCuboid(glm::vec3(300,0,-265), glm::vec3(310,0,-255), glm::vec3(300,30,-265), glm::vec3(290,0,-255), glm::vec3(0,1,0));
 	game.getWorld()->addCuboid(glm::vec3(300,0,-320), glm::vec3(310,0,-320), glm::vec3(300,10,-320), glm::vec3(300,0,-310), glm::vec3(0,0,1));
 	game.getWorld()->addQuad(glm::vec3(315,0.1,-270), glm::vec3(315,0.1,-280), glm::vec3(270,0.1,-270), glm::vec3(1,1,0));
-
 	game.getWorld()->addQuad(glm::vec3(320,0.1,-250), glm::vec3(320,0.1,-350), 15.f, glm::vec3(1,1,0));
 	game.getWorld()->addQuad(glm::vec3(320,0.1,-275), glm::vec3(270,0.1,-275), 8.f, glm::vec3(1,1,0));
 	game.getWorld()->addQuad(glm::vec3(320,0.1,-275), glm::vec3(420,0.1,-300), 8.f, glm::vec3(1,1,0));

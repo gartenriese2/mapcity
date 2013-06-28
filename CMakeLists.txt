@@ -27,7 +27,7 @@ file(COPY assets DESTINATION ${PROJECT_BINARY_DIR})
 if( APPLE )
 	add_definitions( -std=c++11 )
 else()
-	add_definitions( -std=c++0x )
+	add_definitions( -std=c++11 )
 endif( APPLE )
 
 # add source directory

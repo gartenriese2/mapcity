@@ -19,6 +19,8 @@ public:
 
 private:
 	
+	int m_ID;
+
 	GLuint m_vertexArray;
 
 	GLuint m_vertexBuffer;

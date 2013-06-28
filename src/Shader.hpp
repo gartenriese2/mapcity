@@ -16,9 +16,8 @@ public:
 	inline GLuint GetShaderID() { return m_shaderID; }
     inline void Use() { glUseProgram(m_shaderID); }
 
-	GLuint addUniformMatrix4f(const char *);
+	GLuint addUniform(const char *);
 	void linkMatrix4f(GLuint, const glm::mat4);
-	GLuint addUniform3f(const char *);
 	void link3f(GLuint, const float, const float, const float);
 
 private:

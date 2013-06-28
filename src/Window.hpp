@@ -4,10 +4,12 @@
 #include <stdio.h>
 #include <time.h>
 #include <sstream>
+#include <memory>
 
 #include "World.hpp"
 #include "Camera.hpp"
 #include "Render.hpp"
+#include "Time.hpp"
 
 using namespace glm;
 using namespace std;
@@ -18,8 +20,8 @@ public:
 	~Window();
 	void initCam(int, int);
 	void loop();
-	inline Camera * getCam() { return m_cam; }
-	inline void setWorld(World * world) { m_world = world; }
+	inline shared_ptr<Camera> getCam() { return m_cam; }
+	inline void setWorld(shared_ptr<World> world) { m_world = world; }
 private:
 
 	int m_width;
@@ -27,16 +29,16 @@ private:
 
 	int m_mousePosX, m_mousePosY, m_mouseWheelPos;
 	
-	World * m_world;
-	Camera * m_cam;
-	Render * m_render;
+	shared_ptr<World> m_world;
+	shared_ptr<Camera> m_cam;
+	shared_ptr<Render> m_render;
 
 	int init();
 	int createWindow(int, int);
 
 	void keyhandler();
 	void mousehandler();
-	void FPS(time_t &, int &, int &);
+	void FPS(Time &);
 };
 
 #endif

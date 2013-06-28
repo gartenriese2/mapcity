@@ -4,18 +4,20 @@
 #include "World.hpp"
 #include "Window.hpp"
 
+#include <memory>
+
 class Game {
 public:
 	Game(int, int, int, int);
 
 	void start();
 
-	inline World * getWorld() { return m_world; }
-	inline Window * getWindow() { return m_window; }
+	inline shared_ptr<World> getWorld() { return m_world; }
+	inline shared_ptr<Window> getWindow() { return m_window; }
 	
 private:
-	World * m_world;
-	Window * m_window;
+	shared_ptr<World> m_world;
+	shared_ptr<Window> m_window;
 	
 };
 

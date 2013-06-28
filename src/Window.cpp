@@ -68,37 +68,40 @@ int Window::createWindow(int width, int height) {
 
 void Window::initCam(int width, int height) {
 
-    m_cam = new Camera(glm::vec3(400.f, 100.f, -200.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
+    m_cam = make_shared<Camera>(glm::vec3(400.f, 100.f, -200.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
         45.f, width, height, 0.1f, 10000.f);
 
 }
 
 void Window::loop() {
 
-    m_render = new Render(m_world);
+    m_render = make_shared<Render>(m_world);
     m_render->init();
 
     glClearColor(0,0,0,0);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    int frames = 0;
-    time_t timer;
-    time(&timer);
-    int oldTime = timer;
+    Time t;
 
     do{
         
-        FPS(timer, oldTime, frames);
+        //FPS(t);
 
         keyhandler();
         mousehandler();
 
         // switch(option):
         // case
-        // m_render->depthPlayerPass(* m_cam);
+        //m_render->depthPlayerPass(* m_cam);
+        // t.start();
         m_render->simplePass(* m_cam);
+        // t.end();
         // m_render->depthLightPass(* m_cam);
+        
+        // m_render->gbufferPass(* m_cam);
+        
+        //t.waitAndAdd();
         glfwSwapBuffers();
      
     } while(glfwGetKey(GLFW_KEY_ESC) != GLFW_PRESS && glfwGetWindowParam(GLFW_OPENED));
@@ -164,15 +167,10 @@ void Window::mousehandler() {
 
 }
 
-void Window::FPS(time_t &timer, int &oldTime, int &frames) {
-    frames++;
-    time(&timer);
-    if (timer > oldTime) {
-        // cout << frames << " fps.\n";
-        std::stringstream oss;
-        oss << "MapCity: " << frames << " FPS.";
-        glfwSetWindowTitle(oss.str().c_str());
-        frames = 0;
-    }
-    oldTime = timer;
+void Window::FPS(Time & t) {
+
+    std::stringstream oss;
+    oss << "MapCity: " << t.getAverage() << " ms.";
+    glfwSetWindowTitle(oss.str().c_str());
+    
 }

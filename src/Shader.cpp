@@ -4,16 +4,12 @@ Shader::Shader(const char * vertex, const char * fragment) {
     m_shaderID = loadShaders(vertex, fragment);
 }
 
-GLuint Shader::addUniformMatrix4f(const char * name) {
+GLuint Shader::addUniform(const char * name) {
     return glGetUniformLocation(m_shaderID, name);
 }
 
 void Shader::linkMatrix4f(GLuint ID, const glm::mat4 matrix) {
     glUniformMatrix4fv(ID, 1, GL_FALSE, &matrix[0][0]);
-}
-
-GLuint Shader::addUniform3f(const char * name) {
-    return glGetUniformLocation(m_shaderID, name);
 }
 
 void Shader::link3f(GLuint ID, const float a, const float b, const float c) {

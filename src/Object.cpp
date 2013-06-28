@@ -1,6 +1,10 @@
 #include "Object.hpp"
 
+static int count = 0;
+
 Object::Object() {
+
+	m_ID = count++;
 
 	glGenVertexArrays(1, &m_vertexArray);
 

@@ -44,7 +44,7 @@ void Fbo::createColorTexture(GLuint& occlusionTexture, const GLenum format, cons
     glBindTexture(GL_TEXTURE_2D, occlusionTexture);
 
     //glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB16F, width, height); // GLEW too old?
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGB, GL_FLOAT, 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
