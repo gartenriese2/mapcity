@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
+#include <thread>
 
 // BEGIN TEST
 // #define LIBACE_TEST // uncomment this to test libace
@@ -201,6 +202,32 @@ void gameTest() {
 	game.getWorld()->addSpline(v, 10.f, glm::vec3(1,0,0));
 
 	game.start();
+
+}
+
+void para() {
+	
+	for (int i = 0; i < 1000000000; ++i)
+	{
+		i = 2*i - i;
+	}
+	cout << "parallel!\n";
+	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
+	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Einfamilienhaus e4(glm::vec3(300,0,-260), glm::vec3(5,0,5), glm::vec3(5,0,-5));
+}
+
+void threadTest() {
+
+	// int height = 1000, width = 1000;
+	// Game game(width, height, 1000, 1000);
+
+	thread t1(gameTest);
+	thread t2(para);
+	t1.join();
+	t2.join();
+
 }
 
 void zoneTest() {
@@ -339,6 +366,7 @@ int main() {
 	// findHexagonTest();
 	// demandFunctionTest();
 	gameTest();
+	// threadTest();
 	// zoneTest();
 	// householdTest();
 	// bebauteZonenTest();

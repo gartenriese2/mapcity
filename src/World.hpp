@@ -30,13 +30,9 @@ public:
 	
 private:
 	
-	void createMap(const int, const int);
-	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
-	glm::vec3 drawHermite(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);
-	
 	std::vector<Object> m_objects;
 	
-	Map * m_map;
+	std::shared_ptr<Map> m_map;
 
 };
 

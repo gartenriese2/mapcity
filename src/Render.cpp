@@ -76,6 +76,15 @@ void Render::simplePass(Camera &cam) {
 		o.second.draw();
 	}
 
+	for (auto o : ObjectContainer::instance().getHexagons()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
 }
 
 void Render::gbufferPass(Camera &cam) {

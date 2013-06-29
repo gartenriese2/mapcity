@@ -62,6 +62,8 @@ private:
 
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
 	glm::vec3 drawHermite(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);
+	void addQuadToData(std::vector<GLfloat> &, std::vector<GLfloat> &, std::vector<GLushort> &, std::vector<GLfloat> &, 
+						const glm::vec3, const glm::vec3, const float, const glm::vec3);
 
 };
 

@@ -4,17 +4,7 @@ static unsigned long count = 1;
 
 Object::Object() {
 
-	m_ID = count++;
-
-	glGenVertexArrays(1, &m_vertexArray);
-
-	glGenBuffers(1, &m_vertexBuffer);
-	glGenBuffers(1, &m_normalBuffer);
-	glGenBuffers(1, &m_colorBuffer);
-	glGenBuffers(1, &m_indexBuffer);
-
-	m_triangles = 0;
-	m_modelMatrix = glm::mat4(1.f);
+	init();
 
 }
 
@@ -212,6 +202,10 @@ void Object::setAsTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3
 	indexData[2] = 2;
 
 	fillBuffers(9, 3, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(1);
 	
@@ -261,6 +255,10 @@ void Object::setAsQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, 
 	indexData[5] = 0;
 
 	fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(2);
 
@@ -314,6 +312,10 @@ void Object::setAsQuad(const glm::vec3 start, const glm::vec3 end, const float w
 	indexData[5] = 0;
 
 	fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(2);
 
@@ -368,6 +370,10 @@ void Object::setAsQuad(const glm::vec3 start, const glm::vec3 end, const float w
 	indexData[5] = 0;
 
 	fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(2);
 
@@ -445,6 +451,10 @@ void Object::setAsHexagon(const glm::vec3 center, const glm::vec3 left, const gl
 	indexData[17] = 1;
 
 	fillBuffers(21, 18, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(6);
 
@@ -473,6 +483,10 @@ void Object::setAsCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c
 	}
 
 	fillBuffers(72, 36, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(12);
 
@@ -499,6 +513,10 @@ void Object::setAsCuboid(const glm::vec3 center, const glm::vec3 dirX, const glm
 	}
 
 	fillBuffers(72, 36, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
 
 	setTriangles(12);
 
@@ -625,6 +643,11 @@ void Object::setAsSpline(std::vector<glm::vec3> pts, const float width, const gl
 
 	assert(pts.size() > 1);
 
+	std::vector<GLfloat> vertexData;
+	std::vector<GLfloat> normalData;
+	std::vector<GLushort> indexData;
+	std::vector<GLfloat> colorData;
+
 	float smoothness = 100.f;
 
 	for (int i = 0; i < pts.size() - 1; i++) {
@@ -647,15 +670,30 @@ void Object::setAsSpline(std::vector<glm::vec3> pts, const float width, const gl
 			tmp.y = pts[i].y + (pts[i + 1].y - pts[i].y) * t;
 			glm::vec3 tmp2 = old + (tmp - old) * stretch;
 
-			Object(ObjectType::QUAD, old, tmp2, width, col);
+			//Object(ObjectType::QUAD, old, tmp2, width, col);
+			addQuadToData(vertexData, normalData, indexData, colorData, old, tmp2, width, col);
 
 			old = tmp;
 
 		}
 
-		Object(ObjectType::QUAD, old, pts[i + 1], width, col);
+		//Object(ObjectType::QUAD, old, pts[i + 1], width, col);
+		addQuadToData(vertexData, normalData, indexData, colorData, old, pts[i + 1], width, col);
 
 	}
+
+	GLfloat * vertices = &vertexData[0];
+	GLfloat * normals = &normalData[0];
+	GLushort * indices = &indexData[0];
+	GLfloat * colors = &colorData[0];
+
+	fillBuffers(vertexData.size(), indexData.size(), vertices, normals, colors, indices);
+	//delete vertices;
+	//delete normals;
+	//delete indices;
+	//delete colors;
+
+	setTriangles(indexData.size() / 3);
 	
 }
 
@@ -665,5 +703,60 @@ glm::vec3 Object::drawHermite(glm::vec3 A, glm::vec3 B, glm::vec3 mA, glm::vec3 
 	float t2 = glm::pow(t, 2.f);
 
 	return (2*t3 - 3*t2 + 1) * A + (t3 - 2*t2 + t) * mA + (3*t2 - 2*t3) * B + (t3 - t2) * mB;
+
+}
+
+void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
+							std::vector<GLfloat> & normalData,
+							std::vector<GLushort> & indexData,
+							std::vector<GLfloat> & colorData,
+							const glm::vec3 start,
+							const glm::vec3 end,
+							const float width,
+							const glm::vec3 color) {
+
+	glm::vec3 l = end - start;
+	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
+	glm::vec3 b = start + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
+	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
+	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
+
+	int len = vertexData.size() / 3;
+
+	vertexData.push_back(a[0]);
+	vertexData.push_back(a[1]);
+	vertexData.push_back(a[2]);
+
+	vertexData.push_back(b[0]);
+	vertexData.push_back(b[1]);
+	vertexData.push_back(b[2]);
+
+	vertexData.push_back(c[0]);
+	vertexData.push_back(c[1]);
+	vertexData.push_back(c[2]);
+
+	vertexData.push_back(d[0]);
+	vertexData.push_back(d[1]);
+	vertexData.push_back(d[2]);
+
+	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
+	for (int i = 0; i < 4; i++) {
+		normalData.push_back(n[0]);
+		normalData.push_back(n[1]);
+		normalData.push_back(n[2]);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		colorData.push_back(color[0]);
+		colorData.push_back(color[1]);
+		colorData.push_back(color[2]);
+	}
+
+	indexData.push_back(len);
+	indexData.push_back(len + 1);
+	indexData.push_back(len + 2);
+	indexData.push_back(len + 2);
+	indexData.push_back(len + 3);
+	indexData.push_back(len);
 
 }

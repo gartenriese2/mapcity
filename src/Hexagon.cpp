@@ -4,6 +4,7 @@ Hexagon::Hexagon(glm::vec3 center) {
 
 	this->center = center;
 	setVertices();
+	ObjectContainer::instance().addHexagon(center, getLeft(), glm::vec3(1,1,1));
 
 }
 
