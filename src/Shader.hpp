@@ -8,6 +8,13 @@
 #include <fstream>
 #include <vector>
 
+struct TextureUniform
+{
+    GLenum target;
+    GLuint texture;
+    GLuint ID;
+};
+
 class Shader {
 public:
 	
@@ -16,12 +23,16 @@ public:
 	inline GLuint GetShaderID() { return m_shaderID; }
     inline void Use() { glUseProgram(m_shaderID); }
 
+	void addUniformTexture(const GLenum, const GLuint, const char *);
 	GLuint addUniform(const char *);
-	void linkMatrix4f(GLuint, const glm::mat4);
-	void link3f(GLuint, const float, const float, const float);
+	void linkTextures();
+	void link(GLuint, const glm::mat4);
+	void link(GLuint, const float, const float, const float);
 
 private:
 	GLuint m_shaderID;
+
+	std::vector<TextureUniform> m_textureUniforms;
 
 	GLuint loadShaders(const char *,const char *);
 };

@@ -1,12 +1,12 @@
 #include "Einfamilienhaus.hpp"
 
-Einfamilienhaus::Einfamilienhaus(glm::vec3 center, glm::vec3 align, float height, float width, float length) {
+Einfamilienhaus::Einfamilienhaus(glm::vec3 center, glm::vec3 front, glm::vec3 side) {
 
-	createOutline();
-	createHouseholds(1);
-	setCenter(center);
-	setAlignment(align);
-	setSize(height, width, length);
+	setShape(center, front, side);
+	setHeight(k_minHeight, k_maxHeight);
+	createObject();
+
+	createHouseholds(k_numHouseholds);
 
 }
 

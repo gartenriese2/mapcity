@@ -4,6 +4,7 @@
 #include "../glm-0.9.4.3/glm/glm.hpp"
 #include <vector>
 #include <iostream>
+#include "Zone.hpp"
 #include "ResidentialZone.hpp"
 // #include "IndustrialZone.hpp"
 

@@ -1,20 +1,17 @@
 #include "Building.hpp"
 
-int Building::count = 0;
-
 Building::Building() {
-
-	this->ID = ++Building::count;
 
 }
 
 Building::~Building() {
-
+	deleteObject();
 }
 
-void Building::createOutline() {
+void Building::createObject() {
+	m_ID = ObjectContainer::instance().addBuilding(m_center, m_front, m_side, m_height, m_color);
+}
 
-	outline.clear();
-	
-
+void Building::deleteObject() {
+	ObjectContainer::instance().deleteBuilding(m_ID);
 }

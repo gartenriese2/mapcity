@@ -43,6 +43,11 @@ void Render::init() {
 	m_MVP_gbufferPass = m_gbufferShader->addUniform("MVP");
 	m_Light_gbufferPass = m_gbufferShader->addUniform("Light");
 
+	m_simpleTexShader = std::make_shared<Shader>("../shader/SimpleTexVert.shader", "../shader/SimpleTexFrag.shader");
+	m_screenSizedQuad = Object(ObjectType::QUAD, glm::vec3(-1,-1,0), glm::vec3(1,-1,0), glm::vec3(-1,1,0), glm::vec3(0,0,0));
+	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferPositionTexture, "tex");
+	
+
 
 }
 
@@ -55,20 +60,30 @@ void Render::simplePass(Camera &cam) {
 	for (auto o : m_world->getObjects()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
-		m_simpleShader->linkMatrix4f(m_MVP_simplePass, MVP);
-		m_simpleShader->link3f(m_Light_simplePass, 500.f, 600.f, 0.f);
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
 
 		o.draw();
 
 	}
+
+	for (auto o : ObjectContainer::instance().getBuildings()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
 }
 
 void Render::gbufferPass(Camera &cam) {
 
-	m_fbo->bind();
+	// m_fbo->bind();
 
-	GLenum db[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
-	glDrawBuffers(4, db);
+	// GLenum db[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
+	// glDrawBuffers(4, db);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_gbufferShader->Use();
@@ -76,18 +91,35 @@ void Render::gbufferPass(Camera &cam) {
 	for (auto o : m_world->getObjects()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
-		m_gbufferShader->linkMatrix4f(m_MVP_gbufferPass, MVP);
-		m_simpleShader->link3f(m_Light_gbufferPass, 500.f, 600.f, 0.f);
+		m_gbufferShader->link(m_MVP_gbufferPass, MVP);
+		m_simpleShader->link(m_Light_gbufferPass, 500.f, 600.f, 0.f);
 
 		o.draw();
 
 	}
 
-	m_fbo->unbind();
+	for (auto o : ObjectContainer::instance().getBuildings()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
+	// m_fbo->unbind();
 
 }
 
 void Render::simpleTexPass() {
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_simpleTexShader->Use();
+
+	m_simpleTexShader->linkTextures();
+
+	m_screenSizedQuad.draw();
 	
 }
 
@@ -103,7 +135,7 @@ void Render::depthPlayerPass(Camera &cam) {
     for (auto o : m_world->getObjects()) {
 
     	glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
-    	m_depthShader->linkMatrix4f(m_MVP_depthPass, MVP);
+    	m_depthShader->link(m_MVP_depthPass, MVP);
 
     	o.draw();
 
@@ -128,7 +160,7 @@ void Render::depthLightPass(Camera &cam) {
 	for (auto o : m_world->getObjects()) {
 
     	glm::mat4 MVP = m_lightCam->getProjMat() * m_lightCam->getViewMat() * o.getModelMatrix();
-    	m_depthShader->linkMatrix4f(m_MVP_depthPass, MVP);
+    	m_depthShader->link(m_MVP_depthPass, MVP);
 
     	o.draw();
 

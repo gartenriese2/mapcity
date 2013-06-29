@@ -5,12 +5,15 @@
 #include "ResidentialZone.hpp"
 
 class Einfamilienhaus : public ResidentialBuilding {
-	public:
-		Einfamilienhaus(glm::vec3, glm::vec3, float, float, float);
-		~Einfamilienhaus();
-	private:
+	
+	const float k_minHeight = 4.0;
+	const float k_maxHeight = 10.0;
+	const int k_numHouseholds = 1;
 
-		
+	public:
+		Einfamilienhaus(glm::vec3, glm::vec3, glm::vec3);
+		~Einfamilienhaus();
+	
 };
 
 class EinfamilienhausZone : public ResidentialZone {
@@ -22,7 +25,7 @@ class EinfamilienhausZone : public ResidentialZone {
 		
 	private:
 		void addBuilding() {
-			buildings.push_back(new Einfamilienhaus(glm::vec3(1,0,0),glm::vec3(1,0,0),1,1,1));
+			
 		}
 		
 };

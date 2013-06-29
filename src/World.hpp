@@ -35,6 +35,7 @@ private:
 	glm::vec3 drawHermite(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);
 	
 	std::vector<Object> m_objects;
+	
 	Map * m_map;
 
 };

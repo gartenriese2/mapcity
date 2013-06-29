@@ -100,6 +100,7 @@ void Window::loop() {
         // m_render->depthLightPass(* m_cam);
         
         // m_render->gbufferPass(* m_cam);
+        // m_render->simpleTexPass();
         
         //t.waitAndAdd();
         glfwSwapBuffers();

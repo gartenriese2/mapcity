@@ -4,6 +4,7 @@ long counter  = 0;
 
 World::World(const int height, const int width) {
 	createMap(height, width);
+	
 }
 
 /**
@@ -75,7 +76,7 @@ void World::addTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c,
  */
 void World::addQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, const glm::vec3 col) {
 
-	Object o;
+	/*Object o;
 
 	glm::vec3 c = b + (d - a);
 
@@ -115,7 +116,9 @@ void World::addQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, con
 
 	o.setTriangles(2);
 
-	m_objects.push_back(o);
+	m_objects.push_back(o);*/
+
+	m_objects.push_back(Object(ObjectType::QUAD, a, b, d, col));
 
 }
 
@@ -128,7 +131,7 @@ void World::addQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, con
  */
 void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float width, const glm::vec3 col) {
 
-	Object o;
+	/*Object o;
 
 	glm::vec3 l = end - start;
 	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
@@ -172,7 +175,9 @@ void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widt
 
 	o.setTriangles(2);
 
-	m_objects.push_back(o);
+	m_objects.push_back(o);*/
+
+	m_objects.push_back(Object(ObjectType::QUAD, start, end, width, col));
 
 }
 
@@ -186,7 +191,7 @@ void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widt
  */
 void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widthStart, const float widthEnd, const glm::vec3 col) {
 
-	Object o;
+	/*Object o;
 
 	glm::vec3 l = end - start;
 	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * widthStart / 2.f;
@@ -230,7 +235,9 @@ void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widt
 
 	o.setTriangles(2);
 
-	m_objects.push_back(o);
+	m_objects.push_back(o);*/
+
+	m_objects.push_back(Object(ObjectType::QUAD, start, end, widthStart, widthEnd, col));
 
 }
 
@@ -242,7 +249,7 @@ void World::addQuad(const glm::vec3 start, const glm::vec3 end, const float widt
  */
 void World::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::vec3 col) {
 
-	Object o;
+	/*Object o;
 
 	GLfloat * vertexData = new GLfloat[21];
 	GLfloat * normalData = new GLfloat[21];
@@ -311,7 +318,9 @@ void World::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::
 
 	o.setTriangles(6);
 
-	m_objects.push_back(o);
+	m_objects.push_back(o);*/
+
+	m_objects.push_back(Object(ObjectType::HEXAGON, center, left, col));
 
 }
 
@@ -325,7 +334,7 @@ void World::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::
  */
 void World::addCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 d, const glm::vec3 col) {
 
-	Object o;
+	/*Object o;
 	
 	GLfloat * vertexData;
 	GLfloat * normalData;
@@ -343,13 +352,15 @@ void World::addCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, c
 
 	o.setTriangles(12);
 
-	m_objects.push_back(o);
+	m_objects.push_back(o);*/
+
+	m_objects.push_back(Object(ObjectType::CUBOID, a, b, c, d, col));
 
 }
 
 void World::addCuboid(const glm::vec3 center, const glm::vec3 dirX, const glm::vec3 dirZ, const float height, const glm::vec3 col) {
 
-	Object o;
+	/*Object o;
 
 	GLfloat * vertexData;
 	GLfloat * normalData;
@@ -373,7 +384,9 @@ void World::addCuboid(const glm::vec3 center, const glm::vec3 dirX, const glm::v
 
 	o.setTriangles(12);
 
-	m_objects.push_back(o);
+	m_objects.push_back(o);*/
+
+	m_objects.push_back(Object(ObjectType::CUBOID, center, dirX, dirZ, height, col));
 
 }
 

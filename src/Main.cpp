@@ -176,11 +176,12 @@ void gameTest() {
 	
 	int height = 1000, width = 1000;
 	Game game(width, height, 1000, 1000);
+
+	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
+	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Einfamilienhaus e4(glm::vec3(300,0,-260), glm::vec3(5,0,5), glm::vec3(5,0,-5));
 	
-	game.getWorld()->addCuboid(glm::vec3(300,0,-300), glm::vec3(310,0,-300), glm::vec3(300,8,-300), glm::vec3(300,0,-285), glm::vec3(0,1,0));
-	game.getWorld()->addCuboid(glm::vec3(300,0,-310), glm::vec3(310,0,-310), glm::vec3(300,12,-310), glm::vec3(300,0,-300), glm::vec3(0,1,0));
-	game.getWorld()->addCuboid(glm::vec3(290,0,-295), glm::vec3(300,0,-295), glm::vec3(290,10,-295), glm::vec3(290,0,-285), glm::vec3(0,1,0));
-	game.getWorld()->addCuboid(glm::vec3(300,0,-265), glm::vec3(310,0,-255), glm::vec3(300,30,-265), glm::vec3(290,0,-255), glm::vec3(0,1,0));
 	game.getWorld()->addCuboid(glm::vec3(300,0,-320), glm::vec3(310,0,-320), glm::vec3(300,10,-320), glm::vec3(300,0,-310), glm::vec3(0,0,1));
 	game.getWorld()->addQuad(glm::vec3(315,0.1,-270), glm::vec3(315,0.1,-280), glm::vec3(270,0.1,-270), glm::vec3(1,1,0));
 	game.getWorld()->addQuad(glm::vec3(320,0.1,-250), glm::vec3(320,0.1,-350), 15.f, glm::vec3(1,1,0));

@@ -5,6 +5,7 @@
 #include "World.hpp"
 #include "Shader.hpp"
 #include "Fbo.hpp"
+#include "Object.hpp"
 #include <iostream>
 #include <memory>
 
@@ -47,6 +48,9 @@ private:
 	GLuint m_gbufferNormalTexture;
 	GLuint m_gbufferDepthTexture;
 	GLuint m_gbufferColorTexture;
+
+	std::shared_ptr<Shader> m_simpleTexShader;
+	Object m_screenSizedQuad;
 
 };
 

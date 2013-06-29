@@ -4,15 +4,33 @@ Shader::Shader(const char * vertex, const char * fragment) {
     m_shaderID = loadShaders(vertex, fragment);
 }
 
+void Shader::addUniformTexture(const GLenum target, const GLuint texture, const char * name) {
+    TextureUniform t;
+    t.target = target;
+    t.texture = texture;
+    t.ID = glGetUniformLocation(m_shaderID, name);
+    m_textureUniforms.push_back(t);
+}
+
+void Shader::linkTextures() {
+    int count = 0;
+    for (auto i : m_textureUniforms) {
+        glUniform1i(i.ID, count);
+        glActiveTexture(GL_TEXTURE0 + count);
+        glBindTexture(i.target, i.texture);
+        count++;
+    }
+}
+
 GLuint Shader::addUniform(const char * name) {
     return glGetUniformLocation(m_shaderID, name);
 }
 
-void Shader::linkMatrix4f(GLuint ID, const glm::mat4 matrix) {
+void Shader::link(GLuint ID, const glm::mat4 matrix) {
     glUniformMatrix4fv(ID, 1, GL_FALSE, &matrix[0][0]);
 }
 
-void Shader::link3f(GLuint ID, const float a, const float b, const float c) {
+void Shader::link(GLuint ID, const float a, const float b, const float c) {
     glUniform3f(ID, a, b, c);
 }
 

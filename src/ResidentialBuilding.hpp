@@ -5,15 +5,17 @@
 #include "Household.hpp"
 
 class ResidentialBuilding : public Building {
+	
+	const glm::vec3 k_color = glm::vec3(0.0, 1.0, 0.0);
+
 	public:
 		ResidentialBuilding();
 		~ResidentialBuilding();
-		inline std::vector<Household> getHouseholds() { return households; }
-	private:
-
-		std::vector<Household> households;
+		std::vector<Household> getHouseholds() const { return m_householdVector; }
 	protected:
 		void createHouseholds(int);
+		
+		std::vector<Household> m_householdVector;
 };
 
 #endif
