@@ -15,9 +15,17 @@ public:
 	void deleteBuilding(const unsigned long ID) { mBuildingMap.erase(ID); }
 	std::unordered_map<unsigned long, Object> getBuildings() const { return mBuildingMap; }
 
+	unsigned long addZone(const std::vector<glm::vec3>, const glm::vec3, const glm::vec3);
+	void deleteZone(const unsigned long ID) { mZoneMap.erase(ID); }
+	std::unordered_map<unsigned long, Object> getZones() const { return mZoneMap; }
+
 	unsigned long addHexagon(const glm::vec3, const glm::vec3, const glm::vec3);
 	void deleteHexagon(const unsigned long ID) { mHexagonMap.erase(ID); }
 	std::unordered_map<unsigned long, Object> getHexagons() const { return mHexagonMap; }
+
+	unsigned long addPath();
+	void deletePath(const unsigned long ID) { mPathMap.erase(ID); }
+	std::unordered_map<unsigned long, Object> getPaths() const { return mPathMap; }
 
 protected:
 	static ObjectContainer* pInstance;
@@ -39,6 +47,7 @@ private:
 	std::unordered_map<unsigned long, Object> mBuildingMap;
 	std::unordered_map<unsigned long, Object> mZoneMap;
 	std::unordered_map<unsigned long, Object> mHexagonMap;
+	std::unordered_map<unsigned long, Object> mPathMap;
 
 };
 

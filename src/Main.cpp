@@ -182,6 +182,13 @@ void gameTest() {
 	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 	Einfamilienhaus e4(glm::vec3(300,0,-260), glm::vec3(5,0,5), glm::vec3(5,0,-5));
+
+	std::vector<glm::vec3> zone;
+	zone.push_back(glm::vec3(310,0.1,-282.5));
+	zone.push_back(glm::vec3(290,0.1,-282.5));
+	zone.push_back(glm::vec3(290,0.1,-310));
+	zone.push_back(glm::vec3(310,0.1,-310));
+	EinfamilienhausZone ez1(zone);
 	
 	game.getWorld()->addCuboid(glm::vec3(300,0,-320), glm::vec3(310,0,-320), glm::vec3(300,10,-320), glm::vec3(300,0,-310), glm::vec3(0,0,1));
 	game.getWorld()->addQuad(glm::vec3(315,0.1,-270), glm::vec3(315,0.1,-280), glm::vec3(270,0.1,-270), glm::vec3(1,1,0));
@@ -301,48 +308,6 @@ void householdTest() {
 
 }
 
-void bebauteZonenTest() {
-
-	Map m(1000,1000);
-
-	vector<glm::vec3> testZone;
-	testZone.push_back(glm::vec3(200,200,0));
-	testZone.push_back(glm::vec3(250,200,0));
-	testZone.push_back(glm::vec3(250,250,0));
-	testZone.push_back(glm::vec3(200,250,0));
-
-	Zone * z = new EinfamilienhausZone(testZone);
-	Hexagon &hexa = m.getCorrespondingHexagon(z->getCenter());
-	hexa.addZone(z);
-	// m.getCorrespondingHexagon(z->getCenter()).addZone(z);
-
-	// cout << hexa.countUndevelopedZones() << endl;
-	// cout << m.getCorrespondingHexagon(z->getCenter()).countUndevelopedZones() << endl;
-
-	int undeveloped = 0;
-	for (int i = 0; i < m.getHexaVector().size(); i++) {
-		undeveloped += m.getHexaVector()[i].countUndevelopedZones();
-	}
-
-	cout << "Anzahl unbebauter Zonen: " << undeveloped << endl;
-
-	z->addBuilding();
-	cout << "Haus gebaut!\n";
-	
-	undeveloped = 0;
-	for (int i = 0; i < m.getHexaVector().size(); i++) {
-		undeveloped += m.getHexaVector()[i].countUndevelopedZones();
-	}
-
-	cout << "Anzahl unbebauter Zonen: " << undeveloped << endl;
-
-	if ( dynamic_cast<ResidentialBuilding*>( z->getBuildings()[0] ) ) {
-		ResidentialBuilding *r = ( ResidentialBuilding* )(z->getBuildings()[0]);
-		r->getHouseholds()[0].printResidents();
-	}
-
-}
-
 void terrainTest() {
 	Bitmap b("../assets/heightmap.bmp");
 	cout << "Height: " << b.getHeight() << ", Width: " << b.getWidth() << "\n";
@@ -369,7 +334,6 @@ int main() {
 	// threadTest();
 	// zoneTest();
 	// householdTest();
-	// bebauteZonenTest();
 	// terrainTest();
 
 	// Playground p;

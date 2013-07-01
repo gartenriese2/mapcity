@@ -11,22 +11,15 @@ class Einfamilienhaus : public ResidentialBuilding {
 	const int k_numHouseholds = 1;
 
 	public:
-		Einfamilienhaus(glm::vec3, glm::vec3, glm::vec3);
-		~Einfamilienhaus();
+		Einfamilienhaus(const glm::vec3, const glm::vec3, const glm::vec3);
+		virtual ~Einfamilienhaus();
 	
 };
 
 class EinfamilienhausZone : public ResidentialZone {
 	public:
-		EinfamilienhausZone(std::vector<glm::vec3>);
-		~EinfamilienhausZone();
-		
-
-		
-	private:
-		void addBuilding() {
-			
-		}
+		EinfamilienhausZone(const std::vector<glm::vec3>);
+		virtual ~EinfamilienhausZone();
 		
 };
 

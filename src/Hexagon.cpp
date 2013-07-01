@@ -70,39 +70,3 @@ bool Hexagon::isInside(glm::vec3 p) {
 // 	}
 	
 // }
-
-int Hexagon::getChildren() {
-
-	int count = 0;
-
-	for (std::vector<ResidentialZone>::iterator it = residentialZones.begin(); it != residentialZones.end(); it++) {
-		count += (*it).getChildren();
-	}
-
-	return count;
-
-}
-
-int Hexagon::getResidents() {
-
-	int count = 0;
-	for (std::vector<Zone*>::iterator it = genericZones.begin(); it != genericZones.end(); it++) {
-		if ( dynamic_cast<ResidentialZone*>( *it ) ) {		// check if this zone is a residential zone
-			ResidentialZone *p = ( ResidentialZone* )(*it); 	// enable derived functions
-			count += p->getResidents();						//(dynamic_cast<ResidentialZone*>(z))->getResidents();
-		}
-	}
-
-	return count;
-
-}
-
-int Hexagon::countUndevelopedZones() {
-
-	int undeveloped = 0;
-	for (int i = 0; i < genericZones.size(); i++) {
-		if (!genericZones[i]->isDeveloped()) undeveloped++;
-	}
-	return undeveloped;
-
-}

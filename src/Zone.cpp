@@ -4,21 +4,22 @@ int Zone::count = 0;
 
 Zone::Zone() {
 	
-	this->ID = ++Zone::count;
-	isBuilt = false;
-	
 }
 
 Zone::~Zone() {
-	this->bounding.clear();
+	m_bounding.clear();
+}
+
+void Zone::createObject() {
+	m_ID = ObjectContainer::instance().addZone(m_bounding, m_center, m_color);
 }
 
 void Zone::setArea() {
-	this->area = 0.f;
-	for (int i = 0; i < bounding.size() - 1; i++) {
-		this->area += (bounding[i].z + bounding[i+1].z) / 2 * (bounding[i+1].x - bounding[i].x);
+	m_area = 0.f;
+	for (int i = 0; i < m_bounding.size() - 1; i++) {
+		m_area += (m_bounding[i].z + m_bounding[i+1].z) / 2 * (m_bounding[i+1].x - m_bounding[i].x);
 	}
-	this->area += (bounding[bounding.size()-1].z + bounding[0].z) / 2 * (bounding[0].x - bounding[bounding.size()-1].x);
+	m_area += (m_bounding[m_bounding.size()-1].z + m_bounding[0].z) / 2 * (m_bounding[0].x - m_bounding[m_bounding.size()-1].x);
 }
 
 void Zone::setCenter() {
@@ -26,24 +27,15 @@ void Zone::setCenter() {
 	float centroidX = 0.f;
 	float centroidZ = 0.f;
 
-	for (int i = 0; i < bounding.size() - 1; i++) {
-		centroidX += (bounding[i].x + bounding[i+1].x) * (bounding[i].x * bounding[i+1].z - bounding[i+1].x * bounding[i].z);
-		centroidZ += (bounding[i].z + bounding[i+1].z) * (bounding[i].x * bounding[i+1].z - bounding[i+1].x * bounding[i].z);
+	for (int i = 0; i < m_bounding.size() - 1; i++) {
+		centroidX += (m_bounding[i].x + m_bounding[i+1].x) * (m_bounding[i].x * m_bounding[i+1].z - m_bounding[i+1].x * m_bounding[i].z);
+		centroidZ += (m_bounding[i].z + m_bounding[i+1].z) * (m_bounding[i].x * m_bounding[i+1].z - m_bounding[i+1].x * m_bounding[i].z);
 	}
-	centroidX += (bounding[bounding.size()-1].x + bounding[0].x) 
-			* (bounding[bounding.size()-1].x * bounding[0].z - bounding[0].x * bounding[bounding.size()-1].z);
-	centroidZ += (bounding[bounding.size()-1].z + bounding[0].z) 
-			* (bounding[bounding.size()-1].x * bounding[0].z - bounding[0].x * bounding[bounding.size()-1].z);
+	centroidX += (m_bounding[m_bounding.size()-1].x + m_bounding[0].x) 
+			* (m_bounding[m_bounding.size()-1].x * m_bounding[0].z - m_bounding[0].x * m_bounding[m_bounding.size()-1].z);
+	centroidZ += (m_bounding[m_bounding.size()-1].z + m_bounding[0].z) 
+			* (m_bounding[m_bounding.size()-1].x * m_bounding[0].z - m_bounding[0].x * m_bounding[m_bounding.size()-1].z);
 
-	this->center = glm::vec3(-centroidX / (6*getArea()), 0, -centroidZ / (6*getArea()));
+	m_center = glm::vec3(-centroidX / (6*getArea()), 0, -centroidZ / (6*getArea()));
 
-}
-
-void Zone::deleteBuilding(Building b) {
-	for (int i = 0; i < this->buildings.size(); i++) {
-		if (this->buildings[i]->getID() == b.getID()) {
-			this->buildings.erase(this->buildings.begin()+i);
-			break;
-		}
-	}
 }

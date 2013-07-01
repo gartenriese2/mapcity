@@ -11,7 +11,8 @@ enum class ObjectType {
 	QUAD,
 	HEXAGON,
 	CUBOID,
-	SPLINE
+	SPLINE,
+	POLYGON
 };
 
 class Object {
@@ -24,7 +25,8 @@ public:
 	Object(ObjectType, const glm::vec3, const glm::vec3, const glm::vec3);
 	Object(ObjectType, const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3);
 	Object(ObjectType, const glm::vec3, const glm::vec3, const glm::vec3, const float, const glm::vec3);
-	Object(ObjectType, std::vector<glm::vec3>, const float, const glm::vec3);
+	Object(ObjectType, const std::vector<glm::vec3>, const float, const glm::vec3);
+	Object(ObjectType, const std::vector<glm::vec3>, const glm::vec3, const glm::vec3);
 	~Object();
 
 	unsigned long getID() const { return m_ID; }
@@ -58,7 +60,8 @@ private:
 	void setAsHexagon(const glm::vec3, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
 	void setAsCuboid(const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
 	void setAsCuboid(const glm::vec3, const glm::vec3, const glm::vec3, const float, const glm::vec3 col = glm::vec3(1,1,1));
-	void setAsSpline(std::vector<glm::vec3>, const float, const glm::vec3 col = glm::vec3(1,1,1));
+	void setAsSpline(const std::vector<glm::vec3>, const float, const glm::vec3 col = glm::vec3(1,1,1));
+	void setAsPolygon(const std::vector<glm::vec3>, const glm::vec3, const glm::vec3 col = glm::vec3(1,1,1));
 
 	void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
 	glm::vec3 drawHermite(glm::vec3, glm::vec3, glm::vec3, glm::vec3, float);

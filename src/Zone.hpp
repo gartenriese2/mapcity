@@ -6,52 +6,43 @@
 #include <iostream>
 #include "Building.hpp"
 
-// template <class T> class Zone {
 class Zone {
 	
 	static int count;
 
 	public:
+		
 		Zone();
-		~Zone();
+		virtual ~Zone();
 
-		// Getter
-		inline std::vector<glm::vec3> getBounding() { return this->bounding; }
-		inline int getID() { return this->ID; }
-		inline float getArea() { return this->area; }
-		inline glm::vec3 getCenter() { return this->center; }
-
-		// Setter
-		
-		inline std::vector<Building*> getBuildings() { return buildings; }
-		
-		// inline void addBuilding(Building b) { buildings.push_back(b); }
-		void deleteBuilding(Building b);
-
-		bool isDeveloped() { return buildings.size() != 0; }
-		// inline void addBuilding(T b) { buildings.push_back(b); }
-
-		std::vector<Building*> buildings;
-
-		virtual void addBuilding() {}
+		unsigned long getID() const { return m_ID; }
+		glm::vec3 getCenter() const { return m_center; }
 
 	private:
-		std::vector<glm::vec3> bounding;
-		float area;
-		glm::vec3 center;
-		int ID;
 		
-		
-
-		
+				
 
 	protected:
 		
-		bool isBuilt;
+		unsigned long m_ID;
+		glm::vec3 m_color;
+		std::vector<glm::vec3> m_bounding;
+		float m_area;
+		glm::vec3 m_center;
 
 		void setArea();
+		float getArea() const { return m_area; }
+
 		void setCenter();
-		void setBounding(std::vector<glm::vec3> b) { bounding = b; }
+		
+
+		void setBounding(const std::vector<glm::vec3> b) { m_bounding = b; }
+		std::vector<glm::vec3> getBounding() const { return m_bounding; }
+
+		void setColor(const glm::vec3 c) { m_color = c; }
+		glm::vec3 getColor() const { return m_color; }
+
+		void createObject();
 
 };
 

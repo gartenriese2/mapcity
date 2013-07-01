@@ -103,6 +103,19 @@ Object::Object(ObjectType type, std::vector<glm::vec3> v, const float f, const g
 	
 }
 
+Object::Object(ObjectType type, std::vector<glm::vec3> v, glm::vec3 center, const glm::vec3 col) {
+	
+	switch (type) {
+		case ObjectType::POLYGON:
+			init();
+			setAsPolygon(v,center,col);
+			break;
+		default:
+			std::cout << "no such constructor!\n";
+	}
+	
+}
+
 Object::~Object() {
 
 	// glDeleteVertexArrays(1, &m_vertexArray);
@@ -639,7 +652,7 @@ void Object::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm:
 
 }
 
-void Object::setAsSpline(std::vector<glm::vec3> pts, const float width, const glm::vec3 col) {
+void Object::setAsSpline(const std::vector<glm::vec3> pts, const float width, const glm::vec3 col) {
 
 	assert(pts.size() > 1);
 
@@ -670,14 +683,12 @@ void Object::setAsSpline(std::vector<glm::vec3> pts, const float width, const gl
 			tmp.y = pts[i].y + (pts[i + 1].y - pts[i].y) * t;
 			glm::vec3 tmp2 = old + (tmp - old) * stretch;
 
-			//Object(ObjectType::QUAD, old, tmp2, width, col);
 			addQuadToData(vertexData, normalData, indexData, colorData, old, tmp2, width, col);
 
 			old = tmp;
 
 		}
 
-		//Object(ObjectType::QUAD, old, pts[i + 1], width, col);
 		addQuadToData(vertexData, normalData, indexData, colorData, old, pts[i + 1], width, col);
 
 	}
@@ -688,11 +699,7 @@ void Object::setAsSpline(std::vector<glm::vec3> pts, const float width, const gl
 	GLfloat * colors = &colorData[0];
 
 	fillBuffers(vertexData.size(), indexData.size(), vertices, normals, colors, indices);
-	//delete vertices;
-	//delete normals;
-	//delete indices;
-	//delete colors;
-
+	
 	setTriangles(indexData.size() / 3);
 	
 }
@@ -758,5 +765,65 @@ void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
 	indexData.push_back(len + 2);
 	indexData.push_back(len + 3);
 	indexData.push_back(len);
+
+}
+
+void Object::setAsPolygon(const std::vector<glm::vec3> pts, glm::vec3 center, const glm::vec3 col) {
+
+	assert(pts.size() > 2);
+
+	int numTriangles = pts.size();
+	int numVertices = pts.size() + 1;
+
+	GLfloat * vertexData = new GLfloat[numVertices * 3];
+	GLfloat * normalData = new GLfloat[numVertices * 3];
+	GLfloat * colorData = new GLfloat[numVertices * 3];
+
+	glm::vec3 normal = -glm::normalize(glm::cross(pts[0] - center, pts[1] - center));
+
+	vertexData[0] = center[0];
+	vertexData[1] = center[1];
+	vertexData[2] = center[2];
+	normalData[0] = normal.x;
+	normalData[1] = normal.y;
+	normalData[2] = normal.z;
+	colorData[0] = col.x;
+	colorData[1] = col.y;
+	colorData[2] = col.z;
+
+	for (int i = 3; i < numVertices * 3; i += 3) {
+
+		vertexData[i] = pts[(i / 3) - 1][0];
+		vertexData[i + 1] = pts[(i / 3) - 1][1];
+		vertexData[i + 2] = pts[(i / 3) - 1][2];
+		normalData[i] = normal.x;
+		normalData[i + 1] = normal.y;
+		normalData[i + 2] = normal.z;
+		colorData[i] = col.x;
+		colorData[i + 1] = col.y;
+		colorData[i + 2] = col.z;
+
+	}
+
+	GLushort * indexData = new GLushort[numTriangles * 3];
+	int count = 0;
+	for (int i = 0; i < numTriangles * 3; i += 3)	{
+		indexData[i] = 0;
+		if (count + 2 > numTriangles) {
+			indexData[i + 1] = 1;
+		} else {
+			indexData[i + 1] = count + 2;
+		}
+		indexData[i + 2] = count + 1;
+		count++;
+	}
+
+	fillBuffers(numVertices * 3, numTriangles * 3, vertexData, normalData, colorData, indexData);
+	delete vertexData;
+	delete normalData;
+	delete colorData;
+	delete indexData;
+
+	setTriangles(numTriangles);
 
 }
