@@ -62,3 +62,14 @@ unsigned long ObjectContainer::addHexagon(const glm::vec3 center, const glm::vec
 	return ID;
 
 }
+
+unsigned long ObjectContainer::addPath(const std::vector<glm::vec3> pts, const float width, const glm::vec3 color) {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+
+	Object o(ObjectType::SPLINE, pts, width, color);
+	unsigned long ID = o.getID();
+	mPathMap.insert(std::pair<unsigned long, Object>(ID, o));
+	return ID;
+
+}

@@ -1,7 +1,5 @@
 #include "Zone.hpp"
 
-int Zone::count = 0;
-
 Zone::Zone() {
 	
 }
@@ -36,6 +34,6 @@ void Zone::setCenter() {
 	centroidZ += (m_bounding[m_bounding.size()-1].z + m_bounding[0].z) 
 			* (m_bounding[m_bounding.size()-1].x * m_bounding[0].z - m_bounding[0].x * m_bounding[m_bounding.size()-1].z);
 
-	m_center = glm::vec3(-centroidX / (6*getArea()), 0, -centroidZ / (6*getArea()));
+	m_center = glm::vec3(-centroidX / (6*getArea()), m_bounding[0].y, -centroidZ / (6*getArea()));
 
 }

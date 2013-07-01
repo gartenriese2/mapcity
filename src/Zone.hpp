@@ -1,14 +1,12 @@
 #ifndef ZONE_HPP
 #define ZONE_HPP
 
-#include "../glm-0.9.4.3/glm/glm.hpp"
+#include "glm.h"
 #include <vector>
 #include <iostream>
 #include "Building.hpp"
 
 class Zone {
-	
-	static int count;
 
 	public:
 		

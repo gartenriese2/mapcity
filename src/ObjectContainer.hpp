@@ -23,7 +23,7 @@ public:
 	void deleteHexagon(const unsigned long ID) { mHexagonMap.erase(ID); }
 	std::unordered_map<unsigned long, Object> getHexagons() const { return mHexagonMap; }
 
-	unsigned long addPath();
+	unsigned long addPath(const std::vector<glm::vec3>, const float, const glm::vec3);
 	void deletePath(const unsigned long ID) { mPathMap.erase(ID); }
 	std::unordered_map<unsigned long, Object> getPaths() const { return mPathMap; }
 

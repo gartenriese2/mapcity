@@ -57,16 +57,6 @@ void Render::simplePass(Camera &cam) {
 
 	m_simpleShader->Use();
 
-	for (auto o : m_world->getObjects()) {
-
-		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
-		m_simpleShader->link(m_MVP_simplePass, MVP);
-		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
-
-		o.draw();
-
-	}
-
 	for (auto o : ObjectContainer::instance().getBuildings()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -94,6 +84,15 @@ void Render::simplePass(Camera &cam) {
 		o.second.draw();
 	}
 
+	for (auto o : ObjectContainer::instance().getPaths()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
 }
 
 void Render::gbufferPass(Camera &cam) {
@@ -105,16 +104,6 @@ void Render::gbufferPass(Camera &cam) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_gbufferShader->Use();
-
-	for (auto o : m_world->getObjects()) {
-
-		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
-		m_gbufferShader->link(m_MVP_gbufferPass, MVP);
-		m_simpleShader->link(m_Light_gbufferPass, 500.f, 600.f, 0.f);
-
-		o.draw();
-
-	}
 
 	for (auto o : ObjectContainer::instance().getBuildings()) {
 
@@ -150,14 +139,7 @@ void Render::depthPlayerPass(Camera &cam) {
 
     m_depthShader->Use();
 
-    for (auto o : m_world->getObjects()) {
-
-    	glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
-    	m_depthShader->link(m_MVP_depthPass, MVP);
-
-    	o.draw();
-
-    }
+    // DRAW OBJECTS
 
     m_fbo->unbind();
     glViewport(0, 0, cam.getWidth(), cam.getHeight());
@@ -175,14 +157,7 @@ void Render::depthLightPass(Camera &cam) {
 
 	m_depthShader->Use();
 
-	for (auto o : m_world->getObjects()) {
-
-    	glm::mat4 MVP = m_lightCam->getProjMat() * m_lightCam->getViewMat() * o.getModelMatrix();
-    	m_depthShader->link(m_MVP_depthPass, MVP);
-
-    	o.draw();
-
-    }
+	// DRAW OBJECTS
 
     // m_fbo->unbind();
     // glViewport(0, 0, cam.getWidth(), cam.getHeight());
@@ -190,21 +165,5 @@ void Render::depthLightPass(Camera &cam) {
 }
 
 void Render::shadowPass(Camera &cam) {
-
-	
-	
-
-	// for (auto o : m_world->getObjects()) {
-
- //    	glm::mat4 depthMVP = m_lightCam->getProjMat() * m_lightCam->getViewMat() * o.getModelMatrix();
- //    	glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.getModelMatrix();
- //    	glm::mat4 depthBiasMVP = biasMatrix * depthMVP;
-    	
- //    	m_shadowShader->linkMatrix4f(m_BiasMVP_shadowPass, depthBiasMVP);
- //    	m_shadowShader->linkMatrix4f(m_MVP_shadowPass, MVP);
-
- //    	o.draw();
-
- //    }
 
 }

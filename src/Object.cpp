@@ -673,7 +673,7 @@ void Object::setAsSpline(const std::vector<glm::vec3> pts, const float width, co
 		if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
 		else mB = glm::normalize(pts[i+2] - pts[i]);
 
-		float stretch = 2.f - glm::pow(glm::dot(mA, mB), 2.f);
+		float stretch = (2.f - glm::pow(glm::dot(mA, mB), 2.f)) * width / 10.0;
 
 		float step = 1.f / glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
 

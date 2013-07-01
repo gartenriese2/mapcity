@@ -2,8 +2,6 @@
 #include "DemandFunction.hpp"
 #include "Window.hpp"
 #include "Map.hpp"
-#include "Zone.hpp"
-#include "ResidentialZone.hpp"
 #include "Household.hpp"
 #include "Einfamilienhaus.hpp"
 #include "Bitmap.hpp"
@@ -11,6 +9,11 @@
 #include "Playground.hpp"
 #include "Camera.hpp"
 #include "Game.hpp"
+#include "Landstrasse.hpp"
+#include "Bundesstrasse.hpp"
+#include "KleinerLaden.hpp"
+#include "Mietshaus.hpp"
+#include "GrosserLaden.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -181,32 +184,62 @@ void gameTest() {
 	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
 	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Einfamilienhaus e4(glm::vec3(300,0,-260), glm::vec3(5,0,5), glm::vec3(5,0,-5));
+	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
 
 	std::vector<glm::vec3> zone;
-	zone.push_back(glm::vec3(310,0.1,-282.5));
+	zone.push_back(glm::vec3(312.5,0.1,-282.5));
 	zone.push_back(glm::vec3(290,0.1,-282.5));
 	zone.push_back(glm::vec3(290,0.1,-310));
-	zone.push_back(glm::vec3(310,0.1,-310));
+	zone.push_back(glm::vec3(312.5,0.1,-310));
 	EinfamilienhausZone ez1(zone);
+
+	zone.clear();
+	zone.push_back(glm::vec3(312.5,0.1,-232.5));
+	zone.push_back(glm::vec3(290,0.1,-210));
+	zone.push_back(glm::vec3(262.5,0.1,-240));
+	zone.push_back(glm::vec3(262.5,0.1,-267.5));
+	zone.push_back(glm::vec3(312.5,0.1,-267.5));
+	MietshausZone mz1(zone);
+
+	std::vector<glm::vec3> path;
+	path.push_back(glm::vec3(320,0.1,-232.5));
+	path.push_back(glm::vec3(320,0.1,-350));
+	Landstrasse l1(path);
+	path.clear();
+	path.push_back(glm::vec3(320,0.1,-275));
+	path.push_back(glm::vec3(262.5,0.1,-275));
+	Landstrasse l2(path);
+	path.clear();
+	path.push_back(glm::vec3(320,0.1,-275));
+	path.push_back(glm::vec3(420,0.1,-300));
+	Landstrasse l3(path);
 	
-	game.getWorld()->addCuboid(glm::vec3(300,0,-320), glm::vec3(310,0,-320), glm::vec3(300,10,-320), glm::vec3(300,0,-310), glm::vec3(0,0,1));
-	game.getWorld()->addQuad(glm::vec3(315,0.1,-270), glm::vec3(315,0.1,-280), glm::vec3(270,0.1,-270), glm::vec3(1,1,0));
-	game.getWorld()->addQuad(glm::vec3(320,0.1,-250), glm::vec3(320,0.1,-350), 15.f, glm::vec3(1,1,0));
-	game.getWorld()->addQuad(glm::vec3(320,0.1,-275), glm::vec3(270,0.1,-275), 8.f, glm::vec3(1,1,0));
-	game.getWorld()->addQuad(glm::vec3(320,0.1,-275), glm::vec3(420,0.1,-300), 8.f, glm::vec3(1,1,0));
+	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 
-	game.getWorld()->addCuboid(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10), 10.f, glm::vec3(0,1,1));
+	zone.clear();
+	zone.push_back(glm::vec3(312.5,0.1,-310));
+	zone.push_back(glm::vec3(295,0.1,-310));
+	zone.push_back(glm::vec3(295,0.1,-330));
+	zone.push_back(glm::vec3(312.5,0.1,-330));
+	KleinerLadenZone kz1(zone);
 
-	std::vector<glm::vec3> v;
-	v.push_back(glm::vec3(100,1,-100));
-	v.push_back(glm::vec3(200,1,-100));
-	v.push_back(glm::vec3(200,1,-200));
-	v.push_back(glm::vec3(250,1,-250));
-	v.push_back(glm::vec3(280,1,-200));
-	v.push_back(glm::vec3(400,1,-100));
-	v.push_back(glm::vec3(500,1,-300));
-	game.getWorld()->addSpline(v, 10.f, glm::vec3(1,0,0));
+	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
+
+	zone.clear();
+	zone.push_back(glm::vec3(327.5,0.1,-284));
+	zone.push_back(glm::vec3(327.5,0.1,-340));
+	zone.push_back(glm::vec3(362.5,0.1,-340));
+	zone.push_back(glm::vec3(362.5,0.1,-293));
+	GrosserLadenZone gz1(zone);
+	
+	path.clear();
+	path.push_back(glm::vec3(100,1,-100));
+	path.push_back(glm::vec3(200,1,-100));
+	path.push_back(glm::vec3(200,1,-200));
+	path.push_back(glm::vec3(280,1,-200));
+	path.push_back(glm::vec3(400,1,-100));
+	path.push_back(glm::vec3(500,1,-300));
+	Bundesstrasse b1(path);
 
 	game.start();
 
