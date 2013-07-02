@@ -17,7 +17,7 @@ class KleinerLaden : public BusinessBuilding {
 
 class KleinerLadenZone : public BusinessZone {
 	public:
-		KleinerLadenZone(const std::vector<glm::vec3>);
+		KleinerLadenZone(const vectorVec3);
 		virtual ~KleinerLadenZone();
 		
 };

@@ -2,16 +2,16 @@
 #define RENDER_HPP
 
 #include "ogl.h"
-#include "World.hpp"
+#include "Camera.hpp"
 #include "Shader.hpp"
 #include "Fbo.hpp"
-#include "Object.hpp"
+#include "ObjectContainer.hpp"
 #include <iostream>
 #include <memory>
 
 class Render {
 public:
-	Render(std::shared_ptr<World>);
+	Render();
 	~Render();
 
 	void init();
@@ -23,7 +23,7 @@ public:
 	void shadowPass(Camera &);
 	
 private:
-	std::shared_ptr<World> m_world;
+	
 	std::shared_ptr<Fbo> m_fbo;
 
 	std::shared_ptr<Shader> m_simpleShader;

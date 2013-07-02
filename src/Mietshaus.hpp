@@ -19,7 +19,7 @@ class Mietshaus : public ResidentialBuilding {
 
 class MietshausZone : public ResidentialZone {
 	public:
-		MietshausZone(const std::vector<glm::vec3>);
+		MietshausZone(const vectorVec3);
 		virtual ~MietshausZone();
 		
 };

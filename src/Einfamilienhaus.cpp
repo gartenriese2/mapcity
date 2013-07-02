@@ -15,7 +15,7 @@ Einfamilienhaus::~Einfamilienhaus() {
 	
 }
 
-EinfamilienhausZone::EinfamilienhausZone(std::vector<glm::vec3> bounding) {
+EinfamilienhausZone::EinfamilienhausZone(vectorVec3 bounding) {
 
 	setBounding(bounding);
 	setArea();

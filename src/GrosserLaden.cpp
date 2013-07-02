@@ -13,7 +13,7 @@ GrosserLaden::~GrosserLaden() {
 	
 }
 
-GrosserLadenZone::GrosserLadenZone(std::vector<glm::vec3> bounding) {
+GrosserLadenZone::GrosserLadenZone(vectorVec3 bounding) {
 
 	setBounding(bounding);
 	setArea();

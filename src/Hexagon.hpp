@@ -18,7 +18,7 @@ public:
 	~Hexagon();
 	inline glm::vec3 getCenter() { return this->center; }
 	inline glm::vec3 getLeft() { return vertices[0]; }
-	const std::vector<glm::vec3>& getVertices() const { return vertices; }
+	const vectorVec3& getVertices() const { return vertices; }
 	// const std::vector<Hexagon>& getNeighbors() const { return neighbors; }
 	bool isInside(glm::vec3 p);
 	
@@ -34,7 +34,7 @@ public:
 	int countUndevelopedZones();
 private:
 	glm::vec3 center;
-	std::vector<glm::vec3> vertices;
+	vectorVec3 vertices;
 	// std::vector<Hexagon> neighbors;
 
 	std::vector<Zone*> genericZones;

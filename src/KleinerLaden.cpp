@@ -13,7 +13,7 @@ KleinerLaden::~KleinerLaden() {
 	
 }
 
-KleinerLadenZone::KleinerLadenZone(std::vector<glm::vec3> bounding) {
+KleinerLadenZone::KleinerLadenZone(vectorVec3 bounding) {
 
 	setBounding(bounding);
 	setArea();

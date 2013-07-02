@@ -1,7 +1,7 @@
 #include "Render.hpp"
 
-Render::Render(std::shared_ptr<World> world) {
-	m_world = world;
+Render::Render() {
+	
 }
 
 Render::~Render() {

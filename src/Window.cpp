@@ -75,7 +75,7 @@ void Window::initCam(int width, int height) {
 
 void Window::loop() {
 
-    m_render = make_shared<Render>(m_world);
+    m_render = make_shared<Render>();
     m_render->init();
 
     glClearColor(0,0,0,0);

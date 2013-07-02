@@ -14,7 +14,7 @@ Mietshaus::~Mietshaus() {
 	
 }
 
-MietshausZone::MietshausZone(std::vector<glm::vec3> bounding) {
+MietshausZone::MietshausZone(vectorVec3 bounding) {
 
 	setBounding(bounding);
 	setArea();

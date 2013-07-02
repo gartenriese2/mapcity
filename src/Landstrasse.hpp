@@ -9,7 +9,7 @@ class Landstrasse : public Road {
 	const glm::vec3 k_color = glm::vec3(1.0,1.0,0.0);
 
 	public:
-		Landstrasse(const std::vector<glm::vec3>);
+		Landstrasse(const vectorVec3);
 		virtual ~Landstrasse();
 	
 };

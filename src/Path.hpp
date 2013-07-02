@@ -19,10 +19,10 @@ class Path {
 
 		unsigned long m_ID;
 		glm::vec3 m_color;
-		std::vector<glm::vec3> m_pts;
+		vectorVec3 m_pts;
 		float m_width;
 
-		void setWaypoints(const std::vector<glm::vec3> pts) { m_pts = pts; }
+		void setWaypoints(const vectorVec3 pts) { m_pts = pts; }
 
 		void setWidth(const float w) { m_width = w; }
 

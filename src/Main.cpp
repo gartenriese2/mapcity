@@ -186,7 +186,7 @@ void gameTest() {
 	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
 
-	std::vector<glm::vec3> zone;
+	vectorVec3 zone;
 	zone.push_back(glm::vec3(312.5,0.1,-282.5));
 	zone.push_back(glm::vec3(290,0.1,-282.5));
 	zone.push_back(glm::vec3(290,0.1,-310));
@@ -201,7 +201,7 @@ void gameTest() {
 	zone.push_back(glm::vec3(312.5,0.1,-267.5));
 	MietshausZone mz1(zone);
 
-	std::vector<glm::vec3> path;
+	vectorVec3 path;
 	path.push_back(glm::vec3(320,0.1,-232.5));
 	path.push_back(glm::vec3(320,0.1,-350));
 	Landstrasse l1(path);
@@ -348,7 +348,7 @@ void terrainTest() {
 	
 }
 
-void inhertitanceTest() {
+void inheritanceTest() {
 
 	Game game(1000, 1000, 1000, 1000);
 
@@ -387,12 +387,12 @@ int main() {
 	
 	// findHexagonTest();
 	// demandFunctionTest();
-	// gameTest();
+	gameTest();
 	// threadTest();
 	// zoneTest();
 	// householdTest();
 	// terrainTest();
-	inhertitanceTest();
+	// inheritanceTest();
 
 	return 0;
 }
