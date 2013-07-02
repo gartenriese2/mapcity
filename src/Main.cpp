@@ -348,6 +348,30 @@ void terrainTest() {
 	
 }
 
+void inhertitanceTest() {
+
+	Game game(1000, 1000, 1000, 1000);
+
+	vector<glm::vec3> zone;
+	zone.push_back(glm::vec3(201,0,-196));
+	zone.push_back(glm::vec3(284,0,-111));
+	zone.push_back(glm::vec3(101,0,-123));
+	zone.push_back(glm::vec3(98,0,-182));
+	EinfamilienhausZone ez1(zone);
+	ez1.getResidents();
+
+	std::cout << "Business?: " << ez1.isBusiness() << "\nResidential?: " << ez1.isResidential() << "\n";
+
+	Zone & z1 = ez1;
+
+	std::cout << "Business?: " << z1.isBusiness() << "\nResidential?: " << z1.isResidential() << "\n";
+
+	ResidentialZone & r1 = dynamic_cast<ResidentialZone &>(z1);
+
+	std::cout << "\nResidential?: " << r1.isResidential() << " Residents: " << r1.getResidents() << "\n";
+
+}
+
 int main() {
 
 // BEGIN TEST
@@ -363,13 +387,12 @@ int main() {
 	
 	// findHexagonTest();
 	// demandFunctionTest();
-	gameTest();
+	// gameTest();
 	// threadTest();
 	// zoneTest();
 	// householdTest();
 	// terrainTest();
-
-	// Playground p;
+	inhertitanceTest();
 
 	return 0;
 }

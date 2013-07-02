@@ -90,7 +90,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm:
 	
 }
 
-Object::Object(ObjectType type, std::vector<glm::vec3> v, const float f, const glm::vec3 col) {
+Object::Object(ObjectType type, vectorVec3 v, const float f, const glm::vec3 col) {
 	
 	switch (type) {
 		case ObjectType::SPLINE:
@@ -103,7 +103,7 @@ Object::Object(ObjectType type, std::vector<glm::vec3> v, const float f, const g
 	
 }
 
-Object::Object(ObjectType type, std::vector<glm::vec3> v, glm::vec3 center, const glm::vec3 col) {
+Object::Object(ObjectType type, vectorVec3 v, glm::vec3 center, const glm::vec3 col) {
 	
 	switch (type) {
 		case ObjectType::POLYGON:
@@ -652,7 +652,7 @@ void Object::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm:
 
 }
 
-void Object::setAsSpline(const std::vector<glm::vec3> pts, const float width, const glm::vec3 col) {
+void Object::setAsSpline(const vectorVec3 pts, const float width, const glm::vec3 col) {
 
 	assert(pts.size() > 1);
 
@@ -768,7 +768,7 @@ void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
 
 }
 
-void Object::setAsPolygon(const std::vector<glm::vec3> pts, glm::vec3 center, const glm::vec3 col) {
+void Object::setAsPolygon(const vectorVec3 pts, glm::vec3 center, const glm::vec3 col) {
 
 	assert(pts.size() > 2);
 

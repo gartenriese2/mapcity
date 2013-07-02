@@ -16,6 +16,9 @@ class Zone {
 		unsigned long getID() const { return m_ID; }
 		glm::vec3 getCenter() const { return m_center; }
 
+		virtual bool isResidential() const { return false; }
+		virtual bool isBusiness() const { return false; }
+
 	private:
 		
 				
@@ -24,7 +27,7 @@ class Zone {
 		
 		unsigned long m_ID;
 		glm::vec3 m_color;
-		std::vector<glm::vec3> m_bounding;
+		vectorVec3 m_bounding;
 		float m_area;
 		glm::vec3 m_center;
 
@@ -34,8 +37,8 @@ class Zone {
 		void setCenter();
 		
 
-		void setBounding(const std::vector<glm::vec3> b) { m_bounding = b; }
-		std::vector<glm::vec3> getBounding() const { return m_bounding; }
+		void setBounding(const vectorVec3 b) { m_bounding = b; }
+		vectorVec3 getBounding() const { return m_bounding; }
 
 		void setColor(const glm::vec3 c) { m_color = c; }
 		glm::vec3 getColor() const { return m_color; }

@@ -6,6 +6,8 @@
 #include <memory>
 #include <mutex>
 
+typedef std::unordered_map<unsigned long, Object> objectMap;
+
 class ObjectContainer {
 public:
 	
@@ -13,19 +15,19 @@ public:
 
 	unsigned long addBuilding(const glm::vec3, const glm::vec3, const glm::vec3, const float, const glm::vec3);
 	void deleteBuilding(const unsigned long ID) { mBuildingMap.erase(ID); }
-	std::unordered_map<unsigned long, Object> getBuildings() const { return mBuildingMap; }
+	objectMap getBuildings() const { return mBuildingMap; }
 
-	unsigned long addZone(const std::vector<glm::vec3>, const glm::vec3, const glm::vec3);
+	unsigned long addZone(const vectorVec3, const glm::vec3, const glm::vec3);
 	void deleteZone(const unsigned long ID) { mZoneMap.erase(ID); }
-	std::unordered_map<unsigned long, Object> getZones() const { return mZoneMap; }
+	objectMap getZones() const { return mZoneMap; }
 
 	unsigned long addHexagon(const glm::vec3, const glm::vec3, const glm::vec3);
 	void deleteHexagon(const unsigned long ID) { mHexagonMap.erase(ID); }
-	std::unordered_map<unsigned long, Object> getHexagons() const { return mHexagonMap; }
+	objectMap getHexagons() const { return mHexagonMap; }
 
-	unsigned long addPath(const std::vector<glm::vec3>, const float, const glm::vec3);
+	unsigned long addPath(const vectorVec3, const float, const glm::vec3);
 	void deletePath(const unsigned long ID) { mPathMap.erase(ID); }
-	std::unordered_map<unsigned long, Object> getPaths() const { return mPathMap; }
+	objectMap getPaths() const { return mPathMap; }
 
 protected:
 	static ObjectContainer* pInstance;
@@ -44,10 +46,10 @@ private:
 	ObjectContainer& operator=(const ObjectContainer&);
 	static std::mutex sMutex;
 	
-	std::unordered_map<unsigned long, Object> mBuildingMap;
-	std::unordered_map<unsigned long, Object> mZoneMap;
-	std::unordered_map<unsigned long, Object> mHexagonMap;
-	std::unordered_map<unsigned long, Object> mPathMap;
+	objectMap mBuildingMap;
+	objectMap mZoneMap;
+	objectMap mHexagonMap;
+	objectMap mPathMap;
 
 };
 

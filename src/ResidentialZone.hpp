@@ -10,6 +10,9 @@ class ResidentialZone : public Zone {
 	public:
 		ResidentialZone();
 		virtual ~ResidentialZone();
+
+		virtual bool isResidential() const { return true; }
+		virtual int getResidents() const { return 10; }
 		
 };
 
