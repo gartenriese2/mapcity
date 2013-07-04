@@ -7,18 +7,23 @@
 #include "../glm-0.9.4.3/glm/glm.hpp"
 
 class Terrain {
+	
 	public:
-		Terrain(Bitmap b);
 		
-		inline const float * getVertices() { return terrainVertices; }
-		inline const float * getNormals() { return terrainNormals; }
+		Terrain(const Bitmap & b);
+		
+		const std::vector<float> & getVertices() const { return m_terrainVertices; }
+		const std::vector<float> & getNormals() const { return m_terrainNormals; }
+	
 	private:
+		
 		Bitmap map;
-		float * terrainVertices;
-		float * terrainNormals;
+		std::vector<float> m_terrainVertices;
+		std::vector<float> m_terrainNormals;
 
 		void createVerticesFromBitmap();
 		void createNormalsFromBitmap();
+
 };
 
 #endif

@@ -12,14 +12,14 @@ class Mietshaus : public ResidentialBuilding {
 	const int k_numHouseholds = 1;
 
 	public:
-		Mietshaus(const glm::vec3, const glm::vec3, const glm::vec3);
+		Mietshaus(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		virtual ~Mietshaus();
 	
 };
 
 class MietshausZone : public ResidentialZone {
 	public:
-		MietshausZone(const vectorVec3);
+		MietshausZone(const vectorVec3 &);
 		virtual ~MietshausZone();
 		
 };

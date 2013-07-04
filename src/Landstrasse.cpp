@@ -1,6 +1,6 @@
 #include "Landstrasse.hpp"
 
-Landstrasse::Landstrasse(vectorVec3 waypoints) {
+Landstrasse::Landstrasse(const vectorVec3 & waypoints) {
 
 	setWaypoints(waypoints);
 	setWidth(k_width);

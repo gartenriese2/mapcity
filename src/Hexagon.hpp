@@ -1,48 +1,35 @@
 #ifndef HEXAGON_HPP
 #define HEXAGON_HPP
 
-#include "../glm-0.9.4.3/glm/glm.hpp"
+#include "glm.h"
 #include <vector>
 #include <iostream>
 #include "Zone.hpp"
 #include "ResidentialZone.hpp"
-// #include "IndustrialZone.hpp"
 
 const float hexaSideLength = 100.f;
 const float hexaHeight = hexaSideLength * sqrt(3.f);
 
-class Hexagon
-{
-public:
-	Hexagon(glm::vec3);
-	~Hexagon();
-	inline glm::vec3 getCenter() { return this->center; }
-	inline glm::vec3 getLeft() { return vertices[0]; }
-	const vectorVec3& getVertices() const { return vertices; }
-	// const std::vector<Hexagon>& getNeighbors() const { return neighbors; }
-	bool isInside(glm::vec3 p);
+class Hexagon {
 	
-	inline void addZone(Zone * z) { genericZones.push_back(z); }
-	inline void addResidentialZone(ResidentialZone z) { this->residentialZones.push_back(z); /*addZone(z);*/ }
-	// inline void addIndustrialZone(IndustrialZone z) { this->industrialZones.push_back(z); /*addZone(z);*/ }
+	public:
 	
-	// template <class T> void deleteZone(T);
+		Hexagon(const glm::vec3 &);
+		~Hexagon();
 
-	int getChildren();
-	int getResidents();
+		const glm::vec3 & getCenter() const { return m_center; }
+		const glm::vec3 & getLeft() const { return m_vertices[0]; }
+		const vectorVec3 & getVertices() const { return m_vertices; }
+		
+		bool isInside(glm::vec3) const;
 
-	int countUndevelopedZones();
-private:
-	glm::vec3 center;
-	vectorVec3 vertices;
-	// std::vector<Hexagon> neighbors;
+	private:
 
-	std::vector<Zone*> genericZones;
-	std::vector<ResidentialZone> residentialZones;
-	// std::vector<IndustrialZone> industrialZones;
+		glm::vec3 m_center;
+		vectorVec3 m_vertices;
 
-	void setVertices();
-	// template <class T> inline void addZone(T z) { this->genericZones.push_back(z); };
+		void setVertices();
+
 };
 
 #endif

@@ -22,11 +22,11 @@ class Path {
 		vectorVec3 m_pts;
 		float m_width;
 
-		void setWaypoints(const vectorVec3 pts) { m_pts = pts; }
+		void setWaypoints(const vectorVec3 & pts) { m_pts = pts; }
 
 		void setWidth(const float w) { m_width = w; }
 
-		void setColor(const glm::vec3 col) { m_color = col; }
+		void setColor(const glm::vec3 & col) { m_color = col; }
 
 		void createObject();
 

@@ -5,24 +5,24 @@
 #include <iostream>
 
 class Fbo {
-public:
     
-    Fbo();
-    ~Fbo();
+    public:
+        
+        Fbo();
+        ~Fbo();
 
-    void bind();
-    inline void unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
-    void error();
+        void bind();
+        void unbind() const { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
+        void error() const;
 
-    void createDepthTexture(GLuint& , const int, const int);
-    void createColorTexture(GLuint&, const GLenum, const int, const int);
-    void createLightingTexture(GLuint&, const int, const int);
-    void createDepthRenderBuffer(GLuint&, const int, const int);
+        void createDepthTexture(GLuint & , const int, const int);
+        void createColorTexture(GLuint &, const GLenum, const int, const int);
+        void createDepthRenderBuffer(GLuint &, const int, const int);
 
-private:
-    
-    GLuint m_fbo;
-    int m_colorAttachments;
+    private:
+        
+        GLuint m_fbo;
+        unsigned int m_colorAttachments;
 
 };
 

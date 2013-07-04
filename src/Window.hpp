@@ -15,30 +15,33 @@ using namespace glm;
 using namespace std;
 
 class Window {
-public:
-	Window(int, int);
-	~Window();
-	void initCam(int, int);
-	void loop();
-	inline shared_ptr<Camera> getCam() { return m_cam; }
-	inline void setWorld(shared_ptr<World> world) { m_world = world; }
-private:
-
-	int m_width;
-	int m_height;
-
-	int m_mousePosX, m_mousePosY, m_mouseWheelPos;
 	
-	shared_ptr<World> m_world;
-	shared_ptr<Camera> m_cam;
-	shared_ptr<Render> m_render;
+	public:
+		
+		Window(const int, const int);
+		~Window();
 
-	int init();
-	int createWindow(int, int);
+		void initCam(const int, const int);
+		void loop();
+		const shared_ptr<Camera> & getCam() const { return m_cam; }
+	
+	private:
 
-	void keyhandler();
-	void mousehandler();
-	void FPS(Time &);
+		int m_width;
+		int m_height;
+
+		int m_mousePosX, m_mousePosY, m_mouseWheelPos;
+		
+		shared_ptr<Camera> m_cam;
+		shared_ptr<Render> m_render;
+
+		int init() const;
+		int createWindow(const int, const int);
+
+		void keyhandler() const;
+		void mousehandler();
+		void FPS(Time &) const;
+
 };
 
 #endif

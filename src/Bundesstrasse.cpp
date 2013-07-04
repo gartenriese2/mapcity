@@ -1,6 +1,6 @@
 #include "Bundesstrasse.hpp"
 
-Bundesstrasse::Bundesstrasse(vectorVec3 waypoints) {
+Bundesstrasse::Bundesstrasse(const vectorVec3 & waypoints) {
 
 	setWaypoints(waypoints);
 	setWidth(k_width);

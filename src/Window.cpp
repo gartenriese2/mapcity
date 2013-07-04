@@ -1,11 +1,11 @@
 #include "Window.hpp"
 
-Window::Window(int width, int height) {
+Window::Window(const int width, const int height) {
     
     m_height = height;
     m_width = width;
 
-    if(init()) {
+    if (init()) {
         createWindow(m_width, m_height);
     }
 
@@ -16,9 +16,9 @@ Window::~Window() {
     glfwTerminate();
 }
 
-int Window::init() {
+int Window::init() const {
     
-    if(!glfwInit()) {
+    if (!glfwInit()) {
         fprintf( stderr, "Failed to initialize GLFW\n" );
         return -1;
     }
@@ -38,7 +38,7 @@ int Window::init() {
 
 }
 
-int Window::createWindow(int width, int height) {
+int Window::createWindow(const int width, const int height) {
 
     m_height = height;
     m_width = width;
@@ -66,7 +66,7 @@ int Window::createWindow(int width, int height) {
 
 }
 
-void Window::initCam(int width, int height) {
+void Window::initCam(const int width, const int height) {
 
     m_cam = make_shared<Camera>(glm::vec3(400.f, 100.f, -200.f), glm::vec3(-1.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f),
         45.f, width, height, 0.1f, 10000.f);
@@ -109,7 +109,7 @@ void Window::loop() {
 
 }
 
-void Window::keyhandler() {
+void Window::keyhandler() const {
 
     if (glfwGetKey('W') == GLFW_PRESS) {
         m_cam->move(1.f, 0.0, 0.0);
@@ -168,7 +168,7 @@ void Window::mousehandler() {
 
 }
 
-void Window::FPS(Time & t) {
+void Window::FPS(Time & t) const {
 
     std::stringstream oss;
     oss << "MapCity: " << t.getAverage() << " ms.";

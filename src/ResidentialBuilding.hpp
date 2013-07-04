@@ -11,9 +11,9 @@ class ResidentialBuilding : public Building {
 	public:
 		ResidentialBuilding();
 		virtual ~ResidentialBuilding();
-		std::vector<Household> getHouseholds() const { return m_householdVector; }
+		const std::vector<Household> & getHouseholds() const { return m_householdVector; }
 	protected:
-		void createHouseholds(int);
+		void createHouseholds(const int);
 		
 		std::vector<Household> m_householdVector;
 };

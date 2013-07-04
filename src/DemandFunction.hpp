@@ -8,11 +8,13 @@
 using namespace std;
 
 struct DemandFunctionStruct {
+	
 	float x;
 	float y;
 	float positive;
 	float negative;
 	float height;
+	
 };
 
 class DemandFunction {
@@ -21,11 +23,11 @@ class DemandFunction {
 		
 		DemandFunction();
 		~DemandFunction();
-		float getZforFunction(int, float, float);
-		float getZforFunction(DemandFunctionStruct, float, float);
-		void addDemandFunctionStruct(float, float, float, float, float);
-		float addDemandsTogether(float, float);
-		float getZforStruct(DemandFunctionStruct, float, float);
+		
+		float getZforFunction(const DemandFunctionStruct &, const float, const float) const;
+		void addDemandFunctionStruct(const float, const float, const float, const float, const float);
+		float addDemandsTogether(const float, const float) const;
+		float getZforStruct(const DemandFunctionStruct &, const float, const float) const;
 		
 	private:
 		

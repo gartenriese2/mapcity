@@ -1,12 +1,11 @@
 #include "Game.hpp"
 
-Game::Game(int windowWidth, int windowHeight, int mapWidth, int mapHeight) {
+Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, const int mapHeight) {
 	
 	m_window = make_shared<Window>(windowWidth, windowHeight);
 	m_window->initCam(windowWidth, windowHeight);
 
 	m_world = make_shared<World>(mapHeight, mapWidth);
-	m_window->setWorld(m_world);
 
 }	
 

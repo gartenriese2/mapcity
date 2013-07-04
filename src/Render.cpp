@@ -51,7 +51,7 @@ void Render::init() {
 
 }
 
-void Render::simplePass(Camera &cam) {
+void Render::simplePass(const Camera &cam) const {
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -95,7 +95,7 @@ void Render::simplePass(Camera &cam) {
 
 }
 
-void Render::gbufferPass(Camera &cam) {
+void Render::gbufferPass(const Camera &cam) const {
 
 	// m_fbo->bind();
 
@@ -118,7 +118,7 @@ void Render::gbufferPass(Camera &cam) {
 
 }
 
-void Render::simpleTexPass() {
+void Render::simpleTexPass() const {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -130,7 +130,7 @@ void Render::simpleTexPass() {
 	
 }
 
-void Render::depthPlayerPass(Camera &cam) {
+void Render::depthPlayerPass(const Camera &cam) const {
 
 	m_fbo->bind();
     glViewport(0, 0, m_depthTextureWidth, m_depthTextureHeight);
@@ -148,7 +148,7 @@ void Render::depthPlayerPass(Camera &cam) {
 
 }
 
-void Render::depthLightPass(Camera &cam) {
+void Render::depthLightPass(const Camera &cam) const {
 
 	// m_fbo->bind();
 	// glViewport(0, 0, m_depthTextureWidth, m_depthTextureHeight);
@@ -164,6 +164,6 @@ void Render::depthLightPass(Camera &cam) {
 
 }
 
-void Render::shadowPass(Camera &cam) {
+void Render::shadowPass(const Camera &cam) const {
 
 }

@@ -8,7 +8,7 @@ Object::Object() {
 
 }
 
-Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & col) {
 
 	switch (type) {
 		case ObjectType::TRIANGLE:
@@ -25,7 +25,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm:
 	
 }
 
-Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const float f, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const glm::vec3 & a, const glm::vec3 & b, const float f, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::QUAD:
@@ -38,7 +38,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const floa
 
 }
 
-Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const float f1, const float f2, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const glm::vec3 & a, const glm::vec3 & b, const float f1, const float f2, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::QUAD:
@@ -51,7 +51,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const floa
 	
 }
 
-Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::HEXAGON:
@@ -64,7 +64,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm:
 	
 }
 
-Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 d, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::CUBOID:
@@ -77,7 +77,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm:
 	
 }
 
-Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const float f, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const float f, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::CUBOID:
@@ -90,7 +90,7 @@ Object::Object(ObjectType type, const glm::vec3 a, const glm::vec3 b, const glm:
 	
 }
 
-Object::Object(ObjectType type, vectorVec3 v, const float f, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const vectorVec3 & v, const float f, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::SPLINE:
@@ -103,7 +103,7 @@ Object::Object(ObjectType type, vectorVec3 v, const float f, const glm::vec3 col
 	
 }
 
-Object::Object(ObjectType type, vectorVec3 v, glm::vec3 center, const glm::vec3 col) {
+Object::Object(const ObjectType & type, const vectorVec3 & v, const glm::vec3 & center, const glm::vec3 & col) {
 	
 	switch (type) {
 		case ObjectType::POLYGON:
@@ -143,7 +143,7 @@ void Object::init() {
 
 }
 
-void Object::fillBuffers(int size, int indices, GLfloat * &vertexData, 
+void Object::fillBuffers(const int size, const int indices, GLfloat * &vertexData, 
 					GLfloat * &normalData, GLfloat * &colorData, GLushort * &indexData) {
 
 	glBindVertexArray(m_vertexArray);
@@ -171,7 +171,7 @@ void Object::fillBuffers(int size, int indices, GLfloat * &vertexData,
 
 }
 
-void Object::draw() {
+void Object::draw() const {
 
 	glBindVertexArray(m_vertexArray);
 	glDrawElements(GL_TRIANGLES, 3 * m_triangles, GL_UNSIGNED_SHORT, (void*)0);
@@ -185,7 +185,7 @@ void Object::draw() {
  * @param c   third point (anticlockwise)
  * @param col optional color
  */
-void Object::setAsTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 col) {
+void Object::setAsTriangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & col) {
 
 	GLfloat * vertexData = new GLfloat[9];
 	for (int i = 0; i < 3; i++) {
@@ -231,7 +231,7 @@ void Object::setAsTriangle(const glm::vec3 a, const glm::vec3 b, const glm::vec3
  * @param d   fourth point (anticlockwise)
  * @param col optional color
  */
-void Object::setAsQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, const glm::vec3 col) {
+void Object::setAsQuad(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & d, const glm::vec3 & col) {
 
 	glm::vec3 c = b + (d - a);
 
@@ -284,7 +284,7 @@ void Object::setAsQuad(const glm::vec3 a, const glm::vec3 b, const glm::vec3 d, 
  * @param width length of left/right side
  * @param col   optional color
  */
-void Object::setAsQuad(const glm::vec3 start, const glm::vec3 end, const float width, const glm::vec3 col) {
+void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const float width, const glm::vec3 & col) {
 
 	glm::vec3 l = end - start;
 	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
@@ -342,7 +342,7 @@ void Object::setAsQuad(const glm::vec3 start, const glm::vec3 end, const float w
  * @param widthEnd   length of right side
  * @param col        optional color
  */
-void Object::setAsQuad(const glm::vec3 start, const glm::vec3 end, const float widthStart, const float widthEnd, const glm::vec3 col) {
+void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const float widthStart, const float widthEnd, const glm::vec3 & col) {
 
 	glm::vec3 l = end - start;
 	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * widthStart / 2.f;
@@ -398,7 +398,7 @@ void Object::setAsQuad(const glm::vec3 start, const glm::vec3 end, const float w
  * @param left   left point of the hexagon
  * @param col    optional color
  */
-void Object::setAsHexagon(const glm::vec3 center, const glm::vec3 left, const glm::vec3 col) {
+void Object::setAsHexagon(const glm::vec3 & center, const glm::vec3 & left, const glm::vec3 & col) {
 
 	GLfloat * vertexData = new GLfloat[21];
 	GLfloat * normalData = new GLfloat[21];
@@ -481,7 +481,7 @@ void Object::setAsHexagon(const glm::vec3 center, const glm::vec3 left, const gl
  * @param d   [description]
  * @param col [description]
  */
-void Object::setAsCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c, const glm::vec3 d, const glm::vec3 col) {
+void Object::setAsCuboid(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & col) {
 	
 	GLfloat * vertexData;
 	GLfloat * normalData;
@@ -505,7 +505,7 @@ void Object::setAsCuboid(const glm::vec3 a, const glm::vec3 b, const glm::vec3 c
 
 }
 
-void Object::setAsCuboid(const glm::vec3 center, const glm::vec3 dirX, const glm::vec3 dirZ, const float height, const glm::vec3 col) {
+void Object::setAsCuboid(const glm::vec3 & center, const glm::vec3 & dirX, const glm::vec3 & dirZ, const float height, const glm::vec3 & col) {
 
 	GLfloat * vertexData;
 	GLfloat * normalData;
@@ -535,8 +535,8 @@ void Object::setAsCuboid(const glm::vec3 center, const glm::vec3 dirX, const glm
 
 }
 
-void Object::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm::vec3 &c, 
-						const glm::vec3 &d, GLfloat * &vertexData, GLfloat * &normalData, GLushort * &indexData) {
+void Object::createCuboidData(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, 
+						const glm::vec3 & d, GLfloat * & vertexData, GLfloat * & normalData, GLushort * & indexData) {
 	
 	vertexData = new GLfloat[72];
 	normalData = new GLfloat[72];
@@ -652,7 +652,7 @@ void Object::createCuboidData(const glm::vec3 &a, const glm::vec3 &b, const glm:
 
 }
 
-void Object::setAsSpline(const vectorVec3 pts, const float width, const glm::vec3 col) {
+void Object::setAsSpline(const vectorVec3 & pts, const float width, const glm::vec3 & col) {
 
 	assert(pts.size() > 1);
 
@@ -704,7 +704,7 @@ void Object::setAsSpline(const vectorVec3 pts, const float width, const glm::vec
 	
 }
 
-glm::vec3 Object::drawHermite(glm::vec3 A, glm::vec3 B, glm::vec3 mA, glm::vec3 mB, float t) {
+glm::vec3 Object::drawHermite(const glm::vec3 & A, const glm::vec3 & B, const glm::vec3 & mA, const glm::vec3 & mB, const float t) {
 
 	float t3 = glm::pow(t, 3.f);
 	float t2 = glm::pow(t, 2.f);
@@ -717,10 +717,10 @@ void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
 							std::vector<GLfloat> & normalData,
 							std::vector<GLushort> & indexData,
 							std::vector<GLfloat> & colorData,
-							const glm::vec3 start,
-							const glm::vec3 end,
+							const glm::vec3 & start,
+							const glm::vec3 & end,
 							const float width,
-							const glm::vec3 color) {
+							const glm::vec3 & color) {
 
 	glm::vec3 l = end - start;
 	glm::vec3 a = start + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
@@ -768,7 +768,7 @@ void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
 
 }
 
-void Object::setAsPolygon(const vectorVec3 pts, glm::vec3 center, const glm::vec3 col) {
+void Object::setAsPolygon(const vectorVec3 & pts, const glm::vec3 & center, const glm::vec3 & col) {
 
 	assert(pts.size() > 2);
 

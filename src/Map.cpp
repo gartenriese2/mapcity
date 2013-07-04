@@ -1,11 +1,11 @@
 #include "Map.hpp"
 
-Map::Map(int height, int width) {
+Map::Map(const int height, const int width) {
 	
-	this->height = height;
-	this->width = width;
+	m_height = height;
+	m_width = width;
 
-	this->hexagons = createHexagons();
+	m_hexagons = createHexagons();
 
 }
 
@@ -13,44 +13,32 @@ Map::~Map() {
 
 }
 
-int Map::getHeight() {
-	return this->height;
-}
-
-int Map::getWidth() {
-	return this->width;
-}
-
-std::vector<Hexagon> Map::getHexaVector() {
-	return this->hexaVector;
-}
-
 int Map::createHexagons() {
 
-	xHexas = (int)ceil((this->width / hexaSideLength + 1) / 1.5);
-	zHexas = (int)ceil(this->height / hexaHeight + 0.5);
+	m_xHexas = (int)ceil((m_width / hexaSideLength + 1) / 1.5);
+	m_zHexas = (int)ceil(m_height / hexaHeight + 0.5);
 
 	float x,z;
 
 	//Spalte für Spalte von unten nach oben
-	for (int i = 0; i < xHexas; i++) {
-		for (int j = 0; j < zHexas; j++) {
+	for (int i = 0; i < m_xHexas; i++) {
+		for (int j = 0; j < m_zHexas; j++) {
 			
 			x = i * hexaSideLength * 1.5;
 			z = j * hexaHeight + i%2 * hexaHeight/2;
 
-			hexaVector.push_back(Hexagon(glm::vec3(x,0,-z)));
+			m_hexaVector.push_back(Hexagon(glm::vec3(x,0,-z)));
 
 		}
 	}
 
-	return this->hexaVector.size();
+	return m_hexaVector.size();
 
 }
 
-Hexagon& Map::getCorrespondingHexagon(glm::vec3 p) {
+const Hexagon & Map::getCorrespondingHexagon(const glm::vec3 & p) const {
 
-	if (p.x < 0 || p.x > this->width || -p.z < 0 || -p.z > this->height) {
+	if (p.x < 0 || p.x > m_width || -p.z < 0 || -p.z > m_height) {
 		throw "Point not in Map";
 	}
 
@@ -61,15 +49,9 @@ Hexagon& Map::getCorrespondingHexagon(glm::vec3 p) {
 
 	for (int col = minCol; col <= maxCol; col++) {
 		for (int row = minRow; row <= maxRow; row++)	{
-			if (hexaVector[col * zHexas + row].isInside(p)) return hexaVector.at(col * zHexas + row);
+			if (m_hexaVector[col * m_zHexas + row].isInside(p)) return m_hexaVector.at(col * m_zHexas + row);
 		}
 	}
-
-	// for (int i = 0; i < hexaVector.size(); i++) {
-	// 	if (hexaVector[i].isInside(p)) {
-	// 		return hexaVector[i];
-	// 	}
-	// }
 	
 	throw "No Hexagon found";
 

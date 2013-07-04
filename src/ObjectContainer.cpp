@@ -28,7 +28,7 @@ ObjectContainer::~ObjectContainer() {
 
 }
 
-unsigned long ObjectContainer::addBuilding(const glm::vec3 center, const glm::vec3 dirX, const glm::vec3 dirZ, const float height, const glm::vec3 color) {
+unsigned long ObjectContainer::addBuilding(const glm::vec3 & center, const glm::vec3 & dirX, const glm::vec3 & dirZ, const float height, const glm::vec3 & color) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -40,7 +40,7 @@ unsigned long ObjectContainer::addBuilding(const glm::vec3 center, const glm::ve
 
 }
 
-unsigned long ObjectContainer::addZone(const vectorVec3 pts, const glm::vec3 center, const glm::vec3 color) {
+unsigned long ObjectContainer::addZone(const vectorVec3 & pts, const glm::vec3 & center, const glm::vec3 & color) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -52,7 +52,7 @@ unsigned long ObjectContainer::addZone(const vectorVec3 pts, const glm::vec3 cen
 
 }
 
-unsigned long ObjectContainer::addHexagon(const glm::vec3 center, const glm::vec3 left, const glm::vec3 color) {
+unsigned long ObjectContainer::addHexagon(const glm::vec3 & center, const glm::vec3 & left, const glm::vec3 & color) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -63,7 +63,7 @@ unsigned long ObjectContainer::addHexagon(const glm::vec3 center, const glm::vec
 
 }
 
-unsigned long ObjectContainer::addPath(const vectorVec3 pts, const float width, const glm::vec3 color) {
+unsigned long ObjectContainer::addPath(const vectorVec3 & pts, const float width, const glm::vec3 & color) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 

@@ -17,7 +17,7 @@ class Building {
 
 	protected:
 		
-		void setShape(const glm::vec3 c, const glm::vec3 f, const glm::vec3 s) { m_center = c; m_front = f; m_side = s; }
+		void setShape(const glm::vec3 & c, const glm::vec3 & f, const glm::vec3 & s) { m_center = c; m_front = f; m_side = s; }
 		glm::vec3 getCenter() const { return m_center; }
 		glm::vec3 getFront() const { return m_front; }
 		glm::vec3 getSide() const { return m_side; }
@@ -25,7 +25,7 @@ class Building {
 		void setHeight(const float min, const float max) { m_height = glm::linearRand(min, max); }
 		float getHeight() const { return m_height; }
 
-		void setColor(const glm::vec3 c) { m_color = c; }
+		void setColor(const glm::vec3 & c) { m_color = c; }
 		glm::vec3 getColor() const { return m_color; }
 		
 		void createObject();

@@ -6,7 +6,6 @@
 #include "Einfamilienhaus.hpp"
 #include "Bitmap.hpp"
 #include "Terrain.hpp"
-#include "Playground.hpp"
 #include "Camera.hpp"
 #include "Game.hpp"
 #include "Landstrasse.hpp"
@@ -286,7 +285,7 @@ void zoneTest() {
 	cout << "ID: " << z[0].getID() << endl;
 	cout << "Center: " << z[0].getCenter().x << "|" << z[0].getCenter().z << endl;
 
-	m.getCorrespondingHexagon(z[0].getCenter()).addResidentialZone(z[0]);
+	//m.getCorrespondingHexagon(z[0].getCenter()).addResidentialZone(z[0]);
 
 }
 

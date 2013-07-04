@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-Camera::Camera(glm::vec3 pos, glm::vec3 look, glm::vec3 up, float fov, int width, int height, float near, float far) {
+Camera::Camera(const glm::vec3 & pos, const glm::vec3 & look, const glm::vec3 & up, float fov, int width, int height, float near, float far) {
 	
 	m_width = width;
 	m_height = height;
@@ -20,7 +20,7 @@ Camera::Camera(glm::vec3 pos, glm::vec3 look, glm::vec3 up, float fov, int width
 
 }
 
-Camera::Camera(glm::vec3 pos, glm::vec3 look, glm::vec3 up, float left, float right, float top, float bottom) {
+Camera::Camera(const glm::vec3 & pos, const glm::vec3 & look, const glm::vec3 & up, float left, float right, float top, float bottom) {
 
 	m_pos = pos;
 	m_dir = glm::normalize(look);
@@ -61,7 +61,7 @@ void Camera::move(float forward, float sideward, float upward) {
 
 }
 
-void Camera::zoom(int zoom) {
+void Camera::zoom(const int zoom) {
 	
 	if (m_pos.y > 10.f || zoom < 0) {
 		float factor = glm::pow(m_pos.y, 0.75f);
@@ -71,7 +71,7 @@ void Camera::zoom(int zoom) {
 	}
 }
 
-void Camera::rotate(float dx, float dy) {
+void Camera::rotate(const float dx, const float dy) {
 	
 	float radX = -m_fov * M_PI / 180.f * dx / static_cast<float>(m_width);
 	float radY = -m_fov * M_PI / 180.f * dy / static_cast<float>(m_width);
@@ -89,7 +89,7 @@ void Camera::rotate(float dx, float dy) {
 
 }
 
-void Camera::rotateAround(float angle) {
+void Camera::rotateAround(const float angle) {
 
 	float steps = m_pos.y / -m_dir.y;
 	glm::vec3 center = m_pos + m_dir * steps;

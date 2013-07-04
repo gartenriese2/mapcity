@@ -6,26 +6,28 @@
 #include <iostream>
 
 class Map {
-public:
-	Map(int, int);
-	~Map();
 
-	int getHeight();
-	int getWidth();
-	int getNumberOfHexagons();
-	std::vector<Hexagon> getHexaVector();
-	Hexagon& getCorrespondingHexagon(glm::vec3);
+	public:
 	
-private:
+		Map(const int, const int);
+		~Map();
 
-	int height;
-	int width;
-	int hexagons;
-	int xHexas;
-	int zHexas;
-	std::vector<Hexagon> hexaVector;
+		int getHeight() const { return m_height; }
+		int getWidth() const { return m_width; }
+		int getNumberOfHexagons() const { return m_hexagons; }
+		const std::vector<Hexagon> & getHexaVector() const { return m_hexaVector; }
+		const Hexagon & getCorrespondingHexagon(const glm::vec3 &) const;
+	
+	private:
 
-	int createHexagons();
+		int m_height;
+		int m_width;
+		int m_hexagons;
+		int m_xHexas;
+		int m_zHexas;
+		std::vector<Hexagon> m_hexaVector;
+
+		int createHexagons();
 
 };
 

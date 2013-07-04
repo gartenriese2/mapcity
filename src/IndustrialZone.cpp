@@ -1,9 +1,7 @@
 #include "IndustrialZone.hpp"
 
 IndustrialZone::IndustrialZone() {
-	
-	// setBounding(a);
-
+	setColor(k_color);
 }
 
 IndustrialZone::~IndustrialZone() {

@@ -16,13 +16,13 @@ void Fbo::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 }
 
-void Fbo::error() {
+void Fbo::error() const {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cout << "fbo error!\n";
     }
 }
 
-void Fbo::createDepthTexture(GLuint& depthTexture, const int width, const int height) {
+void Fbo::createDepthTexture(GLuint & depthTexture, const int width, const int height) {
     
     glGenTextures(1, &depthTexture);
     glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -38,7 +38,7 @@ void Fbo::createDepthTexture(GLuint& depthTexture, const int width, const int he
 
 }
 
-void Fbo::createColorTexture(GLuint& occlusionTexture, const GLenum format, const int width, const int height) {
+void Fbo::createColorTexture(GLuint & occlusionTexture, const GLenum format, const int width, const int height) {
     
     glGenTextures(1, &occlusionTexture);
     glBindTexture(GL_TEXTURE_2D, occlusionTexture);
@@ -55,7 +55,7 @@ void Fbo::createColorTexture(GLuint& occlusionTexture, const GLenum format, cons
 
 }
 
-void Fbo::createDepthRenderBuffer(GLuint& depthrenderbuffer, const int width, const int height) {
+void Fbo::createDepthRenderBuffer(GLuint & depthrenderbuffer, const int width, const int height) {
     
     glGenRenderbuffers(1, &depthrenderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);

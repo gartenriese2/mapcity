@@ -3,16 +3,15 @@
 
 #include "Zone.hpp"
 
-// class IndustrialZone : public Zone<IndustrialZone> {
 class IndustrialZone : public Zone {
+
+	const glm::vec3 k_color = glm::vec3(1.0, 1.0, 0.6);
+
 	public:
 		IndustrialZone();
-		~IndustrialZone();
+		virtual ~IndustrialZone();
 		
-
-		
-	private:
-		
+		virtual bool isIndustrial() const { return true; }
 		
 };
 

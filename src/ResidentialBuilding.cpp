@@ -8,7 +8,7 @@ ResidentialBuilding::~ResidentialBuilding() {
 	// delete households
 }
 
-void ResidentialBuilding::createHouseholds(int num) {
+void ResidentialBuilding::createHouseholds(const int num) {
 
 	for (int i = 0; i < num; i++) {
 		m_householdVector.push_back(Household());

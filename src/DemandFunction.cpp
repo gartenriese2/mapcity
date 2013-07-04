@@ -9,7 +9,7 @@ DemandFunction::~DemandFunction() {
 
 }
 
-void DemandFunction::addDemandFunctionStruct(float x, float y, float height, float positive, float negative) {
+void DemandFunction::addDemandFunctionStruct(const float x, const float y, const float height, const float positive, const float negative) {
 	
 	DemandFunctionStruct d;
 	d.height = height;
@@ -21,7 +21,7 @@ void DemandFunction::addDemandFunctionStruct(float x, float y, float height, flo
 
 }
 
-float DemandFunction::addDemandsTogether(float x, float y) {
+float DemandFunction::addDemandsTogether(const float x, const float y) const {
 
 	float demand = 0;
 
@@ -36,7 +36,7 @@ float DemandFunction::addDemandsTogether(float x, float y) {
 
 }
 
-float DemandFunction::getZforFunction(DemandFunctionStruct d, float x, float y) {
+float DemandFunction::getZforFunction(const DemandFunctionStruct & d, const float x, const float y) const {
 
 	float pxy = pow(fabs(x-d.x),2)+pow(fabs(y-d.y),2);
 	float nxy = pow(fabs(x-d.x),nExp)+pow(fabs(y-d.y),nExp);
@@ -46,7 +46,7 @@ float DemandFunction::getZforFunction(DemandFunctionStruct d, float x, float y) 
 
 }
 
-float DemandFunction::getZforStruct(DemandFunctionStruct d, float pxy, float nxy) {
+float DemandFunction::getZforStruct(const DemandFunctionStruct & d, const float pxy, const float nxy) const {
 
 	float neg,pos;
 

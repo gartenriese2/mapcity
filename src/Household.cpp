@@ -1,7 +1,5 @@
 #include "Household.hpp"
 
-Tree Household::householdTree;
-
 Household::Household() {
 
 	people.push_back(0);	// 0-Kleinkinder
@@ -22,45 +20,35 @@ Household::Household() {
 	
 }
 
-Household::Household(float wealth, float ecologicalSensibility, int size) {
-
-	// wealth = [0;1]
-	this->wealth = wealth;
-
-
-	
-	
-}
-
 Household::~Household() {
 
 }
 
-int Household::getMinors() {
+int Household::getMinors() const {
 	return people[0] + people[1] + people[2];
 }
 
-int Household::getChildren() {
+int Household::getChildren() const {
 	return children;
 }
 
-int Household::getAdults() {
+int Household::getAdults() const {
 	return people[3] + people[4] + people[5] + people[6];
 }
 
-int Household::getPensioners() {
+int Household::getPensioners() const {
 	return people[6];
 }
 
-int Household::getStudents() {
+int Household::getStudents() const {
 	return people[3];
 }
 
-int Household::getUnemployed() {
+int Household::getUnemployed() const {
 	return people[5];
 }
 
-int Household::getWorker() {
+int Household::getWorker() const {
 	return people[4];
 }
 
@@ -168,149 +156,6 @@ void Household::createRandomPeople() {
 
 }
 
-Tree Household::setTreeRealistic() {
-
-	Tree t;
-
-	Node root = t.getRoot();
-	root.addChild(PENSIONERS);
-	root.addChild(FAMILIES);
-	root.addChild(SINGLES);
-	root.addChild(SHARED);
-
-
-	Node pensioners = root.getChildren()[0];
-	int arr [] = {0,0,0,0,0,0,1};
-	pensioners.addChild(PENSIONERSINGLE,arr);
-	int arr2 [] = {0,0,0,0,0,0,2};
-	pensioners.addChild(PENSIONERCOUPLE,arr2);
-
-	Node families = root.getChildren()[1];
-	families.addChild(PARENTSINGLE);
-	families.addChild(PARENTCOUPLE);
-
-	Node singles = root.getChildren()[2];
-	int arr3 [] = {0,0,0,0,1,0,0};
-	singles.addChild(SINGLEWORKER, arr3);
-	int arr4 [] = {0,0,0,0,0,1,0};
-	singles.addChild(SINGLEUNEMPLOYED, arr4);
-	int arr5 [] = {0,0,0,1,0,0,0};
-	singles.addChild(SINGLESTUDENT, arr5);
-
-	Node shared = root.getChildren()[3];
-	int arr6 [] = {0,0,0,2,0,0,0};
-	shared.addChild(SHAREDTWO, arr6);
-	int arr7 [] = {0,0,0,3,0,0,0};
-	shared.addChild(SHAREDTHREE, arr7);
-	int arr8 [] = {0,0,0,4,0,0,0};
-	shared.addChild(SHAREDFOUR, arr8);
-	int arr9 [] = {0,0,0,5,0,0,0};
-	shared.addChild(SHAREDFIVE, arr9);
-
-	Node singleParents = families.getChildren()[0];
-	// singleParents.addChild(SINGLEPARENTWORKER)
-
-	return t;
-
-}
-
-void Household::createPeople(Node n) {
-
-		if (n.hasChildren()) {
-			// Innenknoten
-			float ran = (float)(rand() % (int)(n.getSumOfValues(n.getChildren().size()) * 1000)) / 1000.f;
-			std::cout << ran << std::endl;
-			for (int i = 0; i < n.getChildren().size(); i++) {
-				if (ran < n.getChildren()[i].getValue()) {
-					createPeople(n.getChildren()[i]);
-					break;
-				}
-			}
-		} else {
-			// Blattknoten
-			for (int i = 0; i < 7; i++) {
-				people[i] = n.getAmount()[i];
-			}
-		}
-	
-
-}
-
-void Household::setSimpleTree() {
-
-	if (!Household::householdTree.getRoot().hasChildren()) {
-
-		Node root = Household::householdTree.getRoot();
-
-		Node A = Household::householdTree.getRoot().addChild(A_RENTNER);
-		Node B = Household::householdTree.getRoot().addChild(B_FAMILIEN);
-		Node C = Household::householdTree.getRoot().addChild(C_PAARE);
-		Node D = Household::householdTree.getRoot().addChild(D_ALLEINLEBENDE);
-		Node E = Household::householdTree.getRoot().addChild(E_WGS);
-
-		std::cout << Household::householdTree.getRoot().getChildren().size() << std::endl;
-
-		int arrA1 [] = {0,0,0,0,0,0,1};
-		A.addChild(A1_EINRENTNER, arrA1);
-		int arrA2 [] = {0,0,0,0,0,0,2};
-		A.addChild(A2_ZWEIRENTNER, arrA2);
-
-		Node B1 = B.addChild(B1_EINELTERNTEIL);
-		Node B2 = B.addChild(B2_ZWEIELTERNTEILE);
-		
-
-		int arrC1 [] = {0,0,0,0,2,0,0};
-		C.addChild(C1_ZWEIARBEITSSUCHEND, arrC1);
-		int arrC2 [] = {0,0,0,0,0,2,0};
-		C.addChild(C2_ZWEIARBEITSLOS, arrC2);
-		int arrC3 [] = {0,0,0,0,1,1,0};
-		C.addChild(C3_ZWEIMIX, arrC3);
-
-		int arrD1 [] = {0,0,0,1,0,0,0};
-		D.addChild(D1_ALLEINSTUDENT, arrD1);
-		int arrD2 [] = {0,0,0,0,1,0,0};
-		D.addChild(D2_ALLEINARBEITSSUCHEND, arrD2);
-		int arrD3 [] = {0,0,0,0,0,1,0};
-		D.addChild(D3_ALLEINARBEITSLOS, arrD3);
-
-		int arrE1 [] = {0,0,0,2,0,0,0};
-		E.addChild(E1_ZWEIERWG, arrE1);
-		int arrE2 [] = {0,0,0,3,0,0,0};
-		E.addChild(E2_DREIERWG, arrE2);
-		int arrE3 [] = {0,0,0,4,0,0,0};
-		E.addChild(E3_VIERERWG, arrE3);
-		int arrE4 [] = {0,0,0,5,0,0,0};
-		E.addChild(E4_FUNFERWG, arrE4);
-
-	}
-
-	// std::cout << Household::householdTree.getRoot().getChildren().size() << std::endl;
-
-}
-
-void Household::createSimplePeople(Node n) {
-
-	// std::cout << n.getChildren().size() << std::endl;
-
-	if (n.hasChildren()) {
-		// Innenknoten
-		float ran = (float)(rand() % (int)(n.getSumOfValues(n.getChildren().size()) * 1000)) / 1000.f;
-		std::cout << ran << std::endl;
-		for (int i = 0; i < n.getChildren().size(); i++) {
-			if (ran < n.getChildren()[i].getSumOfValues(i)) {
-				createSimplePeople(n.getChildren()[i]);
-				break;
-			}
-		}
-	} else {
-		// Blattknoten
-		for (int i = 0; i < 7; i++) {
-			people[i] = n.getAmount()[i];
-		}
-	}
-
-}
-
 void Household::createTransportation() {
 
 	/*
@@ -324,7 +169,7 @@ void Household::createTransportation() {
 
 }
 
-void Household::printResidents() {
+void Household::printResidents() const {
 	
 	std::cout << "In diesem Haushalt leben " << getAdults() << " Erwachsene: " << std::endl;
 	if (people[4] > 0) std::cout << "\t" << people[4] << " Arbeiter" << std::endl;
@@ -338,7 +183,7 @@ void Household::printResidents() {
 
 }
 
-void Household::printTransportation() {
+void Household::printTransportation() const {
 
 	std::cout << "Dieser Haushalt besitzt ";
 

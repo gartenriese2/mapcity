@@ -1,7 +1,6 @@
 #ifndef HOUSEHOLD_HPP
 #define HOUSEHOLD_HPP
 
-#include <stdlib.h>
 #include <iostream>
 #include <vector>
 
@@ -11,21 +10,24 @@
 using namespace HouseholdConstants;
 
 class Household {
+	
 	public:
+
 		Household();
-		Household(float, float, int);
+		Household(const float, const float, const int);
 		~Household();
 
-		void printResidents();
-		void printTransportation();
+		void printResidents() const;
+		void printTransportation() const;
 
-		int getMinors();
-		int getChildren();
-		int getAdults();
-		int getPensioners();
-		int getStudents();
-		int getUnemployed();
-		int getWorker();
+		int getMinors() const;
+		int getChildren() const;
+		int getAdults() const;
+		int getPensioners() const;
+		int getStudents() const;
+		int getUnemployed() const;
+		int getWorker() const;
+
 	private:
 
 		float wealth;
@@ -33,7 +35,6 @@ class Household {
 		// People
 		int children;
 		std::vector<int> people;
-		static Tree householdTree;
 
 		// Transportation
 		int cars;
@@ -44,14 +45,9 @@ class Household {
 		float byMassTransit;
 		float byBike;
 
-		Tree setTreeRealistic();
-		void setSimpleTree();
-		void createPeople(Node);
-		void createSimplePeople(Node n);
 		void createRandomPeople();
-		void createSubType(std::vector<float>, bool);
-		void createPeopleAlternate();
 		void createTransportation();
+
 };
 
 #endif

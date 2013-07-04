@@ -10,14 +10,14 @@ class GrosserLaden : public BusinessBuilding {
 	const float k_maxHeight = 12.0;
 
 	public:
-		GrosserLaden(const glm::vec3, const glm::vec3, const glm::vec3);
+		GrosserLaden(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		virtual ~GrosserLaden();
 	
 };
 
 class GrosserLadenZone : public BusinessZone {
 	public:
-		GrosserLadenZone(const vectorVec3);
+		GrosserLadenZone(const vectorVec3 &);
 		virtual ~GrosserLadenZone();
 		
 };

@@ -1,6 +1,6 @@
 #include "Einfamilienhaus.hpp"
 
-Einfamilienhaus::Einfamilienhaus(glm::vec3 center, glm::vec3 front, glm::vec3 side) {
+Einfamilienhaus::Einfamilienhaus(const glm::vec3 & center, const glm::vec3 & front, const glm::vec3 & side) {
 
 	setShape(center, front, side);
 	setHeight(k_minHeight, k_maxHeight);
@@ -15,7 +15,7 @@ Einfamilienhaus::~Einfamilienhaus() {
 	
 }
 
-EinfamilienhausZone::EinfamilienhausZone(vectorVec3 bounding) {
+EinfamilienhausZone::EinfamilienhausZone(const vectorVec3 & bounding) {
 
 	setBounding(bounding);
 	setArea();

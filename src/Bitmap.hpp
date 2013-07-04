@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 class Bitmap {
+	
 	public:
 		
 		Bitmap() {};
@@ -41,16 +42,17 @@ class Bitmap {
 
 		}
 
-		inline unsigned char * getData() { return data; }
-		inline unsigned int getWidth() { return width; }
-		inline unsigned int getHeight() { return height; }
-		inline unsigned int getSize() { return imageSize; }
+		unsigned char * getData() const { return data; }
+		unsigned int getWidth() const { return width; }
+		unsigned int getHeight() const { return height; }
+		unsigned int getSize() const { return imageSize; }
 
 	private:
-			unsigned int dataPos;
-			unsigned int width, height;
-			unsigned int imageSize;
-			unsigned char * data;
+
+		unsigned int dataPos;
+		unsigned int width, height;
+		unsigned int imageSize;
+		unsigned char * data;
 };
 
 #endif
