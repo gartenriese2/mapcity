@@ -1,7 +1,5 @@
 #include "Object.hpp"
 
-static unsigned long count = 1;
-
 Object::Object() {
 
 	init();
@@ -128,8 +126,6 @@ Object::~Object() {
 }
 
 void Object::init() {
-
-	m_ID = count++;
 
 	glGenVertexArrays(1, &m_vertexArray);
 

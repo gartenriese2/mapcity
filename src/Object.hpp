@@ -32,8 +32,6 @@ class Object {
 		Object(const ObjectType &, const vectorVec3 &, const glm::vec3 &, const glm::vec3 &);
 		~Object();
 
-		unsigned long getID() const { return m_ID; }
-
 		void init();
 
 		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
@@ -43,8 +41,6 @@ class Object {
 		void draw() const;
 
 	private:
-		
-		unsigned long m_ID;
 
 		GLuint m_vertexArray;
 

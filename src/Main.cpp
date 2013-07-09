@@ -180,25 +180,9 @@ void gameTest() {
 	int height = 1000, width = 1000;
 	Game game(width, height, 1000, 1000);
 
-	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
-	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
-
-	vectorVec3 zone;
-	zone.push_back(glm::vec3(312.5,0.1,-282.5));
-	zone.push_back(glm::vec3(290,0.1,-282.5));
-	zone.push_back(glm::vec3(290,0.1,-310));
-	zone.push_back(glm::vec3(312.5,0.1,-310));
-	EinfamilienhausZone ez1(zone);
-
-	zone.clear();
-	zone.push_back(glm::vec3(312.5,0.1,-232.5));
-	zone.push_back(glm::vec3(290,0.1,-210));
-	zone.push_back(glm::vec3(262.5,0.1,-240));
-	zone.push_back(glm::vec3(262.5,0.1,-267.5));
-	zone.push_back(glm::vec3(312.5,0.1,-267.5));
-	MietshausZone mz1(zone);
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
 
 	vectorVec3 path;
 	path.push_back(glm::vec3(320,0.1,-232.5));
@@ -208,12 +192,38 @@ void gameTest() {
 	path.push_back(glm::vec3(320,0.1,-275));
 	path.push_back(glm::vec3(262.5,0.1,-275));
 	Landstrasse l2(path);
-	path.clear();
-	path.push_back(glm::vec3(320,0.1,-275));
-	path.push_back(glm::vec3(420,0.1,-300));
-	Landstrasse l3(path);
 	
-	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
+
+	vectorVec3 zone;
+	zone.push_back(glm::vec3(312.5,0.1,-282.5));
+	zone.push_back(glm::vec3(290,0.1,-282.5));
+	zone.push_back(glm::vec3(290,0.1,-310));
+	zone.push_back(glm::vec3(312.5,0.1,-310));
+	EinfamilienhausZone ez1(zone);
+	zone.clear();
+	zone.push_back(glm::vec3(312.5,0.1,-232.5));
+	zone.push_back(glm::vec3(290,0.1,-210));
+	zone.push_back(glm::vec3(262.5,0.1,-240));
+	zone.push_back(glm::vec3(262.5,0.1,-267.5));
+	zone.push_back(glm::vec3(312.5,0.1,-267.5));
+	MietshausZone mz1(zone);
+
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
+
+	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
+	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
+
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
 
 	zone.clear();
 	zone.push_back(glm::vec3(312.5,0.1,-310));
@@ -222,7 +232,24 @@ void gameTest() {
 	zone.push_back(glm::vec3(312.5,0.1,-330));
 	KleinerLadenZone kz1(zone);
 
-	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
+
+	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
+
+	path.clear();
+	path.push_back(glm::vec3(320,0.1,-275));
+	path.push_back(glm::vec3(420,0.1,-300));
+	Landstrasse l3(path);
+	
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
 
 	zone.clear();
 	zone.push_back(glm::vec3(327.5,0.1,-284));
@@ -230,6 +257,16 @@ void gameTest() {
 	zone.push_back(glm::vec3(362.5,0.1,-340));
 	zone.push_back(glm::vec3(362.5,0.1,-293));
 	GrosserLadenZone gz1(zone);
+
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
+
+	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
+
+	for (int i = 0; i < 50000; i++) {
+		std::cout << i << "\n";
+	}
 	
 	path.clear();
 	path.push_back(glm::vec3(100,1,-100));

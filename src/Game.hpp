@@ -5,12 +5,14 @@
 #include "Window.hpp"
 
 #include <memory>
+#include <thread>
 
 class Game {
 	
 	public:
 		
-		Game(const int, const int, const int, const int);
+		Game(int, int, int, int);
+		~Game();
 
 		void start();
 
@@ -21,7 +23,14 @@ class Game {
 		
 		shared_ptr<World> m_world;
 		shared_ptr<Window> m_window;
-	
+
+		thread m_graphicsThread;
+		// thread m_simulationThread;
+		bool m_isRunning;
+
+		void initGraphics(int, int);
+		void initSimulation();
+
 };
 
 #endif

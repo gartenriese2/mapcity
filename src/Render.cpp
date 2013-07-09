@@ -57,6 +57,7 @@ void Render::simplePass(const Camera &cam) const {
 
 	m_simpleShader->Use();
 
+	ObjectContainer::instance().emptyBuildingQueue();
 	for (auto o : ObjectContainer::instance().getBuildings()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -66,6 +67,7 @@ void Render::simplePass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	ObjectContainer::instance().emptyHexagonQueue();
 	for (auto o : ObjectContainer::instance().getHexagons()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -75,6 +77,7 @@ void Render::simplePass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	ObjectContainer::instance().emptyZoneQueue();
 	for (auto o : ObjectContainer::instance().getZones()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -84,6 +87,7 @@ void Render::simplePass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	ObjectContainer::instance().emptyPathQueue();
 	for (auto o : ObjectContainer::instance().getPaths()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
