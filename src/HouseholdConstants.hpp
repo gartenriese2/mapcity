@@ -38,7 +38,7 @@ namespace HouseholdConstants {
 
 	// Alleinerziehende -> Kinder
 	const float SINGLEONEKID = 69.1f;		// 69.1% Alleinerziehende mit 1 Kind
-	const float SINGLETWOKIDS = 93.4;		// 24.3% Alleinerziehende mit 2 Kindern
+	const float SINGLETWOKIDS = 93.4f;		// 24.3% Alleinerziehende mit 2 Kindern
 	const float SINGLETHREEKIDS = 100.f;	//  6.6% Alleinerziehende mit 3 Kindern
 
 	// Alleinerziehende -> Kindesalter

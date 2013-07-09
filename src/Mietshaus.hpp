@@ -6,10 +6,9 @@
 
 class Mietshaus : public ResidentialBuilding {
 	
-	const float k_minHeight = 20.0;
-	const float k_maxHeight = 40.0;
-	const int floors = 1;
-	const int k_numHouseholds = 1;
+	const unsigned short k_minFloors = 3;
+	const unsigned short k_maxFloors = 8;
+	unsigned short k_numHouseholds = 10;
 
 	public:
 		Mietshaus(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);

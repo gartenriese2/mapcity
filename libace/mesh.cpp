@@ -209,7 +209,7 @@ void Mesh::makeCube() {
 		0.334353, 0.498587
 	};
 
-	for( int i = 0; i < num; ++i ) {
+	for( unsigned int i = 0; i < num; ++i ) {
 		glm::vec3 vt( verts[3*i], verts[3*i+1], verts[3*i+2] );
 		glm::vec2 uv( uvs[2*i], uvs[2*i+1] );
 		glm::vec3 vn( vns[3*i], vns[3*i+1], vns[3*i+2] );
@@ -256,7 +256,7 @@ void Mesh::makeQuad() {
     	0, 0, 1
     };
 
-	for( int i = 0; i < num; ++i ) {
+	for( unsigned int i = 0; i < num; ++i ) {
 		glm::vec2 uv( uvs[2*i], uvs[2*i+1] );
 		glm::vec3 vt( verts[3*i], verts[3*i+1], verts[3*i+2] );
 		glm::vec3 vn( vns[3*i], vns[3*i+1], vns[3*i+2] );

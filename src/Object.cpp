@@ -143,7 +143,7 @@ void Object::init() {
 
 }
 
-void Object::fillBuffers(const int size, const int indices, GLfloat * &vertexData, 
+void Object::fillBuffers(const unsigned long size, const unsigned long indices, GLfloat * &vertexData, 
 					GLfloat * &normalData, GLfloat * &colorData, GLushort * &indexData) {
 
 	glBindVertexArray(m_vertexArray);
@@ -188,7 +188,7 @@ void Object::draw() const {
 void Object::setAsTriangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & col) {
 
 	GLfloat * vertexData = new GLfloat[9];
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		vertexData[i] = a[i];
 		vertexData[i + 3] = b[i];
 		vertexData[i + 6] = c[i];
@@ -196,14 +196,14 @@ void Object::setAsTriangle(const glm::vec3 & a, const glm::vec3 & b, const glm::
 
 	GLfloat * normalData = new GLfloat[9];
 	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
-	for (int i = 0; i < 3; i++)	{
+	for (unsigned long i = 0; i < 3; i++)	{
 		normalData[i] = n[i];
 		normalData[i + 3] = n[i];
 		normalData[i + 6] = n[i];
 	}
 
 	GLfloat * colorData = new GLfloat[9];
-	for (int i = 0; i < 9; i += 3) {
+	for (unsigned long i = 0; i < 9; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
@@ -236,7 +236,7 @@ void Object::setAsQuad(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3
 	glm::vec3 c = b + (d - a);
 
 	GLfloat * vertexData = new GLfloat[12];
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		vertexData[i] = a[i];
 		vertexData[i + 3] = b[i];
 		vertexData[i + 6] = c[i];
@@ -245,7 +245,7 @@ void Object::setAsQuad(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3
 
 	GLfloat * normalData = new GLfloat[12];
 	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		normalData[i] = n[i];
 		normalData[i + 3] = n[i];
 		normalData[i + 6] = n[i];
@@ -253,7 +253,7 @@ void Object::setAsQuad(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3
 	}
 
 	GLfloat * colorData = new GLfloat[12];
-	for (int i = 0; i < 12; i += 3) {
+	for (unsigned long i = 0; i < 12; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
@@ -293,7 +293,7 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
 
 	GLfloat * vertexData = new GLfloat[12];
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		vertexData[i] = a[i];
 		vertexData[i + 3] = b[i];
 		vertexData[i + 6] = c[i];
@@ -302,7 +302,7 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 
 	GLfloat * normalData = new GLfloat[12];
 	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		normalData[i] = n[i];
 		normalData[i + 3] = n[i];
 		normalData[i + 6] = n[i];
@@ -310,7 +310,7 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 	}
 
 	GLfloat * colorData = new GLfloat[12];
-	for (int i = 0; i < 12; i += 3) {
+	for (unsigned long i = 0; i < 12; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
@@ -351,7 +351,7 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * widthEnd / 2.f;
 
 	GLfloat * vertexData = new GLfloat[12];
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		vertexData[i] = a[i];
 		vertexData[i + 3] = b[i];
 		vertexData[i + 6] = c[i];
@@ -360,7 +360,7 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 
 	GLfloat * normalData = new GLfloat[12];
 	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		normalData[i] = n[i];
 		normalData[i + 3] = n[i];
 		normalData[i + 6] = n[i];
@@ -368,7 +368,7 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 	}
 
 	GLfloat * colorData = new GLfloat[12];
-	for (int i = 0; i < 12; i += 3) {
+	for (unsigned long i = 0; i < 12; i += 3) {
 		colorData[i] = col[0];
 		colorData[i + 1] = col[1];
 		colorData[i + 2] = col[2];
@@ -417,7 +417,7 @@ void Object::setAsHexagon(const glm::vec3 & center, const glm::vec3 & left, cons
 
 	glm::vec3 normal = glm::normalize(glm::cross(up, side));
 
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 
 		vertexData[i] = center[i];
 		vertexData[i + 3] = left[i];
@@ -429,7 +429,7 @@ void Object::setAsHexagon(const glm::vec3 & center, const glm::vec3 & left, cons
 
 	}
 
-	for (int i = 0; i < 21; i += 3) {
+	for (unsigned long i = 0; i < 21; i += 3) {
 		normalData[i] = normal.x;
 		normalData[i + 1] = normal.y;
 		normalData[i + 2] = normal.z;
@@ -550,7 +550,7 @@ void Object::createCuboidData(const glm::vec3 & a, const glm::vec3 & b, const gl
 	glm::vec3 n2 = glm::normalize(glm::cross(d - a, f - a));
 	glm::vec3 n3 = glm::normalize(glm::cross(c - e, f - e));
 
-	for (int i = 0; i < 3; i++) {
+	for (unsigned long i = 0; i < 3; i++) {
 		
 		vertexData[i + 0] = a[i];
 		vertexData[i + 3] = b[i];
@@ -663,7 +663,7 @@ void Object::setAsSpline(const vectorVec3 & pts, const float width, const glm::v
 
 	float smoothness = 100.f;
 
-	for (int i = 0; i < pts.size() - 1; i++) {
+	for (unsigned long i = 0; i < pts.size() - 1; i++) {
 		
 		glm::vec3 old = pts[i];
 		glm::vec3 tmp, tmp2, mA, mB;
@@ -673,7 +673,7 @@ void Object::setAsSpline(const vectorVec3 & pts, const float width, const glm::v
 		if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
 		else mB = glm::normalize(pts[i+2] - pts[i]);
 
-		float stretch = (2.f - glm::pow(glm::dot(mA, mB), 2.f)) * width / 10.0;
+		float stretch = (2.f - glm::pow(glm::dot(mA, mB), 2.f)) * width / 10.f;
 
 		float step = 1.f / glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
 
@@ -700,7 +700,7 @@ void Object::setAsSpline(const vectorVec3 & pts, const float width, const glm::v
 
 	fillBuffers(vertexData.size(), indexData.size(), vertices, normals, colors, indices);
 	
-	setTriangles(indexData.size() / 3);
+	setTriangles(static_cast<int>(indexData.size()) / 3);
 	
 }
 
@@ -728,7 +728,7 @@ void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
 	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
 	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
 
-	int len = vertexData.size() / 3;
+	unsigned short len = static_cast<unsigned short>(vertexData.size()) / 3;
 
 	vertexData.push_back(a[0]);
 	vertexData.push_back(a[1]);
@@ -772,8 +772,8 @@ void Object::setAsPolygon(const vectorVec3 & pts, const glm::vec3 & center, cons
 
 	assert(pts.size() > 2);
 
-	int numTriangles = pts.size();
-	int numVertices = pts.size() + 1;
+	unsigned long numTriangles = pts.size();
+	unsigned long numVertices = pts.size() + 1;
 
 	GLfloat * vertexData = new GLfloat[numVertices * 3];
 	GLfloat * normalData = new GLfloat[numVertices * 3];
@@ -791,7 +791,7 @@ void Object::setAsPolygon(const vectorVec3 & pts, const glm::vec3 & center, cons
 	colorData[1] = col.y;
 	colorData[2] = col.z;
 
-	for (int i = 3; i < numVertices * 3; i += 3) {
+	for (unsigned long i = 3; i < numVertices * 3; i += 3) {
 
 		vertexData[i] = pts[(i / 3) - 1][0];
 		vertexData[i + 1] = pts[(i / 3) - 1][1];
@@ -806,8 +806,8 @@ void Object::setAsPolygon(const vectorVec3 & pts, const glm::vec3 & center, cons
 	}
 
 	GLushort * indexData = new GLushort[numTriangles * 3];
-	int count = 0;
-	for (int i = 0; i < numTriangles * 3; i += 3)	{
+	unsigned short count = 0;
+	for (unsigned long i = 0; i < numTriangles * 3; i += 3)	{
 		indexData[i] = 0;
 		if (count + 2 > numTriangles) {
 			indexData[i + 1] = 1;
@@ -824,6 +824,6 @@ void Object::setAsPolygon(const vectorVec3 & pts, const glm::vec3 & center, cons
 	delete colorData;
 	delete indexData;
 
-	setTriangles(numTriangles);
+	setTriangles(static_cast<int>(numTriangles));
 
 }

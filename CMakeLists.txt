@@ -24,11 +24,8 @@ set( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR} )
 file(COPY assets DESTINATION ${PROJECT_BINARY_DIR})
 
 # compiler stuff
-if( APPLE )
-	add_definitions( -std=c++11 )
-else()
-	add_definitions( -std=c++11 )
-endif( APPLE )
+add_definitions( -std=c++11 -g -Wall -Wextra -Werror )
+
 
 # add source directory
 add_subdirectory( "src" )

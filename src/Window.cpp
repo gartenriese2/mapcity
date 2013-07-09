@@ -53,7 +53,7 @@ int Window::createWindow(const int width, const int height) {
 
 #ifndef __MACH__
     glewExperimental=true;
-    int err = glewInit();
+    GLuint err = glewInit();
     if (err != GLEW_OK) {
         fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
         return -1;

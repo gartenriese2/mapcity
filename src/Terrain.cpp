@@ -7,9 +7,9 @@ Terrain::Terrain(const Bitmap & b) {
 
 void Terrain::createVerticesFromBitmap() {
 
-	for (int z = 0; z < map.getHeight() - 1; z++) {
+	for (unsigned int z = 0; z < map.getHeight() - 1; z++) {
 		
-		for (int x = 0; x < map.getWidth() - 1; x++) {
+		for (unsigned int x = 0; x < map.getWidth() - 1; x++) {
 			
 			float h00 = map.getData()[3 * (z * map.getWidth() + x)];
 			float h01 = map.getData()[3 * (z * (map.getWidth() + 1) + x)];
@@ -48,9 +48,9 @@ void Terrain::createVerticesFromBitmap() {
 
 void Terrain::createNormalsFromBitmap() {
 
-	for (int z = 0; z < map.getHeight() - 1; z++) {
+	for (unsigned int z = 0; z < map.getHeight() - 1; z++) {
 		
-		for (int x = 0; x < map.getWidth() - 1; x++) {
+		for (unsigned int x = 0; x < map.getWidth() - 1; x++) {
 			
 			
 

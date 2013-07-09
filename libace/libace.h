@@ -39,7 +39,7 @@ private:
     // global functions
     int   m_CurrentDirection;
     bool  m_Wireframe;
-    int   m_Frames;
+    // int   m_Frames;
 
     Scenegraph *m_scenegraph;
 

@@ -27,15 +27,15 @@ void Shader::linkTextures() const {
 
 }
 
-GLuint Shader::addUniform(const char * name) const {
+GLint Shader::addUniform(const char * name) const {
     return glGetUniformLocation(m_shaderID, name);
 }
 
-void Shader::link(const GLuint ID, const glm::mat4 & matrix) const {
+void Shader::link(const GLint ID, const glm::mat4 & matrix) const {
     glUniformMatrix4fv(ID, 1, GL_FALSE, &matrix[0][0]);
 }
 
-void Shader::link(const GLuint ID, const float a, const float b, const float c) const {
+void Shader::link(const GLint ID, const float a, const float b, const float c) const {
     glUniform3f(ID, a, b, c);
 }
 
@@ -79,7 +79,7 @@ GLuint Shader::loadShaders(const char * vertex_file_path,const char * fragment_f
     // Check Vertex Shader
     glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
     glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> VertexShaderErrorMessage(InfoLogLength);
+    std::vector<char> VertexShaderErrorMessage(static_cast<unsigned long>(InfoLogLength));
     glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
     fprintf(stdout, "%s\n", &VertexShaderErrorMessage[0]);
 #endif
@@ -94,7 +94,7 @@ GLuint Shader::loadShaders(const char * vertex_file_path,const char * fragment_f
     // Check Fragment Shader
     glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
     glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
+    std::vector<char> FragmentShaderErrorMessage(static_cast<unsigned long>(InfoLogLength));
     glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
     fprintf(stdout, "%s\n", &FragmentShaderErrorMessage[0]);
  #endif
@@ -109,7 +109,7 @@ GLuint Shader::loadShaders(const char * vertex_file_path,const char * fragment_f
     // Check the program
     glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
     glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> ProgramErrorMessage( glm::max(InfoLogLength, int(1)) );
+    std::vector<char> ProgramErrorMessage(static_cast<unsigned long>(glm::max(InfoLogLength, int(1))));
     glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
     fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
  

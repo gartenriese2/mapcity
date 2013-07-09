@@ -163,14 +163,14 @@ bool Object::loadObj( const std::string& filename ) {
 	// 	std::cout << std::endl;
 	// }
 
-	for( int i = 0; i < t_vt_idx.size(); ++i ) {
+	for( unsigned long i = 0; i < t_vt_idx.size(); ++i ) {
 		m_idx.push_back( 0 );
 	}
 
 	// std::cout << "Vertices: " << std::endl;
 
 	m_vt.clear();
-	for( int i = 0; i < t_vt_idx.size(); ++i ) {
+	for( unsigned long i = 0; i < t_vt_idx.size(); ++i ) {
 		m_vt.push_back( t_vt.at( t_vt_idx.at( i ) ) );
 		m_idx[i] = i;
 
@@ -180,7 +180,7 @@ bool Object::loadObj( const std::string& filename ) {
 	// std::cout << "UVs: " << std::endl;
 
 	m_uv.clear();
-	for( int i = 0; i < t_uv_idx.size(); ++i ) {
+	for( unsigned long i = 0; i < t_uv_idx.size(); ++i ) {
 		m_uv.push_back( t_uv.at( t_uv_idx.at( i ) ) );
 
 		// std::cout << m_uv[i].x << ", " << m_uv[i].y << std::endl;
@@ -189,7 +189,7 @@ bool Object::loadObj( const std::string& filename ) {
 	// std::cout << "Normals: " << std::endl;
 
 	m_vn.clear();
-	for( int i = 0; i < t_vn_idx.size(); ++i ) {
+	for( unsigned long i = 0; i < t_vn_idx.size(); ++i ) {
 		m_vn.push_back( t_vn.at( t_vn_idx.at( i ) ) );
 
 		// std::cout << m_vn[i].x << ", " << m_vn[i].y << ", " << m_vn[i].z << std::endl;

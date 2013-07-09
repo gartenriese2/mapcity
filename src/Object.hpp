@@ -39,7 +39,7 @@ class Object {
 		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
 		void setTriangles(const int t) { m_triangles = t; }
 
-		void fillBuffers(const int, const int, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
+		void fillBuffers(const unsigned long, const unsigned long, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
 		void draw() const;
 
 	private:

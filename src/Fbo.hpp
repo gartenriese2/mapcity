@@ -16,7 +16,7 @@ class Fbo {
         void error() const;
 
         void createDepthTexture(GLuint & , const int, const int);
-        void createColorTexture(GLuint &, const GLenum, const int, const int);
+        void createColorTexture(GLuint &, const GLint, const int, const int);
         void createDepthRenderBuffer(GLuint &, const int, const int);
 
     private:

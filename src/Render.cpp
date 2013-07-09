@@ -148,22 +148,22 @@ void Render::depthPlayerPass(const Camera &cam) const {
 
 }
 
-void Render::depthLightPass(const Camera &cam) const {
+// void Render::depthLightPass(const Camera &cam) const {
 
-	// m_fbo->bind();
-	// glViewport(0, 0, m_depthTextureWidth, m_depthTextureHeight);
+// 	// m_fbo->bind();
+// 	// glViewport(0, 0, m_depthTextureWidth, m_depthTextureHeight);
 
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+// 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	m_depthShader->Use();
+// 	m_depthShader->Use();
 
-	// DRAW OBJECTS
+// 	// DRAW OBJECTS
 
-    // m_fbo->unbind();
-    // glViewport(0, 0, cam.getWidth(), cam.getHeight());
+//     // m_fbo->unbind();
+//     // glViewport(0, 0, cam.getWidth(), cam.getHeight());
 
-}
+// }
 
-void Render::shadowPass(const Camera &cam) const {
+// void Render::shadowPass(const Camera &cam) const {
 
-}
+// }

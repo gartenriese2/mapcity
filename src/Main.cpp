@@ -139,27 +139,27 @@ void demandFunctionTest() {
 	DemandFunction d;
 
 	// Industrie
-	d.addDemandFunctionStruct(0,0,100, 0.00001, 0.00002);
-	d.addDemandFunctionStruct(500,500,50, 0.00001, 0.00002);
+	d.addDemandFunctionStruct(0,0,100, 0.00001f, 0.00002f);
+	d.addDemandFunctionStruct(500,500,50, 0.00001f, 0.00002f);
 
 	// Wohnen
-	d.addDemandFunctionStruct(-850,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-850,10,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-900,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-900,10,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-950,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-950,10,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1000,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1000,10,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1100,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1100,10,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1050,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1050,10,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1150,0,-30, 0.00001, 0);
-	d.addDemandFunctionStruct(-1150,10,-30, 0.00001, 0);
+	d.addDemandFunctionStruct(-850,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-850,10,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-900,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-900,10,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-950,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-950,10,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1000,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1000,10,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1100,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1100,10,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1050,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1050,10,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1150,0,-30, 0.00001f, 0);
+	d.addDemandFunctionStruct(-1150,10,-30, 0.00001f, 0);
 
 	// Gewerbe
-	d.addDemandFunctionStruct(-800,0,400, 0.00008, 0);
+	d.addDemandFunctionStruct(-800,0,400, 0.00008f, 0);
 
 	float x;
 	float y;
@@ -381,7 +381,7 @@ int main() {
 #ifdef __linux__
 	timespec time1;
 	clock_gettime(CLOCK_MONOTONIC, &time1);
-	srand(time1.tv_nsec);
+	srand(static_cast<unsigned int>(time1.tv_nsec));
 #endif
 	
 	// findHexagonTest();

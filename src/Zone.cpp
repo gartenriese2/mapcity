@@ -15,7 +15,7 @@ void Zone::createObject() {
 void Zone::setArea() {
 	
 	m_area = 0.f;
-	for (int i = 0; i < m_bounding.size() - 1; i++) {
+	for (unsigned long i = 0; i < m_bounding.size() - 1; i++) {
 		m_area += (m_bounding[i].z + m_bounding[i+1].z) / 2 * (m_bounding[i+1].x - m_bounding[i].x);
 	}
 	m_area += (m_bounding[m_bounding.size()-1].z + m_bounding[0].z) / 2 * (m_bounding[0].x - m_bounding[m_bounding.size()-1].x);
@@ -27,7 +27,7 @@ void Zone::setCenter() {
 	float centroidX = 0.f;
 	float centroidZ = 0.f;
 
-	for (int i = 0; i < m_bounding.size() - 1; i++) {
+	for (unsigned long i = 0; i < m_bounding.size() - 1; i++) {
 		centroidX += (m_bounding[i].x + m_bounding[i+1].x) * (m_bounding[i].x * m_bounding[i+1].z - m_bounding[i+1].x * m_bounding[i].z);
 		centroidZ += (m_bounding[i].z + m_bounding[i+1].z) * (m_bounding[i].x * m_bounding[i+1].z - m_bounding[i+1].x * m_bounding[i].z);
 	}

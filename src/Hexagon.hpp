@@ -8,7 +8,7 @@
 #include "ResidentialZone.hpp"
 
 const float hexaSideLength = 100.f;
-const float hexaHeight = hexaSideLength * sqrt(3.f);
+const float hexaHeight = hexaSideLength * static_cast<float>(sqrt(3.f));
 
 class Hexagon {
 	

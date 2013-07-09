@@ -19,6 +19,8 @@ class Zone {
 		virtual bool isResidential() const { return false; }
 		virtual bool isBusiness() const { return false; }
 
+		virtual void addBuilding() {};
+
 	private:
 		
 				

@@ -16,7 +16,7 @@ std::vector<Camera*> Camera::s_camContainer;
 
 // global function: get camera by its id
 Camera* Camera::get( int id ) {
-    Camera* p;
+    Camera* p = nullptr;
     for( auto c : s_camContainer ) {
         if( c->getId() == id ) {
             p = c;
@@ -28,7 +28,7 @@ Camera* Camera::get( int id ) {
 
 // global function: get currently active camera
 Camera* Camera::getActive() {
-    Camera* p;
+    Camera* p = nullptr;
     for( auto c : s_camContainer ) {
         if( c->getId() == s_active ) {
             p = c;

@@ -73,8 +73,8 @@ void Camera::zoom(const int zoom) {
 
 void Camera::rotate(const float dx, const float dy) {
 	
-	float radX = -m_fov * M_PI / 180.f * dx / static_cast<float>(m_width);
-	float radY = -m_fov * M_PI / 180.f * dy / static_cast<float>(m_width);
+	float radX = -m_fov * static_cast<float>(M_PI) / 180.f * dx / static_cast<float>(m_width);
+	float radY = -m_fov * static_cast<float>(M_PI) / 180.f * dy / static_cast<float>(m_width);
 
 	glm::mat4 umat(1.f);
 	m_dir = glm::vec3(glm::rotate(umat, radX, m_up) * glm::vec4(m_dir, 1.f));
@@ -95,7 +95,7 @@ void Camera::rotateAround(const float angle) {
 	glm::vec3 center = m_pos + m_dir * steps;
 
 	glm::mat4 umat(1.f);
-	float rad = angle * M_PI / 180.f;
+	float rad = angle * static_cast<float>(M_PI) / 180.f;
 	m_dir = glm::vec3(glm::rotate(umat, rad, glm::vec3(0.f,1.f,0.f)) * glm::vec4(m_dir, 1.f));
 	m_pos = center - m_dir * steps;
 	m_up = glm::vec3(glm::rotate(umat, rad, glm::vec3(0.f,1.f,0.f)) * glm::vec4(m_up, 1.f));

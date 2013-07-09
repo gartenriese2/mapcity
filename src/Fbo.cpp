@@ -38,7 +38,7 @@ void Fbo::createDepthTexture(GLuint & depthTexture, const int width, const int h
 
 }
 
-void Fbo::createColorTexture(GLuint & occlusionTexture, const GLenum format, const int width, const int height) {
+void Fbo::createColorTexture(GLuint & occlusionTexture, const GLint format, const int width, const int height) {
     
     glGenTextures(1, &occlusionTexture);
     glBindTexture(GL_TEXTURE_2D, occlusionTexture);

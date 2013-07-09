@@ -12,7 +12,7 @@ class Node {
 		// Wurzel
 		Node() {
 			value = 100.0f;
-			for (int i = 0; i < 7; i++) {
+			for (unsigned long i = 0; i < 7; i++) {
 				amount[i] = 0;
 			}
 		}
@@ -20,7 +20,7 @@ class Node {
 		// Innenknoten
 		Node(const float v) {
 			value = v;
-			for (int i = 0; i < 7; i++) {
+			for (unsigned long i = 0; i < 7; i++) {
 				amount[i] = 0;
 			}
 		}
@@ -29,7 +29,7 @@ class Node {
 		Node(const float v, const std::array<int, 7> a) {
 			value = v;
 
-			for (int i = 0; i < 7; i++) {
+			for (unsigned long i = 0; i < 7; i++) {
 				amount[i] = a[i];
 			}
 		}
@@ -41,7 +41,7 @@ class Node {
 		const std::array<int, 7> & getAmount() const { return amount; }
 
 		void clear() {
-			for (int i = 0; i < children.size(); i++) {
+			for (unsigned long i = 0; i < children.size(); i++) {
 				children[i].clear();
 			}
 			children.clear();
@@ -55,13 +55,13 @@ class Node {
 			return children[children.size() - 1];
 		}
 
-		float getSumOfValues(int num) const {
+		float getSumOfValues(unsigned long num) const {
 			
 			float sum = 0;
 			
 			if (num > children.size()) num = children.size();
 			
-			for (int i = 0; i < num; i++) {
+			for (unsigned long i = 0; i < num; i++) {
 				sum += children[i].value;
 			}
 

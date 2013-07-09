@@ -12,7 +12,7 @@ struct TextureUniform {
     
     GLenum target;
     GLuint texture;
-    GLuint ID;
+    GLint ID;
 
 };
 
@@ -26,10 +26,10 @@ class Shader {
 	    void Use() const { glUseProgram(m_shaderID); }
 
 		void addUniformTexture(const GLenum, const GLuint, const char *);
-		GLuint addUniform(const char *) const;
+		GLint addUniform(const char *) const;
 		void linkTextures() const;
-		void link(const GLuint, const glm::mat4 &) const;
-		void link(const GLuint, const float, const float, const float) const;
+		void link(const GLint, const glm::mat4 &) const;
+		void link(const GLint, const float, const float, const float) const;
 
 	private:
 		

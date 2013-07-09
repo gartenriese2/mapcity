@@ -24,7 +24,7 @@ int Map::createHexagons() {
 	for (int i = 0; i < m_xHexas; i++) {
 		for (int j = 0; j < m_zHexas; j++) {
 			
-			x = i * hexaSideLength * 1.5;
+			x = i * hexaSideLength * 1.5f;
 			z = j * hexaHeight + i%2 * hexaHeight/2;
 
 			m_hexaVector.push_back(Hexagon(glm::vec3(x,0,-z)));
@@ -32,7 +32,7 @@ int Map::createHexagons() {
 		}
 	}
 
-	return m_hexaVector.size();
+	return static_cast<int>(m_hexaVector.size());
 
 }
 
@@ -49,7 +49,8 @@ const Hexagon & Map::getCorrespondingHexagon(const glm::vec3 & p) const {
 
 	for (int col = minCol; col <= maxCol; col++) {
 		for (int row = minRow; row <= maxRow; row++)	{
-			if (m_hexaVector[col * m_zHexas + row].isInside(p)) return m_hexaVector.at(col * m_zHexas + row);
+			if (m_hexaVector[static_cast<unsigned long>(col * m_zHexas + row)].isInside(p)) 
+				return m_hexaVector.at(static_cast<unsigned long>(col * m_zHexas + row));
 		}
 	}
 	

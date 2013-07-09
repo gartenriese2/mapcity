@@ -6,8 +6,8 @@
 
 class KleinerLaden : public BusinessBuilding {
 	
-	const float k_minHeight = 4.0;
-	const float k_maxHeight = 10.0;
+	const unsigned short k_minFloors = 1;
+	const unsigned short k_maxFloors = 2;
 
 	public:
 		KleinerLaden(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
