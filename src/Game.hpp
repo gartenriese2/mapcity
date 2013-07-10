@@ -3,6 +3,7 @@
 
 #include "World.hpp"
 #include "Window.hpp"
+#include "Time.hpp"
 
 #include <memory>
 #include <thread>

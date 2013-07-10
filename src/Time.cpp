@@ -1,41 +1,54 @@
 #include "Time.hpp"
 
+Time* Time::pInstance = nullptr;
+std::mutex Time::sMutex;
+
+Time& Time::instance() {
+	
+	static Cleanup cleanup;
+	std::lock_guard<std::mutex> guard(sMutex);
+	if (pInstance == nullptr) {
+		pInstance = new Time();
+	}
+	
+	return *pInstance;
+}
+
+Time::Cleanup::~Cleanup() {
+	std::lock_guard<std::mutex> gaurd(Time::sMutex);
+	delete Time::pInstance;
+	Time::pInstance = nullptr;
+}
+
 Time::Time() {
-	glGenQueries(2, m_queryID);
+	m_startTime = system_clock::now();
 }
 
-void Time::start() const {
-	glQueryCounter(m_queryID[0], GL_TIMESTAMP);
+Time::~Time() {
+
 }
 
-void Time::end() const {
-	glQueryCounter(m_queryID[1], GL_TIMESTAMP);
+long Time::getStartTime() {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+	return m_startTime.time_since_epoch().count();
+
 }
 
-void Time::waitAndAdd() {
-	
-	GLint stopTimerAvailable = 0;
-	GLuint64 startTime, stopTime;
-	while (!stopTimerAvailable) {
-	    glGetQueryObjectiv(m_queryID[1], GL_QUERY_RESULT_AVAILABLE, &stopTimerAvailable);
+long Time::getSecondsSinceStart() {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+	auto t = system_clock::now().time_since_epoch() - m_startTime.time_since_epoch();
+	return duration_cast<seconds>(t).count();
+
+}
+
+void Time::waitMilliseconds(const unsigned int ms) {
+
+	auto t = system_clock::now().time_since_epoch();
+	unsigned int since = 0;
+	while(since < ms) {
+		since = duration_cast<milliseconds>(system_clock::now().time_since_epoch() - t).count();
 	}
-	glGetQueryObjectui64v(m_queryID[0], GL_QUERY_RESULT, &startTime);
-	glGetQueryObjectui64v(m_queryID[1], GL_QUERY_RESULT, &stopTime);
-	m_lastTimes.push_back((stopTime - startTime) / 1000000.0);
-	
-	if (m_lastTimes.size() > numTimes) {
-		m_lastTimes.pop_front();
-	}
-
-}
-
-double Time::getAverage() const {
-	
-	double avg = 0.0;
-	for (auto i : m_lastTimes) {
-		avg += i;
-	}
-	
-	return avg / static_cast<double>(numTimes);
 
 }

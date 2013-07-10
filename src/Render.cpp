@@ -57,16 +57,6 @@ void Render::simplePass(const Camera &cam) const {
 
 	m_simpleShader->Use();
 
-	ObjectContainer::instance().emptyBuildingQueue();
-	for (auto o : ObjectContainer::instance().getBuildings()) {
-
-		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
-		m_simpleShader->link(m_MVP_simplePass, MVP);
-		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
-
-		o.second.draw();
-	}
-
 	ObjectContainer::instance().emptyHexagonQueue();
 	for (auto o : ObjectContainer::instance().getHexagons()) {
 
@@ -76,6 +66,8 @@ void Render::simplePass(const Camera &cam) const {
 
 		o.second.draw();
 	}
+
+	glDisable(GL_DEPTH_TEST);
 
 	ObjectContainer::instance().emptyZoneQueue();
 	for (auto o : ObjectContainer::instance().getZones()) {
@@ -89,6 +81,18 @@ void Render::simplePass(const Camera &cam) const {
 
 	ObjectContainer::instance().emptyPathQueue();
 	for (auto o : ObjectContainer::instance().getPaths()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
+	glEnable(GL_DEPTH_TEST);
+
+	ObjectContainer::instance().emptyBuildingQueue();
+	for (auto o : ObjectContainer::instance().getBuildings()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
 		m_simpleShader->link(m_MVP_simplePass, MVP);

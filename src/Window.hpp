@@ -9,7 +9,7 @@
 #include "World.hpp"
 #include "Camera.hpp"
 #include "Render.hpp"
-#include "Time.hpp"
+#include "Timer.hpp"
 
 using namespace glm;
 using namespace std;
@@ -40,7 +40,7 @@ class Window {
 
 		void keyhandler() const;
 		void mousehandler();
-		void FPS(Time &) const;
+		void FPS(Timer &) const;
 
 };
 

@@ -6,10 +6,12 @@ Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, co
 
 	m_world = make_shared<World>(mapHeight, mapWidth);
 
+	Time::instance();
+
 }
 
 Game::~Game() {
-	std::cout << "Game deleted!\n";
+	std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds!\n";
 }
 
 void Game::start() {
@@ -18,9 +20,7 @@ void Game::start() {
 	//m_simulationThread = thread(&Game::initSimulation, this);
 	while(m_isRunning);
 
-	std::cout << "Graphics thread joining ...\n";
 	m_graphicsThread.join();
-	std::cout << "Window closed!\n";
 	
 }
 

@@ -82,7 +82,7 @@ void Window::loop() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    Time t;
+    Timer t;
 
     do{
         
@@ -168,7 +168,7 @@ void Window::mousehandler() {
 
 }
 
-void Window::FPS(Time & t) const {
+void Window::FPS(Timer & t) const {
 
     std::stringstream oss;
     oss << "MapCity: " << t.getAverage() << " ms.";

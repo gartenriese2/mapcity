@@ -1,26 +1,41 @@
 #ifndef TIME_HPP
 #define TIME_HPP
 
-#include "ogl.h"
-#include <deque>
+#include <chrono>
+#include <mutex>
+#include <iostream>
 
-const int numTimes = 10;
+using namespace std::chrono;
 
 class Time {
-	
 	public:
 		
-		Time();
+		static Time& instance();
+		long getStartTime();
+		long getSecondsSinceStart();
+		void waitMilliseconds(unsigned int);
 		
-		void start() const;
-		void end() const;
-		void waitAndAdd();
-		double getAverage() const;
-	
+
+	protected:
+		
+		static Time* pInstance;
+
+		friend class Cleanup;
+		class Cleanup {
+			public:
+				~Cleanup();
+		};
+		
 	private:
-		
-		std::deque<double> m_lastTimes;
-		unsigned int m_queryID[2];
+
+		Time();
+		virtual ~Time();
+		Time(const Time&);
+		Time& operator=(const Time&);
+		static std::mutex sMutex;
+
+		time_point<system_clock> m_startTime;
+
 };
 
 #endif
