@@ -56,7 +56,7 @@ void Render::simplePass(const Camera &cam) const {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_simpleShader->Use();
-
+	
 	ObjectContainer::instance().emptyHexagonQueue();
 	for (auto o : ObjectContainer::instance().getHexagons()) {
 

@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "Render.hpp"
 #include "Timer.hpp"
+#include "Time.hpp"
 
 using namespace glm;
 using namespace std;

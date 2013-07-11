@@ -180,6 +180,8 @@ void gameTest() {
 	int height = 1000, width = 1000;
 	Game game(width, height, 1000, 1000);
 
+	Time::instance().setIngameSpeed(Time::FASTFORWARD);
+
 	Time::instance().waitMilliseconds(1000);
 
 	vectorVec3 path;

@@ -6,21 +6,22 @@ Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, co
 
 	m_world = make_shared<World>(mapHeight, mapWidth);
 
-	Time::instance();
+	m_timeThread = thread(&Game::initTime, this);
 
 }
 
 Game::~Game() {
 	std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds!\n";
+	std::cout << "Ingame time: " << Time::instance().getIngameTimeSeconds() << " seconds!\n";
 }
 
 void Game::start() {
 	
 	// start simulation
-	//m_simulationThread = thread(&Game::initSimulation, this);
 	while(m_isRunning);
 
 	m_graphicsThread.join();
+	m_timeThread.join();
 	
 }
 
@@ -35,9 +36,8 @@ void Game::initGraphics(const int width, const int height) {
 	
 }
 
-void Game::initSimulation() {
+void Game::initTime() {
 
-	while(m_isRunning);
-	// m_simulationThread.join();
+	Time::instance().printEachHour(m_isRunning);
 
 }

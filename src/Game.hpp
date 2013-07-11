@@ -26,11 +26,11 @@ class Game {
 		shared_ptr<Window> m_window;
 
 		thread m_graphicsThread;
-		// thread m_simulationThread;
+		thread m_timeThread;
 		bool m_isRunning;
 
 		void initGraphics(int, int);
-		void initSimulation();
+		void initTime();
 
 };
 

@@ -138,6 +138,21 @@ void Window::keyhandler() const {
     if (glfwGetKey(GLFW_KEY_DEL) == GLFW_PRESS) {
         m_cam->rotateAround(-0.4f);
     }
+    if (glfwGetKey('1') == GLFW_PRESS) {
+        Time::instance().setIngameSpeed(Time::PAUSE);
+    }
+    if (glfwGetKey('2') == GLFW_PRESS) {
+        Time::instance().setIngameSpeed(Time::REALTIME);
+    }
+    if (glfwGetKey('3') == GLFW_PRESS) {
+        Time::instance().setIngameSpeed(Time::NORMAL);
+    }
+    if (glfwGetKey('4') == GLFW_PRESS) {
+        Time::instance().setIngameSpeed(Time::FAST);
+    }
+    if (glfwGetKey('5') == GLFW_PRESS) {
+        Time::instance().setIngameSpeed(Time::FASTFORWARD);
+    }
 
 }
 
