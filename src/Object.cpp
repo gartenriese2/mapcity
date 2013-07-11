@@ -211,10 +211,10 @@ void Object::setAsTriangle(const glm::vec3 & a, const glm::vec3 & b, const glm::
 	indexData[2] = 2;
 
 	fillBuffers(9, 3, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(1);
 	
@@ -264,10 +264,10 @@ void Object::setAsQuad(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3
 	indexData[5] = 0;
 
 	fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(2);
 
@@ -321,10 +321,10 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 	indexData[5] = 0;
 
 	fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(2);
 
@@ -379,10 +379,10 @@ void Object::setAsQuad(const glm::vec3 & start, const glm::vec3 & end, const flo
 	indexData[5] = 0;
 
 	fillBuffers(12, 6, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(2);
 
@@ -460,10 +460,10 @@ void Object::setAsHexagon(const glm::vec3 & center, const glm::vec3 & left, cons
 	indexData[17] = 1;
 
 	fillBuffers(21, 18, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(6);
 
@@ -492,10 +492,10 @@ void Object::setAsCuboid(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 	}
 
 	fillBuffers(72, 36, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(12);
 
@@ -522,10 +522,10 @@ void Object::setAsCuboid(const glm::vec3 & center, const glm::vec3 & dirX, const
 	}
 
 	fillBuffers(72, 36, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(12);
 
@@ -815,10 +815,10 @@ void Object::setAsPolygon(const vectorVec3 & pts, const glm::vec3 & center, cons
 	}
 
 	fillBuffers(numVertices * 3, numTriangles * 3, vertexData, normalData, colorData, indexData);
-	delete vertexData;
-	delete normalData;
-	delete colorData;
-	delete indexData;
+	delete [] vertexData;
+	delete [] normalData;
+	delete [] colorData;
+	delete [] indexData;
 
 	setTriangles(static_cast<int>(numTriangles));
 
