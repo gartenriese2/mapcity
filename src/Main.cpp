@@ -184,6 +184,7 @@ void gameTest() {
 
 	while(m1.isUnderConstruction()) {
 		
+		Time::instance().waitMilliseconds(10);
 		m1.construct();
 		e1.construct();
 		e2.construct();
