@@ -123,6 +123,8 @@ void Render::gbufferPass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	glDisable(GL_DEPTH_TEST);
+
 	for (auto o : ObjectContainer::instance().getZones()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -140,6 +142,8 @@ void Render::gbufferPass(const Camera &cam) const {
 
 		o.second.draw();
 	}
+
+	glEnable(GL_DEPTH_TEST);
 
 	for (auto o : ObjectContainer::instance().getBuildings()) {
 
