@@ -99,7 +99,7 @@ void Window::loop() {
         // t.end();
         // m_render->depthLightPass(* m_cam);
         
-        // m_render->gbufferPass(* m_cam);
+        m_render->gbufferPass(* m_cam);
         // m_render->simpleTexPass();
         
         //t.waitAndAdd();
