@@ -30,8 +30,9 @@ class Time {
 		static const unsigned long NORMAL = 60;
 		static const unsigned long FAST = 3600;
 		static const unsigned long FASTFORWARD = 86400;
-		
 
+		static const unsigned int sk_startYear = 2000;
+		
 	protected:
 		
 		static Time * pInstance;

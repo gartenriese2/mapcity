@@ -25,6 +25,9 @@ Time::Time() {
 	m_startTime = system_clock::now();
 	m_ingameSpeed = 1;
 	m_lastTimeSet = system_clock::now();
+	
+	m_ingameTime = TimePoint(0, sk_startYear);
+
 }
 
 Time::~Time() {
@@ -35,7 +38,7 @@ TimePoint Time::getStartTime() const {
 
 	std::lock_guard<std::mutex> guard(s_getMutex);
 
-	return TimePoint(m_startTime.time_since_epoch().count());
+	return TimePoint(m_startTime.time_since_epoch().count(), 0);
 
 }
 
@@ -50,8 +53,7 @@ unsigned long Time::getSecondsSinceStart() const {
 
 unsigned long Time::getSecondsSinceTimePoint(const TimePoint & tp) {
 
-	// long sec = getIngameTime().getTimeInSeconds() - tp.getTimeInSeconds();
-	long sec = (getIngameTime() - tp).getTimeInSeconds();
+	long sec = getIngameTime().getTimeInSeconds() - tp.getTimeInSeconds();
 	assert (sec >= 0);
 	return sec;
 

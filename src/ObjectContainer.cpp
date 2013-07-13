@@ -57,7 +57,7 @@ void ObjectContainer::deleteBuilding(const unsigned long ID) {
 
 const objectMap & ObjectContainer::getBuildings() const { 
 
-	//std::lock_guard<std::mutex> guard(sMutex);
+	std::lock_guard<std::mutex> guard(sMutex);
 
 	return m_buildingMap;
 
