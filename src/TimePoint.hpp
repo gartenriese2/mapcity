@@ -21,6 +21,7 @@ class TimePoint {
 		friend bool operator>=(const TimePoint &, const TimePoint &);
 
 		friend const TimePoint operator+(const TimePoint &, const TimePoint &);
+		friend const TimePoint operator-(const TimePoint &, const TimePoint &);
 		TimePoint & operator+=(const TimePoint &);
 		TimePoint & operator=(const TimePoint &);
 

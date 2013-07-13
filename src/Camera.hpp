@@ -23,7 +23,7 @@ class Camera {
 		void move(float, float, float);
 		void rotate(const float, const float);
 		void rotateAround(const float);
-		void zoom(const int);
+		bool zoom(const int);
 		
 	private:
 		

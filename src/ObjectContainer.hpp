@@ -16,23 +16,23 @@ class ObjectContainer {
 
 		unsigned long addBuilding(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
 		void emptyBuildingQueue();
-		void deleteBuilding(const unsigned long ID) { m_buildingMap.erase(ID); }
-		const objectMap & getBuildings() const { return m_buildingMap; }
+		void deleteBuilding(const unsigned long ID);
+		const objectMap & getBuildings() const;
 
 		unsigned long addZone(const vectorVec3 &, const glm::vec3 &, const glm::vec3 &);
 		void emptyZoneQueue();
-		void deleteZone(const unsigned long ID) { m_zoneMap.erase(ID); }
-		const objectMap & getZones() const { return m_zoneMap; }
+		void deleteZone(const unsigned long ID);
+		const objectMap & getZones() const;
 
 		unsigned long addHexagon(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		void emptyHexagonQueue();
-		void deleteHexagon(const unsigned long ID) { m_hexagonMap.erase(ID); }
-		const objectMap & getHexagons() const { return m_hexagonMap; }
+		void deleteHexagon(const unsigned long ID);
+		const objectMap & getHexagons() const;
 
 		unsigned long addPath(const vectorVec3 &, const float, const glm::vec3 &);
 		void emptyPathQueue();
-		void deletePath(const unsigned long ID) { m_pathMap.erase(ID); }
-		const objectMap & getPaths() const { return m_pathMap; }
+		void deletePath(const unsigned long ID);
+		const objectMap & getPaths() const;
 
 	protected:
 		
@@ -65,7 +65,8 @@ class ObjectContainer {
 			float height;
 			glm::vec3 color;
 		};
-		std::queue<BuildingData> m_buildingQueue;
+		std::queue<BuildingData> m_buildingAddQueue;
+		std::queue<unsigned long> m_buildingDeleteQueue;
 
 		struct HexagonData {
 			unsigned long ID;
@@ -73,7 +74,8 @@ class ObjectContainer {
 			glm::vec3 left;
 			glm::vec3 color;
 		};
-		std::queue<HexagonData> m_hexagonQueue;
+		std::queue<HexagonData> m_hexagonAddQueue;
+		std::queue<unsigned long> m_hexagonDeleteQueue;
 
 		struct ZoneData {
 			unsigned long ID;
@@ -81,7 +83,8 @@ class ObjectContainer {
 			glm::vec3 center;
 			glm::vec3 color;
 		};
-		std::queue<ZoneData> m_zoneQueue;
+		std::queue<ZoneData> m_zoneAddQueue;
+		std::queue<unsigned long> m_zoneDeleteQueue;
 
 		struct PathData {
 			unsigned long ID;
@@ -89,7 +92,8 @@ class ObjectContainer {
 			float width;
 			glm::vec3 color;
 		};
-		std::queue<PathData> m_pathQueue;
+		std::queue<PathData> m_pathAddQueue;
+		std::queue<unsigned long> m_pathDeleteQueue;
 
 };
 

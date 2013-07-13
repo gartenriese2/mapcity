@@ -20,79 +20,6 @@
 #include <vector>
 #include <thread>
 
-// BEGIN TEST
-// #define LIBACE_TEST // uncomment this to test libace
-#ifdef LIBACE_TEST
-	#include "../libace/libace.h"
-	ace::Ace *AceEngine = ace::Ace::getEngine();
-
-	ace::Mesh 	*mesh1;
-	ace::Mesh 	*mesh2;
-	ace::Mesh 	*mesh3;
-	ace::Mesh 	*mesh4;
-	ace::Light  *light1;
-	ace::Light  *light2;
-
-	ace::Object *obj1;
-
-	float light_pos = -10;
-
-	void render_loop() {
-
-		light_pos += 0.1f;
-		if( light_pos > 10.f ) light_pos = -10.f;
-
-		light1->setPosition( 6, 3, light_pos );
-		light2->setPosition( -6, 3, light_pos -5 );
-
-		mesh1->rotate( 0.5f, 1, 0, 0 );
-		AceEngine->render();
-	}  
-	void input() {
-		if( AceEngine->keyPressed( 'E' ) ) AceEngine->nextDebugMode();
-	}
-	void ace_test() {
-		AceEngine->init( render_loop, input );
-	
-		mesh1 = new ace::Mesh();
-		mesh1->makeCube();
-		mesh2 = new ace::Mesh();
-		mesh2->makeQuad();
-		mesh3 = new ace::Mesh();
-		mesh3->makeQuad();
-		mesh4 = new ace::Mesh();
-		mesh4->makeCube();
-		
-		obj1 = new ace::Object( "assets/monkey.obj" );
-		obj1->translate( 0, 0, -10 );
-
-		light1 = new ace::Light( 1, 1, 0, 1, 50 );
-		light2 = new ace::Light( 1, 1, 1, 1, 50 );
-
-		mesh1->scale( 1, 1, 1 );
-
-		mesh2->translate( 15, 0, -10 );
-		mesh2->scale( 20 );
-		mesh2->rotate( -90, 0, 1, 0 );
-		
-		mesh3->translate( 0, -3, -2 );
-		mesh3->scale( 50 );
-		mesh3->rotate( -90, 1, 0, 0 );
-
-		mesh4->translate( -20, 5, -15 );
-		mesh4->scale( 10 );
-
-		AceEngine->Scene()->add( mesh1 );
-		AceEngine->Scene()->add( mesh2 );
-		AceEngine->Scene()->add( mesh3 );
-		AceEngine->Scene()->add( mesh4 );
-		AceEngine->Scene()->add( obj1 );
-		AceEngine->Scene()->add( light1 );
-		AceEngine->Scene()->add( light2 );
-		AceEngine->start();
-	}
-#endif
-
 using namespace std;
 
 void findHexagonTest() {
@@ -255,14 +182,15 @@ void gameTest() {
 	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
 
-	for (int i = 0; i < 500; i++) {
-		Time::instance().waitMilliseconds(50);
+	while(m1.isUnderConstruction()) {
+		
 		m1.construct();
 		e1.construct();
 		e2.construct();
 		e3.construct();
 		k1.construct();
 		g1.construct();
+		
 	}
 
 	game.start();
@@ -372,11 +300,6 @@ void inheritanceTest() {
 }
 
 int main() {
-
-// BEGIN TEST
-#ifdef LIBACE_TEST
-	ace_test();
-#endif
 
 #ifdef __linux__
 	timespec time1;

@@ -1,7 +1,8 @@
 #include "Time.hpp"
 
-Time* Time::pInstance = nullptr;
+Time * Time::pInstance = nullptr;
 std::mutex Time::sMutex;
+std::mutex Time::s_getMutex;
 
 Time& Time::instance() {
 	
@@ -32,7 +33,7 @@ Time::~Time() {
 
 TimePoint Time::getStartTime() const {
 
-	std::lock_guard<std::mutex> guard(sMutex);
+	std::lock_guard<std::mutex> guard(s_getMutex);
 
 	return TimePoint(m_startTime.time_since_epoch().count());
 
@@ -40,7 +41,7 @@ TimePoint Time::getStartTime() const {
 
 unsigned long Time::getSecondsSinceStart() const {
 
-	std::lock_guard<std::mutex> guard(sMutex);
+	std::lock_guard<std::mutex> guard(s_getMutex);
 
 	auto t = system_clock::now().time_since_epoch() - m_startTime.time_since_epoch();
 	return duration_cast<seconds>(t).count();
@@ -49,8 +50,9 @@ unsigned long Time::getSecondsSinceStart() const {
 
 unsigned long Time::getSecondsSinceTimePoint(const TimePoint & tp) {
 
-	long sec = getIngameTime().getTimeInSeconds() - tp.getTimeInSeconds();
-	assert (sec > 0);
+	// long sec = getIngameTime().getTimeInSeconds() - tp.getTimeInSeconds();
+	long sec = (getIngameTime() - tp).getTimeInSeconds();
+	assert (sec >= 0);
 	return sec;
 
 }
@@ -72,12 +74,15 @@ void Time::setIngameTime() {
 	std::lock_guard<std::mutex> guard(sMutex);
 
 	auto t = system_clock::now().time_since_epoch() - m_lastTimeSet.time_since_epoch();
+	assert(t.count() >= 0);
 	m_ingameTime += (m_ingameSpeed * t.count());
 	m_lastTimeSet = system_clock::now();
 
 }
 
 TimePoint & Time::getIngameTime() {
+
+	std::lock_guard<std::mutex> guard(s_getMutex);
 
 	setIngameTime();
 	return m_ingameTime;

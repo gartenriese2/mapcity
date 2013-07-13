@@ -2,7 +2,7 @@
 
 Building::Building() {
 	m_constructionStart = Time::instance().getIngameTime();
-	m_actualHeight = 0.f;
+	m_actualHeight = 0.01f;
 	m_constructionDone = false;
 }
 
@@ -31,9 +31,16 @@ void Building::changeObject() {
 void Building::construct() {
 
 	if (m_actualHeight < m_height) {
+		
 		m_actualHeight = Time::instance().getSecondsSinceTimePoint(m_constructionStart) * (k_constructionHeightPerDay / (24.f * 3600.f));
-		if (m_actualHeight > m_height) m_actualHeight = m_height;
+		
+		if (m_actualHeight > m_height) {
+			m_actualHeight = m_height;
+			m_constructionDone = true;
+		}
+
 		changeObject();
+		
 	}
 
 }

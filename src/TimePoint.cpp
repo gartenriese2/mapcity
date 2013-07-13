@@ -51,6 +51,10 @@ const TimePoint operator+(const TimePoint & lhs, const TimePoint & rhs) {
 	return TimePoint(lhs.m_timePoint + rhs.m_timePoint);
 }
 
+const TimePoint operator-(const TimePoint & lhs, const TimePoint & rhs) {
+	return TimePoint(lhs.m_timePoint - rhs.m_timePoint);
+}
+
 TimePoint & TimePoint::operator+=(const TimePoint & rhs) {
 	m_timePoint += rhs.m_timePoint;
 	return *this;

@@ -13,7 +13,7 @@ using namespace std::chrono;
 class Time {
 	public:
 		
-		static Time& instance();
+		static Time & instance();
 		TimePoint getStartTime() const;
 
 		unsigned long getSecondsSinceStart() const;
@@ -34,7 +34,7 @@ class Time {
 
 	protected:
 		
-		static Time* pInstance;
+		static Time * pInstance;
 
 		friend class Cleanup;
 		class Cleanup {
@@ -49,6 +49,7 @@ class Time {
 		Time(const Time&);
 		Time& operator=(const Time&);
 		static std::mutex sMutex;
+		static std::mutex s_getMutex;
 
 		time_point<system_clock> m_startTime;
 		TimePoint m_ingameTime;

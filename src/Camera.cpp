@@ -61,14 +61,19 @@ void Camera::move(float forward, float sideward, float upward) {
 
 }
 
-void Camera::zoom(const int zoom) {
+bool Camera::zoom(const int zoom) {
 	
 	if (m_pos.y > 10.f || zoom < 0) {
 		float factor = glm::pow(m_pos.y, 0.75f);
 
 		m_pos += static_cast<float>(zoom) * factor * m_dir;
 		m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
+
+		return true;
 	}
+
+	return false;
+
 }
 
 void Camera::rotate(const float dx, const float dy) {

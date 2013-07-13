@@ -99,6 +99,7 @@ void Render::simplePass(const Camera &cam) const {
 		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
 
 		o.second.draw();
+		
 	}
 
 }
