@@ -3,11 +3,12 @@
 
 #include "glm.h"
 #include <vector>
-#include "Object.hpp"
 #include "ObjectContainer.hpp"
+#include "Time.hpp"
 
 static const float k_minFloorHeight = 2.8f;
 static const float k_maxFloorHeight = 3.5f;
+static const float k_constructionHeightPerDay = 1.f;
 
 class Building {
 
@@ -17,6 +18,9 @@ class Building {
 		virtual ~Building();
 
 		unsigned long getID() const { return m_ID; }
+		bool isUnderConstruction() const { return !m_constructionDone; }
+		void construct();
+
 
 	protected:
 		
@@ -32,10 +36,13 @@ class Building {
 		const glm::vec3 & getColor() const { return m_color; }
 		
 		void createObject();
+		void changeObject();
 		
 		unsigned long m_ID;
 		glm::vec3 m_center, m_front, m_side, m_color;
-		float m_height;
+		float m_height, m_actualHeight;
+		TimePoint m_constructionStart;
+		bool m_constructionDone;
 
 	private:
 

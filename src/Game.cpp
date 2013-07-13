@@ -11,8 +11,8 @@ Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, co
 }
 
 Game::~Game() {
-	std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds!\n";
-	std::cout << "Ingame time: " << Time::instance().getIngameTimeSeconds() << " seconds!\n";
+	std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds.\n";
+	std::cout << "Ingame time: " << Time::instance().getIngameTime() << ".\n";
 }
 
 void Game::start() {
@@ -38,6 +38,6 @@ void Game::initGraphics(const int width, const int height) {
 
 void Game::initTime() {
 
-	Time::instance().printEachHour(m_isRunning);
+	Time::instance().printTime(m_isRunning);
 
 }

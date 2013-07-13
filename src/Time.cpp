@@ -23,7 +23,6 @@ Time::Cleanup::~Cleanup() {
 Time::Time() {
 	m_startTime = system_clock::now();
 	m_ingameSpeed = 1;
-	m_ingameTime = 0;
 	m_lastTimeSet = system_clock::now();
 }
 
@@ -31,20 +30,28 @@ Time::~Time() {
 
 }
 
-long Time::getStartTime() const {
+TimePoint Time::getStartTime() const {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
-	return m_startTime.time_since_epoch().count();
+	return TimePoint(m_startTime.time_since_epoch().count());
 
 }
 
-long Time::getSecondsSinceStart() const {
+unsigned long Time::getSecondsSinceStart() const {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
 	auto t = system_clock::now().time_since_epoch() - m_startTime.time_since_epoch();
 	return duration_cast<seconds>(t).count();
+
+}
+
+unsigned long Time::getSecondsSinceTimePoint(const TimePoint & tp) {
+
+	long sec = getIngameTime().getTimeInSeconds() - tp.getTimeInSeconds();
+	assert (sec > 0);
+	return sec;
 
 }
 
@@ -65,12 +72,12 @@ void Time::setIngameTime() {
 	std::lock_guard<std::mutex> guard(sMutex);
 
 	auto t = system_clock::now().time_since_epoch() - m_lastTimeSet.time_since_epoch();
-	m_ingameTime += m_ingameSpeed * t.count();
+	m_ingameTime += (m_ingameSpeed * t.count());
 	m_lastTimeSet = system_clock::now();
 
 }
 
-unsigned long Time::getIngameTime() {
+TimePoint & Time::getIngameTime() {
 
 	setIngameTime();
 	return m_ingameTime;
@@ -86,62 +93,67 @@ void Time::setIngameSpeed(const unsigned int set) {
 
 }
 
-void Time::printEachHour(bool & isRunning) {
+void Time::printTime(bool & isRunning) {
 
-	unsigned int second = getIngameTimeSeconds();
-	unsigned int minute = getIngameTimeSeconds() / 60;
-	unsigned int hour = getIngameTimeHours();
-	unsigned int day = getIngameTimeDays();
+	setIngameTime();
+	unsigned int second = m_ingameTime.getTimeInSeconds();
+	unsigned int minute = m_ingameTime.getTimeInMinutes();
+	unsigned int hour = m_ingameTime.getTimeInHours();
+	unsigned int day = m_ingameTime.getTimeInDays();
 	unsigned int dailyHour = hour;
 	unsigned int hourlyMinute = minute;
 	unsigned int minutelySecond = second;
 
 	while (isRunning) {
 		
+		setIngameTime();
+
 		if (m_ingameSpeed == FASTFORWARD) {
 			
-			if (getIngameTimeDays() > day) {
-				std::cout << "Day " << ++day << "\n";
+			if (m_ingameTime.getTimeInDays() > day) {
+				
+				day++;
+				std::cout << m_ingameTime << "\n";
+
 			}
 
-			hour = getIngameTimeHours() % 24;
-			minute = (getIngameTimeSeconds() / 60) % 60;
-			second = getIngameTimeSeconds() % 60;
+			hour = m_ingameTime.getTimeInHours() % 24;
+			minute = m_ingameTime.getTimeInMinutes() % 60;
+			second = m_ingameTime.getTimeInSeconds() % 60;
 
 		} else if (m_ingameSpeed == FAST) {			
 			
-			dailyHour = getIngameTimeHours() % 24;
+			dailyHour = m_ingameTime.getTimeInHours() % 24;
 
 			if (dailyHour > hour) {
 				
-				std::cout << ++hour << ":00 of day " << getIngameTimeDays() << "\n";
+				hour++;
+				std::cout << m_ingameTime << "\n";
 
 			} else if (dailyHour == 0 && hour == 23) {
 				
-				std::cout << "Midnight of day " << getIngameTimeDays() << "!\n";
 				hour = 0;
 				day++;
+				std::cout << m_ingameTime << "\n";
 				
 			}
 
-			minute = (getIngameTimeSeconds() / 60) % 60;
-			second = getIngameTimeSeconds() % 60;
+			minute = m_ingameTime.getTimeInMinutes() % 60;
+			second = m_ingameTime.getTimeInSeconds() % 60;
 
 		} else if (m_ingameSpeed == NORMAL) {
 			
-			hourlyMinute = (getIngameTimeSeconds() / 60) % 60;
+			hourlyMinute = m_ingameTime.getTimeInMinutes() % 60;
 
 			if (hourlyMinute > minute) {
 				
-				if (minute < 9) {
-					std::cout << getIngameTimeHours() % 24 << ":0" << ++minute << " of day " << getIngameTimeDays() << "\n";
-				} else {
-					std::cout << getIngameTimeHours() % 24 << ":" << ++minute << " of day " << getIngameTimeDays() << "\n";
-				}
+				minute++;
+				std::cout << m_ingameTime << "\n";
 
 			} else if (hourlyMinute == 0 && minute == 59) {
 				
-				std::cout << getIngameTimeHours() % 24 << ":00" << " of day " << getIngameTimeDays() << "\n";
+				std::cout << m_ingameTime << "\n";
+				
 				minute = 0;
 				hour++;
 				if (hour == 24) {
@@ -151,27 +163,20 @@ void Time::printEachHour(bool & isRunning) {
 
 			}
 
-			second = getIngameTimeSeconds() % 60;
+			second = m_ingameTime.getTimeInSeconds() % 60;
 
 		} else if (m_ingameSpeed == REALTIME) {
 
-			minutelySecond = getIngameTimeSeconds() % 60;
+			minutelySecond = m_ingameTime.getTimeInSeconds() % 60;
 
 			if (minutelySecond > second) {
 				
-				if (second < 9 && minute < 9) {
-					std::cout << getIngameTimeHours() % 24 << ":0" << minute << ":0" << ++second << " of day " << getIngameTimeDays() << "\n";
-				} else if (minute < 9) {
-					std::cout << getIngameTimeHours() % 24 << ":0" << minute << ":" << ++second << " of day " << getIngameTimeDays() << "\n";
-				} else if (second < 9) {
-					std::cout << getIngameTimeHours() % 24 << ":" << minute << ":0" << ++second << " of day " << getIngameTimeDays() << "\n";
-				} else {
-					std::cout << getIngameTimeHours() % 24 << ":" << minute << ":" << ++second << " of day " << getIngameTimeDays() << "\n";
-				}
+				second++;
+				std::cout << m_ingameTime << "\n";
 
 			} else if (minutelySecond == 0 && second == 59 && minute == 59) {
 				
-				std::cout << getIngameTimeHours() % 24 << ":00:00" << " of day " << getIngameTimeDays() << "\n";
+				std::cout << m_ingameTime << "\n";
 				second = 0;
 				minute = 0;
 				hour++;
@@ -182,7 +187,8 @@ void Time::printEachHour(bool & isRunning) {
 
 			} else if (minutelySecond == 0 && second == 59) {
 				
-				std::cout << getIngameTimeHours() % 24 << ":" << ++minute << ":00" << " of day " << getIngameTimeDays() << "\n";
+				minute++;
+				std::cout << m_ingameTime << "\n";
 				second = 0;
 
 			}

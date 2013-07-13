@@ -212,23 +212,12 @@ void gameTest() {
 
 	Time::instance().waitMilliseconds(1000);
 
-	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
-	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
-
-	Time::instance().waitMilliseconds(1000);
-
 	zone.clear();
 	zone.push_back(glm::vec3(312.5,0.01,-310));
 	zone.push_back(glm::vec3(295,0.01,-310));
 	zone.push_back(glm::vec3(295,0.01,-330));
 	zone.push_back(glm::vec3(312.5,0.01,-330));
 	KleinerLadenZone kz1(zone);
-
-	Time::instance().waitMilliseconds(1000);
-
-	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 
 	Time::instance().waitMilliseconds(1000);
 
@@ -244,11 +233,7 @@ void gameTest() {
 	zone.push_back(glm::vec3(327.5,0.01,-340));
 	zone.push_back(glm::vec3(362.5,0.01,-340));
 	zone.push_back(glm::vec3(362.5,0.01,-293));
-	GrosserLadenZone gz1(zone);
-
-	Time::instance().waitMilliseconds(1000);
-
-	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
+	GrosserLadenZone gz1(zone);	
 
 	Time::instance().waitMilliseconds(1000);
 	
@@ -260,6 +245,25 @@ void gameTest() {
 	path.push_back(glm::vec3(400,0.01,-100));
 	path.push_back(glm::vec3(500,0.01,-300));
 	Bundesstrasse b1(path);
+
+	Time::instance().waitMilliseconds(1000);
+
+	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
+	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
+	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
+	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
+
+	for (int i = 0; i < 500; i++) {
+		Time::instance().waitMilliseconds(50);
+		m1.construct();
+		e1.construct();
+		e2.construct();
+		e3.construct();
+		k1.construct();
+		g1.construct();
+	}
 
 	game.start();
 

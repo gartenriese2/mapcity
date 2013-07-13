@@ -6,24 +6,24 @@
 #include <iostream>
 #include <assert.h>
 
+#include "TimePoint.hpp"
+
 using namespace std::chrono;
 
 class Time {
 	public:
 		
 		static Time& instance();
-		long getStartTime() const;
-		long getSecondsSinceStart() const;
-		void waitMilliseconds(unsigned int) const;
+		TimePoint getStartTime() const;
 
+		unsigned long getSecondsSinceStart() const;
+		unsigned long getSecondsSinceTimePoint(const TimePoint &);
+		void waitMilliseconds(unsigned int) const;
 		void setIngameTime();
 		void setIngameSpeed(unsigned int);
-		unsigned long getIngameTime();
-		unsigned long getIngameTimeSeconds() { return getIngameTime() / 1000000000; }
-		unsigned long getIngameTimeHours() { return getIngameTimeSeconds() / 3600; }
-		unsigned long getIngameTimeDays() { return getIngameTimeHours() / 24; }
+		TimePoint & getIngameTime();
 
-		void printEachHour(bool &);
+		void printTime(bool &);
 
 		static const unsigned long PAUSE = 0;
 		static const unsigned long REALTIME = 1;
@@ -51,7 +51,7 @@ class Time {
 		static std::mutex sMutex;
 
 		time_point<system_clock> m_startTime;
-		unsigned long m_ingameTime;
+		TimePoint m_ingameTime;
 		unsigned int m_ingameSpeed;
 		time_point<system_clock> m_lastTimeSet;
 

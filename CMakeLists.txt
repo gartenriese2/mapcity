@@ -26,14 +26,8 @@ file(COPY assets DESTINATION ${PROJECT_BINARY_DIR})
 # compiler stuff
 add_definitions( -std=c++11 -g -Wall -Wextra -Werror )
 
-
 # add source directory
 add_subdirectory( "src" )
 
 # Doxygen
 add_subdirectory( "doc" )
-
-# add libace
-SET( PROJECT_NAME "demo" )
-SET( OUTPUT_NAME "demo" )
-add_subdirectory( "libace" )

@@ -1,7 +1,9 @@
 #include "Building.hpp"
 
 Building::Building() {
-	
+	m_constructionStart = Time::instance().getIngameTime();
+	m_actualHeight = 0.f;
+	m_constructionDone = false;
 }
 
 Building::~Building() {
@@ -14,9 +16,24 @@ void Building::setHeight(const float minFloorHeight, const float maxFloorHeight,
 }
 
 void Building::createObject() {
-	m_ID = ObjectContainer::instance().addBuilding(m_center, m_front, m_side, m_height, m_color);
+	m_ID = ObjectContainer::instance().addBuilding(m_center, m_front, m_side, m_actualHeight, m_color);
 }
 
 void Building::deleteObject() {
 	ObjectContainer::instance().deleteBuilding(m_ID);
+}
+
+void Building::changeObject() {
+	ObjectContainer::instance().deleteBuilding(m_ID);
+	m_ID = ObjectContainer::instance().addBuilding(m_center, m_front, m_side, m_actualHeight, m_color);
+}
+
+void Building::construct() {
+
+	if (m_actualHeight < m_height) {
+		m_actualHeight = Time::instance().getSecondsSinceTimePoint(m_constructionStart) * (k_constructionHeightPerDay / (24.f * 3600.f));
+		if (m_actualHeight > m_height) m_actualHeight = m_height;
+		changeObject();
+	}
+
 }
