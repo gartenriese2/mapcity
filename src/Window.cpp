@@ -95,7 +95,7 @@ void Window::loop() {
         // case
         //m_render->depthPlayerPass(* m_cam);
         // t.start();
-        m_render->simplePass(* m_cam);
+        // m_render->simplePass(* m_cam);
         // t.end();
         // m_render->depthLightPass(* m_cam);
         

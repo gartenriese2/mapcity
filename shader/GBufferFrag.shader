@@ -13,9 +13,10 @@ in vec3 c;
 void main(){
 
 	position = position_worldspace;
-	normal = normal_worldspace;
-	depth = gl_FragCoord.zzz;
+	normal   = normal_worldspace;
+	depth    = gl_FragCoord.zzz;
 	float cosTheta = clamp(dot(normal_worldspace,l), 0, 1);
-    color = c * (cosTheta + 0.1);
+
+    color    = c * (cosTheta + 0.1);
 
 }

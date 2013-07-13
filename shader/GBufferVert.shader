@@ -14,9 +14,9 @@ out vec3 c;
 
 void main() {
 
-    gl_Position = MVP * vec4(vertex, 1.f);
+    gl_Position         = MVP * vec4(vertex, 1.f);
     position_worldspace = vertex;
-    normal_worldspace = normal;
+    normal_worldspace   = normal;
     l = normalize(Light - vertex);
     c = color;
     

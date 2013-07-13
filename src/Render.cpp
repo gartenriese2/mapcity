@@ -114,6 +114,7 @@ void Render::gbufferPass(const Camera &cam) const {
 
 	m_gbufferShader->Use();
 
+	ObjectContainer::instance().emptyHexagonQueue();
 	for (auto o : ObjectContainer::instance().getHexagons()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -123,6 +124,9 @@ void Render::gbufferPass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	glDisable(GL_DEPTH_TEST);
+
+	ObjectContainer::instance().emptyZoneQueue();
 	for (auto o : ObjectContainer::instance().getZones()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -132,6 +136,8 @@ void Render::gbufferPass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	
+	ObjectContainer::instance().emptyPathQueue();
 	for (auto o : ObjectContainer::instance().getPaths()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
@@ -141,6 +147,9 @@ void Render::gbufferPass(const Camera &cam) const {
 		o.second.draw();
 	}
 
+	glEnable(GL_DEPTH_TEST);
+
+	ObjectContainer::instance().emptyBuildingQueue();
 	for (auto o : ObjectContainer::instance().getBuildings()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
