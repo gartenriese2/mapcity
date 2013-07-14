@@ -153,6 +153,9 @@ void Window::keyhandler() const {
     if (glfwGetKey('5') == GLFW_PRESS) {
         Time::instance().setIngameSpeed(Time::FASTFORWARD);
     }
+    if (glfwGetKey('6') == GLFW_PRESS) {
+        Time::instance().setIngameSpeed(Time::LIGHTSPEED);
+    }
 
 }
 

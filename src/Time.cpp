@@ -93,7 +93,7 @@ TimePoint & Time::getIngameTime() {
 
 void Time::setIngameSpeed(const unsigned int set) {
 
-	assert(set == PAUSE || set == REALTIME || set == NORMAL || set == FAST || set == FASTFORWARD);
+	assert(set == PAUSE || set == REALTIME || set == NORMAL || set == FAST || set == FASTFORWARD || set == LIGHTSPEED);
 	
 	setIngameTime();
 	m_ingameSpeed = set;
@@ -115,7 +115,7 @@ void Time::printTime(bool & isRunning) {
 		
 		setIngameTime();
 
-		if (m_ingameSpeed == FASTFORWARD) {
+		if (m_ingameSpeed == FASTFORWARD || m_ingameSpeed == LIGHTSPEED) {
 			
 			if (m_ingameTime.getTimeInDays() > day) {
 				

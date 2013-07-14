@@ -40,6 +40,7 @@ class TimePoint {
 		bool isLeapYear() const;
 		unsigned int getYear() const;
 		unsigned int getMonth() const;
+		unsigned int getDayOfMonth() const;
 		
 
 	private:
