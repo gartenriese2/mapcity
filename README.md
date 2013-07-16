@@ -5,8 +5,6 @@ Prerequisites
 -------------
 - OpenGL
 - GLFW
-- GLM
-- ...
 
 Building
 --------
