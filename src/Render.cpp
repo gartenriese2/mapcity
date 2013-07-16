@@ -78,7 +78,7 @@ void Render::simplePass(const Camera &cam) const {
 
 		o.second.draw();
 	}
-
+	
 	ObjectContainer::instance().emptyPathQueue();
 	for (auto o : ObjectContainer::instance().getPaths()) {
 
@@ -88,7 +88,7 @@ void Render::simplePass(const Camera &cam) const {
 
 		o.second.draw();
 	}
-
+	
 	glEnable(GL_DEPTH_TEST);
 
 	ObjectContainer::instance().emptyBuildingQueue();
@@ -136,7 +136,7 @@ void Render::gbufferPass(const Camera &cam) const {
 		o.second.draw();
 	}
 
-	
+	// glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 	ObjectContainer::instance().emptyPathQueue();
 	for (auto o : ObjectContainer::instance().getPaths()) {
 
@@ -146,7 +146,7 @@ void Render::gbufferPass(const Camera &cam) const {
 
 		o.second.draw();
 	}
-
+	// glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	glEnable(GL_DEPTH_TEST);
 
 	ObjectContainer::instance().emptyBuildingQueue();

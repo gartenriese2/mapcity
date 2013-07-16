@@ -661,33 +661,139 @@ void Object::setAsSpline(const vectorVec3 & pts, const float width, const glm::v
 
 	for (unsigned long i = 0; i < pts.size() - 1; i++) {
 		
-		glm::vec3 old = pts[i];
-		glm::vec3 tmp, tmp2, mA, mB;
+		glm::vec3 mA, mB;
 
 		if (i == 0) mA = glm::normalize(pts[i+1] - pts[i]);
 		else mA = glm::normalize(pts[i+1] - pts[i-1]);
 		if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
 		else mB = glm::normalize(pts[i+2] - pts[i]);
 
-		float stretch = (2.f - glm::pow(glm::dot(mA, mB), 2.f)) * width / 10.f;
+// std::cout << "mA: " << mA.x << "|" << mA.y << "|" << mA.z << "\n";
+// std::cout << "mB: " << mB.x << "|" << mB.y << "|" << mB.z << "\n\n";
 
-		float step = 1.f / glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
+		smoothness = glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
+		float step = 1.f / smoothness * 0.1f;
 
-		for (float t = 0.f; t < 1.f; t += step) {
+		if (step >= 0.5f) step = 0.499f;
 
-			tmp = drawHermite(pts[i] / smoothness, pts[i+1] / smoothness, mA, mB, t) * smoothness;
-			tmp.y = pts[i].y + (pts[i + 1].y - pts[i].y) * t;
-			glm::vec3 tmp2 = old + (tmp - old) * stretch;
+		glm::vec3 tangentA, tangentB, normalA, normalB, waybefore, before, middle, next;
+		vectorVec3 polygon;
+		before = pts[i];
+		waybefore = pts[i];
 
-			addQuadToData(vertexData, normalData, indexData, colorData, old, tmp2, width, col);
 
-			old = tmp;
+		for (float t = step; t < 1.f; t += step) {
+// std::cout << "t: " << t << "\n";
+			
+
+			if (t == step) {
+				middle = drawHermite(pts[i] / smoothness, pts[i+1] / smoothness, mA, mB, t) * smoothness;
+			}
+
+			if (t + step < 1.f) {
+				next = drawHermite(pts[i] / smoothness, pts[i+1] / smoothness, mA, mB, t + step) * smoothness;
+			} else {
+				next = pts[i+1];
+			}
+
+			if (t == step) {
+				tangentA = mA;
+			} else {
+				tangentA = middle - waybefore;
+			}
+			tangentA.y = 0.f;
+			normalA = glm::normalize(glm::cross(glm::vec3(0,1,0),tangentA));
+
+			tangentB = next - before;
+			tangentB.y = 0.f;
+			normalB = glm::normalize(glm::cross(glm::vec3(0,1,0),tangentB));
+// std::cout << "before: " << before.x << "|" << before.y << "|" << before.z << "\n";
+// std::cout << "middle: " << middle.x << "|" << middle.y << "|" << middle.z << "\n";
+// std::cout << "normalA: " << normalA.x << "|" << normalA.y << "|" << normalA.z << "\n";
+// std::cout << "normalB: " << normalB.x << "|" << normalB.y << "|" << normalB.z << "\n\n";
+
+			polygon.push_back(before + normalA * (width / 2.f));
+			polygon.push_back(middle + normalB * (width / 2.f));
+			polygon.push_back(middle - normalB * (width / 2.f));
+			polygon.push_back(before - normalA * (width / 2.f));
+
+// std::cout << "pts0: " << polygon[0].x << "|" << polygon[0].y << "|" << polygon[0].z << "\n";
+// std::cout << "pts1: " << polygon[1].x << "|" << polygon[1].y << "|" << polygon[1].z << "\n";
+// std::cout << "pts2: " << polygon[2].x << "|" << polygon[2].y << "|" << polygon[2].z << "\n";
+// std::cout << "pts3: " << polygon[3].x << "|" << polygon[3].y << "|" << polygon[3].z << "\n\n\n";
+
+			addQuadToData(vertexData, normalData, indexData, colorData, polygon, col);
+
+			waybefore = before;
+			before = middle;
+			middle = next;
+			polygon.clear();
 
 		}
+// std::cout << "before: " << before.x << "|" << before.y << "|" << before.z << "\n";
+// std::cout << "middle: " << middle.x << "|" << middle.y << "|" << middle.z << "\n";
+		normalA = glm::normalize(glm::cross(glm::vec3(0,1,0),tangentB));
+		normalB = glm::normalize(glm::cross(glm::vec3(0,1,0),mB));
+// std::cout << "normalA: " << normalA.x << "|" << normalA.y << "|" << normalA.z << "\n";
+// std::cout << "normalB: " << normalB.x << "|" << normalB.y << "|" << normalB.z << "\n\n";
+		polygon.push_back(before + normalA * (width / 2.f));
+		polygon.push_back(middle + normalB * (width / 2.f));
+		polygon.push_back(middle - normalB * (width / 2.f));
+		polygon.push_back(before - normalA * (width / 2.f));
 
-		addQuadToData(vertexData, normalData, indexData, colorData, old, pts[i + 1], width, col);
+// std::cout << "pts0: " << polygon[0].x << "|" << polygon[0].y << "|" << polygon[0].z << "\n";
+// std::cout << "pts1: " << polygon[1].x << "|" << polygon[1].y << "|" << polygon[1].z << "\n";
+// std::cout << "pts2: " << polygon[2].x << "|" << polygon[2].y << "|" << polygon[2].z << "\n";
+// std::cout << "pts3: " << polygon[3].x << "|" << polygon[3].y << "|" << polygon[3].z << "\n\n\n";
+
+		addQuadToData(vertexData, normalData, indexData, colorData, polygon, col);
+
+		polygon.clear();
 
 	}
+
+	/*vectorVec3 polyLine;
+	float smoothness;
+
+	for (unsigned long i = 0; i < pts.size() - 1; i++) {
+
+		glm::vec3 mA, mB;
+
+		if (i == 0) mA = glm::normalize(pts[i+1] - pts[i]);
+		else mA = glm::normalize(pts[i+1] - pts[i-1]);
+		if (i + 2 == pts.size()) mB = glm::normalize(pts[i+1] - pts[i]);
+		else mB = glm::normalize(pts[i+2] - pts[i]);
+
+		smoothness = glm::sqrt(glm::pow(pts[i+1].x - pts[i].x, 2.f) + glm::pow(pts[i + 1].z - pts[i].z, 2.f));
+		float step = 1.f / smoothness * 2.f;
+
+		if (step >= 0.5f) step = 0.499f;
+
+		for (float t = 0.f; t < 1.f; t += step) {
+			polyLine.push_back(drawHermite(pts[i] / smoothness, pts[i+1] / smoothness, mA, mB, t) * smoothness);
+		}
+
+	}
+
+	glm::vec3 tangentA = glm::normalize(pts[1] - pts[0]);
+	vectorVec3 polygon;
+
+	for (int i = 1; i < polyLine.size(); i++) {
+		glm::vec3 tangentB = polyLine[i + 1] - polyLine[i - 1];
+
+		glm::vec3 normalA = glm::normalize(glm::cross(glm::vec3(0,1,0),tangentA));
+		glm::vec3 normalB = glm::normalize(glm::cross(glm::vec3(0,1,0),tangentB));
+
+		polygon.push_back(polyLine[i - 1] + normalA * (width / 2.f));
+		polygon.push_back(polyLine[i] + normalB * (width / 2.f));
+		polygon.push_back(polyLine[i] - normalB * (width / 2.f));
+		polygon.push_back(polyLine[i - 1] - normalA * (width / 2.f));
+		addQuadToData(vertexData, normalData, indexData, colorData, polygon, col);
+
+
+		tangentA = tangentB;
+		polygon.clear();
+	}*/
 
 	GLfloat * vertices = &vertexData[0];
 	GLfloat * normals = &normalData[0];
@@ -723,6 +829,60 @@ void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
 	glm::vec3 b = start + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
 	glm::vec3 c = end + glm::normalize(glm::vec3(-l.z, 0, l.x)) * width / 2.f;
 	glm::vec3 d = end + glm::normalize(glm::vec3(l.z, 0, -l.x)) * width / 2.f;
+
+	unsigned short len = static_cast<unsigned short>(vertexData.size()) / 3;
+
+	vertexData.push_back(a[0]);
+	vertexData.push_back(a[1]);
+	vertexData.push_back(a[2]);
+
+	vertexData.push_back(b[0]);
+	vertexData.push_back(b[1]);
+	vertexData.push_back(b[2]);
+
+	vertexData.push_back(c[0]);
+	vertexData.push_back(c[1]);
+	vertexData.push_back(c[2]);
+
+	vertexData.push_back(d[0]);
+	vertexData.push_back(d[1]);
+	vertexData.push_back(d[2]);
+
+	glm::vec3 n = glm::normalize(glm::cross(c - b, a - b));
+	for (int i = 0; i < 4; i++) {
+		normalData.push_back(n[0]);
+		normalData.push_back(n[1]);
+		normalData.push_back(n[2]);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		colorData.push_back(color[0]);
+		colorData.push_back(color[1]);
+		colorData.push_back(color[2]);
+	}
+
+	indexData.push_back(len);
+	indexData.push_back(len + 1);
+	indexData.push_back(len + 2);
+	indexData.push_back(len + 2);
+	indexData.push_back(len + 3);
+	indexData.push_back(len);
+
+}
+
+void Object::addQuadToData(	std::vector<GLfloat> & vertexData,
+							std::vector<GLfloat> & normalData,
+							std::vector<GLushort> & indexData,
+							std::vector<GLfloat> & colorData,
+							const vectorVec3 & pts,
+							const glm::vec3 & color) {
+
+	assert(pts.size() == 4);
+
+	glm::vec3 a = pts[0];
+	glm::vec3 b = pts[3];
+	glm::vec3 c = pts[2];
+	glm::vec3 d = pts[1];
 
 	unsigned short len = static_cast<unsigned short>(vertexData.size()) / 3;
 

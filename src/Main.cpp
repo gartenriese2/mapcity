@@ -165,12 +165,10 @@ void gameTest() {
 	Time::instance().waitMilliseconds(1000);
 	
 	path.clear();
-	path.push_back(glm::vec3(100,0.01,-100));
-	path.push_back(glm::vec3(200,0.01,-100));
 	path.push_back(glm::vec3(200,0.01,-200));
-	path.push_back(glm::vec3(280,0.01,-200));
-	path.push_back(glm::vec3(400,0.01,-100));
-	path.push_back(glm::vec3(500,0.01,-300));
+	path.push_back(glm::vec3(300,0.01,-200));
+	path.push_back(glm::vec3(370,0.01,-250));
+	path.push_back(glm::vec3(370,0.01,-400));
 	Bundesstrasse b1(path);
 
 	Time::instance().waitMilliseconds(1000);

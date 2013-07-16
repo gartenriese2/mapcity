@@ -66,6 +66,8 @@ class Object {
 		glm::vec3 drawHermite(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float);
 		void addQuadToData(std::vector<GLfloat> &, std::vector<GLfloat> &, std::vector<GLushort> &, std::vector<GLfloat> &, 
 							const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
+		void addQuadToData(std::vector<GLfloat> &, std::vector<GLfloat> &, std::vector<GLushort> &,	std::vector<GLfloat> &,
+							const vectorVec3 &,	const glm::vec3 &);
 
 };
 
