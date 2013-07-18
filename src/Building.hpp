@@ -36,7 +36,7 @@ class Building {
 		const glm::vec3 & getColor() const { return m_color; }
 		
 		void createObject();
-		void changeObject();
+		void changeObjectHeight();
 		
 		unsigned long m_ID;
 		glm::vec3 m_center, m_front, m_side, m_color;

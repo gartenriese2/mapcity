@@ -22,6 +22,7 @@ class ObjectContainer {
 		static ObjectContainer& instance();
 
 		unsigned long addBuilding(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
+		void changeBuildingHeight(const unsigned long, const float);
 		void emptyBuildingQueue();
 		void deleteBuilding(const unsigned long ID);
 		const buildingMap & getBuildings() const;
@@ -74,6 +75,7 @@ class ObjectContainer {
 		};
 		std::queue<BuildingData> m_buildingAddQueue;
 		std::queue<unsigned long> m_buildingDeleteQueue;
+		std::queue<BuildingData> m_buildingChangeQueue;
 
 		struct HexagonData {
 			unsigned long ID;

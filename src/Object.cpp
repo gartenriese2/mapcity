@@ -9,7 +9,7 @@ Object::Object() {
 Object::~Object() {
 
 	// glDeleteVertexArrays(1, &m_vertexArray);
-
+// std::cout << "delete!\n";
 	// glDeleteBuffers(1, &m_vertexBuffer);
 	// glDeleteBuffers(1, &m_normalBuffer);
 	// glDeleteBuffers(1, &m_colorBuffer);
@@ -56,6 +56,14 @@ void Object::fillBuffers(const unsigned long size, const unsigned long indices, 
 
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
  	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * indices, indexData, GL_STATIC_DRAW);
+
+}
+
+void Object::changeVertexBuffer(const unsigned long size, GLfloat * &vertexData) {
+
+	glBindVertexArray(m_vertexArray);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * size, vertexData);
 
 }
 

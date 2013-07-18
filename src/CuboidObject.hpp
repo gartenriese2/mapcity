@@ -10,6 +10,8 @@ class CuboidObject : public Object {
 		CuboidObject(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 & col = glm::vec3(1,1,1));
 		~CuboidObject();
 
+		void changeHeight(const float);
+
 	protected:
 
 		glm::vec3 m_center;

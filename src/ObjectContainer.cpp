@@ -47,6 +47,17 @@ unsigned long ObjectContainer::addBuilding(const glm::vec3 & center, const glm::
 
 }
 
+void ObjectContainer::changeBuildingHeight(const unsigned long ID, const float height) {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+
+	BuildingData d;
+	d.ID = ID;
+	d.height = height;
+	m_buildingChangeQueue.push(d);
+
+}
+
 void ObjectContainer::deleteBuilding(const unsigned long ID) { 
 	
 	std::lock_guard<std::mutex> guard(sMutex);
@@ -70,8 +81,10 @@ void ObjectContainer::emptyBuildingQueue() {
 	while(!m_buildingAddQueue.empty()) {
 
 		BuildingData d = m_buildingAddQueue.front();
-		CuboidObject o(d.center, d.front, d.side, d.height, d.color);
-		m_buildingMap.insert(std::pair<unsigned long,CuboidObject>(d.ID, o));
+		//CuboidObject o(d.center, d.front, d.side, d.height, d.color);
+		// std::cout << __LINE__ << "\n";
+		m_buildingMap.insert(std::pair<unsigned long,CuboidObject>(d.ID, CuboidObject(d.center, d.front, d.side, d.height, d.color)));
+		// std::cout << __LINE__ << "\n";
 		m_buildingAddQueue.pop();
 
 	}
@@ -81,6 +94,14 @@ void ObjectContainer::emptyBuildingQueue() {
 		unsigned long ID = m_buildingDeleteQueue.front();
 		m_buildingMap.erase(ID);
 		m_buildingDeleteQueue.pop();
+
+	}
+
+	while(!m_buildingChangeQueue.empty()) {
+
+		BuildingData d = m_buildingChangeQueue.front();
+		m_buildingMap.at(d.ID).changeHeight(d.height);
+		m_buildingChangeQueue.pop();
 
 	}
 
@@ -124,8 +145,10 @@ void ObjectContainer::emptyZoneQueue() {
 	while(!m_zoneAddQueue.empty()) {
 
 		ZoneData d = m_zoneAddQueue.front();
-		PolygonObject o(d.pts, d.center, d.color);
-		m_zoneMap.insert(std::pair<unsigned long,PolygonObject>(d.ID, o));
+		//PolygonObject o(d.pts, d.center, d.color);
+		// std::cout << __LINE__ << "\n";
+		m_zoneMap.insert(std::pair<unsigned long,PolygonObject>(d.ID, PolygonObject(d.pts, d.center, d.color)));
+		// std::cout << __LINE__ << "\n";
 		m_zoneAddQueue.pop();
 
 	}
@@ -178,8 +201,10 @@ void ObjectContainer::emptyHexagonQueue() {
 	while(!m_hexagonAddQueue.empty()) {
 
 		HexagonData d = m_hexagonAddQueue.front();
-		HexagonObject o(d.center, d.left, d.color);
-		m_hexagonMap.insert(std::pair<unsigned long,HexagonObject>(d.ID, o));
+		// HexagonObject o(d.center, d.left, d.color);
+		// std::cout << __LINE__ << "\n";
+		m_hexagonMap.insert(std::pair<unsigned long,HexagonObject>(d.ID, HexagonObject(d.center, d.left, d.color)));
+		// std::cout << __LINE__ << "\n";
 		m_hexagonAddQueue.pop();
 
 	}
@@ -232,8 +257,10 @@ void ObjectContainer::emptyPathQueue() {
 	while(!m_pathAddQueue.empty()) {
 
 		PathData d = m_pathAddQueue.front();
-		SplineObject o(d.pts, d.width, d.color);
-		m_pathMap.insert(std::pair<unsigned long,SplineObject>(d.ID, o));
+		// SplineObject o(d.pts, d.width, d.color);
+		// std::cout << __LINE__ << "\n";
+		m_pathMap.insert(std::pair<unsigned long,SplineObject>(d.ID, SplineObject(d.pts, d.width, d.color)));
+		// std::cout << __LINE__ << "\n";
 		m_pathAddQueue.pop();
 
 	}

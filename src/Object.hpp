@@ -45,6 +45,7 @@ class Object {
 		virtual void initObject() {};
 		void setTriangles(const int t) { m_triangles = t; }
 		void fillBuffers(const unsigned long, const unsigned long, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
+		void changeVertexBuffer(const unsigned long, GLfloat * &);
 
 		void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
 		glm::vec3 drawHermite(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float);

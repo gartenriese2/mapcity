@@ -23,9 +23,8 @@ void Building::deleteObject() {
 	ObjectContainer::instance().deleteBuilding(m_ID);
 }
 
-void Building::changeObject() {
-	ObjectContainer::instance().deleteBuilding(m_ID);
-	m_ID = ObjectContainer::instance().addBuilding(m_center, m_front, m_side, m_actualHeight, m_color);
+void Building::changeObjectHeight() {
+	ObjectContainer::instance().changeBuildingHeight(m_ID, m_actualHeight);
 }
 
 void Building::construct() {
@@ -39,7 +38,7 @@ void Building::construct() {
 			m_constructionDone = true;
 		}
 
-		changeObject();
+		changeObjectHeight();
 		
 	}
 
