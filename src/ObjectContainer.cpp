@@ -30,78 +30,86 @@ ObjectContainer::~ObjectContainer() {
 
 }
 
-unsigned long ObjectContainer::addBuilding(const glm::vec3 & center, const glm::vec3 & front, const glm::vec3 & side, const float height, const glm::vec3 & color) {
+unsigned long ObjectContainer::addCuboid(const glm::vec3 & center, const glm::vec3 & front, const glm::vec3 & side, const float height, const glm::vec3 & color) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
-	BuildingData d;
+	CuboidData d;
 	d.ID = count++;
 	d.center = center;
 	d.front = front;
 	d.side = side;
 	d.height = height;
 	d.color = color;
-	m_buildingAddQueue.push(d);
+	m_cuboidAddQueue.push(d);
 	
 	return d.ID;
 
 }
 
-void ObjectContainer::changeBuildingHeight(const unsigned long ID, const float height) {
+void ObjectContainer::changeCuboidHeight(const unsigned long ID, const float height) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
-	BuildingData d;
+	CuboidData d;
 	d.ID = ID;
 	d.height = height;
-	m_buildingChangeQueue.push(d);
+	m_cuboidChangeQueue.push(d);
 
 }
 
-void ObjectContainer::deleteBuilding(const unsigned long ID) { 
+void ObjectContainer::deleteCuboid(const unsigned long ID) { 
 	
 	std::lock_guard<std::mutex> guard(sMutex);
 
-	m_buildingDeleteQueue.push(ID);
+	m_cuboidDeleteQueue.push(ID);
 
 }
 
-const buildingMap & ObjectContainer::getBuildings() const { 
+void ObjectContainer::moveCuboid(const unsigned long ID, const glm::vec3 & mov) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
-	return m_buildingMap;
+	m_cuboidMap.at(ID).move(mov);
 
 }
 
-void ObjectContainer::emptyBuildingQueue() {
+const cuboidMap & ObjectContainer::getCuboids() const { 
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
-	while(!m_buildingAddQueue.empty()) {
+	return m_cuboidMap;
 
-		BuildingData d = m_buildingAddQueue.front();
+}
+
+void ObjectContainer::emptyCuboidQueue() {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+
+	while(!m_cuboidAddQueue.empty()) {
+
+		CuboidData d = m_cuboidAddQueue.front();
 		//CuboidObject o(d.center, d.front, d.side, d.height, d.color);
 		// std::cout << __LINE__ << "\n";
-		m_buildingMap.insert(std::pair<unsigned long,CuboidObject>(d.ID, CuboidObject(d.center, d.front, d.side, d.height, d.color)));
+		m_cuboidMap.insert(std::pair<unsigned long,CuboidObject>(d.ID, CuboidObject(d.center, d.front, d.side, d.height, d.color)));
 		// std::cout << __LINE__ << "\n";
-		m_buildingAddQueue.pop();
+		m_cuboidAddQueue.pop();
 
 	}
 
-	while(!m_buildingDeleteQueue.empty()) {
+	while(!m_cuboidDeleteQueue.empty()) {
 
-		unsigned long ID = m_buildingDeleteQueue.front();
-		m_buildingMap.erase(ID);
-		m_buildingDeleteQueue.pop();
+		unsigned long ID = m_cuboidDeleteQueue.front();
+		m_cuboidMap.erase(ID);
+		m_cuboidDeleteQueue.pop();
 
 	}
 
-	while(!m_buildingChangeQueue.empty()) {
+	while(!m_cuboidChangeQueue.empty()) {
 
-		BuildingData d = m_buildingChangeQueue.front();
-		m_buildingMap.at(d.ID).changeHeight(d.height);
-		m_buildingChangeQueue.pop();
+		CuboidData d = m_cuboidChangeQueue.front();
+		m_cuboidMap.at(d.ID).changeHeight(d.height);
+		m_cuboidChangeQueue.pop();
 
 	}
 

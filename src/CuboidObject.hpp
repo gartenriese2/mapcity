@@ -11,6 +11,7 @@ class CuboidObject : public Object {
 		~CuboidObject();
 
 		void changeHeight(const float);
+		void move(const glm::vec3 &);
 
 	protected:
 

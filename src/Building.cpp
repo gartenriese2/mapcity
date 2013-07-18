@@ -16,15 +16,15 @@ void Building::setHeight(const float minFloorHeight, const float maxFloorHeight,
 }
 
 void Building::createObject() {
-	m_ID = ObjectContainer::instance().addBuilding(m_center, m_front, m_side, m_actualHeight, m_color);
+	m_ID = ObjectContainer::instance().addCuboid(m_center, m_front, m_side, m_actualHeight, m_color);
 }
 
 void Building::deleteObject() {
-	ObjectContainer::instance().deleteBuilding(m_ID);
+	ObjectContainer::instance().deleteCuboid(m_ID);
 }
 
 void Building::changeObjectHeight() {
-	ObjectContainer::instance().changeBuildingHeight(m_ID, m_actualHeight);
+	ObjectContainer::instance().changeCuboidHeight(m_ID, m_actualHeight);
 }
 
 void Building::construct() {

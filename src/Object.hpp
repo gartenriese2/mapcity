@@ -44,6 +44,8 @@ class Object {
 
 		virtual void initObject() {};
 		void setTriangles(const int t) { m_triangles = t; }
+		void setModelMatrix(const glm::mat4 mat) { m_modelMatrix = mat; }
+
 		void fillBuffers(const unsigned long, const unsigned long, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
 		void changeVertexBuffer(const unsigned long, GLfloat * &);
 

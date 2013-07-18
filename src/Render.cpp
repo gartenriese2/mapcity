@@ -96,8 +96,8 @@ void Render::simplePass(const Camera &cam) const {
 	
 	glEnable(GL_DEPTH_TEST);
 
-	ObjectContainer::instance().emptyBuildingQueue();
-	for (auto o : ObjectContainer::instance().getBuildings()) {
+	ObjectContainer::instance().emptyCuboidQueue();
+	for (auto o : ObjectContainer::instance().getCuboids()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
 		m_simpleShader->link(m_MVP_simplePass, MVP);
@@ -154,8 +154,8 @@ void Render::gbufferPass(const Camera &cam) const {
 	// glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	glEnable(GL_DEPTH_TEST);
 
-	ObjectContainer::instance().emptyBuildingQueue();
-	for (auto o : ObjectContainer::instance().getBuildings()) {
+	ObjectContainer::instance().emptyCuboidQueue();
+	for (auto o : ObjectContainer::instance().getCuboids()) {
 
 		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
 		m_simpleShader->link(m_MVP_simplePass, MVP);

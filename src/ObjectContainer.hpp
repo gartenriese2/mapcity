@@ -12,7 +12,7 @@
 #include <queue>
 
 typedef std::unordered_map<unsigned long, SplineObject> pathMap;
-typedef std::unordered_map<unsigned long, CuboidObject> buildingMap;
+typedef std::unordered_map<unsigned long, CuboidObject> cuboidMap;
 typedef std::unordered_map<unsigned long, PolygonObject> zoneMap;
 typedef std::unordered_map<unsigned long, HexagonObject> hexagonMap;
 
@@ -21,11 +21,12 @@ class ObjectContainer {
 		
 		static ObjectContainer& instance();
 
-		unsigned long addBuilding(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
-		void changeBuildingHeight(const unsigned long, const float);
-		void emptyBuildingQueue();
-		void deleteBuilding(const unsigned long ID);
-		const buildingMap & getBuildings() const;
+		unsigned long addCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
+		void changeCuboidHeight(const unsigned long, const float);
+		void emptyCuboidQueue();
+		void deleteCuboid(const unsigned long);
+		void moveCuboid(const unsigned long, const glm::vec3 &);
+		const cuboidMap & getCuboids() const;
 
 		unsigned long addZone(const vectorVec3 &, const glm::vec3 &, const glm::vec3 &);
 		void emptyZoneQueue();
@@ -60,12 +61,12 @@ class ObjectContainer {
 		ObjectContainer& operator=(const ObjectContainer&);
 		static std::mutex sMutex;
 		
-		buildingMap m_buildingMap;
+		cuboidMap m_cuboidMap;
 		zoneMap m_zoneMap;
 		hexagonMap m_hexagonMap;
 		pathMap m_pathMap;
 
-		struct BuildingData {
+		struct CuboidData {
 			unsigned long ID;
 			glm::vec3 center;
 			glm::vec3 front;
@@ -73,9 +74,9 @@ class ObjectContainer {
 			float height;
 			glm::vec3 color;
 		};
-		std::queue<BuildingData> m_buildingAddQueue;
-		std::queue<unsigned long> m_buildingDeleteQueue;
-		std::queue<BuildingData> m_buildingChangeQueue;
+		std::queue<CuboidData> m_cuboidAddQueue;
+		std::queue<unsigned long> m_cuboidDeleteQueue;
+		std::queue<CuboidData> m_cuboidChangeQueue;
 
 		struct HexagonData {
 			unsigned long ID;

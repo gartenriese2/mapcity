@@ -180,6 +180,10 @@ void gameTest() {
 	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
 	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
 
+	glm::vec3 carPos = glm::vec3(317.5,0,-340);
+	glm::vec3 mov = glm::vec3(0,0,0.1);
+	unsigned long car = ObjectContainer::instance().addCuboid(carPos, glm::vec3(1.3,0,0), glm::vec3(0,0,-2.5), 1.5, glm::vec3(0.5,0,0));
+
 	while(m1.isUnderConstruction()) {
 		
 		Time::instance().waitMilliseconds(10);
@@ -189,8 +193,21 @@ void gameTest() {
 		e3.construct();
 		k1.construct();
 		g1.construct();
+
+		carPos += mov;
+		if (carPos.z > -250) {
+			ObjectContainer::instance().moveCuboid(car, glm::vec3(5,0,0));
+			mov = -mov;
+		} else if (carPos.z < -340) {
+			ObjectContainer::instance().moveCuboid(car, glm::vec3(-5,0,0));
+			mov = -mov;
+		}
+		ObjectContainer::instance().moveCuboid(car, mov);
 		
 	}
+
+	
+	
 
 	game.start();
 

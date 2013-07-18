@@ -102,3 +102,9 @@ void CuboidObject::changeHeight(const float height) {
 	delete [] vertexData;
 
 }
+
+void CuboidObject::move(const glm::vec3 & mov) {
+
+	setModelMatrix(glm::translate(getModelMatrix(), mov));
+
+}
