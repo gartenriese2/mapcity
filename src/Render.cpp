@@ -44,7 +44,12 @@ void Render::init() {
 	m_Light_gbufferPass = m_gbufferShader->addUniform("Light");
 
 	m_simpleTexShader = std::make_shared<Shader>("../shader/SimpleTexVert.shader", "../shader/SimpleTexFrag.shader");
-	m_screenSizedQuad = Object(ObjectType::QUAD, glm::vec3(-1,-1,0), glm::vec3(1,-1,0), glm::vec3(-1,1,0), glm::vec3(0,0,0));
+	vectorVec3 v;
+	v.push_back(glm::vec3(-1,-1,0));
+	v.push_back(glm::vec3(-1,1,0));
+	v.push_back(glm::vec3(1,1,0));
+	v.push_back(glm::vec3(1,-1,0));
+	m_screenSizedQuad = PolygonObject(v, glm::vec3(0,0,0));
 	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferPositionTexture, "tex");
 	
 

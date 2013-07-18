@@ -1,13 +1,20 @@
 #ifndef OBJECTCONTAINER_HPP
 #define OBJECTCONTAINER_HPP
 
-#include "Object.hpp"
+#include "SplineObject.hpp"
+#include "CuboidObject.hpp"
+#include "PolygonObject.hpp"
+#include "HexagonObject.hpp"
+
 #include <unordered_map>
 #include <memory>
 #include <mutex>
 #include <queue>
 
-typedef std::unordered_map<unsigned long, Object> objectMap;
+typedef std::unordered_map<unsigned long, SplineObject> pathMap;
+typedef std::unordered_map<unsigned long, CuboidObject> buildingMap;
+typedef std::unordered_map<unsigned long, PolygonObject> zoneMap;
+typedef std::unordered_map<unsigned long, HexagonObject> hexagonMap;
 
 class ObjectContainer {
 	public:
@@ -17,22 +24,22 @@ class ObjectContainer {
 		unsigned long addBuilding(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
 		void emptyBuildingQueue();
 		void deleteBuilding(const unsigned long ID);
-		const objectMap & getBuildings() const;
+		const buildingMap & getBuildings() const;
 
 		unsigned long addZone(const vectorVec3 &, const glm::vec3 &, const glm::vec3 &);
 		void emptyZoneQueue();
 		void deleteZone(const unsigned long ID);
-		const objectMap & getZones() const;
+		const zoneMap & getZones() const;
 
 		unsigned long addHexagon(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		void emptyHexagonQueue();
 		void deleteHexagon(const unsigned long ID);
-		const objectMap & getHexagons() const;
+		const hexagonMap & getHexagons() const;
 
 		unsigned long addPath(const vectorVec3 &, const float, const glm::vec3 &);
 		void emptyPathQueue();
 		void deletePath(const unsigned long ID);
-		const objectMap & getPaths() const;
+		const pathMap & getPaths() const;
 
 	protected:
 		
@@ -52,10 +59,10 @@ class ObjectContainer {
 		ObjectContainer& operator=(const ObjectContainer&);
 		static std::mutex sMutex;
 		
-		objectMap m_buildingMap;
-		objectMap m_zoneMap;
-		objectMap m_hexagonMap;
-		objectMap m_pathMap;
+		buildingMap m_buildingMap;
+		zoneMap m_zoneMap;
+		hexagonMap m_hexagonMap;
+		pathMap m_pathMap;
 
 		struct BuildingData {
 			unsigned long ID;

@@ -22,25 +22,15 @@ class Object {
 	public:
 		
 		Object();
-		Object(const ObjectType &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
-		Object(const ObjectType &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
-		Object(const ObjectType &, const glm::vec3 &, const glm::vec3 &, const float, const float, const glm::vec3 &);
-		Object(const ObjectType &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
-		Object(const ObjectType &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
-		Object(const ObjectType &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
-		Object(const ObjectType &, const vectorVec3 &, const float, const glm::vec3 &);
-		Object(const ObjectType &, const vectorVec3 &, const glm::vec3 &, const glm::vec3 &);
 		~Object();
 
-		void init();
+		virtual void init();
 
 		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
-		void setTriangles(const int t) { m_triangles = t; }
-
-		void fillBuffers(const unsigned long, const unsigned long, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
+		
 		void draw() const;
 
-	private:
+	protected:
 
 		GLuint m_vertexArray;
 
@@ -52,15 +42,9 @@ class Object {
 		int m_triangles;
 		glm::mat4 m_modelMatrix;
 
-		void setAsTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsQuad(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsQuad(const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsQuad(const glm::vec3 &, const glm::vec3 &, const float, const float, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsHexagon(const glm::vec3 &, const glm::vec3 &, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsSpline(const vectorVec3 &, const float, const glm::vec3 & col = glm::vec3(1,1,1));
-		void setAsPolygon(const vectorVec3 &, const glm::vec3 &, const glm::vec3 & col = glm::vec3(1,1,1));
+		virtual void initObject() {};
+		void setTriangles(const int t) { m_triangles = t; }
+		void fillBuffers(const unsigned long, const unsigned long, GLfloat * &, GLfloat * &, GLfloat * &, GLushort * &);
 
 		void createCuboidData(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, GLfloat * &, GLfloat * &, GLushort * &);
 		glm::vec3 drawHermite(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float);

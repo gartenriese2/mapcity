@@ -55,7 +55,7 @@ void ObjectContainer::deleteBuilding(const unsigned long ID) {
 
 }
 
-const objectMap & ObjectContainer::getBuildings() const { 
+const buildingMap & ObjectContainer::getBuildings() const { 
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -70,8 +70,8 @@ void ObjectContainer::emptyBuildingQueue() {
 	while(!m_buildingAddQueue.empty()) {
 
 		BuildingData d = m_buildingAddQueue.front();
-		Object o(ObjectType::CUBOID, d.center, d.front, d.side, d.height, d.color);
-		m_buildingMap.insert(std::pair<unsigned long,Object>(d.ID, o));
+		CuboidObject o(d.center, d.front, d.side, d.height, d.color);
+		m_buildingMap.insert(std::pair<unsigned long,CuboidObject>(d.ID, o));
 		m_buildingAddQueue.pop();
 
 	}
@@ -109,7 +109,7 @@ void ObjectContainer::deleteZone(const unsigned long ID) {
 
 }
 
-const objectMap & ObjectContainer::getZones() const { 
+const zoneMap & ObjectContainer::getZones() const { 
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -124,8 +124,8 @@ void ObjectContainer::emptyZoneQueue() {
 	while(!m_zoneAddQueue.empty()) {
 
 		ZoneData d = m_zoneAddQueue.front();
-		Object o(ObjectType::POLYGON, d.pts, d.center, d.color);
-		m_zoneMap.insert(std::pair<unsigned long,Object>(d.ID, o));
+		PolygonObject o(d.pts, d.center, d.color);
+		m_zoneMap.insert(std::pair<unsigned long,PolygonObject>(d.ID, o));
 		m_zoneAddQueue.pop();
 
 	}
@@ -163,7 +163,7 @@ void ObjectContainer::deleteHexagon(const unsigned long ID) {
 
 }
 
-const objectMap & ObjectContainer::getHexagons() const { 
+const hexagonMap & ObjectContainer::getHexagons() const { 
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -178,8 +178,8 @@ void ObjectContainer::emptyHexagonQueue() {
 	while(!m_hexagonAddQueue.empty()) {
 
 		HexagonData d = m_hexagonAddQueue.front();
-		Object o(ObjectType::HEXAGON, d.center, d.left, d.color);
-		m_hexagonMap.insert(std::pair<unsigned long,Object>(d.ID, o));
+		HexagonObject o(d.center, d.left, d.color);
+		m_hexagonMap.insert(std::pair<unsigned long,HexagonObject>(d.ID, o));
 		m_hexagonAddQueue.pop();
 
 	}
@@ -217,7 +217,7 @@ void ObjectContainer::deletePath(const unsigned long ID) {
 
 }
 
-const objectMap & ObjectContainer::getPaths() const { 
+const pathMap & ObjectContainer::getPaths() const { 
 
 	std::lock_guard<std::mutex> guard(sMutex);
 
@@ -232,8 +232,8 @@ void ObjectContainer::emptyPathQueue() {
 	while(!m_pathAddQueue.empty()) {
 
 		PathData d = m_pathAddQueue.front();
-		Object o(ObjectType::SPLINE, d.pts, d.width, d.color);
-		m_pathMap.insert(std::pair<unsigned long,Object>(d.ID, o));
+		SplineObject o(d.pts, d.width, d.color);
+		m_pathMap.insert(std::pair<unsigned long,SplineObject>(d.ID, o));
 		m_pathAddQueue.pop();
 
 	}
