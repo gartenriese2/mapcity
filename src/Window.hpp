@@ -6,11 +6,11 @@
 #include <sstream>
 #include <memory>
 
-#include "World.hpp"
 #include "Camera.hpp"
 #include "Render.hpp"
 #include "Timer.hpp"
 #include "Time.hpp"
+#include "InputHandler.hpp"
 
 using namespace glm;
 using namespace std;

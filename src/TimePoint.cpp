@@ -4,7 +4,6 @@ TimePoint::TimePoint(const unsigned long time, const unsigned int year) {
 
 	m_timePoint = time;
 	m_startYear = year;
-	std::cout << "constructor " << year << "\n";
 
 }
 

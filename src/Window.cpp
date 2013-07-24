@@ -86,7 +86,7 @@ void Window::loop() {
 
     do{
         
-        //FPS(t);
+        // FPS(t);
 
         keyhandler();
         mousehandler();
@@ -94,7 +94,7 @@ void Window::loop() {
         // switch(option):
         // case
         //m_render->depthPlayerPass(* m_cam);
-        // t.start();
+        t.start();
         // m_render->simplePass(* m_cam);
         // t.end();
         // m_render->depthLightPass(* m_cam);
@@ -107,7 +107,7 @@ void Window::loop() {
         
         m_render->simpleTexPass();
         
-        //t.waitAndAdd();
+        // t.waitAndAdd();
         glfwSwapBuffers();
      
     } while(glfwGetKey(GLFW_KEY_ESC) != GLFW_PRESS && glfwGetWindowParam(GLFW_OPENED));

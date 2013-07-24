@@ -6,6 +6,7 @@
 #include "Shader.hpp"
 #include "Fbo.hpp"
 #include "ObjectContainer.hpp"
+#include "InputHandler.hpp"
 #include <iostream>
 #include <memory>
 
