@@ -104,7 +104,7 @@ void demandFunctionTest() {
 
 void gameTest() {
 	
-	int height = 1000, width = 1000;
+	int height = 1024, width = 1024;
 	Game game(width, height, 1000, 1000);
 
 	Time::instance().setIngameSpeed(Time::FASTFORWARD);
@@ -182,6 +182,7 @@ void gameTest() {
 
 	glm::vec3 carPos = glm::vec3(317.5,0,-340);
 	glm::vec3 mov = glm::vec3(0,0,0.1);
+	float turn = 0.f;
 	unsigned long car = ObjectContainer::instance().addCuboid(carPos, glm::vec3(1.3,0,0), glm::vec3(0,0,-2.5), 1.5, glm::vec3(0.5,0,0));
 
 	while(m1.isUnderConstruction()) {
@@ -194,20 +195,22 @@ void gameTest() {
 		k1.construct();
 		g1.construct();
 
-		carPos += mov;
-		if (carPos.z > -250) {
-			ObjectContainer::instance().moveCuboid(car, glm::vec3(5,0,0));
-			mov = -mov;
-		} else if (carPos.z < -340) {
-			ObjectContainer::instance().moveCuboid(car, glm::vec3(-5,0,0));
-			mov = -mov;
-		}
-		ObjectContainer::instance().moveCuboid(car, mov);
-		
-	}
 
-	
-	
+		// carPos += mov;
+
+		// if (carPos.z > -250 && turn != 180.f) {
+		// 	ObjectContainer::instance().rotateCuboid(car, 1.2f);
+		// 	turn += 1.2f;
+		// 	// mov = -mov;
+		// } else if (carPos.z < -340 && turn != 180.f) {
+		// 	ObjectContainer::instance().rotateCuboid(car, 1.2f);
+		// 	turn += 1.2f;
+		// 	// mov = -mov;
+		// }
+		// if (turn == 180.f) turn = 0.f;
+		// ObjectContainer::instance().moveCuboid(car, mov);
+		
+	}	
 
 	game.start();
 

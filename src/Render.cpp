@@ -44,13 +44,13 @@ void Render::init() {
 	m_Light_gbufferPass = m_gbufferShader->addUniform("Light");
 
 	m_simpleTexShader = std::make_shared<Shader>("../shader/SimpleTexVert.shader", "../shader/SimpleTexFrag.shader");
-	vectorVec3 v;
-	v.push_back(glm::vec3(-1,-1,0));
-	v.push_back(glm::vec3(-1,1,0));
-	v.push_back(glm::vec3(1,1,0));
-	v.push_back(glm::vec3(1,-1,0));
+	vectorVec3 v = { glm::vec3(-1,-1,0), glm::vec3(-1,1,0), glm::vec3(1,1,0), glm::vec3(1,-1,0) };
+	// v.push_back(glm::vec3(-1,-1,0));
+	// v.push_back(glm::vec3(-1,1,0));
+	// v.push_back(glm::vec3(1,1,0));
+	// v.push_back(glm::vec3(1,-1,0));
 	m_screenSizedQuad = PolygonObject(v, glm::vec3(0,0,0));
-	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferPositionTexture, "tex");
+	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferColorTexture, "tex");
 	
 
 
@@ -111,10 +111,11 @@ void Render::simplePass(const Camera &cam) const {
 
 void Render::gbufferPass(const Camera &cam) const {
 
-	// m_fbo->bind();
+	m_fbo->bind();
+	glViewport(0,0,2048,2048);
 
-	// GLenum db[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
-	// glDrawBuffers(4, db);
+	GLenum db[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
+	glDrawBuffers(4, db);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_gbufferShader->Use();
@@ -164,7 +165,75 @@ void Render::gbufferPass(const Camera &cam) const {
 		o.second.draw();
 	}
 
-	// m_fbo->unbind();
+	m_fbo->unbind();
+	glViewport(0,0,1024,1024);
+
+}
+
+void Render::gbufferClickPass(const Camera &cam, const unsigned int posX, const unsigned int posY) const {
+
+	m_fbo->bind();
+	glViewport(0,0,2048,2048);
+
+	GLenum db[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
+	glDrawBuffers(4, db);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_gbufferShader->Use();
+
+	ObjectContainer::instance().emptyHexagonQueue();
+	for (auto o : ObjectContainer::instance().getHexagons()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
+	glDisable(GL_DEPTH_TEST);
+
+	ObjectContainer::instance().emptyZoneQueue();
+	for (auto o : ObjectContainer::instance().getZones()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
+	// glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	ObjectContainer::instance().emptyPathQueue();
+	for (auto o : ObjectContainer::instance().getPaths()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+	// glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	glEnable(GL_DEPTH_TEST);
+
+	ObjectContainer::instance().emptyCuboidQueue();
+	for (auto o : ObjectContainer::instance().getCuboids()) {
+
+		glm::mat4 MVP = cam.getProjMat() * cam.getViewMat() * o.second.getModelMatrix();
+		m_simpleShader->link(m_MVP_simplePass, MVP);
+		m_simpleShader->link(m_Light_simplePass, 500.f, 600.f, 0.f);
+
+		o.second.draw();
+	}
+
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
+	GLfloat pix[] = { 0.f, 0.f, 0.f };
+	glClampColor(GL_CLAMP_READ_COLOR, GL_FALSE);
+	glReadPixels(posX * 2, (1024 - posY) * 2, 1, 1, GL_RGB, GL_FLOAT, pix);
+	std::cout << "worldPos: " << pix[0] << "|" << pix[1] << "|" << pix[2] << "\n";
+
+	m_fbo->unbind();
+	glViewport(0,0,1024,1024);
 
 }
 
@@ -177,6 +246,8 @@ void Render::simpleTexPass() const {
 	m_simpleTexShader->linkTextures();
 
 	m_screenSizedQuad.draw();
+
+	
 	
 }
 

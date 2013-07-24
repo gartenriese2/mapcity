@@ -2,6 +2,7 @@
 #define CUBOIDOBJECT_HPP
 
 #include "Object.hpp"
+#include <math.h>
 
 class CuboidObject : public Object {
 	
@@ -12,6 +13,7 @@ class CuboidObject : public Object {
 
 		void changeHeight(const float);
 		void move(const glm::vec3 &);
+		void rotate(const float);
 
 	protected:
 

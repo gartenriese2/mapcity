@@ -108,3 +108,13 @@ void CuboidObject::move(const glm::vec3 & mov) {
 	setModelMatrix(glm::translate(getModelMatrix(), mov));
 
 }
+
+void CuboidObject::rotate(const float deg) {
+
+	float rad = deg / 180.f * M_PI;
+
+	setModelMatrix(glm::translate(getModelMatrix(), m_center));
+	setModelMatrix(glm::rotate(getModelMatrix(), rad, glm::vec3(0,1,0)));
+	setModelMatrix(glm::translate(getModelMatrix(), -m_center));
+
+}

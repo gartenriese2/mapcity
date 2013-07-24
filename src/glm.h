@@ -11,4 +11,5 @@
 #include "../glm-0.9.4.3/glm/gtx/rotate_vector.hpp"
 #include "../glm-0.9.4.3/glm/gtc/type_ptr.hpp"
 #include "../glm-0.9.4.3/glm/gtx/random.hpp"
+#include "../glm-0.9.4.3/glm/gtc/constants.hpp"
 #pragma clang diagnostic pop

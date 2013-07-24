@@ -95,12 +95,17 @@ void Window::loop() {
         // case
         //m_render->depthPlayerPass(* m_cam);
         // t.start();
-        m_render->simplePass(* m_cam);
+        // m_render->simplePass(* m_cam);
         // t.end();
         // m_render->depthLightPass(* m_cam);
         
-        m_render->gbufferPass(* m_cam);
-        // m_render->simpleTexPass();
+        if (m_click) {
+            m_render->gbufferClickPass(* m_cam, m_mousePosX, m_mousePosY);
+        } else {
+            m_render->gbufferPass(* m_cam);
+        }
+        
+        m_render->simpleTexPass();
         
         //t.waitAndAdd();
         glfwSwapBuffers();
@@ -182,6 +187,15 @@ void Window::mousehandler() {
     if (i != m_mouseWheelPos) {
         m_cam->zoom(i - m_mouseWheelPos);
         m_mouseWheelPos = i;
+    }
+
+    if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+
+        m_click = true;
+        glfwGetMousePos(&m_mousePosX, &m_mousePosY);
+
+    } else {
+        m_click = false;
     }
 
 }

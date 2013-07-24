@@ -19,6 +19,7 @@ class Render {
 		void init();
 		void simplePass(const Camera &) const;
 		void gbufferPass(const Camera &) const;
+		void gbufferClickPass(const Camera &, const unsigned int, const unsigned int) const;
 		void simpleTexPass() const;
 		void depthPlayerPass(const Camera &) const;
 		void depthLightPass(const Camera &) const;

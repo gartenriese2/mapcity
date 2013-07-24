@@ -1,9 +1,9 @@
 #version 410
 
-layout(location = 3) out vec3 position;
+layout(location = 0) out vec3 position;
 layout(location = 1) out vec3 normal;
 layout(location = 2) out vec3 depth;
-layout(location = 0) out vec3 color;
+layout(location = 3) out vec3 color;
 
 in vec3 position_worldspace;
 in vec3 normal_worldspace;

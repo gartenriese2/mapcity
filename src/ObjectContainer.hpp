@@ -26,6 +26,7 @@ class ObjectContainer {
 		void emptyCuboidQueue();
 		void deleteCuboid(const unsigned long);
 		void moveCuboid(const unsigned long, const glm::vec3 &);
+		void rotateCuboid(const unsigned long, const float);
 		const cuboidMap & getCuboids() const;
 
 		unsigned long addZone(const vectorVec3 &, const glm::vec3 &, const glm::vec3 &);

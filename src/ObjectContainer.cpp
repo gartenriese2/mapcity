@@ -74,6 +74,14 @@ void ObjectContainer::moveCuboid(const unsigned long ID, const glm::vec3 & mov) 
 
 }
 
+void ObjectContainer::rotateCuboid(const unsigned long ID, const float angle) {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+
+	m_cuboidMap.at(ID).rotate(angle);
+
+}
+
 const cuboidMap & ObjectContainer::getCuboids() const { 
 
 	std::lock_guard<std::mutex> guard(sMutex);
