@@ -67,6 +67,14 @@ void Object::changeVertexBuffer(const unsigned long size, GLfloat * &vertexData)
 
 }
 
+void Object::changeColorBuffer(const unsigned long size, GLfloat * &colorData) {
+
+	glBindVertexArray(m_vertexArray);
+	glBindBuffer(GL_ARRAY_BUFFER, m_colorBuffer);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * size, colorData);
+
+}
+
 void Object::draw() const {
 
 	glBindVertexArray(m_vertexArray);

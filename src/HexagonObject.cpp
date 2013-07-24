@@ -88,3 +88,19 @@ void HexagonObject::initObject() {
 	setTriangles(6);
 
 }
+
+void HexagonObject::changeColor(const glm::vec3 & color) {
+
+	m_color = color;
+
+	GLfloat * colorData = new GLfloat[21];
+	for (unsigned long i = 0; i < 21; i += 3) {
+		colorData[i] = m_color.x;
+		colorData[i + 1] = m_color.y;
+		colorData[i + 2] = m_color.z;
+	}
+
+	changeColorBuffer(21, colorData);
+	delete [] colorData;
+
+}

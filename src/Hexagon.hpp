@@ -22,11 +22,18 @@ class Hexagon {
 		const vectorVec3 & getVertices() const { return m_vertices; }
 		
 		bool isInside(glm::vec3) const;
+		void query();
 
-	private:
+	protected:
 
+		const glm::vec3 k_defaultColor = glm::vec3(1,1,1);
+		const glm::vec3 k_clickedColor = glm::vec3(0.6,0.6,0.6);
+
+		unsigned long ID;
 		glm::vec3 m_center;
 		vectorVec3 m_vertices;
+
+		bool m_isQueried = false;
 
 		void setVertices();
 

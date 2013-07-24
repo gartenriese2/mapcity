@@ -10,6 +10,8 @@ class HexagonObject : public Object {
 		HexagonObject(const glm::vec3 &, const glm::vec3 &, const glm::vec3 & col = glm::vec3(1,1,1));
 		~HexagonObject();
 
+		void changeColor(const glm::vec3 &);
+
 	protected:
 
 		glm::vec3 m_center;

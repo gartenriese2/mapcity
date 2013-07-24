@@ -11,7 +11,8 @@ class InputHandler {
 		static InputHandler& instance();
 
 		void addQuery(const glm::vec3 &);
-		glm::vec3 getQuery() const;
+		glm::vec3 getQuery();
+		bool hasNewQuery() const;
 
 	protected:
 		
@@ -32,6 +33,7 @@ class InputHandler {
 		static std::mutex sMutex;
 
 		glm::vec3 m_query;
+		bool m_newQuery = false;
 		
 	
 };

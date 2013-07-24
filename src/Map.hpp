@@ -16,7 +16,7 @@ class Map {
 		int getWidth() const { return m_width; }
 		int getNumberOfHexagons() const { return m_hexagons; }
 		const std::vector<Hexagon> & getHexaVector() const { return m_hexaVector; }
-		const Hexagon & getCorrespondingHexagon(const glm::vec3 &) const;
+		Hexagon & getCorrespondingHexagon(const glm::vec3 &);
 	
 	private:
 

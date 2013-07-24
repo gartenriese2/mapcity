@@ -32,12 +32,21 @@ void InputHandler::addQuery(const glm::vec3 & click) {
 
 	std::lock_guard<std::mutex> guard(sMutex);
 	m_query = click;
+	m_newQuery = true;
 
 }
 
-glm::vec3 InputHandler::getQuery() const {
+glm::vec3 InputHandler::getQuery() {
 
 	std::lock_guard<std::mutex> guard(sMutex);
+	m_newQuery = false;
 	return m_query;
+
+}
+
+bool InputHandler::hasNewQuery() const {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+	return m_newQuery;
 
 }

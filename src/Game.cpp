@@ -4,24 +4,26 @@ Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, co
 
 	m_graphicsThread = thread(&Game::initGraphics, this, windowWidth, windowHeight);
 
-	m_world = make_shared<World>(mapHeight, mapWidth);
+	while(!m_isRunning);
+
+	m_simulationThread = thread(&Game::initSimulation, this, mapWidth, mapHeight);
 
 	m_timeThread = thread(&Game::initTime, this);
 
 }
 
 Game::~Game() {
-	std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds.\n";
-	std::cout << "Ingame time: " << Time::instance().getIngameTime() << ".\n";
+	// std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds.\n";
+	// std::cout << "Ingame time: " << Time::instance().getIngameTime() << ".\n";
 }
 
-void Game::start() {
+void Game::end() {
 	
-	// start simulation
 	while(m_isRunning);
 
 	m_graphicsThread.join();
 	m_timeThread.join();
+	m_simulationThread.join();
 	
 }
 
@@ -39,5 +41,12 @@ void Game::initGraphics(const int width, const int height) {
 void Game::initTime() {
 
 	Time::instance().printTime(m_isRunning);
+
+}
+
+void Game::initSimulation(const int width, const int height) {
+
+	m_world = make_shared<World>(height, width);
+	m_world->loop(m_isRunning);
 
 }

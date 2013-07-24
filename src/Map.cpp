@@ -36,7 +36,7 @@ int Map::createHexagons() {
 
 }
 
-const Hexagon & Map::getCorrespondingHexagon(const glm::vec3 & p) const {
+Hexagon & Map::getCorrespondingHexagon(const glm::vec3 & p) {
 
 	if (p.x < 0 || p.x > m_width || -p.z < 0 || -p.z > m_height) {
 		throw "Point not in Map";

@@ -210,6 +210,17 @@ const hexagonMap & ObjectContainer::getHexagons() const {
 
 }
 
+void ObjectContainer::changeHexagonColor(const unsigned long ID, const glm::vec3 & color) {
+
+	std::lock_guard<std::mutex> guard(sMutex);
+
+	HexagonData d;
+	d.ID = ID;
+	d.color = color;
+	m_hexagonChangeQueue.push(d);
+
+}
+
 void ObjectContainer::emptyHexagonQueue() {
 
 	std::lock_guard<std::mutex> guard(sMutex);
@@ -230,6 +241,14 @@ void ObjectContainer::emptyHexagonQueue() {
 		unsigned long ID = m_hexagonDeleteQueue.front();
 		m_hexagonMap.erase(ID);
 		m_hexagonDeleteQueue.pop();
+
+	}
+
+	while(!m_hexagonChangeQueue.empty()) {
+
+		HexagonData d = m_hexagonChangeQueue.front();
+		m_hexagonMap.at(d.ID).changeColor(d.color);
+		m_hexagonChangeQueue.pop();
 
 	}
 

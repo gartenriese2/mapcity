@@ -32,7 +32,7 @@ class Window {
 		int m_height;
 
 		int m_mousePosX, m_mousePosY, m_mouseWheelPos;
-		bool m_click = false;
+		bool m_click = false, m_clicked = false;
 		
 		shared_ptr<Camera> m_cam;
 		shared_ptr<Render> m_render;

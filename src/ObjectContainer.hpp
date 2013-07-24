@@ -37,6 +37,7 @@ class ObjectContainer {
 		unsigned long addHexagon(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		void emptyHexagonQueue();
 		void deleteHexagon(const unsigned long ID);
+		void changeHexagonColor(const unsigned long, const glm::vec3 &);
 		const hexagonMap & getHexagons() const;
 
 		unsigned long addPath(const vectorVec3 &, const float, const glm::vec3 &);
@@ -87,6 +88,7 @@ class ObjectContainer {
 		};
 		std::queue<HexagonData> m_hexagonAddQueue;
 		std::queue<unsigned long> m_hexagonDeleteQueue;
+		std::queue<HexagonData> m_hexagonChangeQueue;
 
 		struct ZoneData {
 			unsigned long ID;

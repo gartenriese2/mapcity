@@ -15,7 +15,7 @@ class Game {
 		Game(int, int, int, int);
 		~Game();
 
-		void start();
+		void end();
 
 		shared_ptr<World> getWorld() { return m_world; }
 		shared_ptr<Window> getWindow() { return m_window; }
@@ -27,10 +27,12 @@ class Game {
 
 		thread m_graphicsThread;
 		thread m_timeThread;
+		thread m_simulationThread;
 		bool m_isRunning;
 
 		void initGraphics(int, int);
 		void initTime();
+		void initSimulation(int, int);
 
 };
 

@@ -212,7 +212,7 @@ void gameTest() {
 		
 	}	
 
-	game.start();
+	game.end();
 
 }
 

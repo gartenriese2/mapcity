@@ -83,6 +83,7 @@ void Window::loop() {
     glDepthFunc(GL_LESS);
 
     Timer t;
+    m_clicked = false;
 
     do{
         
@@ -99,8 +100,9 @@ void Window::loop() {
         // t.end();
         // m_render->depthLightPass(* m_cam);
         
-        if (m_click) {
+        if (m_click && !m_clicked) {
             m_render->gbufferClickPass(* m_cam, m_mousePosX, m_mousePosY);
+            m_clicked = true;
         } else {
             m_render->gbufferPass(* m_cam);
         }
@@ -196,6 +198,7 @@ void Window::mousehandler() {
 
     } else {
         m_click = false;
+        m_clicked = false;
     }
 
 }
