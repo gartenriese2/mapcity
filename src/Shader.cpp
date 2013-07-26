@@ -62,7 +62,7 @@ GLuint Shader::loadShaders(const char * vertex_file_path,const char * fragment_f
     if(FragmentShaderStream.is_open()){
         std::string Line = "";
         while(getline(FragmentShaderStream, Line))
-            FragmentShaderCode += "\n" + Line;
+            FragmentShaderCode += Line + '\n';
         FragmentShaderStream.close();
     }
  
