@@ -50,7 +50,10 @@ void Render::init() {
 	// v.push_back(glm::vec3(1,1,0));
 	// v.push_back(glm::vec3(1,-1,0));
 	m_screenSizedQuad = PolygonObject(v, glm::vec3(0,0,0));
-	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferColorTexture, "tex");
+	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferColorTexture, "texColor");
+	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferNormalTexture, "texNormal");
+	m_simpleTexShader->addUniformTexture(GL_TEXTURE_2D, m_gbufferDepthTexture, "texDepth");
+	m_projMat = m_simpleTexShader->addUniform("ProjMat");
 	
 
 
@@ -237,13 +240,14 @@ void Render::gbufferClickPass(const Camera &cam, const unsigned int posX, const 
 
 }
 
-void Render::simpleTexPass() const {
+void Render::simpleTexPass(const Camera &cam) const {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_simpleTexShader->Use();
 
 	m_simpleTexShader->linkTextures();
+	m_simpleTexShader->link(m_projMat, cam.getProjMat());
 
 	m_screenSizedQuad.draw();
 

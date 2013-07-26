@@ -107,7 +107,7 @@ void Window::loop() {
             m_render->gbufferPass(* m_cam);
         }
         
-        m_render->simpleTexPass();
+        m_render->simpleTexPass(* m_cam);
         
         // t.waitAndAdd();
         glfwSwapBuffers();

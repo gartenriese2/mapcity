@@ -21,7 +21,7 @@ class Render {
 		void simplePass(const Camera &) const;
 		void gbufferPass(const Camera &) const;
 		void gbufferClickPass(const Camera &, const unsigned int, const unsigned int) const;
-		void simpleTexPass() const;
+		void simpleTexPass(const Camera &) const;
 		void depthPlayerPass(const Camera &) const;
 		void depthLightPass(const Camera &) const;
 		void shadowPass(const Camera &) const;
@@ -55,6 +55,7 @@ class Render {
 
 		std::shared_ptr<Shader> m_simpleTexShader;
 		Object m_screenSizedQuad;
+		GLuint m_projMat;
 
 };
 
