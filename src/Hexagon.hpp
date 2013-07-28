@@ -20,6 +20,9 @@ class Hexagon {
 		const glm::vec3 & getCenter() const { return m_center; }
 		const glm::vec3 & getLeft() const { return m_vertices[0]; }
 		const vectorVec3 & getVertices() const { return m_vertices; }
+		const unsigned long getID() const { return ID; }
+		const unsigned long getQueriedID() const { return s_queriedID; }
+		void setQueriedID(unsigned long i) { s_queriedID = i; }
 		
 		bool isInside(glm::vec3) const;
 		void query();
@@ -34,6 +37,7 @@ class Hexagon {
 		vectorVec3 m_vertices;
 
 		bool m_isQueried = false;
+		static unsigned long s_queriedID;
 
 		void setVertices();
 

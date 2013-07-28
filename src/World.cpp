@@ -22,7 +22,10 @@ void World::checkInput() {
 		glm::vec3 click = InputHandler::instance().getQuery();
 		try {
 			Hexagon & h = m_map->getCorrespondingHexagon(glm::vec3(click.x,0,click.z));
+			unsigned long qID = h.getQueriedID();
+			if (qID != 0) m_map->getHexagonByID(qID).query();
 			h.query();
+			h.setQueriedID(h.getID());
 		} catch (const char * msg) {
 			std::cout << msg << std::endl;
 		}

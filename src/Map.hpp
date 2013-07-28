@@ -17,6 +17,7 @@ class Map {
 		int getNumberOfHexagons() const { return m_hexagons; }
 		const std::vector<Hexagon> & getHexaVector() const { return m_hexaVector; }
 		Hexagon & getCorrespondingHexagon(const glm::vec3 &);
+		Hexagon & getHexagonByID(const unsigned long);
 	
 	private:
 

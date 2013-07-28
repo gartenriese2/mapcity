@@ -57,3 +57,12 @@ Hexagon & Map::getCorrespondingHexagon(const glm::vec3 & p) {
 	throw "No Hexagon found";
 
 }
+
+Hexagon & Map::getHexagonByID(const unsigned long ID) {
+
+	for (int i = 0; i < m_hexaVector.size(); i++) {
+		if (m_hexaVector[i].getID() == ID) return m_hexaVector[i];
+	}
+	throw "No Hexagon found";
+
+}

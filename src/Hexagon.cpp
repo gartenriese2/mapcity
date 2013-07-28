@@ -1,5 +1,7 @@
 #include "Hexagon.hpp"
 
+unsigned long Hexagon::s_queriedID = 0;
+
 Hexagon::Hexagon(const glm::vec3 & center) {
 
 	m_center = center;
