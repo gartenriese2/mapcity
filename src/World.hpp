@@ -17,6 +17,9 @@ class World {
 
 		void checkInput();
 
+		unsigned long m_queriedID = 0;
+		void setQueriedID(unsigned long id) { m_queriedID = id; }
+
 };
 
 #endif

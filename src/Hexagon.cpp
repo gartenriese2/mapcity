@@ -49,14 +49,16 @@ bool Hexagon::isInside(glm::vec3 p) const {
 
 }
 
-void Hexagon::query() {
+void Hexagon::select() {
 
-	if (m_isQueried) {
-		ObjectContainer::instance().changeHexagonColor(ID, k_defaultColor);
-		m_isQueried = false;
-	} else {
-		ObjectContainer::instance().changeHexagonColor(ID, k_clickedColor);
-		m_isQueried = true;
-	}
+	ObjectContainer::instance().changeHexagonColor(ID, k_clickedColor);
+	m_isQueried = true;
 
+}
+
+void Hexagon::deselect() {
+	
+	ObjectContainer::instance().changeHexagonColor(ID, k_defaultColor);
+	m_isQueried = false;
+	
 }

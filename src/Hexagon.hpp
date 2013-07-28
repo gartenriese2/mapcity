@@ -25,7 +25,8 @@ class Hexagon {
 		void setQueriedID(unsigned long i) { s_queriedID = i; }
 		
 		bool isInside(glm::vec3) const;
-		void query();
+		void select();
+		void deselect();
 
 	protected:
 

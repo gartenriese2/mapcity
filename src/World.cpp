@@ -20,14 +20,27 @@ void World::checkInput() {
 
 	if (InputHandler::instance().hasNewQuery()) {
 		glm::vec3 click = InputHandler::instance().getQuery();
+		Hexagon * h;
+		bool exist = false;
 		try {
-			Hexagon & h = m_map->getCorrespondingHexagon(glm::vec3(click.x,0,click.z));
-			unsigned long qID = h.getQueriedID();
-			if (qID != 0) m_map->getHexagonByID(qID).query();
-			h.query();
-			h.setQueriedID(h.getID());
+			h = & m_map->getCorrespondingHexagon(glm::vec3(click.x,0,click.z));
+			exist = true;
 		} catch (const char * msg) {
 			std::cout << msg << std::endl;
+			exist = false;
+		}
+		if (exist) {
+			
+			if (m_queriedID != 0) {
+				m_map->getHexagonByID(m_queriedID).deselect();
+			}
+			if (m_queriedID != h->getID()) {
+				h->select();
+				setQueriedID(h->getID());
+			} else {
+				setQueriedID(0);
+			}
+			
 		}
 	}
 	
