@@ -56,7 +56,6 @@ void InputHandler::addZonePoint(const glm::vec3 & p) {
 	std::lock_guard<std::mutex> guard(sMutex);
 
 	m_newZone.push_back(p);
-	std::cout << "size: " << m_newZone.size() << "\n";
 
 }
 
@@ -79,7 +78,6 @@ void InputHandler::addZone(int i) {
 	// TO DO: assert isConvex
 	// TO DO: assert inMap
 	// TO DO: different types of zones
-	std::cout << "new zone size: " << m_newZone.size() << "\n";
 	
 	if (m_newZone.size() > 2) {
 		m_zones.push_back(std::pair<std::vector<glm::vec3>, int>(std::move(m_newZone),i));

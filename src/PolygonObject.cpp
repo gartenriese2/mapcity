@@ -26,6 +26,10 @@ void PolygonObject::initObject() {
 	GLfloat * colorData = new GLfloat[numVertices * 3];
 
 	glm::vec3 normal = -glm::normalize(glm::cross(m_border[0] - m_center, m_border[1] - m_center));
+	if (normal.y < 0) {
+		std::reverse(m_border.begin(),m_border.end());
+		normal = -glm::normalize(glm::cross(m_border[0] - m_center, m_border[1] - m_center));
+	}
 
 	vertexData[0] = m_center[0];
 	vertexData[1] = m_center[1];

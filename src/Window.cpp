@@ -99,7 +99,6 @@ void Window::loop() {
             }
 
             m_infoMode = !m_infoMode;
-            std::cout << "InfoMode:  " << m_infoMode << "\n";
             m_clicked = true;
         }
 

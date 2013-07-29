@@ -249,7 +249,6 @@ void Render::gbufferClickPass(const Camera &cam, const unsigned int posX, const 
 	glClampColor(GL_CLAMP_READ_COLOR, GL_FALSE);
 	glReadPixels(posX * 2, (1024 - posY) * 2, 1, 1, GL_RGB, GL_FLOAT, pix);
 	
-	std::cout << "info mode? " << infoMode << "\n";
 	if (infoMode) {
 		InputHandler::instance().addQuery(glm::vec3(pix[0], pix[1], pix[2]));
 	} else {

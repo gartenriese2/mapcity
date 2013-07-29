@@ -2,6 +2,7 @@
 #define POLYGONOBJECT_HPP
 
 #include "Object.hpp"
+#include <algorithm>
 
 class PolygonObject : public Object {
 	
