@@ -6,7 +6,7 @@ Hexagon::Hexagon(const glm::vec3 & center) {
 
 	m_center = center;
 	setVertices();
-	ID = ObjectContainer::instance().addHexagon(center, getLeft(), glm::vec3(1,1,1));
+	m_ID = ObjectContainer::instance().addHexagon(center, getLeft(), glm::vec3(1,1,1));
 
 }
 
@@ -51,14 +51,20 @@ bool Hexagon::isInside(glm::vec3 p) const {
 
 void Hexagon::select() {
 
-	ObjectContainer::instance().changeHexagonColor(ID, k_clickedColor);
+	ObjectContainer::instance().changeHexagonColor(m_ID, k_clickedColor);
 	m_isQueried = true;
 
 }
 
 void Hexagon::deselect() {
 	
-	ObjectContainer::instance().changeHexagonColor(ID, k_defaultColor);
+	ObjectContainer::instance().changeHexagonColor(m_ID, k_defaultColor);
 	m_isQueried = false;
 	
+}
+
+void Hexagon::addZone(Zone & z) {
+
+	m_zones.push_back(& z);
+
 }

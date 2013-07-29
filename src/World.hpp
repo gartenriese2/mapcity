@@ -4,6 +4,11 @@
 #include "Map.hpp"
 #include "InputHandler.hpp"
 
+#include "Einfamilienhaus.hpp"
+#include "Mietshaus.hpp"
+#include "KleinerLaden.hpp"
+#include "GrosserLaden.hpp"
+
 class World {
 	public:
 		
@@ -16,9 +21,12 @@ class World {
 		std::shared_ptr<Map> m_map;
 
 		void checkInput();
+		void checkQueries();
+		void checkNewZones();
 
 		unsigned long m_queriedID = 0;
 		void setQueriedID(unsigned long id) { m_queriedID = id; }
+		void resetQueriedID() { m_queriedID = 0; }
 
 };
 

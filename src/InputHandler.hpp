@@ -2,10 +2,14 @@
 #define INPUTHANDLER_HPP
 
 #include <mutex>
+#include <vector>
+#include <iostream>
 #include "glm.h"
 
+typedef std::vector<std::pair<std::vector<glm::vec3>, int>> zoneVector;
+
 class InputHandler {
-	
+
 	public:
 		
 		static InputHandler& instance();
@@ -13,6 +17,12 @@ class InputHandler {
 		void addQuery(const glm::vec3 &);
 		glm::vec3 getQuery();
 		bool hasNewQuery() const;
+
+		void addZone(const std::vector<glm::vec3> &, int);
+		void addZone(int);
+		void addZonePoint(const glm::vec3 &);
+		zoneVector getZones();
+		bool hasNewZones() const;
 
 	protected:
 		
@@ -34,6 +44,9 @@ class InputHandler {
 
 		glm::vec3 m_query;
 		bool m_newQuery = false;
+
+		zoneVector m_zones;
+		std::vector<glm::vec3> m_newZone;
 		
 	
 };

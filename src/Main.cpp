@@ -128,14 +128,16 @@ void gameTest() {
 	zone.push_back(glm::vec3(290,0.01,-282.5));
 	zone.push_back(glm::vec3(290,0.01,-310));
 	zone.push_back(glm::vec3(312.5,0.01,-310));
-	EinfamilienhausZone ez1(zone);
+	// EinfamilienhausZone ez1(zone);
+	InputHandler::instance().addZone(zone,1);
 	zone.clear();
 	zone.push_back(glm::vec3(312.5,0.01,-232.5));
 	zone.push_back(glm::vec3(290,0.01,-210));
 	zone.push_back(glm::vec3(262.5,0.01,-240));
 	zone.push_back(glm::vec3(262.5,0.01,-267.5));
 	zone.push_back(glm::vec3(312.5,0.01,-267.5));
-	MietshausZone mz1(zone);
+	// MietshausZone mz1(zone);
+	InputHandler::instance().addZone(zone,2);
 
 	Time::instance().waitMilliseconds(1000);
 
@@ -144,7 +146,8 @@ void gameTest() {
 	zone.push_back(glm::vec3(295,0.01,-310));
 	zone.push_back(glm::vec3(295,0.01,-330));
 	zone.push_back(glm::vec3(312.5,0.01,-330));
-	KleinerLadenZone kz1(zone);
+	// KleinerLadenZone kz1(zone);
+	InputHandler::instance().addZone(zone,3);
 
 	Time::instance().waitMilliseconds(1000);
 
@@ -160,7 +163,8 @@ void gameTest() {
 	zone.push_back(glm::vec3(327.5,0.01,-340));
 	zone.push_back(glm::vec3(362.5,0.01,-340));
 	zone.push_back(glm::vec3(362.5,0.01,-293));
-	GrosserLadenZone gz1(zone);	
+	// GrosserLadenZone gz1(zone);
+	InputHandler::instance().addZone(zone,4);
 
 	Time::instance().waitMilliseconds(1000);
 	

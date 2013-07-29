@@ -92,16 +92,31 @@ void Window::loop() {
         keyhandler();
         mousehandler();
 
+        if (m_clickRight && !m_clicked) {
+            
+            if (!m_infoMode) {
+                InputHandler::instance().addZone(1);
+            }
+
+            m_infoMode = !m_infoMode;
+            std::cout << "InfoMode:  " << m_infoMode << "\n";
+            m_clicked = true;
+        }
+
         // switch(option):
         // case
         //m_render->depthPlayerPass(* m_cam);
-        t.start();
+        // t.start();
         // m_render->simplePass(* m_cam);
         // t.end();
         // m_render->depthLightPass(* m_cam);
         
-        if (m_click && !m_clicked) {
-            m_render->gbufferClickPass(* m_cam, m_mousePosX, m_mousePosY);
+        m_render->depthLightPass(* m_cam);
+        if (m_clickLeft && !m_clicked && m_infoMode) {
+            m_render->gbufferClickPass(* m_cam, m_mousePosX, m_mousePosY, m_infoMode);
+            m_clicked = true;
+        } else if (m_clickLeft && !m_clicked && !m_infoMode) {
+            m_render->gbufferClickPass(* m_cam, m_mousePosX, m_mousePosY, m_infoMode);
             m_clicked = true;
         } else {
             m_render->gbufferPass(* m_cam);
@@ -193,11 +208,16 @@ void Window::mousehandler() {
 
     if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 
-        m_click = true;
+        m_clickLeft = true;
         glfwGetMousePos(&m_mousePosX, &m_mousePosY);
 
+    } else if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+
+        m_clickRight = true;
+
     } else {
-        m_click = false;
+        m_clickLeft = false;
+        m_clickRight = false;
         m_clicked = false;
     }
 

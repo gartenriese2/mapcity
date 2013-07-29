@@ -32,10 +32,12 @@ class Window {
 		int m_height;
 
 		int m_mousePosX, m_mousePosY, m_mouseWheelPos;
-		bool m_click = false, m_clicked = false;
+		bool m_clickRight = false, m_clickLeft = false, m_clicked = false;
 		
 		shared_ptr<Camera> m_cam;
 		shared_ptr<Render> m_render;
+
+		bool m_infoMode = true;
 
 		int init() const;
 		int createWindow(const int, const int);

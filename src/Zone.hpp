@@ -34,7 +34,7 @@ class Zone {
 		glm::vec3 m_center;
 
 		void setArea();
-		float getArea() const { return m_area; }
+		const float getArea() const { return m_area; }
 
 		void setCenter();
 		

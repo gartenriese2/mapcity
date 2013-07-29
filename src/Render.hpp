@@ -20,7 +20,8 @@ class Render {
 		void init();
 		void simplePass(const Camera &) const;
 		void gbufferPass(const Camera &) const;
-		void gbufferClickPass(const Camera &, const unsigned int, const unsigned int) const;
+		void gbufferClickPass(const Camera &, const unsigned int, const unsigned int, const bool) const;
+
 		void simpleTexPass(const Camera &) const;
 		void depthPlayerPass(const Camera &) const;
 		void depthLightPass(const Camera &) const;
@@ -41,17 +42,20 @@ class Render {
 		std::shared_ptr<Camera> m_lightCam;
 
 		std::shared_ptr<Shader> m_shadowShader;
+		glm::mat4 m_shadowBiasMatrix;
 		//GLuint m_MVP_shadowPass;
 		//GLuint m_depthMVP_shadowPass;
 		GLuint m_shadowTexture;
 
 		std::shared_ptr<Shader> m_gbufferShader;
 		GLint m_MVP_gbufferPass;
+		GLint m_depthBiasMVP_gbufferPass;
 		GLint m_Light_gbufferPass;
 		GLuint m_gbufferPositionTexture;
 		GLuint m_gbufferNormalTexture;
 		GLuint m_gbufferDepthTexture;
 		GLuint m_gbufferColorTexture;
+		GLuint m_gbufferShadowTexture;
 
 		std::shared_ptr<Shader> m_simpleTexShader;
 		Object m_screenSizedQuad;
