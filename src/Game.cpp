@@ -13,14 +13,11 @@ Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, co
 }
 
 Game::~Game() {
-	// std::cout << "Game ended after " << Time::instance().getSecondsSinceStart() << " seconds.\n";
-	// std::cout << "Ingame time: " << Time::instance().getIngameTime() << ".\n";
+
 }
 
 void Game::end() {
 	
-	while(m_isRunning);
-
 	m_graphicsThread.join();
 	m_timeThread.join();
 	m_simulationThread.join();

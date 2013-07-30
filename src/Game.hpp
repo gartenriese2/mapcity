@@ -17,8 +17,8 @@ class Game {
 
 		void end();
 
-		shared_ptr<World> getWorld() { return m_world; }
-		shared_ptr<Window> getWindow() { return m_window; }
+		const World & getWorld() const { return * m_world; }
+		const Window & getWindow() const { return * m_window; }
 		
 	private:
 		

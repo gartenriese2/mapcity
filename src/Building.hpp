@@ -6,9 +6,7 @@
 #include "ObjectContainer.hpp"
 #include "Time.hpp"
 
-static const float k_minFloorHeight = 2.8f;
-static const float k_maxFloorHeight = 3.5f;
-static const float k_constructionHeightPerDay = 1.f;
+
 
 class Building {
 
@@ -21,9 +19,12 @@ class Building {
 		bool isUnderConstruction() const { return !m_constructionDone; }
 		void construct();
 
-
 	protected:
 		
+		static constexpr float k_minFloorHeight = 2.8f;
+		static constexpr float k_maxFloorHeight = 3.5f;
+		static constexpr float k_constructionHeightPerDay = 1.0f;
+
 		void setShape(const glm::vec3 & c, const glm::vec3 & f, const glm::vec3 & s) { m_center = c; m_front = f; m_side = s; }
 		const glm::vec3 & getCenter() const { return m_center; }
 		const glm::vec3 & getFront() const { return m_front; }
@@ -40,9 +41,10 @@ class Building {
 		
 		unsigned long m_ID;
 		glm::vec3 m_center, m_front, m_side, m_color;
-		float m_height, m_actualHeight;
+		float m_height;
+		float m_actualHeight = 0.01;
 		TimePoint m_constructionStart;
-		bool m_constructionDone;
+		bool m_constructionDone = false;
 
 	private:
 

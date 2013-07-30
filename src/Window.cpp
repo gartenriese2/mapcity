@@ -94,6 +94,7 @@ void Window::loop() {
 
         if (m_clickRight && !m_clicked) {
             
+            // Done with building a zone
             if (!m_infoMode) {
                 InputHandler::instance().addZone(1);
             }
