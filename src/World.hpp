@@ -24,6 +24,8 @@ class World {
 		void checkQueries();
 		void checkNewZones();
 
+		void build();
+
 		unsigned long m_queriedID = 0;
 		void setQueriedID(unsigned long id) { m_queriedID = id; }
 		void resetQueriedID() { m_queriedID = 0; }

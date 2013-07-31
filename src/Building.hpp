@@ -19,6 +19,8 @@ class Building {
 		bool isUnderConstruction() const { return !m_constructionDone; }
 		void construct();
 
+		virtual unsigned int getResidents() const { return 0; }
+
 	protected:
 		
 		static constexpr float k_minFloorHeight = 2.8f;

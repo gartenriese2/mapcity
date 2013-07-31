@@ -20,6 +20,8 @@ class MietshausZone : public ResidentialZone {
 	public:
 		MietshausZone(const vectorVec3 &);
 		virtual ~MietshausZone();
+
+		void addBuilding();
 		
 };
 

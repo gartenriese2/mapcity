@@ -3,6 +3,7 @@
 uniform sampler2D texColor;
 uniform sampler2D texNormal;
 uniform sampler2D texDepth;
+uniform sampler2D texShadow;
 
 uniform mat4 ProjMat;
 
@@ -17,7 +18,7 @@ const int height = 1024;
 const float near = 0.1;
 const float far = 10000.0;
 const float fov = 45.0;
-const float pix = height / (2.0 * tan(fov/2.0)); // ~1236
+#define pix (height / (2.0 * tan(fov/2.0)))
 const int turns = 7;
 const float epsilon = 0.01;
 const float worldSpaceRadius = 20;
@@ -89,8 +90,9 @@ vec3 sampleAO() {
 
 void main() {
 	
-	generateSpiral();
+	//generateSpiral();
 	
+	// color = texture(texShadow, texCoord).xyz;
 	color = texture(texColor, texCoord).xyz;
 	//color = sampleAO() * color;
 	

@@ -15,3 +15,15 @@ void ResidentialBuilding::createHouseholds(const int num) {
 	}
 
 }
+
+unsigned int ResidentialBuilding::getResidents() const {
+
+	unsigned int res = 0;
+	for (auto h : m_householdVector) {
+
+		res += h.getResidents();
+
+	}
+	return res;
+
+}

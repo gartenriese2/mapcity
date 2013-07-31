@@ -128,7 +128,7 @@ void gameTest() {
 	zone.push_back(glm::vec3(290,0.01,-282.5));
 	zone.push_back(glm::vec3(290,0.01,-310));
 	zone.push_back(glm::vec3(312.5,0.01,-310));
-	// EinfamilienhausZone ez1(zone);
+	
 	InputHandler::instance().addZone(zone,1);
 	zone.clear();
 	zone.push_back(glm::vec3(312.5,0.01,-232.5));
@@ -136,7 +136,7 @@ void gameTest() {
 	zone.push_back(glm::vec3(262.5,0.01,-240));
 	zone.push_back(glm::vec3(262.5,0.01,-267.5));
 	zone.push_back(glm::vec3(312.5,0.01,-267.5));
-	// MietshausZone mz1(zone);
+	
 	InputHandler::instance().addZone(zone,2);
 
 	Time::instance().waitMilliseconds(1000);
@@ -146,7 +146,7 @@ void gameTest() {
 	zone.push_back(glm::vec3(295,0.01,-310));
 	zone.push_back(glm::vec3(295,0.01,-330));
 	zone.push_back(glm::vec3(312.5,0.01,-330));
-	// KleinerLadenZone kz1(zone);
+	
 	InputHandler::instance().addZone(zone,3);
 
 	Time::instance().waitMilliseconds(1000);
@@ -163,7 +163,7 @@ void gameTest() {
 	zone.push_back(glm::vec3(327.5,0.01,-340));
 	zone.push_back(glm::vec3(362.5,0.01,-340));
 	zone.push_back(glm::vec3(362.5,0.01,-293));
-	// GrosserLadenZone gz1(zone);
+	
 	InputHandler::instance().addZone(zone,4);
 
 	Time::instance().waitMilliseconds(1000);
@@ -177,66 +177,14 @@ void gameTest() {
 
 	Time::instance().waitMilliseconds(1000);
 
-	Einfamilienhaus e1(glm::vec3(305,0,-292.5), glm::vec3(5,0,0), glm::vec3(0,0,-7.5));
-	Einfamilienhaus e2(glm::vec3(305,0,-305), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Einfamilienhaus e3(glm::vec3(295,0,-290), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	Mietshaus m1(glm::vec3(285,0,-235), glm::vec3(12,0,12), glm::vec3(6,0,-6));
-	KleinerLaden k1(glm::vec3(305,0,-315), glm::vec3(5,0,0), glm::vec3(0,0,-5));
-	GrosserLaden g1(glm::vec3(345,0,-300), glm::vec3(-15,0,4), glm::vec3(0,0,10));
+
 
 	glm::vec3 carPos = glm::vec3(317.5,0,-340);
 	glm::vec3 mov = glm::vec3(0,0,0.1);
 	float turn = 0.f;
 	unsigned long car = ObjectContainer::instance().addCuboid(carPos, glm::vec3(1.3,0,0), glm::vec3(0,0,-2.5), 1.5, glm::vec3(0.5,0,0));
 
-	while(m1.isUnderConstruction()) {
-		
-		Time::instance().waitMilliseconds(10);
-		m1.construct();
-		e1.construct();
-		e2.construct();
-		e3.construct();
-		k1.construct();
-		g1.construct();
-
-
-		// carPos += mov;
-
-		// if (carPos.z > -250 && turn != 180.f) {
-		// 	ObjectContainer::instance().rotateCuboid(car, 1.2f);
-		// 	turn += 1.2f;
-		// 	// mov = -mov;
-		// } else if (carPos.z < -340 && turn != 180.f) {
-		// 	ObjectContainer::instance().rotateCuboid(car, 1.2f);
-		// 	turn += 1.2f;
-		// 	// mov = -mov;
-		// }
-		// if (turn == 180.f) turn = 0.f;
-		// ObjectContainer::instance().moveCuboid(car, mov);
-		
-	}	
-
 	game.end();
-
-}
-
-void zoneTest() {
-	
-	Map m(5000,5000);
-
-	vector<glm::vec3> v;
-	v.push_back(glm::vec3(201,0,-196));
-	v.push_back(glm::vec3(284,0,-111));
-	v.push_back(glm::vec3(101,0,-123));
-	v.push_back(glm::vec3(98,0,-182));
-	
-
-	vector<ResidentialZone> z;
-	z.push_back(EinfamilienhausZone(v));
-	cout << "ID: " << z[0].getID() << endl;
-	cout << "Center: " << z[0].getCenter().x << "|" << z[0].getCenter().z << endl;
-
-	//m.getCorrespondingHexagon(z[0].getCenter()).addResidentialZone(z[0]);
 
 }
 
@@ -333,7 +281,6 @@ int main() {
 	// findHexagonTest();
 	// demandFunctionTest();
 	gameTest();
-	// zoneTest();
 	// householdTest();
 	// terrainTest();
 	// inheritanceTest();

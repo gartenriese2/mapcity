@@ -19,6 +19,8 @@ class KleinerLadenZone : public BusinessZone {
 	public:
 		KleinerLadenZone(const vectorVec3 &);
 		virtual ~KleinerLadenZone();
+
+		void addBuilding();
 		
 };
 

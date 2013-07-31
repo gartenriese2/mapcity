@@ -10,6 +10,8 @@ class BusinessZone : public Zone {
 	public:
 		BusinessZone();
 		virtual ~BusinessZone();
+
+		virtual void addBuilding() = 0;
 		
 };
 

@@ -26,3 +26,13 @@ GrosserLadenZone::GrosserLadenZone(const vectorVec3 & bounding) {
 GrosserLadenZone::~GrosserLadenZone() {
 	
 }
+
+void GrosserLadenZone::addBuilding() {
+
+	// calculate center & shape for new building
+	// create building and add it to vector
+
+	GrosserLaden * b = new GrosserLaden(m_center, glm::vec3(1,0,0), glm::vec3(0,0,-1));
+	addBuilding2(* b);
+
+}

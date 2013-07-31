@@ -5,12 +5,15 @@ layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 color;
 
 uniform mat4 MVP;
+uniform mat4 DepthBiasMVP;
 uniform vec3 Light;
 
 out vec3 position_worldspace;
 out vec3 normal_worldspace;
 out vec3 l;
 out vec3 c;
+
+out vec4 ShadowCoord;
 
 void main() {
 
@@ -19,5 +22,6 @@ void main() {
     normal_worldspace   = normal;
     l = normalize(Light - vertex);
     c = color;
+    ShadowCoord = DepthBiasMVP * vec4(vertex, 1.0);
     
 }

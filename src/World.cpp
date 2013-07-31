@@ -12,6 +12,8 @@ void World::loop(bool & isRunning) {
 		
 		checkInput();
 
+		build();
+
 	}
 
 }
@@ -43,8 +45,27 @@ void World::checkQueries() {
 				m_map->getHexagonByID(m_queriedID).deselect();
 			}
 			if (m_queriedID != h->getID()) {
+				
 				h->select();
+				
+				unsigned int res = 0;
+				for (auto z : h->getZones()) {
+					
+					if (z->isResidential()) {
+						
+						for (auto b : z->getBuildings()) {
+							
+							res += b->getResidents();
+
+						}
+
+					}
+
+				}
+				std::cout << "Residents in this zone: " << res << "\n";
+
 				setQueriedID(h->getID());
+
 			} else {
 				resetQueriedID();
 			}
@@ -64,21 +85,41 @@ void World::checkNewZones() {
 		for (auto z : zones) {
 			
 			if (z.second == 1) {
-				EinfamilienhausZone ez(z.first);
-				h = & m_map->getCorrespondingHexagon(ez.getCenter());
-				h->addZone(ez);
+				EinfamilienhausZone * ez = new EinfamilienhausZone(z.first);
+				h = & m_map->getCorrespondingHexagon(ez->getCenter());
+				h->addZone(* ez);
 			} else if (z.second == 2) {
-				MietshausZone mz(z.first);
-				h = & m_map->getCorrespondingHexagon(mz.getCenter());
-				h->addZone(mz);
+				MietshausZone * mz = new MietshausZone(z.first);
+				h = & m_map->getCorrespondingHexagon(mz->getCenter());
+				h->addZone(* mz);
 			} else if (z.second == 3) {
-				KleinerLadenZone klz(z.first);
-				h = & m_map->getCorrespondingHexagon(klz.getCenter());
-				h->addZone(klz);
+				KleinerLadenZone * klz = new KleinerLadenZone(z.first);
+				h = & m_map->getCorrespondingHexagon(klz->getCenter());
+				h->addZone(* klz);
 			} else if (z.second == 4) {
-				GrosserLadenZone glz(z.first);
-				h = & m_map->getCorrespondingHexagon(glz.getCenter());
-				h->addZone(glz);
+				GrosserLadenZone * glz = new GrosserLadenZone(z.first);
+				h = & m_map->getCorrespondingHexagon(glz->getCenter());
+				h->addZone(* glz);
+			}
+
+		}
+
+	}
+
+}
+
+void World::build() {
+
+	for (auto h : m_map->getHexaVector()) {
+
+		for (auto z : h.getZones()) {
+
+			if (!z->hasBuildings()) {
+				z->addBuilding();
+			} else {
+				for (auto b : z->getBuildings()) {
+					if (b->isUnderConstruction()) b->construct();
+				}
 			}
 
 		}

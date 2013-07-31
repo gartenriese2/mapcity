@@ -28,6 +28,8 @@ class Hexagon {
 		void deselect();
 
 		void addZone(Zone &);
+		bool hasZones() const { return m_zones.size() > 0; }
+		const std::vector<Zone *> & getZones() const { return m_zones; }
 
 	protected:
 

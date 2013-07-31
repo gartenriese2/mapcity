@@ -1,10 +1,9 @@
 #version 410
 
-out vec3 color;
+layout(location = 4) out vec3 shadow;
  
-void main(){
+void main() {
 
-	color = (gl_FragCoord.zzz - 0.97) * 10.0;
-	//color = vec3(1,0,0);
+	shadow = (gl_FragCoord.zzz - 0.999) * 1000;
 
 }

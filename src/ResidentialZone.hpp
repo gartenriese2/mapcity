@@ -11,8 +11,10 @@ class ResidentialZone : public Zone {
 		ResidentialZone();
 		virtual ~ResidentialZone();
 
-		virtual bool isResidential() const { return true; }
-		virtual int getResidents() const { return 10; }
+		bool isResidential() const { return true; }
+		virtual unsigned int getResidents() const;
+
+		virtual void addBuilding() = 0;
 		
 };
 

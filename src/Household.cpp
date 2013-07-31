@@ -52,6 +52,14 @@ int Household::getWorker() const {
 	return people[4];
 }
 
+unsigned int Household::getResidents() const {
+	unsigned int res = 0;
+	for (auto p : people) {
+		res += p;
+	}
+	return res;
+}
+
 void Household::createRandomPeople() {
 
 	float added = A_RENTNER + B_FAMILIEN + C_PAARE + D_ALLEINLEBENDE + E_WGS;

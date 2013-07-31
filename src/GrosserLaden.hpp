@@ -19,6 +19,8 @@ class GrosserLadenZone : public BusinessZone {
 	public:
 		GrosserLadenZone(const vectorVec3 &);
 		virtual ~GrosserLadenZone();
+
+		void addBuilding();
 		
 };
 

@@ -27,3 +27,13 @@ MietshausZone::MietshausZone(const vectorVec3 & bounding) {
 MietshausZone::~MietshausZone() {
 	
 }
+
+void MietshausZone::addBuilding() {
+
+	// calculate center & shape for new building
+	// create building and add it to vector
+
+	Mietshaus * b = new Mietshaus(m_center, glm::vec3(1,0,0), glm::vec3(0,0,-1));
+	addBuilding2(* b);
+
+}

@@ -13,6 +13,7 @@ Hexagon::Hexagon(const glm::vec3 & center) {
 Hexagon::~Hexagon() {
 	
 	m_vertices.clear();
+	// TO DO: delete heap memory of m_zones
 
 }
 

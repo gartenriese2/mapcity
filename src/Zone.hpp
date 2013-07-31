@@ -19,11 +19,11 @@ class Zone {
 		virtual bool isResidential() const { return false; }
 		virtual bool isBusiness() const { return false; }
 
-		virtual void addBuilding() {};
+		virtual void addBuilding() = 0;
+		virtual void addBuilding2(Building & b) { m_buildings.push_back(& b); }
+		const std::vector<Building *> & getBuildings() const { return m_buildings; }
 
-	private:
-		
-				
+		bool hasBuildings() const { return m_buildings.size() > 0; }
 
 	protected:
 		
@@ -32,6 +32,8 @@ class Zone {
 		vectorVec3 m_bounding;
 		float m_area;
 		glm::vec3 m_center;
+
+		std::vector<Building *> m_buildings;
 
 		void setArea();
 		const float getArea() const { return m_area; }
@@ -46,6 +48,8 @@ class Zone {
 		const glm::vec3 & getColor() const { return m_color; }
 
 		void createObject();
+
+
 
 };
 

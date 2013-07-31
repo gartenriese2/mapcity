@@ -28,6 +28,8 @@ class Household {
 		int getUnemployed() const;
 		int getWorker() const;
 
+		unsigned int getResidents() const;
+
 	private:
 
 		float wealth;

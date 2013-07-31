@@ -26,3 +26,13 @@ KleinerLadenZone::KleinerLadenZone(const vectorVec3 & bounding) {
 KleinerLadenZone::~KleinerLadenZone() {
 	
 }
+
+void KleinerLadenZone::addBuilding() {
+
+	// calculate center & shape for new building
+	// create building and add it to vector
+
+	KleinerLaden * b = new KleinerLaden(m_center, glm::vec3(1,0,0), glm::vec3(0,0,-1));
+	addBuilding2(* b);
+
+}
