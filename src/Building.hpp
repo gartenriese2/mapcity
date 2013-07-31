@@ -34,6 +34,7 @@ class Building {
 
 		void setHeight(float, float, int, int);
 		float getHeight() const { return m_height; }
+		unsigned int getFloors() const { return m_floors; }
 
 		void setColor(const glm::vec3 & c) { m_color = c; }
 		const glm::vec3 & getColor() const { return m_color; }
@@ -45,6 +46,7 @@ class Building {
 		glm::vec3 m_center, m_front, m_side, m_color;
 		float m_height;
 		float m_actualHeight = 0.01;
+		unsigned int m_floors;
 		TimePoint m_constructionStart;
 		bool m_constructionDone = false;
 

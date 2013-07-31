@@ -33,7 +33,12 @@ void EinfamilienhausZone::addBuilding() {
 	// calculate center & shape for new building
 	// create building and add it to vector
 
-	Einfamilienhaus * b = new Einfamilienhaus(m_center, glm::vec3(1,0,0), glm::vec3(0,0,-1));
+	glm::vec3 sideDir = glm::vec3(0,0,-1);
+	glm::vec3 frontDir = glm::vec3(1,0,0);
+	glm::vec3 side = sideDir * Einfamilienhaus::getMinWidth() / 2.0f;
+	glm::vec3 front = frontDir * Einfamilienhaus::getMinLength() / 2.0f;
+
+	Einfamilienhaus * b = new Einfamilienhaus(m_center, front, side);
 	addBuilding2(* b);
 
 }

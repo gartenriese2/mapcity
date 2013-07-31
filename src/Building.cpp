@@ -12,8 +12,8 @@ Building::~Building() {
 
 void Building::setHeight(const float minFloorHeight, const float maxFloorHeight, int minFloors, int maxFloors) {
 	
-	m_height = glm::linearRand(minFloorHeight, maxFloorHeight)
-	 			* glm::round(glm::linearRand(static_cast<float>(minFloors), static_cast<float>(maxFloors)));
+	m_floors = glm::round(glm::linearRand(static_cast<float>(minFloors), static_cast<float>(maxFloors)));
+	m_height = glm::linearRand(minFloorHeight, maxFloorHeight) * m_floors;
 
 }
 
