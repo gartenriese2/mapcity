@@ -109,8 +109,6 @@ void gameTest() {
 
 	Time::instance().setIngameSpeed(Time::FASTFORWARD);
 
-	Time::instance().waitMilliseconds(1000);
-
 	vectorVec3 path;
 	path.push_back(glm::vec3(320,0.01,-232.5));
 	path.push_back(glm::vec3(320,0.01,-350));
@@ -119,9 +117,6 @@ void gameTest() {
 	path.push_back(glm::vec3(320,0.01,-275));
 	path.push_back(glm::vec3(262.5,0.01,-275));
 	Landstrasse l2(path);
-	
-	
-	Time::instance().waitMilliseconds(1000);
 
 	vectorVec3 zone;
 	zone.push_back(glm::vec3(312.5,0.01,-282.5));
@@ -139,8 +134,6 @@ void gameTest() {
 	
 	InputHandler::instance().addZone(zone,2);
 
-	Time::instance().waitMilliseconds(1000);
-
 	zone.clear();
 	zone.push_back(glm::vec3(312.5,0.01,-310));
 	zone.push_back(glm::vec3(295,0.01,-310));
@@ -149,14 +142,10 @@ void gameTest() {
 	
 	InputHandler::instance().addZone(zone,3);
 
-	Time::instance().waitMilliseconds(1000);
-
 	path.clear();
 	path.push_back(glm::vec3(320,0.01,-275));
 	path.push_back(glm::vec3(420,0.01,-300));
 	Landstrasse l3(path);
-	
-	Time::instance().waitMilliseconds(1000);
 
 	zone.clear();
 	zone.push_back(glm::vec3(327.5,0.01,-284));
@@ -165,8 +154,6 @@ void gameTest() {
 	zone.push_back(glm::vec3(362.5,0.01,-293));
 	
 	InputHandler::instance().addZone(zone,4);
-
-	Time::instance().waitMilliseconds(1000);
 	
 	path.clear();
 	path.push_back(glm::vec3(200,0.01,-200));
@@ -174,8 +161,6 @@ void gameTest() {
 	path.push_back(glm::vec3(370,0.01,-250));
 	path.push_back(glm::vec3(370,0.01,-400));
 	Bundesstrasse b1(path);
-
-	Time::instance().waitMilliseconds(1000);
 
 
 
