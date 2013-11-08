@@ -31,11 +31,9 @@ void Game::end() {
 
 void Game::initGraphics(const int width, const int height) {
 
-	m_window = make_shared<Window>(width, height);
-	m_window->initCam(width, height);
-	
+	Graphics::instance().init();
 	m_isRunning = true;
-	m_window->loop();
+	Graphics::instance().loop();
 	m_isRunning = false;
 	
 }

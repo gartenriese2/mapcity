@@ -1,8 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "Graphics.hpp"
 #include "World.hpp"
-#include "Window.hpp"
 #include "Time.hpp"
 
 #include <memory>
@@ -17,8 +17,8 @@ class Game {
 
 		void end();
 
-		const World & getWorld() const { return * m_world; }
-		const Window & getWindow() const { return * m_window; }
+		// const World & getWorld() const { return * m_world; }
+		// const Window & getWindow() const { return * m_window; }
 		
 	protected:
 		

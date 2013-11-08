@@ -17,9 +17,10 @@ typedef std::unordered_map<unsigned long, PolygonObject> zoneMap;
 typedef std::unordered_map<unsigned long, HexagonObject> hexagonMap;
 
 class ObjectContainer {
+	
 	public:
 		
-		static ObjectContainer& instance();
+		static ObjectContainer & instance();
 
 		unsigned long addCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const float, const glm::vec3 &);
 		void changeCuboidHeight(const unsigned long, const float);
@@ -47,7 +48,7 @@ class ObjectContainer {
 
 	protected:
 		
-		static ObjectContainer* pInstance;
+		static ObjectContainer * pInstance;
 
 		friend class Cleanup;
 		class Cleanup {
@@ -59,8 +60,8 @@ class ObjectContainer {
 
 		ObjectContainer();
 		virtual ~ObjectContainer();
-		ObjectContainer(const ObjectContainer&);
-		ObjectContainer& operator=(const ObjectContainer&);
+		ObjectContainer(const ObjectContainer &);
+		ObjectContainer & operator=(const ObjectContainer &);
 		static std::mutex sMutex;
 		
 		cuboidMap m_cuboidMap;
