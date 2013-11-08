@@ -32,6 +32,7 @@ class Zone {
 		vectorVec3 m_bounding;
 		float m_area;
 		glm::vec3 m_center;
+		glm::vec3 m_buildingOrientation;
 
 		std::vector<Building *> m_buildings;
 
@@ -39,8 +40,10 @@ class Zone {
 		const float getArea() const { return m_area; }
 
 		void setCenter();
-		
 
+		void setOrientation(const glm::vec3 & o) { m_buildingOrientation = o; }
+		const glm::vec3 & getOrientation() const { return m_buildingOrientation; }
+		
 		void setBounding(const vectorVec3 & b) { m_bounding = b; }
 		const vectorVec3 & getBounding() const { return m_bounding; }
 

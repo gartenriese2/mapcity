@@ -106,6 +106,7 @@ void gameTest() {
 	
 	int height = 1024, width = 1024;
 	Game game(width, height, 1000, 1000);
+	// Game game(width, height, 1000, 1000, false); // use this one to disable graphics
 
 	Time::instance().setIngameSpeed(Time::FASTFORWARD);
 
@@ -161,8 +162,6 @@ void gameTest() {
 	path.push_back(glm::vec3(370,0.01,-250));
 	path.push_back(glm::vec3(370,0.01,-400));
 	Bundesstrasse b1(path);
-
-
 
 	glm::vec3 carPos = glm::vec3(317.5,0,-340);
 	glm::vec3 mov = glm::vec3(0,0,0.1);

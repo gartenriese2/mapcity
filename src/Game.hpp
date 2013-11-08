@@ -12,7 +12,7 @@ class Game {
 	
 	public:
 		
-		Game(int, int, int, int);
+		Game(const int, const int, const int, const int, const bool = true);
 		~Game();
 
 		void end();
@@ -20,7 +20,7 @@ class Game {
 		const World & getWorld() const { return * m_world; }
 		const Window & getWindow() const { return * m_window; }
 		
-	private:
+	protected:
 		
 		shared_ptr<World> m_world;
 		shared_ptr<Window> m_window;
@@ -29,6 +29,7 @@ class Game {
 		thread m_timeThread;
 		thread m_simulationThread;
 		bool m_isRunning;
+		bool m_graphicsEnabled;
 
 		void initGraphics(int, int);
 		void initTime();

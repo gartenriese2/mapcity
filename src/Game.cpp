@@ -1,10 +1,15 @@
 #include "Game.hpp"
 
-Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, const int mapHeight) {
+Game::Game(const int windowWidth, const int windowHeight, const int mapWidth, const int mapHeight, const bool b) :
+	m_graphicsEnabled(b)
+{
 
-	m_graphicsThread = thread(&Game::initGraphics, this, windowWidth, windowHeight);
-
-	while(!m_isRunning);
+	if (m_graphicsEnabled) {
+		m_graphicsThread = thread(&Game::initGraphics, this, windowWidth, windowHeight);
+		while(!m_isRunning);
+	} else {
+		m_isRunning = true;
+	}
 
 	m_simulationThread = thread(&Game::initSimulation, this, mapWidth, mapHeight);
 
@@ -18,7 +23,7 @@ Game::~Game() {
 
 void Game::end() {
 	
-	m_graphicsThread.join();
+	if (m_graphicsEnabled) m_graphicsThread.join();
 	m_timeThread.join();
 	m_simulationThread.join();
 	

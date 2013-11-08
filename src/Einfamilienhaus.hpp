@@ -31,6 +31,7 @@ class EinfamilienhausZone : public ResidentialZone {
 	public:
 		
 		EinfamilienhausZone(const vectorVec3 &);
+		EinfamilienhausZone(const vectorVec3 &, const glm::vec3 &);
 		virtual ~EinfamilienhausZone();
 
 		void addBuilding();

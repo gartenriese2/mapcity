@@ -14,6 +14,17 @@ Einfamilienhaus::~Einfamilienhaus() {
 	
 }
 
+EinfamilienhausZone::EinfamilienhausZone(const vectorVec3 & bounding, const glm::vec3 & dir) {
+
+	setBounding(bounding);
+	setOrientation(dir);
+	setArea();
+	setCenter();
+
+	createObject();
+
+}
+
 EinfamilienhausZone::EinfamilienhausZone(const vectorVec3 & bounding) {
 
 	setBounding(bounding);
@@ -36,7 +47,7 @@ void EinfamilienhausZone::addBuilding() {
 	float angle = glm::linearRand(0.0, 3.14);
 	glm::vec3 sideDir = -glm::normalize(glm::vec3(-glm::sin(angle + 0.78),0,glm::cos(angle)));
 	glm::vec3 frontDir = glm::normalize(glm::vec3(glm::cos(angle),0,glm::sin(angle + 0.78)));
-	
+
 	glm::vec3 side = sideDir * Einfamilienhaus::getMinWidth() / 2.0f;
 	glm::vec3 front = frontDir * Einfamilienhaus::getMinLength() / 2.0f;
 
