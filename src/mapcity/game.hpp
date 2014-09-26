@@ -3,6 +3,8 @@
 
 #include "graphics.hpp"
 
+#include <memory>
+
 class Game {
 
 	public:
@@ -11,7 +13,7 @@ class Game {
 
 	private:
 
-		Graphics m_graphics;
+		std::unique_ptr<Graphics> m_graphicsPtr;
 
 };
 

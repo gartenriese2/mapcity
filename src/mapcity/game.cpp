@@ -2,6 +2,7 @@
 
 void Game::initGraphics() {
 
-	m_graphics.init();
+	m_graphicsPtr = std::make_unique<Graphics>();
+	m_graphicsPtr->init();
 
 }
