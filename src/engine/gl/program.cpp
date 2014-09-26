@@ -69,7 +69,7 @@ void Program::link() {
 	glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, & numUniforms);
 	GLint maxLength;
 	glGetProgramiv(m_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, & maxLength);
-	std::unique_ptr<char[]> buffer{new char[maxLength]};
+	std::unique_ptr<char[]> buffer{new char[static_cast<unsigned long>(maxLength)]};
 	GLint size = 1;
 	GLsizei length = 1;
 	GLenum type = 0;

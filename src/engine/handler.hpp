@@ -77,7 +77,7 @@ class WindowID {
 		WindowID(std::shared_ptr<Window>);
 		WindowID(const WindowID & other) { m_id = other.m_id; }
 		WindowID(WindowID && other) { m_id = other.m_id; }
-		WindowID & operator=(const WindowID &) = delete;
+		WindowID & operator=(const WindowID & other) { m_id = other.m_id; return *this; }
 		WindowID & operator=(WindowID &&) = delete;
 		~WindowID();
 

@@ -15,7 +15,7 @@ project "main"
     files {"src/**.h", "src/**.hpp", "src/**.cpp"}
 
     flags {"Symbols"}
-    buildoptions {"-std=c++11", "-Wall", "-pedantic", "-Wextra", "-Werror", "-Wno-unused-value",
+    buildoptions {"-std=c++1y", "-Wall", "-pedantic", "-Wextra", "-Werror", "-Wno-unused-value",
         "-Wno-unused-parameter", "-Wno-unused-function", "-Wuninitialized", "-Wshadow",
         "-Wconversion", "-Wswitch-default", "-Winit-self", "-Wunreachable-code"}
     links {"glfw3", "pthread", "X11", "Xrandr", "Xxf86vm", "Xi", "GL", "GLEW"}
