@@ -75,10 +75,10 @@ class WindowID {
 	public:
 
 		WindowID(std::shared_ptr<Window>);
-		WindowID(const WindowID & other) { m_id = other.m_id; }
-		WindowID(WindowID && other) { m_id = other.m_id; }
-		WindowID & operator=(const WindowID & other) { m_id = other.m_id; return *this; }
-		WindowID & operator=(WindowID &&) = delete;
+		WindowID(const WindowID & other) = default;
+		WindowID(WindowID && other) = default;
+		WindowID & operator=(const WindowID & other) = default;
+		WindowID & operator=(WindowID &&) = default;
 		~WindowID();
 
 		bool operator==(const WindowID & other) const { return this->m_id == other.m_id; }
@@ -88,7 +88,18 @@ class WindowID {
 		Loop & getLoop() { return m_window->getLoop(); }
 		bool hasObject(const ObjectID &) const;
 
-		void close() { glfwSetWindowShouldClose(m_window->getGLFWWindow(), GL_TRUE); }
+		void close() { 
+			Debug::log("Ending Window loop ...");
+			glfwSetWindowShouldClose(m_window->getGLFWWindow(), GL_TRUE);
+		}
+		void terminate() {
+			Debug::log("Destroying Window ...");
+			glfwDestroyWindow(m_window->getGLFWWindow());
+			Debug::log("Window destroyed!");
+		}
+		bool isRunning() {
+			return m_window->isRunning();
+		}
 
 		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &);

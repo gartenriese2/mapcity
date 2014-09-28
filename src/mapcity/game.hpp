@@ -10,6 +10,8 @@ class Game {
 	public:
 
 		void initGraphics();
+		bool graphicsShouldClose() const;
+		void terminateGraphics();
 
 	private:
 

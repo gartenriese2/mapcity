@@ -12,10 +12,15 @@ class Graphics {
 
 		void init();
 
+		bool shouldClose() const { return m_shouldClose; }
+		void terminate();
+
 	private:
 
 		std::unique_ptr<Engine> m_enginePtr;
 		std::unique_ptr<WindowID> m_windowPtr;
+
+		bool m_shouldClose {false};
 
 };
 

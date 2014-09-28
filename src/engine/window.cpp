@@ -7,12 +7,10 @@ Window::Window(unsigned int width, unsigned int height, const std::string & titl
 	m_height(height),
 	m_title(title),
 	m_fullscreen(fullscreen),
-	m_init(false)
 {
 }
 
 Window::~Window() {
-	
 }
 
 void Window::start() {
@@ -29,7 +27,7 @@ void Window::start() {
 	
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
-		Debug::log("Cound not initialize GLEW!");
+		Debug::log("Could not initialize GLEW!");
 		Debug::log(glewGetErrorString(err));
 		return;
 	}
@@ -64,10 +62,10 @@ void Window::start() {
 	
 	});
 
-	m_init = true;
-
+	m_running = true;
 	m_loop.start(m_window);
-	glfwDestroyWindow(m_window);
+	m_running = false;
+	Debug::log("Window Loop ends now!");
 
 }
 

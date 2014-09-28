@@ -12,11 +12,13 @@ Engine::Engine() {
 
 Engine::~Engine() {
 
-	for (auto & thread : m_windowThreads) {
-		thread.second.reset(nullptr);
-	}
-
+	Debug::log("Terminating GLFW ...");
 	glfwTerminate();
+	Debug::log("GLFW terminated!");
+	for (auto & thread : m_windowThreads) {
+		thread.second.reset();
+	}
+	Debug::log("Engine is shutting down!");
 
 }
 
@@ -41,12 +43,9 @@ void Engine::init() {
 const WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
 	std::shared_ptr<Window> ptr(new Window(width, height, title, false));
-
 	WindowID id(ptr);
-
 	m_windowThreads[id()] = std::unique_ptr<WindowThread>(new WindowThread(ptr));
-
-	while(!ptr->isInitialized());
+	while(!ptr->isRunning());
 
 	return id;
 
@@ -64,12 +63,9 @@ const WindowID Engine::createWindow(unsigned int width, unsigned int height, con
 const WindowID Engine::createFullscreenWindow(unsigned int width, unsigned int height, const std::string & title) {
 
 	std::shared_ptr<Window> ptr(new Window(width, height, title, true));
-
 	WindowID id(ptr);
-
 	m_windowThreads[id()] = std::unique_ptr<WindowThread>(new WindowThread(ptr));
-
-	while(!ptr->isInitialized());
+	while(!ptr->isRunning());
 
 	return id;
 

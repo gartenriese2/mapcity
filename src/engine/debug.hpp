@@ -4,6 +4,7 @@
 #include <mutex>
 #include <iostream>
 #include <string>
+#include <thread>
 #include "glmincludes.hpp"
 
 #define DEB Debug::log("DEBUG: " + std::string(__FILE__) + " " + __FUNCTION__ + " " + std::to_string(__LINE__));
@@ -16,7 +17,7 @@ class Debug {
 		static void log(const T & output) {
 			std::lock_guard<std::mutex> guard(s_mutex);
 			// Please implement your favorite debug output method here!
-			std::cout << output << std::endl;
+			std::cout << std::this_thread::get_id() << " " << output << std::endl;
 		}
 
 		static void log(const glm::vec3 & vec) {
