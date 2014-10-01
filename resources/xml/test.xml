@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- database for buildings, add new ones if you want -->
+<buildingdatabase>
+	<!--
+		elements:
+			name
+			category
+			minHouseholds
+			minHouseholdsPerFloor
+			maxHouseholds
+			maxHouseholdsPerFloor
+	-->
+	<building id="1">
+		<name>Einfamilienhaus</name>
+		<category>Residential</category>
+		<maxHouseholds>1</maxHouseholds>
+	</building>
+	<building id="2">
+		<name>Zweifamilienhaus</name>
+		<category>Residential</category>
+		<minHouseholds>2</minHouseholds>
+		<maxHouseholds>2</maxHouseholds>
+	</building>
+</buildingdatabase>

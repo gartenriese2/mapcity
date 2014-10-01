@@ -23,6 +23,9 @@ distribution.
 
 #include "tinyxml2.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+
 #include <new>		// yes, this one new style header, is in the Android SDK.
 #   ifdef ANDROID_NDK
 #   include <stddef.h>
@@ -2241,4 +2244,6 @@ bool XMLPrinter::Visit( const XMLUnknown& unknown )
 }
 
 }   // namespace tinyxml2
+
+#pragma GCC diagnostic pop
 

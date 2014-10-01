@@ -6,7 +6,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string & titl
   : m_width(width),
 	m_height(height),
 	m_title(title),
-	m_fullscreen(fullscreen),
+	m_fullscreen(fullscreen)
 {
 }
 

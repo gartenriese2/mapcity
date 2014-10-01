@@ -25,6 +25,9 @@ distribution.
 #ifndef TINYXML2_INCLUDED
 #define TINYXML2_INCLUDED
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+
 #if defined(ANDROID_NDK) || defined(__BORLANDC__)
 #   include <ctype.h>
 #   include <limits.h>
@@ -2078,5 +2081,7 @@ private:
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
+
+#pragma GCC diagnostic pop
 
 #endif // TINYXML2_INCLUDED
