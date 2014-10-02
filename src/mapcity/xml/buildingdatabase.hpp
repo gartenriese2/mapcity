@@ -11,6 +11,13 @@ class BuildingDatabase : public Database {
 
 		BuildingDatabase(const std::string &);
 
+		unsigned int getMinHouseholds(unsigned int);
+		unsigned int getMaxHouseholds(unsigned int);
+
+	private:
+
+
+
 };
 
 #endif // _BUILDINGDATABASE_

@@ -1,24 +1,19 @@
 #include <stdlib.h>
 
 #include "mapcity/game.hpp"
-#include "mapcity/xml/buildingdatabase.hpp"
+#include "mapcity/building/residentialbuilding.hpp"
 #include "mapcity/people/household.hpp"
 #include "engine/debug.hpp"
 
-int main() {
+void householdTest(unsigned int n) {
 
-	Game game;
-	//game.initGraphics();
-
-	//BuildingDatabase("resources/xml/test.xml");
-
-	const auto & vec = Household::generateRandomHouseholds(100);
-	size_t numPeople {0};
-	size_t numInfants {0};
-	size_t numKids {0};
-	size_t numTeens {0};
-	size_t numAdults {0};
-	size_t numSeniors {0};
+	const auto & vec = Household::generateRandomHouseholds(n);
+	unsigned int numPeople {0};
+	unsigned int numInfants {0};
+	unsigned int numKids {0};
+	unsigned int numTeens {0};
+	unsigned int numAdults {0};
+	unsigned int numSeniors {0};
 	for (const auto & household : vec) {
 		numPeople += household.getSize();
 		numInfants += household.getNum(People::AGE::INFANT);
@@ -32,19 +27,38 @@ int main() {
 	Debug::log("Number of kids: " + std::to_string(numKids));
 	Debug::log("Number of teens: " + std::to_string(numTeens));
 	Debug::log("Number of adults: " + std::to_string(numAdults));
-	Debug::log("Number of seniors: " + std::to_string(numInfants));
+	Debug::log("Number of seniors: " + std::to_string(numSeniors));
 
-	while(0) {
+}
 
-		/*if (game.graphicsShouldClose()) {
+void residentialTest() {
+
+	ResidentialBuilding rb(2);
+
+}
+
+void graphicsTest() {
+
+	Game game;
+	game.initGraphics();
+
+	while(1) {
+
+		if (game.graphicsShouldClose()) {
 			
 			game.terminateGraphics();
 
 			break;
 
-		}*/
+		}
 
 	}
+
+}
+
+int main() {
+
+	householdTest(10000);
 
 	return EXIT_SUCCESS;
 

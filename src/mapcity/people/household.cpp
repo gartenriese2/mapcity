@@ -9,20 +9,20 @@ Household::Household() {
 
 }
 
-size_t Household::getNum(People::AGE age) const {
+unsigned int Household::getNum(People::AGE age) const {
 
-	size_t num {0};
-	for (const auto & pplPtr : m_people) {
+	unsigned int num {0};
+	for (const auto pplPtr : m_people) {
 		if (pplPtr->getAge() == age) ++num;
 	}
 	return num;
 
 }
 
-size_t Household::getNum(People::OCCUPATION occ) const {
+unsigned int Household::getNum(People::OCCUPATION occ) const {
 
-	size_t num {0};
-	for (const auto & pplPtr : m_people) {
+	unsigned int num {0};
+	for (const auto pplPtr : m_people) {
 		if (pplPtr->getOccupation() == occ) ++num;
 	}
 	return num;

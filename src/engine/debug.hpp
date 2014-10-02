@@ -7,6 +7,8 @@
 #include <thread>
 #include "glmincludes.hpp"
 
+//#define SHOWTHREADNUMBER
+
 #define DEB Debug::log("DEBUG: " + std::string(__FILE__) + " " + __FUNCTION__ + " " + std::to_string(__LINE__));
 
 class Debug {
@@ -17,7 +19,11 @@ class Debug {
 		static void log(const T & output) {
 			std::lock_guard<std::mutex> guard(s_mutex);
 			// Please implement your favorite debug output method here!
+			#ifdef SHOWTHREADNUMBER
 			std::cout << std::this_thread::get_id() << " " << output << std::endl;
+			#else
+			std::cout << output << std::endl;
+			#endif
 		}
 
 		static void log(const glm::vec3 & vec) {

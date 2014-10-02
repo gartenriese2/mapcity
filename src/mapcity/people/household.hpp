@@ -12,10 +12,10 @@ class Household {
 
 		Household();
 
-		size_t getSize() const { return m_people.size(); }
+		unsigned int getSize() const { return static_cast<unsigned int>(m_people.size()); }
 
-		size_t getNum(People::AGE) const;
-		size_t getNum(People::OCCUPATION) const;
+		unsigned int getNum(People::AGE) const;
+		unsigned int getNum(People::OCCUPATION) const;
 
 		void addPeople(std::shared_ptr<People>);
 
