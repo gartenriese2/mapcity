@@ -25,12 +25,12 @@ BuildingDatabase::BuildingDatabase(const std::string & file)
 
 }
 
-unsigned int BuildingDatabase::getMinHouseholds(unsigned int id) {
+unsigned int BuildingDatabase::getUnsignedValue(unsigned int id,
+	const std::string & name) const {
 
 	ElemPtr ptr = getElement(id);
-	if (!ptr) return 0;
+	if (ptr == nullptr) return 0;
 
-	const std::string name {"minHouseholds"};
 	unsigned int ret {0};
 	
 	ElemPtr elem {getElement(ptr->FirstChildElement(), name)};
@@ -47,24 +47,16 @@ unsigned int BuildingDatabase::getMinHouseholds(unsigned int id) {
 
 }
 
-unsigned int BuildingDatabase::getMaxHouseholds(unsigned int id) {
+bool BuildingDatabase::hasElement(unsigned int id, const std::string & name) const {
 
 	ElemPtr ptr = getElement(id);
-	if (!ptr) return 0;
+	if (ptr == nullptr) return false;
 
-	const std::string name {"maxHouseholds"};
-	unsigned int ret {0};
-	
 	ElemPtr elem {getElement(ptr->FirstChildElement(), name)};
 	if (elem == nullptr) {
-		Debug::log("No Element " + name + " found");
-		return 0;
-	}
-	
-	if (elem->QueryUnsignedText(&ret) == tinyxml2::XML_NO_ERROR) {
-		return ret;
+		return false;
 	}
 
-	return 0;
+	return true;
 
 }

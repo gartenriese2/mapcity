@@ -11,8 +11,8 @@ class BuildingDatabase : public Database {
 
 		BuildingDatabase(const std::string &);
 
-		unsigned int getMinHouseholds(unsigned int);
-		unsigned int getMaxHouseholds(unsigned int);
+		unsigned int getUnsignedValue(unsigned int, const std::string &) const;
+		bool hasElement(unsigned int, const std::string &) const;
 
 	private:
 

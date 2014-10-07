@@ -4,6 +4,7 @@
 #include <chrono>
 #include <random>
 #include <type_traits>
+#include "../../engine/debug.hpp"
 
 class Random {
 

@@ -13,9 +13,34 @@ ResidentialBuilding::ResidentialBuilding(unsigned int id) {
 
 	}
 
-	m_numHouseholds = Random::get<unsigned int>(
-		s_database.getMinHouseholds(id), s_database.getMaxHouseholds(id) + 1
-	);
+	if (s_database.hasElement(id, "minHouseholds") && s_database.hasElement(id, "maxHouseholds")) {
+		
+		m_numHouseholds = Random::get(
+			s_database.getUnsignedValue(id, "minHouseholds"),
+			s_database.getUnsignedValue(id, "maxHouseholds")
+		);
+
+	} else if (s_database.hasElement(id, "minHouseholdsPerFloor")
+		&& s_database.hasElement(id, "maxHouseholdsPerFloor")
+		&& s_database.hasElement(id, "minFloors") && s_database.hasElement(id, "maxFloors")) {
+
+		const unsigned int minFloors {s_database.getUnsignedValue(id, "minFloors")};
+		const unsigned int maxFloors {s_database.getUnsignedValue(id, "maxFloors")};
+		const unsigned int floors {Random::get(minFloors, maxFloors)};
+
+		const unsigned int minHouseholdsPerFloor {s_database.getUnsignedValue(id, "minHouseholdsPerFloor")};
+		const unsigned int maxHouseholdsPerFloor {s_database.getUnsignedValue(id, "maxHouseholdsPerFloor")};
+		const unsigned int householdsPerFloor {Random::get(minHouseholdsPerFloor, maxHouseholdsPerFloor)};
+
+		m_numHouseholds = floors * householdsPerFloor;
+
+	} else {
+
+		Debug::log("No variables found to determine number of households");
+		exit(EXIT_FAILURE);
+
+	}
+	
 
 }
 

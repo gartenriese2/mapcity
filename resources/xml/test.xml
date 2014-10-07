@@ -13,12 +13,33 @@
 	<building id="1">
 		<name>Einfamilienhaus</name>
 		<category>Residential</category>
+		<minHouseholds>1</minHouseholds>
 		<maxHouseholds>1</maxHouseholds>
+		<minFloors>1</minFloors>
+		<maxFloors>3</maxFloors>
 	</building>
 	<building id="2">
 		<name>Zweifamilienhaus</name>
 		<category>Residential</category>
 		<minHouseholds>2</minHouseholds>
 		<maxHouseholds>2</maxHouseholds>
+		<minFloors>2</minFloors>
+		<maxFloors>3</maxFloors>
+	</building>
+	<building id="3">
+		<name>Reihenhaus</name>
+		<category>Residential</category>
+		<minHouseholds>1</minHouseholds>
+		<maxHouseholds>1</maxHouseholds>
+		<minFloors>2</minFloors>
+		<maxFloors>3</maxFloors>
+	</building>
+	<building id="4">
+		<name>Kleines Hochhaus</name>
+		<category>Residential</category>
+		<minFloors>8</minFloors>
+		<maxFloors>12</maxFloors>
+		<minHouseholdsPerFloor>4</minHouseholdsPerFloor>
+		<maxHouseholdsPerFloor>8</maxHouseholdsPerFloor>
 	</building>
 </buildingdatabase>
