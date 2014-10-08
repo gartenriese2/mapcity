@@ -1,5 +1,7 @@
 #include "network.hpp"
 
+#include "../../engine/debug.hpp"
+
 #include <algorithm>
 #include <map>
 
@@ -62,9 +64,19 @@ float h(const Node & a, const Node & b) {
 
 }
 
+void printPM(const std::map<Node, std::shared_ptr<Edge>> & pathMap) {
+	Debug::log("Printing PathMap");
+	for (const auto & pair : pathMap) {
+		Debug::log("Node: " + std::to_string(pair.first.getID()) + ", Edge: "
+			+ std::to_string(pair.second->getID()));
+	}
+
+}
+
 std::vector<std::shared_ptr<Edge>> createPath(const std::map<Node,
 	std::shared_ptr<Edge>> & pathMap, const Node & current) {
-
+//printPM(pathMap);
+//exit(0);
 	for (const auto & pair : pathMap) {
 		
 		if (pair.first == current) {
@@ -81,9 +93,9 @@ std::vector<std::shared_ptr<Edge>> createPath(const std::map<Node,
 
 }
 
-std::vector<std::shared_ptr<Edge>> Network::astar(const Node & start, const Node & goal) {
+std::vector<std::shared_ptr<Edge>> Network::astar(const Node & start, const Node & goal) const {
 
-	//std::vector<Node> closed;
+	std::vector<Node> closed;
 	std::vector<Node> open {start};
 	std::map<Node, std::shared_ptr<Edge>> came_from;
 
@@ -103,15 +115,15 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const Node & start, const Node
 		}
 
 		open.erase(open.begin());
-		//closed.push_back(current);
-
+		closed.push_back(current);
+		//Debug::log("Current Node: " + std::to_string(current.getID()));
 		for (const auto & edge : getEdgesFromNode(current)) {
 
 			Node neighbor {edge->getTo()};
 			
-			/*if (isIn(closed, neighbor)) {
+			if (isIn(closed, neighbor)) {
 				continue;
-			}*/
+			}
 
 			float tentative_g_score {g_score[current] + edge->getCost()};
 
