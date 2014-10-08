@@ -75,8 +75,7 @@ void printPM(const std::map<Node, std::shared_ptr<Edge>> & pathMap) {
 
 std::vector<std::shared_ptr<Edge>> createPath(const std::map<Node,
 	std::shared_ptr<Edge>> & pathMap, const Node & current) {
-//printPM(pathMap);
-//exit(0);
+
 	for (const auto & pair : pathMap) {
 		
 		if (pair.first == current) {
@@ -116,7 +115,7 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const Node & start, const Node
 
 		open.erase(open.begin());
 		closed.push_back(current);
-		//Debug::log("Current Node: " + std::to_string(current.getID()));
+		
 		for (const auto & edge : getEdgesFromNode(current)) {
 
 			Node neighbor {edge->getTo()};

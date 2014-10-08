@@ -149,14 +149,16 @@ void networkTest() {
 
 }
 
+#include "mapcity/network/units.hpp"
+
 void networkTest2() {
 
-	const float distU1BA {200.f};
-	const float distBAAmpel1 {400.f};
-	const float distAmpel1BB {500.f};
-	const float distBBU2 {50.f};
-	const float distAmpel {distU1BA + distBAAmpel1};
-	const float distU {distAmpel + distAmpel1BB + distBBU2};
+	const Length distU1BA {200_m};
+	const Length distBAAmpel1 {400_m};
+	const Length distAmpel1BB {500_m};
+	const Length distBBU2 {50_m};
+	const Length distAmpel {distU1BA + distBAAmpel1};
+	const Length distU {distAmpel + distAmpel1BB + distBBU2};
 
 	Node ustation1{{0.f, 5.f, 0.f}};
 	Node ustation1a{{0.f, 0.f, 0.f}};
@@ -177,14 +179,14 @@ void networkTest2() {
 	Node crossingBb{{distAmpel + 5.f, 10.f, 0.f}};
 	Node crossingCa{{distAmpel + 5.f, 0.f, 0.f}}; // 15
 
-	const float walkingSpeed {2.2f}; // 8kmh
-	const float drivingSpeed {6.9f}; // 25kmh
-	const float ubahnSpeed {16.7f}; // 60kmh
+	const Speed walkingSpeed {8_kmh};
+	const Speed drivingSpeed {25_kmh}; // 25kmh
+	const Speed ubahnSpeed {60_kmh}; // 60kmh
 
-	const float carGettingTime {60.f};
-	const float carParkingTime {120.f};
-	const float ubahnWaitingTime {150.f};
-	const float ampelWaitingTime {20.f};
+	const Time carGettingTime {1_min};
+	const Time carParkingTime {2_min};
+	const Time ubahnWaitingTime {2.5_min};
+	const Time ampelWaitingTime {20_s};
 
 	// ubahn
 	std::shared_ptr<Edge> U1aToU1(new Path(ustation1a, ustation1, walkingSpeed, ubahnWaitingTime));

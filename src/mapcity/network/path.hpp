@@ -2,6 +2,7 @@
 #define _PATH_
 
 #include "edge.hpp"
+#include "units.hpp"
 
 class Node;
 
@@ -9,12 +10,12 @@ class Path : public Edge {
 
 	public:
 
-		Path(const Node &, const Node &, float, float = 0.f);
+		Path(const Node &, const Node &, Speed, Time = 0_s);
 
 	private:
 
-		float m_speed;
-		float m_penalty;
+		Speed m_speed;
+		Time m_penalty;
 
 };
 
