@@ -15,7 +15,7 @@ void Network::addEdges(const std::vector<std::shared_ptr<Edge>> & edges) {
 
 }
 
-const std::vector<std::shared_ptr<Edge>> Network::getEdgesFromNode(const Node & node) const {
+const std::vector<std::shared_ptr<Edge>> Network::getEdgesFromNode(const NodePtr node) const {
 
 	std::vector<std::shared_ptr<Edge>> vec;
 
@@ -33,7 +33,7 @@ const std::vector<std::shared_ptr<Edge>> Network::getEdgesFromNode(const Node & 
 
 }
 
-const std::vector<std::shared_ptr<Edge>> Network::getEdgesToNode(const Node & node) const {
+const std::vector<std::shared_ptr<Edge>> Network::getEdgesToNode(const NodePtr node) const {
 
 	std::vector<std::shared_ptr<Edge>> vec;
 
@@ -58,9 +58,9 @@ bool isIn(const std::vector<T> & vec, T elem) {
 
 }
 
-float h(const Node & a, const Node & b) {
+float h(const NodePtr a, const NodePtr b) {
 
-	return glm::length(a.getPos() - b.getPos()) / 100.f;
+	return glm::length(a->getPos() - b->getPos()) / 100.f;
 
 }
 
@@ -73,8 +73,8 @@ void printPM(const std::map<Node, std::shared_ptr<Edge>> & pathMap) {
 
 }
 
-std::vector<std::shared_ptr<Edge>> createPath(const std::map<Node,
-	std::shared_ptr<Edge>> & pathMap, const Node & current) {
+std::vector<std::shared_ptr<Edge>> createPath(const std::map<NodePtr,
+	std::shared_ptr<Edge>> & pathMap, const NodePtr current) {
 
 	for (const auto & pair : pathMap) {
 		
@@ -92,22 +92,23 @@ std::vector<std::shared_ptr<Edge>> createPath(const std::map<Node,
 
 }
 
-std::vector<std::shared_ptr<Edge>> Network::astar(const Node & start, const Node & goal) const {
+std::vector<std::shared_ptr<Edge>> Network::astar(const NodePtr start,
+	const NodePtr goal) const {
 
-	std::vector<Node> closed;
-	std::vector<Node> open {start};
-	std::map<Node, std::shared_ptr<Edge>> came_from;
+	std::vector<NodePtr> closed;
+	std::vector<NodePtr> open {start};
+	std::map<NodePtr, std::shared_ptr<Edge>> came_from;
 
-	std::map<Node, float> g_score {{start, 0.f}};
+	std::map<NodePtr, float> g_score {{start, 0.f}};
 	float fStart {g_score[start] + h(start, goal)};
-	std::map<Node, float> f_score {{start, fStart}};
+	std::map<NodePtr, float> f_score {{start, fStart}};
 
 	while (!open.empty()) {
 		
-		std::sort(open.begin(), open.end(), [&](const Node & a, const Node & b){
+		std::sort(open.begin(), open.end(), [&](const NodePtr a, const NodePtr b){
 			return f_score[a] < f_score[b];
 		});
-		Node current = open.front();
+		NodePtr current = open.front();
 		
 		if (current == goal) {
 			return createPath(came_from, goal);
@@ -118,7 +119,7 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const Node & start, const Node
 		
 		for (const auto & edge : getEdgesFromNode(current)) {
 
-			Node neighbor {edge->getTo()};
+			NodePtr neighbor {edge->getTo()};
 			
 			if (isIn(closed, neighbor)) {
 				continue;

@@ -1,5 +1,7 @@
 #include "buildingnode.hpp"
 
+#include <algorithm>
+
 BuildingNode::BuildingNode()
   : Node{}
 {}

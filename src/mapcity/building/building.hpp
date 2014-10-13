@@ -2,14 +2,32 @@
 #define _BUILDING_
 
 #include "../xml/buildingdatabase.hpp"
+#include "../xml/transitdatabase.hpp"
+#include "../network/buildingnode.hpp"
+#include "../network/transitnode.hpp"
+#include "../network/network.hpp"
+
+#include <memory>
 
 class Building {
 
 	public:
 
+		Building() {}
+		Building(const glm::vec3 &, bool = false);
+
+		const std::shared_ptr<BuildingNode> getNode() const { return m_buildingNode; }
+
+		void connect(const std::shared_ptr<TransitNode>, Network &);
+
 	protected:
 
-		static BuildingDatabase s_database;
+		static BuildingDatabase s_buildingDatabase;
+		static TransitDatabase s_transitDatabase;
+
+		std::shared_ptr<BuildingNode> m_buildingNode;
+
+		bool m_hasParking;
 
 };
 

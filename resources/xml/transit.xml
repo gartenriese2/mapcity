@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- database for transit variables -->
+<transitdatabase>
+	<type id="1">
+		<name>Pedestrian</name>
+		<kmh>8</kmh>
+	</type>
+	<type id="2">
+		<name>Car</name>
+		<kmh>130</kmh>
+		<penaltyStart>60</penaltyStart>
+		<penaltyEnd>120</penaltyEnd>
+	</type>
+	<type id="3">
+		<name>Bike</name>
+		<kmh>25</kmh>
+		<penaltyStart>20</penaltyStart>
+		<penaltyEnd>30</penaltyEnd>
+	</type>
+</transitdatabase>

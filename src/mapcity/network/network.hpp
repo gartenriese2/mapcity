@@ -17,12 +17,12 @@ class Network {
 
 		void addEdges(const std::vector<std::shared_ptr<Edge>> &);
 
-		std::vector<std::shared_ptr<Edge>> astar(const Node &, const Node &) const;
+		std::vector<std::shared_ptr<Edge>> astar(const NodePtr, const NodePtr) const;
 
 	private:
 
-		const std::vector<std::shared_ptr<Edge>> getEdgesFromNode(const Node &) const;
-		const std::vector<std::shared_ptr<Edge>> getEdgesToNode(const Node &) const;
+		const std::vector<std::shared_ptr<Edge>> getEdgesFromNode(const NodePtr) const;
+		const std::vector<std::shared_ptr<Edge>> getEdgesToNode(const NodePtr) const;
 
 		std::vector<std::shared_ptr<Edge>> m_edges;
 

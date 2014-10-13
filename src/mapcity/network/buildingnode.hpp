@@ -3,6 +3,9 @@
 
 #include "node.hpp"
 #include "../../engine/glmincludes.hpp"
+#include "edge.hpp"
+
+#include <vector>
 
 class BuildingNode : public Node {
 

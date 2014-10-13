@@ -11,13 +11,6 @@ class BuildingDatabase : public Database {
 
 		BuildingDatabase(const std::string &);
 
-		unsigned int getUnsignedValue(unsigned int, const std::string &) const;
-		bool hasElement(unsigned int, const std::string &) const;
-
-	private:
-
-
-
 };
 
 #endif // _BUILDINGDATABASE_

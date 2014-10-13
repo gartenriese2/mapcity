@@ -115,14 +115,14 @@ void graphicsTest() {
 #include "mapcity/network/node.hpp"
 #include "mapcity/network/path.hpp"
 
-void printAstar(const Network & net, const Node & from, const Node & to) {
+void printAstar(const Network & net, const std::shared_ptr<Node> from, const std::shared_ptr<Node> to) {
 
 	float time {0};
 	auto edges = net.astar(from, to);
 	for (const auto & edge : edges) {
 		Debug::log("Using Edge " + std::to_string(edge->getID()) + " from Node " +
-			std::to_string(edge->getFrom().getID()) + " to Node " + 
-			std::to_string(edge->getTo().getID()) + " in " + std::to_string(edge->getCost()) + 
+			std::to_string(edge->getFrom()->getID()) + " to Node " + 
+			std::to_string(edge->getTo()->getID()) + " in " + std::to_string(edge->getCost()) + 
 			" seconds.");
 		time += edge->getCost();
 	}
@@ -130,63 +130,53 @@ void printAstar(const Network & net, const Node & from, const Node & to) {
 
 }
 
-void networkTest() {
-
-	Network net;
-	const float dist {600.f};
-	Node buildingA{{0.f, 0.f, 0.f}};
-	Node carParkingA{{0.f, 5.f, 0.f}};
-	Node carParkingB{{dist, 5.f, 0.f}};
-	Node buildingB{{dist, 0.f, 0.f}};
-	std::shared_ptr<Edge> gettingCar(new Path(buildingA, carParkingA, 2.2f, 60.f));
-	std::shared_ptr<Edge> driving(new Path(carParkingA, carParkingB, 8.3f));
-	std::shared_ptr<Edge> parkingCar(new Path(carParkingB, buildingB, 2.2f, 120.f));
-	std::shared_ptr<Edge> walk(new Path(buildingA, buildingB, 2.2f));
-
-	net.addEdges({gettingCar, driving, parkingCar, walk});
-
-	printAstar(net, buildingA, buildingB);
-
-}
-
 #include "mapcity/network/units.hpp"
 
 void networkTest2() {
 
-	const Length distU1BA {200_m};
-	const Length distBAAmpel1 {400_m};
-	const Length distAmpel1BB {500_m};
-	const Length distBBU2 {50_m};
-	const Length distAmpel {distU1BA + distBAAmpel1};
-	const Length distU {distAmpel + distAmpel1BB + distBBU2};
+	const unit::length distU1BA {200_m};
+	const unit::length distBAAmpel1 {400_m};
+	const unit::length distAmpel1BB {500_m};
+	const unit::length distBBU2 {50_m};
+	const unit::length distAmpel {distU1BA + distBAAmpel1};
+	const unit::length distU {distAmpel + distAmpel1BB + distBBU2};
 
-	Node ustation1{{0.f, 5.f, 0.f}};
-	Node ustation1a{{0.f, 0.f, 0.f}};
-	Node ustation1b{{0.f, 10.f, 0.f}};
-	Node ustation2{{distU, 5.f, 0.f}};
-	Node ustation2a{{distU, 0.f, 0.f}};
-	Node ustation2b{{distU, 10.f, 0.f}};
+	Network network;
 
-	Node buildingA{{distU1BA, 0.f, 0.f}};
-	Node buildingB{{distU - distBBU2, 10.f, 0.f}}; // 8
+	std::shared_ptr<Node> ustation1{new Node({0.f, 5.f, 0.f})};
+	std::shared_ptr<Node> ustation1a{new Node({0.f, 0.f, 0.f})};
+	std::shared_ptr<Node> ustation1b{new Node({0.f, 10.f, 0.f})};
+	std::shared_ptr<Node> ustation2{new Node({distU, 5.f, 0.f})};
+	std::shared_ptr<Node> ustation2a{new Node({distU, 0.f, 0.f})};
+	std::shared_ptr<Node> ustation2b{new Node({distU, 10.f, 0.f})};
 
-	Node parkingBA{{distU1BA, 5.f, 0.f}};
-	Node parkingBB{{distU - distBBU2, 5.f, 0.f}};
+	ResidentialBuilding BA(4, {distU1BA, -5.f, 0.f}, false);
+	ResidentialBuilding BB(4, {distU - distBBU2, 15.f, 0.f}, false);
+	std::shared_ptr<TransitNode> BAentrance(new TransitNode({distU1BA, 0.f, 0.f}));
+	BAentrance->allowTypes({1});
+	std::shared_ptr<TransitNode> BAparking(new TransitNode({distU1BA, 5.f, 0.f}));
+	BAparking->allowTypes({2});
+	std::shared_ptr<TransitNode> BBentrance(new TransitNode({distU - distBBU2, 10.f, 0.f}));
+	BBentrance->allowTypes({1});
+	std::shared_ptr<TransitNode> BBparking(new TransitNode({distU - distBBU2, 5.f, 0.f}));
+	BBparking->allowTypes({2});
+	BA.connect(BAentrance, network);
+	BB.connect(BBentrance, network);
 
-	Node ampel1{{distAmpel, 5.f, 0.f}};
-	Node crossingAa{{distAmpel - 5.f, 0.f, 0.f}}; // 12
-	Node crossingAb{{distAmpel - 5.f, 10.f, 0.f}};
-	Node crossingBb{{distAmpel + 5.f, 10.f, 0.f}};
-	Node crossingCa{{distAmpel + 5.f, 0.f, 0.f}}; // 15
+	std::shared_ptr<Node> ampel1{new Node({distAmpel, 5.f, 0.f})};
+	std::shared_ptr<Node> crossingAa{new Node({distAmpel - 5.f, 0.f, 0.f})};
+	std::shared_ptr<Node> crossingAb{new Node({distAmpel - 5.f, 10.f, 0.f})};
+	std::shared_ptr<Node> crossingBb{new Node({distAmpel + 5.f, 10.f, 0.f})};
+	std::shared_ptr<Node> crossingCa{new Node({distAmpel + 5.f, 0.f, 0.f})};
 
-	const Speed walkingSpeed {8_kmh};
-	const Speed drivingSpeed {25_kmh}; // 25kmh
-	const Speed ubahnSpeed {60_kmh}; // 60kmh
+	const unit::speed walkingSpeed {8_kmh};
+	const unit::speed drivingSpeed {25_kmh};
+	const unit::speed ubahnSpeed {60_kmh};
 
-	const Time carGettingTime {1_min};
-	const Time carParkingTime {2_min};
-	const Time ubahnWaitingTime {2.5_min};
-	const Time ampelWaitingTime {20_s};
+	const unit::time carGettingTime {1_min};
+	const unit::time carParkingTime {2_min};
+	const unit::time ubahnWaitingTime {2.5_min};
+	const unit::time ampelWaitingTime {20_s};
 
 	// ubahn
 	std::shared_ptr<Edge> U1aToU1(new Path(ustation1a, ustation1, walkingSpeed, ubahnWaitingTime));
@@ -201,55 +191,70 @@ void networkTest2() {
 	std::shared_ptr<Edge> U2toU2b(new Path(ustation2, ustation2b, walkingSpeed));
 
 	// car
-	std::shared_ptr<Edge> BAtoCar(new Path(buildingA, parkingBA, walkingSpeed, carGettingTime)); // 11
-	std::shared_ptr<Edge> carToBA(new Path(parkingBA, buildingA, walkingSpeed, carParkingTime));
-	std::shared_ptr<Edge> BBtoCar(new Path(buildingB, parkingBB, walkingSpeed, carGettingTime));
-	std::shared_ptr<Edge> carToBB(new Path(parkingBB, buildingB, walkingSpeed, carParkingTime));
-	std::shared_ptr<Edge> carBAtoAmpel(new Path(parkingBA, ampel1, drivingSpeed, ampelWaitingTime));
-	std::shared_ptr<Edge> carAmpelToBA(new Path(ampel1, parkingBA, drivingSpeed));
-	std::shared_ptr<Edge> carBBtoAmpel(new Path(parkingBB, ampel1, drivingSpeed, ampelWaitingTime));
-	std::shared_ptr<Edge> carAmpelToBB(new Path(ampel1, parkingBB, drivingSpeed));
+	std::shared_ptr<Edge> BAtoCar(new Path(BAentrance, BAparking, walkingSpeed, carGettingTime));
+	std::shared_ptr<Edge> carToBA(new Path(BAparking, BAentrance, walkingSpeed, carParkingTime));
+	std::shared_ptr<Edge> BBtoCar(new Path(BBentrance, BBparking, walkingSpeed, carGettingTime));
+	std::shared_ptr<Edge> carToBB(new Path(BBparking, BBentrance, walkingSpeed, carParkingTime));
+	std::shared_ptr<Edge> carBAtoAmpel(new Path(BAparking, ampel1, drivingSpeed, ampelWaitingTime));
+	std::shared_ptr<Edge> carAmpelToBA(new Path(ampel1, BAparking, drivingSpeed));
+	std::shared_ptr<Edge> carBBtoAmpel(new Path(BBparking, ampel1, drivingSpeed, ampelWaitingTime));
+	std::shared_ptr<Edge> carAmpelToBB(new Path(ampel1, BBparking, drivingSpeed));
 
 	// walking
-	std::shared_ptr<Edge> BAtoU1a(new Path(buildingA, ustation1a, walkingSpeed)); // 19
-	std::shared_ptr<Edge> U1atoBA(new Path(ustation1a, buildingA, walkingSpeed));
-	std::shared_ptr<Edge> BAtoCrossingA(new Path(buildingA, crossingAa, walkingSpeed)); // 21
-	std::shared_ptr<Edge> crossingAtoBA(new Path(crossingAa, buildingA, walkingSpeed));
+	std::shared_ptr<Edge> BAtoU1a(new Path(BAentrance, ustation1a, walkingSpeed));
+	std::shared_ptr<Edge> U1atoBA(new Path(ustation1a, BAentrance, walkingSpeed));
+	std::shared_ptr<Edge> BAtoCrossingA(new Path(BAentrance, crossingAa, walkingSpeed));
+	std::shared_ptr<Edge> crossingAtoBA(new Path(crossingAa, BAentrance, walkingSpeed));
 	std::shared_ptr<Edge> crossingAup(new Path(crossingAa, crossingAb, walkingSpeed, ampelWaitingTime));
 	std::shared_ptr<Edge> crossingAdown(new Path(crossingAb, crossingAa, walkingSpeed, ampelWaitingTime));
 	std::shared_ptr<Edge> crossingCup(new Path(crossingCa, crossingBb, walkingSpeed, ampelWaitingTime));
-	std::shared_ptr<Edge> crossingCdown(new Path(crossingBb, crossingCa, walkingSpeed, ampelWaitingTime)); // 26
+	std::shared_ptr<Edge> crossingCdown(new Path(crossingBb, crossingCa, walkingSpeed, ampelWaitingTime));
 	std::shared_ptr<Edge> crossingBright(new Path(crossingAb, crossingBb, walkingSpeed, ampelWaitingTime));
 	std::shared_ptr<Edge> crossingBleft(new Path(crossingBb, crossingAb, walkingSpeed, ampelWaitingTime));
 	std::shared_ptr<Edge> crossAtoC(new Path(crossingAa, crossingCa, walkingSpeed));
 	std::shared_ptr<Edge> crossCtoA(new Path(crossingCa, crossingAa, walkingSpeed));
-	std::shared_ptr<Edge> U2atoCrossingC(new Path(ustation2a, crossingCa, walkingSpeed)); // 31
+	std::shared_ptr<Edge> U2atoCrossingC(new Path(ustation2a, crossingCa, walkingSpeed));
 	std::shared_ptr<Edge> crossingCtoU2a(new Path(crossingCa, ustation2a, walkingSpeed));
-	std::shared_ptr<Edge> U2bToBB(new Path(ustation2b, buildingB, walkingSpeed));
-	std::shared_ptr<Edge> BBtoU2b(new Path(buildingB, ustation2b, walkingSpeed));
-	std::shared_ptr<Edge> crossingBToBB(new Path(crossingBb, buildingB, walkingSpeed));
-	std::shared_ptr<Edge> BBtoCrossingB(new Path(buildingB, crossingBb, walkingSpeed)); // 36
+	std::shared_ptr<Edge> U2bToBB(new Path(ustation2b, BBentrance, walkingSpeed));
+	std::shared_ptr<Edge> BBtoU2b(new Path(BBentrance, ustation2b, walkingSpeed));
+	std::shared_ptr<Edge> crossingBToBB(new Path(crossingBb, BBentrance, walkingSpeed));
+	std::shared_ptr<Edge> BBtoCrossingB(new Path(BBentrance, crossingBb, walkingSpeed));
 	std::shared_ptr<Edge> U1btoCrossingAB(new Path(ustation1b, crossingAb, walkingSpeed));
 	std::shared_ptr<Edge> crossingABtoU1b(new Path(crossingAb, ustation1b, walkingSpeed));
 
-	Network walking({BAtoU1a, U1atoBA, BAtoCrossingA, crossingAtoBA, crossingAup, crossingAdown,
+	auto walkingEdges = {BAtoU1a, U1atoBA, BAtoCrossingA, crossingAtoBA, crossingAup, crossingAdown,
 		crossingCup, crossingCdown, crossingBright, crossingBleft, crossAtoC, crossCtoA,
 		U2atoCrossingC, crossingCtoU2a, U2bToBB, BBtoU2b, crossingBToBB, BBtoCrossingB,
-		U1btoCrossingAB, crossingABtoU1b});
+		U1btoCrossingAB, crossingABtoU1b};
+	network.addEdges(walkingEdges);
 
-	printAstar(walking, buildingA, buildingB);
+	printAstar(network, BA.getNode(), BB.getNode());
 
-	Network walkingPlusUbahn(walking);
-	walkingPlusUbahn.addEdges({U1aToU1, U1bToU1, U1toU1a, U1toU1b, U1toU2, U2toU1,
-		U2aToU2, U2bToU2, U2toU2a, U2toU2b});
+	auto ubahnEdges = {U1aToU1, U1bToU1, U1toU1a, U1toU1b, U1toU2, U2toU1,
+		U2aToU2, U2bToU2, U2toU2a, U2toU2b};
+	network.addEdges(ubahnEdges);
 
-	printAstar(walkingPlusUbahn, buildingB, buildingA);
+	printAstar(network, BB.getNode(), BA.getNode());
 
-	Network all(walkingPlusUbahn);
-	all.addEdges({BAtoCar, carToBA, BBtoCar, carToBB, carBAtoAmpel, carAmpelToBA,
+	network.addEdges({BAtoCar, carToBA, BBtoCar, carToBB, carBAtoAmpel, carAmpelToBA,
 		carBBtoAmpel, carAmpelToBB});
 
-	printAstar(all, buildingA, buildingB);
+	printAstar(network, BA.getNode(), BB.getNode());
+
+}
+
+void buildingTest() {
+
+	Network nw;
+	ResidentialBuilding rb(4, {0.f, 0.f, 0.f}, true);
+	std::shared_ptr<TransitNode> ptr(new TransitNode({0.f, 20.f, 0.f}));
+	ptr->allowTypes({1, 2});
+	rb.connect(ptr, nw);
+
+	auto edges = rb.getNode()->getEdgeIDs();
+	Debug::log(edges.size());
+	auto edge = edges[1];
+	Debug::log(edge);
 
 }
 
@@ -258,6 +263,7 @@ int main() {
 	//householdTest(10000);
 	//residentialTest();
 	networkTest2();
+	//buildingTest();
 
 	return EXIT_SUCCESS;
 

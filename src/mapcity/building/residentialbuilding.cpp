@@ -4,32 +4,34 @@
 #include "../../engine/debug.hpp"
 #include "../util/random.hpp"
 
-ResidentialBuilding::ResidentialBuilding(unsigned int id) {
+ResidentialBuilding::ResidentialBuilding(unsigned int id, const glm::vec3 & pos, bool hasParking)
+  : Building{pos, hasParking}
+{
 
-	if (!Building::s_database.idExists(id)) {
+	if (!Building::s_buildingDatabase.idExists(id)) {
 
 		Debug::log("ID " + std::to_string(id) + " does not exist");
 		exit(EXIT_FAILURE);
 
 	}
 
-	if (s_database.hasElement(id, "minHouseholds") && s_database.hasElement(id, "maxHouseholds")) {
+	if (s_buildingDatabase.hasElement(id, "minHouseholds") && s_buildingDatabase.hasElement(id, "maxHouseholds")) {
 		
 		m_numHouseholds = Random::get(
-			s_database.getUnsignedValue(id, "minHouseholds"),
-			s_database.getUnsignedValue(id, "maxHouseholds")
+			s_buildingDatabase.getValue<unsigned int>(id, "minHouseholds"),
+			s_buildingDatabase.getValue<unsigned int>(id, "maxHouseholds")
 		);
 
-	} else if (s_database.hasElement(id, "minHouseholdsPerFloor")
-		&& s_database.hasElement(id, "maxHouseholdsPerFloor")
-		&& s_database.hasElement(id, "minFloors") && s_database.hasElement(id, "maxFloors")) {
+	} else if (s_buildingDatabase.hasElement(id, "minHouseholdsPerFloor")
+		&& s_buildingDatabase.hasElement(id, "maxHouseholdsPerFloor")
+		&& s_buildingDatabase.hasElement(id, "minFloors") && s_buildingDatabase.hasElement(id, "maxFloors")) {
 
-		const unsigned int minFloors {s_database.getUnsignedValue(id, "minFloors")};
-		const unsigned int maxFloors {s_database.getUnsignedValue(id, "maxFloors")};
+		const unsigned int minFloors {s_buildingDatabase.getValue<unsigned int>(id, "minFloors")};
+		const unsigned int maxFloors {s_buildingDatabase.getValue<unsigned int>(id, "maxFloors")};
 		const unsigned int floors {Random::get(minFloors, maxFloors)};
 
-		const unsigned int minHouseholdsPerFloor {s_database.getUnsignedValue(id, "minHouseholdsPerFloor")};
-		const unsigned int maxHouseholdsPerFloor {s_database.getUnsignedValue(id, "maxHouseholdsPerFloor")};
+		const unsigned int minHouseholdsPerFloor {s_buildingDatabase.getValue<unsigned int>(id, "minHouseholdsPerFloor")};
+		const unsigned int maxHouseholdsPerFloor {s_buildingDatabase.getValue<unsigned int>(id, "maxHouseholdsPerFloor")};
 		const unsigned int householdsPerFloor {Random::get(minHouseholdsPerFloor, maxHouseholdsPerFloor)};
 
 		m_numHouseholds = floors * householdsPerFloor;
@@ -40,7 +42,6 @@ ResidentialBuilding::ResidentialBuilding(unsigned int id) {
 		exit(EXIT_FAILURE);
 
 	}
-	
 
 }
 

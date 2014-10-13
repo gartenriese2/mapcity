@@ -1,12 +1,12 @@
 #include "path.hpp"
 
-Path::Path(const Node & from, const Node & to, Speed speed, Time penalty)
+Path::Path(const NodePtr from, const NodePtr to, unit::speed speed, unit::time penalty)
   : Edge{from, to},
     m_speed{speed},
     m_penalty{penalty}
 {
 
-	Length distance {glm::length(getFrom().getPos() - getTo().getPos())};
+	unit::length distance {glm::length(getFrom()->getPos() - getTo()->getPos())};
 	m_cost = distance / m_speed + m_penalty;
 
 }

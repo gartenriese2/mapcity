@@ -1,13 +1,13 @@
-#include "buildingdatabase.hpp"
+#include "transitdatabase.hpp"
 
 #include "tinyxml2.h"
 #include "../../engine/debug.hpp"
 
 #include <cstring>
 
-const std::string k_rootName {"buildingdatabase"};
+const std::string k_rootName {"transitdatabase"};
 
-BuildingDatabase::BuildingDatabase(const std::string & file)
+TransitDatabase::TransitDatabase(const std::string & file)
   : Database(file)
 {
 

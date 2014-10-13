@@ -10,12 +10,13 @@ class Path : public Edge {
 
 	public:
 
-		Path(const Node &, const Node &, Speed, Time = 0_s);
+		Path(const NodePtr, const NodePtr,
+			unit::speed, unit::time = 0_s);
 
 	private:
 
-		Speed m_speed;
-		Time m_penalty;
+		unit::speed m_speed;
+		unit::time m_penalty;
 
 };
 

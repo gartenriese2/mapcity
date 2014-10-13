@@ -8,13 +8,13 @@ class Edge {
 	public:
 
 		Edge();
-		Edge(const Node &, const Node &, float = 0.f);
+		Edge(const NodePtr, const NodePtr, float = 0.f);
 
 		unsigned int getID() const { return m_id; }
 		float getCost() const { return m_cost; }
 
-		const Node & getFrom() const { return m_from; }
-		const Node & getTo() const { return m_to; }
+		const NodePtr getFrom() const { return m_from; }
+		const NodePtr getTo() const { return m_to; }
 
 	protected:
 
@@ -23,8 +23,8 @@ class Edge {
 	private:
 
 		unsigned int m_id;
-		const Node m_from;
-		const Node m_to;
+		const NodePtr m_from;
+		const NodePtr m_to;
 
 };
 

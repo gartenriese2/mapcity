@@ -6,7 +6,7 @@ Edge::Edge()
   : m_id{0}
 {}
 
-Edge::Edge(const Node & a, const Node & b, float cost)
+Edge::Edge(const NodePtr a, const NodePtr b, float cost)
   : m_cost{cost},
   	m_id{++id},
     m_from{a},
