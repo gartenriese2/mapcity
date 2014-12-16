@@ -6,6 +6,6 @@ BuildingNode::BuildingNode()
   : Node{}
 {}
 
-BuildingNode::BuildingNode(const glm::vec3 & pos)
+BuildingNode::BuildingNode(const geom::Point & pos)
   : Node{pos}
 {}

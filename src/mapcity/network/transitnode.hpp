@@ -10,7 +10,7 @@ class TransitNode : public Node {
 	public:
 
 		TransitNode();
-		TransitNode(const glm::vec3 &);
+		TransitNode(const geom::Point &);
 
 		void allowTypes(const std::set<unsigned int> &);
 

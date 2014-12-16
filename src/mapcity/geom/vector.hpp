@@ -17,6 +17,8 @@ class TVec2 {
 
 		operator const glm::tvec2<T>() const { return m_vec; }
 
+		const glm::tvec2<T> & get() const { return m_vec; }
+
 		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1);
 			return m_vec[idx];
@@ -49,6 +51,8 @@ class TVec3 {
 		TVec3(const T & a, const T & b, const T & c) : m_vec{a, b, c} {}
 
 		operator const glm::tvec3<T>() const { return m_vec; }
+
+		const glm::tvec3<T> & get() const { return m_vec; }
 
 		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1 || idx == 2);

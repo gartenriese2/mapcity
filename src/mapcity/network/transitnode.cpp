@@ -4,7 +4,7 @@ TransitNode::TransitNode()
   : Node{}
 {}
 
-TransitNode::TransitNode(const glm::vec3 & pos)
+TransitNode::TransitNode(const geom::Point & pos)
   : Node{pos}
 {}
 

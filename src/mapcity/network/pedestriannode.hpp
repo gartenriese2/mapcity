@@ -8,7 +8,7 @@ class PedestrianNode : public TransitNode {
 	public:
 
 		PedestrianNode();
-		PedestrianNode(const glm::vec3 &);
+		PedestrianNode(const geom::Point &);
 
 };
 

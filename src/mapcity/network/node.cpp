@@ -5,11 +5,10 @@
 static unsigned int id {0};
 
 Node::Node()
-  : m_id{++id},
-  	m_pos{glm::vec3{0.f, 0.f, 0.f}}
+  : m_id{++id}
 {}
 
-Node::Node(const glm::vec3 & pos)
+Node::Node(const geom::Point & pos)
   : m_id{++id},
   	m_pos{pos}
 {}

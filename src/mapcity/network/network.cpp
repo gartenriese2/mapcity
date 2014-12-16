@@ -60,7 +60,7 @@ bool isIn(const std::vector<T> & vec, T elem) {
 
 float h(const NodePtr a, const NodePtr b) {
 
-	return glm::length(a->getPos() - b->getPos()) / 100.f;
+	return glm::length(a->getPos().get() - b->getPos().get()) / 100.f;
 
 }
 
@@ -77,9 +77,9 @@ std::vector<std::shared_ptr<Edge>> createPath(const std::map<NodePtr,
 	std::shared_ptr<Edge>> & pathMap, const NodePtr current) {
 
 	for (const auto & pair : pathMap) {
-		
+
 		if (pair.first == current) {
-			
+
 			auto path = createPath(pathMap, pair.second->getFrom());
 			path.push_back(pair.second);
 			return path;
@@ -104,23 +104,23 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const NodePtr start,
 	std::map<NodePtr, float> f_score {{start, fStart}};
 
 	while (!open.empty()) {
-		
+
 		std::sort(open.begin(), open.end(), [&](const NodePtr a, const NodePtr b){
 			return f_score[a] < f_score[b];
 		});
 		NodePtr current = open.front();
-		
+
 		if (current == goal) {
 			return createPath(came_from, goal);
 		}
 
 		open.erase(open.begin());
 		closed.push_back(current);
-		
+
 		for (const auto & edge : getEdgesFromNode(current)) {
 
 			NodePtr neighbor {edge->getTo()};
-			
+
 			if (isIn(closed, neighbor)) {
 				continue;
 			}
@@ -132,7 +132,7 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const NodePtr start,
 				tentative_g_score < g_score[neighbor]) {
 
 				came_from[neighbor] = edge;
-				
+
 				g_score[neighbor] = tentative_g_score;
 				f_score[neighbor] = g_score[neighbor] + h(neighbor, goal);
 

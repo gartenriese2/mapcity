@@ -2,6 +2,7 @@
 #define _NODE_
 
 #include "../../engine/glmincludes.hpp"
+#include "../geom/point.hpp"
 
 #include <memory>
 #include <vector>
@@ -16,10 +17,10 @@ class Node {
 	public:
 
 		Node();
-		Node(const glm::vec3 &);
+		Node(const geom::Point &);
 
 		unsigned int getID() const { return m_id; }
-		const glm::vec3 & getPos() const { return m_pos; }
+		const geom::Point & getPos() const { return m_pos; }
 
 		bool addEdge(std::shared_ptr<Edge>);
 		const std::vector<unsigned int> & getEdgeIDs() const { return m_edgeIDs; }
@@ -31,7 +32,7 @@ class Node {
 	private:
 
 		unsigned int m_id;
-		glm::vec3 m_pos;
+		geom::Point m_pos;
 
 };
 

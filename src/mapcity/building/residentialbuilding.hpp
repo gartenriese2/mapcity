@@ -11,7 +11,7 @@ class ResidentialBuilding : public Building {
 	public:
 
 		ResidentialBuilding() {}
-		ResidentialBuilding(unsigned int, const glm::vec3 & = {0.f, 0.f, 0.f}, bool = false);
+		ResidentialBuilding(unsigned int, const geom::Point & = {0.f, 0.f, 0.f}, bool = false);
 
 		unsigned int getEmptyHouseholds() const;
 		unsigned int getOccupiedHouseholds() const;

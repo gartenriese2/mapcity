@@ -14,7 +14,7 @@ class Building {
 	public:
 
 		Building() {}
-		Building(const glm::vec3 &, bool = false);
+		Building(const geom::Point &, bool = false);
 
 		const std::shared_ptr<BuildingNode> getNode() const { return m_buildingNode; }
 

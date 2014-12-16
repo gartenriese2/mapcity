@@ -4,6 +4,6 @@ PedestrianNode::PedestrianNode()
   : TransitNode{}
 {}
 
-PedestrianNode::PedestrianNode(const glm::vec3 & pos)
+PedestrianNode::PedestrianNode(const geom::Point & pos)
   : TransitNode{pos}
 {}

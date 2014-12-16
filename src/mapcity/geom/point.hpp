@@ -2,6 +2,7 @@
 #define _POINT_
 
 #include "../../engine/glmincludes.hpp"
+#include "vector.hpp"
 
 #include <ostream>
 #include <cassert>
@@ -17,6 +18,8 @@ class TPoint2 {
 		TPoint2(const T & a, const T & b) : m_point{a, b} {}
 
 		operator const glm::tvec2<T>() const { return m_point; }
+
+		const glm::tvec2<T> & get() const { return m_point; }
 
 		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1);
@@ -50,6 +53,8 @@ class TPoint3 {
 		TPoint3(const T & a, const T & b, const T & c) : m_point{a, b, c} {}
 
 		operator const glm::tvec3<T>() const { return m_point; }
+
+		const glm::tvec3<T> & get() const { return m_point; }
 
 		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1 || idx == 2);

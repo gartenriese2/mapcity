@@ -5,7 +5,7 @@
 BuildingDatabase Building::s_buildingDatabase = BuildingDatabase("resources/xml/buildings.xml");
 TransitDatabase Building::s_transitDatabase = TransitDatabase("resources/xml/transit.xml");
 
-Building::Building(const glm::vec3 & pos, bool hasParking)
+Building::Building(const geom::Point & pos, bool hasParking)
   : m_buildingNode{std::make_shared<BuildingNode>(pos)},
   	m_hasParking{hasParking}
 {}
@@ -15,7 +15,7 @@ void Building::connect(const std::shared_ptr<TransitNode> node, Network & nw) {
 	for (const auto & id : node->getAllowedTypes()) {
 
 		if (s_transitDatabase.hasElement(id, "kmh")) {
-			
+
 			// speed
 			unit::speed speed {s_transitDatabase.getValue<float>(id, "kmh")};
 			speed.kmhToMs();

@@ -4,7 +4,7 @@
 #include "../../engine/debug.hpp"
 #include "../util/random.hpp"
 
-ResidentialBuilding::ResidentialBuilding(unsigned int id, const glm::vec3 & pos, bool hasParking)
+ResidentialBuilding::ResidentialBuilding(unsigned int id, const geom::Point & pos, bool hasParking)
   : Building{pos, hasParking}
 {
 
@@ -16,7 +16,7 @@ ResidentialBuilding::ResidentialBuilding(unsigned int id, const glm::vec3 & pos,
 	}
 
 	if (s_buildingDatabase.hasElement(id, "minHouseholds") && s_buildingDatabase.hasElement(id, "maxHouseholds")) {
-		
+
 		m_numHouseholds = Random::get(
 			s_buildingDatabase.getValue<unsigned int>(id, "minHouseholds"),
 			s_buildingDatabase.getValue<unsigned int>(id, "maxHouseholds")
