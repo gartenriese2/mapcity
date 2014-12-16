@@ -36,7 +36,7 @@ class TPoint2 {
 template <typename T>
 std::ostream & operator<<(std::ostream & os, const TPoint2<T> & p) {
 
-	os << "[" << p[0] << "; " << p[1] << "]";
+	os << "[" << std::to_string(p[0]) << "; " << std::to_string(p[1]) << "]";
 	return os;
 
 }
@@ -69,7 +69,8 @@ class TPoint3 {
 template <typename T>
 std::ostream & operator<<(std::ostream & os, const TPoint3<T> & p) {
 
-	os << "[" << p[0] << "; " << p[1] << "; " << p[2] << "]";
+	os << "[" << std::to_string(p[0]) << "; " << std::to_string(p[1]) << "; "
+		<< std::to_string(p[2]) << "]";
 	return os;
 
 }
