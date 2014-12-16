@@ -15,11 +15,13 @@ class TVec2 {
 		TVec2() : m_vec{static_cast<T>(0), static_cast<T>(0)} {}
 		TVec2(const T & a, const T & b) : m_vec{a, b} {}
 
-		T & operator[](unsigned int idx) {
+		operator const glm::tvec2<T>() const { return m_vec; }
+
+		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1);
 			return m_vec[idx];
 		}
-		const T & operator[](unsigned int idx) const {
+		const T & operator[](int idx) const {
 			assert(idx == 0 || idx == 1);
 			return m_vec[idx];
 		}
@@ -45,6 +47,8 @@ class TVec3 {
 
 		TVec3() : m_vec{static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)} {}
 		TVec3(const T & a, const T & b, const T & c) : m_vec{a, b, c} {}
+
+		operator const glm::tvec3<T>() const { return m_vec; }
 
 		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1 || idx == 2);

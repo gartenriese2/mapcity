@@ -265,6 +265,10 @@ void buildingTest() {
 void geomTest() {
 
 	geom::TPoint2<std::uint8_t> p1 {1, 2};
+	geom::TPoint2<std::uint8_t> p2 {3, 0};
+	geom::TSegment2<std::uint8_t> s1 {p1, p2};
+	std::cout << s1 << std::endl;
+
 	geom::Vec_d v1 {0, 1, 0.5};
 	std::cout << v1 << std::endl;
 

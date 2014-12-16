@@ -16,11 +16,13 @@ class TPoint2 {
 		TPoint2() : m_point{static_cast<T>(0), static_cast<T>(0)} {}
 		TPoint2(const T & a, const T & b) : m_point{a, b} {}
 
-		T & operator[](unsigned int idx) {
+		operator const glm::tvec2<T>() const { return m_point; }
+
+		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1);
 			return m_point[idx];
 		}
-		const T & operator[](unsigned int idx) const {
+		const T & operator[](int idx) const {
 			assert(idx == 0 || idx == 1);
 			return m_point[idx];
 		}
@@ -46,6 +48,8 @@ class TPoint3 {
 
 		TPoint3() : m_point{static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)} {}
 		TPoint3(const T & a, const T & b, const T & c) : m_point{a, b, c} {}
+
+		operator const glm::tvec3<T>() const { return m_point; }
 
 		T & operator[](int idx) {
 			assert(idx == 0 || idx == 1 || idx == 2);
