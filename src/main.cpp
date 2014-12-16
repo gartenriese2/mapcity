@@ -43,7 +43,7 @@ void printHouseholds(std::vector<ResidentialBuilding> & rbVec) {
 	Debug::log("Number of teens: " + std::to_string(numTeens));
 	Debug::log("Number of adults: " + std::to_string(numAdults));
 	Debug::log("Number of seniors: " + std::to_string(numSeniors));
-	
+
 }
 
 void householdTest(unsigned int n) {
@@ -100,7 +100,7 @@ void graphicsTest() {
 	while(1) {
 
 		if (game.graphicsShouldClose()) {
-			
+
 			game.terminateGraphics();
 
 			break;
@@ -121,8 +121,8 @@ void printAstar(const Network & net, const std::shared_ptr<Node> from, const std
 	auto edges = net.astar(from, to);
 	for (const auto & edge : edges) {
 		Debug::log("Using Edge " + std::to_string(edge->getID()) + " from Node " +
-			std::to_string(edge->getFrom()->getID()) + " to Node " + 
-			std::to_string(edge->getTo()->getID()) + " in " + std::to_string(edge->getCost()) + 
+			std::to_string(edge->getFrom()->getID()) + " to Node " +
+			std::to_string(edge->getTo()->getID()) + " in " + std::to_string(edge->getCost()) +
 			" seconds.");
 		time += edge->getCost();
 	}
@@ -258,12 +258,25 @@ void buildingTest() {
 
 }
 
+#include "mapcity/geom/point.hpp"
+#include "mapcity/geom/vector.hpp"
+#include "mapcity/geom/segment.hpp"
+
+void geomTest() {
+
+	geom::TPoint2<std::uint8_t> p1 {1, 2};
+	geom::Vec_d v1 {0, 1, 0.5};
+	std::cout << v1 << std::endl;
+
+}
+
 int main() {
 
 	//householdTest(10000);
 	//residentialTest();
-	networkTest2();
+	//networkTest2();
 	//buildingTest();
+	geomTest();
 
 	return EXIT_SUCCESS;
 
