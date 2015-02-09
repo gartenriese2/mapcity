@@ -1,5 +1,4 @@
-#ifndef _NETWORK_
-#define _NETWORK_
+#pragma once
 
 #include "edge.hpp"
 
@@ -27,5 +26,3 @@ class Network {
 		std::vector<std::shared_ptr<Edge>> m_edges;
 
 };
-
-#endif // _NETWORK_

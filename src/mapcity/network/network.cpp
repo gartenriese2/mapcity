@@ -65,7 +65,7 @@ float h(const NodePtr a, const NodePtr b) {
 }
 
 void printPM(const std::map<Node, std::shared_ptr<Edge>> & pathMap) {
-	Debug::log("Printing PathMap");
+
 	for (const auto & pair : pathMap) {
 		Debug::log("Node: " + std::to_string(pair.first.getID()) + ", Edge: "
 			+ std::to_string(pair.second->getID()));
@@ -100,7 +100,7 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const NodePtr start,
 	std::map<NodePtr, std::shared_ptr<Edge>> came_from;
 
 	std::map<NodePtr, float> g_score {{start, 0.f}};
-	float fStart {g_score[start] + h(start, goal)};
+	auto fStart = g_score[start] + h(start, goal);
 	std::map<NodePtr, float> f_score {{start, fStart}};
 
 	while (!open.empty()) {
@@ -108,7 +108,7 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const NodePtr start,
 		std::sort(open.begin(), open.end(), [&](const NodePtr a, const NodePtr b){
 			return f_score[a] < f_score[b];
 		});
-		NodePtr current = open.front();
+		auto current = open.front();
 
 		if (current == goal) {
 			return createPath(came_from, goal);
@@ -119,13 +119,13 @@ std::vector<std::shared_ptr<Edge>> Network::astar(const NodePtr start,
 
 		for (const auto & edge : getEdgesFromNode(current)) {
 
-			NodePtr neighbor {edge->getTo()};
+			auto neighbor = edge->getTo();
 
 			if (isIn(closed, neighbor)) {
 				continue;
 			}
 
-			float tentative_g_score {g_score[current] + edge->getCost()};
+			auto tentative_g_score = g_score[current] + edge->getCost();
 
 			if (!isIn(open, neighbor) ||
 				g_score.count(neighbor) == 0 ||

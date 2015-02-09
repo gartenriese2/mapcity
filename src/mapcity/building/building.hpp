@@ -16,7 +16,7 @@ class Building {
 		Building() {}
 		Building(const geom::Point &, bool = false);
 
-		const std::shared_ptr<BuildingNode> getNode() const { return m_buildingNode; }
+		auto getNode() const { return m_buildingNode; }
 
 		void connect(const std::shared_ptr<TransitNode>, Network &);
 

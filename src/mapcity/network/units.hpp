@@ -2,6 +2,7 @@
 #define _UNITS_
 
 namespace unit {
+
 struct speed {
 	float m_val;
 	constexpr speed(float val) : m_val{val} {}
@@ -21,7 +22,6 @@ struct length {
 	operator float() const { return m_val; }
 };
 
-//speed kmhToMs(double kmh) 
 } // namespace unit
 
 constexpr unit::speed operator "" _ms(long double val) {

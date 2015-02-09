@@ -17,9 +17,9 @@ TransitDatabase::TransitDatabase(const std::string & file)
 		exit(EXIT_FAILURE);
 	}
 	
-	if (std::strcmp(m_root->Name(), k_rootName.c_str()) != 0) {
-		Debug::log(file + " is not a valid " + k_rootName + " file"
-			+ "(Missing buildingdatabase root element");
+	if (std::strcmp(m_root->Name(), "transitdatabase") != 0) {
+		Debug::log(file + " is not a valid transitdatabase file"
+			+ "(Missing transitdatabase root element");
 		exit(EXIT_FAILURE);
 	}
 

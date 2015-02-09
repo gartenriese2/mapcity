@@ -14,7 +14,7 @@ class TransitNode : public Node {
 
 		void allowTypes(const std::set<unsigned int> &);
 
-		const std::set<unsigned int> & getAllowedTypes() const { return m_allowedTypes; }
+		const auto & getAllowedTypes() const { return m_allowedTypes; }
 
 	private:
 

@@ -21,7 +21,7 @@ void Building::connect(const std::shared_ptr<TransitNode> node, Network & nw) {
 			speed.kmhToMs();
 
 			//penalty
-			unit::time penalty {0_s};
+			auto penalty = 0_s;
 			if (s_transitDatabase.hasElement(id, "penaltyStart")) {
 				penalty = s_transitDatabase.getValue<float>(id, "penaltyStart");
 			}

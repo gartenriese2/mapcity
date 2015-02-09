@@ -13,8 +13,8 @@ class People {
 		People();
 		People(AGE, OCCUPATION);
 
-		AGE getAge() const { return m_age; }
-		OCCUPATION getOccupation() const { return m_occupation; }
+		auto getAge() const { return m_age; }
+		auto getOccupation() const { return m_occupation; }
 
 	private:
 

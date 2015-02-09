@@ -19,11 +19,11 @@ class Node {
 		Node();
 		Node(const geom::Point &);
 
-		unsigned int getID() const { return m_id; }
-		const geom::Point & getPos() const { return m_pos; }
+		auto getID() const { return m_id; }
+		const auto & getPos() const { return m_pos; }
 
 		bool addEdge(std::shared_ptr<Edge>);
-		const std::vector<unsigned int> & getEdgeIDs() const { return m_edgeIDs; }
+		const auto & getEdgeIDs() const { return m_edgeIDs; }
 
 	protected:
 

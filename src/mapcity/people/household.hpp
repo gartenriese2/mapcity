@@ -12,7 +12,7 @@ class Household {
 
 		Household();
 
-		unsigned int getSize() const { return static_cast<unsigned int>(m_people.size()); }
+		auto getSize() const { return static_cast<unsigned int>(m_people.size()); }
 
 		unsigned int getNum(People::AGE) const;
 		unsigned int getNum(People::OCCUPATION) const;

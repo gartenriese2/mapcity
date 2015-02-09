@@ -10,11 +10,11 @@ class Edge {
 		Edge();
 		Edge(const NodePtr, const NodePtr, float = 0.f);
 
-		unsigned int getID() const { return m_id; }
-		float getCost() const { return m_cost; }
+		auto getID() const { return m_id; }
+		auto getCost() const { return m_cost; }
 
-		const NodePtr getFrom() const { return m_from; }
-		const NodePtr getTo() const { return m_to; }
+		auto getFrom() const { return m_from; }
+		auto getTo() const { return m_to; }
 
 	protected:
 

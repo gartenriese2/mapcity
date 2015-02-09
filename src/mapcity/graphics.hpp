@@ -12,7 +12,7 @@ class Graphics {
 
 		void init();
 
-		bool shouldClose() const { return m_shouldClose; }
+		auto shouldClose() const { return m_shouldClose; }
 		void terminate();
 
 	private:

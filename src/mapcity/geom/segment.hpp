@@ -31,7 +31,7 @@ class TSegment2 {
 };
 
 template <typename T>
-std::ostream & operator<<(std::ostream & os, const TSegment2<T> & s) {
+auto & operator<<(std::ostream & os, const TSegment2<T> & s) {
 
 	os << s[0] << " <-> " << s[1];
 	return os;
@@ -62,7 +62,7 @@ class TSegment3 {
 };
 
 template <typename T>
-std::ostream & operator<<(std::ostream & os, const TSegment3<T> & s) {
+auto & operator<<(std::ostream & os, const TSegment3<T> & s) {
 
 	os << s[0] << " <-> " << s[1];
 	return os;

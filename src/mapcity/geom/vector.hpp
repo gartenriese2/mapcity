@@ -35,7 +35,7 @@ class TVec2 {
 };
 
 template <typename T>
-std::ostream & operator<<(std::ostream & os, const TVec2<T> & v) {
+auto & operator<<(std::ostream & os, const TVec2<T> & v) {
 
 	os << "[" << std::to_string(v[0]) << "; " << std::to_string(v[1]) << "]";
 	return os;
@@ -70,7 +70,7 @@ class TVec3 {
 };
 
 template <typename T>
-std::ostream & operator<<(std::ostream & os, const TVec3<T> & v) {
+auto & operator<<(std::ostream & os, const TVec3<T> & v) {
 
 	os << "[" << std::to_string(v[0]) << "; " << std::to_string(v[1]) << "; "
 		<< std::to_string(v[2]) << "]";

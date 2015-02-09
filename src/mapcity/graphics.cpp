@@ -2,8 +2,8 @@
 
 #include "../engine/debug.hpp"
 
-constexpr unsigned int k_defaultWidth {1280};
-constexpr unsigned int k_defaultHeight {720};
+constexpr auto k_defaultWidth = 1280u;
+constexpr auto k_defaultHeight = 720u;
 
 void Graphics::init() {
 

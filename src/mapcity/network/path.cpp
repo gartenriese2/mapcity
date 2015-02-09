@@ -6,7 +6,7 @@ Path::Path(const NodePtr from, const NodePtr to, unit::speed speed, unit::time p
     m_penalty{penalty}
 {
 
-	unit::length distance {glm::length(getFrom()->getPos().get() - getTo()->getPos().get())};
+	const auto distance = glm::length(getFrom()->getPos().get() - getTo()->getPos().get());
 	m_cost = distance / m_speed + m_penalty;
 
 }

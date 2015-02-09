@@ -26,13 +26,13 @@ ResidentialBuilding::ResidentialBuilding(unsigned int id, const geom::Point & po
 		&& s_buildingDatabase.hasElement(id, "maxHouseholdsPerFloor")
 		&& s_buildingDatabase.hasElement(id, "minFloors") && s_buildingDatabase.hasElement(id, "maxFloors")) {
 
-		const unsigned int minFloors {s_buildingDatabase.getValue<unsigned int>(id, "minFloors")};
-		const unsigned int maxFloors {s_buildingDatabase.getValue<unsigned int>(id, "maxFloors")};
-		const unsigned int floors {Random::get(minFloors, maxFloors)};
+		const auto minFloors = s_buildingDatabase.getValue<unsigned int>(id, "minFloors");
+		const auto maxFloors = s_buildingDatabase.getValue<unsigned int>(id, "maxFloors");
+		const auto floors = Random::get(minFloors, maxFloors);
 
-		const unsigned int minHouseholdsPerFloor {s_buildingDatabase.getValue<unsigned int>(id, "minHouseholdsPerFloor")};
-		const unsigned int maxHouseholdsPerFloor {s_buildingDatabase.getValue<unsigned int>(id, "maxHouseholdsPerFloor")};
-		const unsigned int householdsPerFloor {Random::get(minHouseholdsPerFloor, maxHouseholdsPerFloor)};
+		const auto minHouseholdsPerFloor = s_buildingDatabase.getValue<unsigned int>(id, "minHouseholdsPerFloor");
+		const auto maxHouseholdsPerFloor = s_buildingDatabase.getValue<unsigned int>(id, "maxHouseholdsPerFloor");
+		const auto householdsPerFloor = Random::get(minHouseholdsPerFloor, maxHouseholdsPerFloor);
 
 		m_numHouseholds = floors * householdsPerFloor;
 
@@ -47,7 +47,7 @@ ResidentialBuilding::ResidentialBuilding(unsigned int id, const geom::Point & po
 
 unsigned int ResidentialBuilding::getEmptyHouseholds() const {
 
-	if (getOccupiedHouseholds() > m_numHouseholds) return 0;
+	if (getOccupiedHouseholds() > m_numHouseholds) return 0u;
 	return m_numHouseholds - getOccupiedHouseholds();
 
 }

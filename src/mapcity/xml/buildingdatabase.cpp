@@ -5,8 +5,6 @@
 
 #include <cstring>
 
-const std::string k_rootName {"buildingdatabase"};
-
 BuildingDatabase::BuildingDatabase(const std::string & file)
   : Database(file)
 {
@@ -16,10 +14,10 @@ BuildingDatabase::BuildingDatabase(const std::string & file)
 		Debug::log("No root element found in " + file);
 		exit(EXIT_FAILURE);
 	}
-	
-	if (std::strcmp(m_root->Name(), k_rootName.c_str()) != 0) {
-		Debug::log(file + " is not a valid " + k_rootName + " file"
-			+ "(Missing buildingdatabase root element");
+
+	if (std::strcmp(m_root->Name(), "buildingdatabase") != 0) {
+		Debug::log(file + " is not a valid buildingdatabase file"
+			+ "(Missing buildingdatabase root element)");
 		exit(EXIT_FAILURE);
 	}
 

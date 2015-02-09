@@ -11,7 +11,7 @@ Household::Household() {
 
 unsigned int Household::getNum(People::AGE age) const {
 
-	unsigned int num {0};
+	auto num = 0u;
 	for (const auto pplPtr : m_people) {
 		if (pplPtr->getAge() == age) ++num;
 	}
@@ -21,7 +21,7 @@ unsigned int Household::getNum(People::AGE age) const {
 
 unsigned int Household::getNum(People::OCCUPATION occ) const {
 
-	unsigned int num {0};
+	auto num = 0u;
 	for (const auto pplPtr : m_people) {
 		if (pplPtr->getOccupation() == occ) ++num;
 	}
@@ -68,63 +68,63 @@ const Household Household::generateRandomHousehold() {
 	*/
 
 	// root
-	constexpr float PENSIONERS {25.7f}; // 25.7% Rentner
-	constexpr float FAMILIES {73.4f};	// 47.7% Familien
-	constexpr float SINGLES {98.5f};	// 25.1% Alleinlebende
-	//constexpr float SHARED {100.f};	//  1.5% Wohngemeinschaften
+	constexpr auto PENSIONERS = 25.7f; // 25.7% Rentner
+	constexpr auto FAMILIES = 73.4f;	// 47.7% Familien
+	constexpr auto SINGLES = 98.5f;	// 25.1% Alleinlebende
+	//constexpr auto SHARED = 100.f;	//  1.5% Wohngemeinschaften
 
 	// Rentner
-	constexpr float PENSIONERSINGLE {59.4f};	// 59.4% Alleinlebende Rentner
-	//constexpr float PENSIONERCOUPLE {100.f};	// 40.6% Zusammenlebende Rentner
+	constexpr auto PENSIONERSINGLE = 59.4f;	// 59.4% Alleinlebende Rentner
+	//constexpr auto PENSIONERCOUPLE = 100.f;	// 40.6% Zusammenlebende Rentner
 
 	// Familien
-	constexpr float PARENTSINGLE {13.9f};	// 13.9% Alleinerziehende
-	//constexpr float PARENTCOUPLE {100.f};	// 86.1% Paare
+	constexpr auto PARENTSINGLE = 13.9f;	// 13.9% Alleinerziehende
+	//constexpr auto PARENTCOUPLE = 100.f;	// 86.1% Paare
 
 	// Alleinlebende
-	constexpr float SINGLEWORKER {73.8f};		// 73.8% Alleinlebende Arbeitssuchende
-	constexpr float SINGLEUNEMPLOYED {98.f};	// 24.2% Alleinlebende dauerhaft Arbeitslose
-	//constexpr float SINGLESTUDENT {100.f};		//  2.0% Alleinlebende Studenten
+	constexpr auto SINGLEWORKER = 73.8f;		// 73.8% Alleinlebende Arbeitssuchende
+	constexpr auto SINGLEUNEMPLOYED = 98.f;	// 24.2% Alleinlebende dauerhaft Arbeitslose
+	//constexpr auto SINGLESTUDENT = 100.f;		//  2.0% Alleinlebende Studenten
 
 	// Wohngemeinschaften
-	constexpr float SHAREDTWO {50.0f};		// 50.0% 2er-WG
-	constexpr float SHAREDTHREE {85.0f};	// 35.0% 3er-WG
-	constexpr float SHAREDFOUR {95.0f};		// 10.0% 4er-WG
-	//constexpr float SHAREDFIVE {100.f};	//  5.0% 5er-WG
+	constexpr auto SHAREDTWO = 50.0f;		// 50.0% 2er-WG
+	constexpr auto SHAREDTHREE = 85.0f;	// 35.0% 3er-WG
+	constexpr auto SHAREDFOUR = 95.0f;		// 10.0% 4er-WG
+	//constexpr auto SHAREDFIVE = 100.f;	//  5.0% 5er-WG
 
 	// Alleinerziehende -> Arbeitssituation
-	constexpr float SINGLEPARENTWORKER {57.5f};		// 57.5% Alleinerziehende Arbeitssuchende
-	//constexpr float SINGLEPARENTUNEMPLOYED {100.f};	// 42.5% Alleinerziehende dauerhaft Arbeitslose
+	constexpr auto SINGLEPARENTWORKER = 57.5f;		// 57.5% Alleinerziehende Arbeitssuchende
+	//constexpr auto SINGLEPARENTUNEMPLOYED = 100.f;	// 42.5% Alleinerziehende dauerhaft Arbeitslose
 
 	// Alleinerziehende -> Kinder
-	constexpr float SINGLEONEKID {69.1f};		// 69.1% Alleinerziehende mit 1 Kind
-	constexpr float SINGLETWOKIDS {93.4f};		// 24.3% Alleinerziehende mit 2 Kindern
-	//constexpr float SINGLETHREEKIDS {100.f};	//  6.6% Alleinerziehende mit 3 Kindern
+	constexpr auto SINGLEONEKID = 69.1f;		// 69.1% Alleinerziehende mit 1 Kind
+	constexpr auto SINGLETWOKIDS = 93.4f;		// 24.3% Alleinerziehende mit 2 Kindern
+	//constexpr auto SINGLETHREEKIDS = 100.f;	//  6.6% Alleinerziehende mit 3 Kindern
 
 	// Alleinerziehende -> Kindesalter
-	constexpr float SINGLEINFANT {17.2f};		// 17.2% Kleinkinder bei Alleinerziehenden
-	constexpr float SINGLEKID {47.2f};			// 30.0% Kinder bei Alleinerziehenden
-	constexpr float SINGLETEEN {59.1f};			// 11.9% Jugendliche bei Alleinerziehenden
-	constexpr float SINGLEWITHSTUDENT {77.1f};	// 18.0% Studenten bei Alleinerziehenden
-	//constexpr float SINGLEWITHWORKER {100.f};	// 22.9% Arbeitssuchende Kinder bei Alleinerziehenden
+	constexpr auto SINGLEINFANT = 17.2f;		// 17.2% Kleinkinder bei Alleinerziehenden
+	constexpr auto SINGLEKID = 47.2f;			// 30.0% Kinder bei Alleinerziehenden
+	constexpr auto SINGLETEEN = 59.1f;			// 11.9% Jugendliche bei Alleinerziehenden
+	constexpr auto SINGLEWITHSTUDENT = 77.1f;	// 18.0% Studenten bei Alleinerziehenden
+	//constexpr auto SINGLEWITHWORKER = 100.f;	// 22.9% Arbeitssuchende Kinder bei Alleinerziehenden
 
 	// Paare -> Arbeitssituation
-	constexpr float COUPLEONLYWORKER {56.f};		// 56.0% arbeitssuchende Paare
-	constexpr float COUPLEONLYUNEMPLOYED {60.f};	//  4.0% dauerhaft arbeitslose Paare
-	//constexpr float COUPLEWORKERUNEMPLOYED {100.f};	// 40.0% Paar mit arbeitssuchend/arbeitslos
+	constexpr auto COUPLEONLYWORKER = 56.f;		// 56.0% arbeitssuchende Paare
+	constexpr auto COUPLEONLYUNEMPLOYED = 60.f;	//  4.0% dauerhaft arbeitslose Paare
+	//constexpr auto COUPLEWORKERUNEMPLOYED = 100.f;	// 40.0% Paar mit arbeitssuchend/arbeitslos
 
 	// Paare -> Kinder
-	constexpr float COUPLEZEROKIDS {45.6f};		// 45.6% Paare ohne Kinder
-	constexpr float COUPLEONEKID {71.5f};		// 25.9% Paare mit 1 Kind
-	constexpr float COUPLETWOKIDS {92.9f};		// 21.4% Paare mit 2 Kindern
-	//constexpr float COUPLETHREEKIDS {100.f};	//  7.1% Paare mit 3 Kindern
+	constexpr auto COUPLEZEROKIDS = 45.6f;		// 45.6% Paare ohne Kinder
+	constexpr auto COUPLEONEKID = 71.5f;		// 25.9% Paare mit 1 Kind
+	constexpr auto COUPLETWOKIDS = 92.9f;		// 21.4% Paare mit 2 Kindern
+	//constexpr auto COUPLETHREEKIDS = 100.f;	//  7.1% Paare mit 3 Kindern
 
 	// Paare -> Kindesalter
-	constexpr float COUPLEINFANT {30.1f};		// 30.1% Kleinkinder bei Paaren
-	constexpr float COUPLEKID {61.7f};			// 31.6% Kinder bei Paaren
-	constexpr float COUPLETEEN {72.0f};			// 10.3% Jugendliche bei Paaren
-	constexpr float COUPLESTUDENT {84.0f};		// 12.0% Studenten bei Paaren
-	//constexpr float COUPLEWITHWORKER {100.f};	// 16.0% Arbeitssuchende Kinder bei Paaren
+	constexpr auto COUPLEINFANT = 30.1f;		// 30.1% Kleinkinder bei Paaren
+	constexpr auto COUPLEKID = 61.7f;			// 31.6% Kinder bei Paaren
+	constexpr auto COUPLETEEN = 72.0f;			// 10.3% Jugendliche bei Paaren
+	constexpr auto COUPLESTUDENT = 84.0f;		// 12.0% Studenten bei Paaren
+	//constexpr auto COUPLEWITHWORKER = 100.f;	// 16.0% Arbeitssuchende Kinder bei Paaren
 
 	static const auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 	static const std::default_random_engine generator(static_cast<unsigned long>(seed));
@@ -236,7 +236,7 @@ const std::vector<Household> Household::generateRandomHouseholds(unsigned int n)
 
 	std::vector<Household> vec;
 
-	for (unsigned int i {0}; i < n; ++i) {
+	for (auto i = 0u; i < n; ++i) {
 		vec.emplace_back(std::move(Household::generateRandomHousehold()));
 	}
 

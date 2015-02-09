@@ -15,7 +15,7 @@ class ResidentialBuilding : public Building {
 
 		unsigned int getEmptyHouseholds() const;
 		unsigned int getOccupiedHouseholds() const;
-		const std::vector<Household> & getHouseholds() const { return m_households; }
+		const auto & getHouseholds() const { return m_households; }
 
 		bool moveIn(const Household &);
 
