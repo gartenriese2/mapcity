@@ -15,12 +15,12 @@ void fillHouseWithRandomHouseholds(ResidentialBuilding & rb) {
 
 void printHouseholds(std::vector<ResidentialBuilding> & rbVec) {
 
-	unsigned int numPeople {0};
-	unsigned int numInfants {0};
-	unsigned int numKids {0};
-	unsigned int numTeens {0};
-	unsigned int numAdults {0};
-	unsigned int numSeniors {0};
+	auto numPeople = 0u;
+	auto numInfants = 0u;
+	auto numKids = 0u;
+	auto numTeens = 0u;
+	auto numAdults = 0u;
+	auto numSeniors = 0u;
 
 	for (const auto & rb : rbVec) {
 
