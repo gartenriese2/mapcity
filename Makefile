@@ -11,7 +11,6 @@ build/Makefile: CMakeLists.txt
 
 clean:
 	make -C build clean
-	rm -rf cache
 
 distclean:
-	rm -rf build cache contrib/monoengine bin/mapcity
+	rm -rf build imgui.ini contrib/monoengine bin/mapcity
