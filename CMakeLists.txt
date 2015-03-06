@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.0)
-
 project(mapcity)
+
 set(CMAKE_BUILD_TYPE Release)
 
 # warnings
@@ -10,17 +10,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -msse2 -msse3 ${MY_WARNING_FL
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fno-omit-frame-pointer")
 add_definitions( -I${PROJECT_SOURCE_DIR}/src )
 
-#
 # Files
-#
 file(GLOB_RECURSE CXX_SRCS src/*.cpp)
 file(GLOB_RECURSE C_SRCS src/*.c)
-file(GLOB_RECURSE HDRS1 src/*.h)
-file(GLOB_RECURSE HDRS1 src/*.hpp)
+file(GLOB_RECURSE HPP_HDRS src/*.hpp)
+file(GLOB_RECURSE H_HDRS src/*.h)
 set(SRCS "${C_SRCS};${CXX_SRCS}")
-set(HDRS "${HDRS1};${HDRS2}")
+set(HDRS "${H_HDRS};${HPP_HDRS}")
 
-find_package(PkgConfig REQUIRED)
+# Packages
 find_package(OpenGL REQUIRED)
 find_package(Threads)
 
