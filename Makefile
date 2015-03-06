@@ -14,4 +14,4 @@ clean:
 	rm -rf cache
 
 distclean:
-	rm -rf build cache
+	rm -rf build cache contrib/monoengine bin/mapcity

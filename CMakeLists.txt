@@ -33,12 +33,12 @@ include(ExternalProject)
 ExternalProject_Add(
 	MonoEngine
 	PREFIX ${MONOENGINE_PREFIX}
-	URL https://github.com/gartenriese2/monoengine/archive/v1.0.1-static-lib.zip
+	URL https://github.com/gartenriese2/monoengine/archive/v1.0.3-static-lib.zip
 	INSTALL_DIR ${MONOENGINE_INSTALL_DIR}
 	CMAKE_ARGS ${MONOENGINE_CMAKE_ARGS}
 	INSTALL_COMMAND make
 )
-set(MONOENGINE_STATIC_LIB "${MONOENGINE_INSTALL_DIR}/src/MonoEngine-build/libmonoEngine.a")
+set(MONOENGINE_STATIC_LIB "${MONOENGINE_INSTALL_DIR}/src/MonoEngine-build/libMonoEngine.a")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${MONOENGINE_INSTALL_DIR}/src/")
 
 set(GLFW_STATIC_LIB "${MONOENGINE_INSTALL_DIR}/src/MonoEngine/contrib/glfw/lib/libglfw3.a")
