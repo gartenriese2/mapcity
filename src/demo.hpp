@@ -1,13 +1,13 @@
 #pragma once
 
-#include <MonoEngine/src/engine.hpp>
-#include <MonoEngine/src/core/camera.hpp>
-#include <MonoEngine/src/gl/program.hpp>
-#include <MonoEngine/src/gl/buffer.hpp>
-#include <MonoEngine/src/gl/vertexarray.hpp>
-#include <MonoEngine/src/gl/timer.hpp>
-#include <MonoEngine/src/object.hpp>
-#include <MonoEngine/src/gl/framebuffer.hpp>
+#include <MonoEngine/engine.hpp>
+#include <MonoEngine/core/camera.hpp>
+#include <MonoEngine/gl/program.hpp>
+#include <MonoEngine/gl/buffer.hpp>
+#include <MonoEngine/gl/vertexarray.hpp>
+#include <MonoEngine/gl/timer.hpp>
+#include <MonoEngine/object.hpp>
+#include <MonoEngine/gl/framebuffer.hpp>
 
 #include <deque>
 #include <vector>
