@@ -59,6 +59,7 @@ set(MONOENGINE_BUILD_DIR "${PROJECT_SOURCE_DIR}/build/monoengine")
 option(MONOENGINE_LEGACY "use legacy engine" OFF)
 if (${MONOENGINE_LEGACY})
 	set(MONOENGINE_DOWNLOAD_FILE "legacy.zip")
+	add_definitions(-DLEGACY_MODE)
 else ()
 	set(MONOENGINE_DOWNLOAD_FILE "master.zip")
 endif ()
@@ -97,7 +98,7 @@ ExternalProject_Add_Step(
 	createFolders
 	WORKING_DIRECTORY ${MONOENGINE_DIR}
 	DEPENDEES install
-	COMMAND mkdir lib include include/MonoEngine
+	COMMAND mkdir -p lib include/MonoEngine
 	COMMENT "Creating MonoEngine folders"
 )
 ExternalProject_Add_Step(
@@ -105,7 +106,7 @@ ExternalProject_Add_Step(
 	copySource
 	WORKING_DIRECTORY ${MONOENGINE_DIR}
 	DEPENDEES createFolders
-	COMMAND ${CMAKE_COMMAND} -E rename ${MONOENGINE_SOURCE_DIR}/src/engine ${MONOENGINE_INCLUDE_DIR}/MonoEngine
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${MONOENGINE_SOURCE_DIR}/src/engine ${MONOENGINE_INCLUDE_DIR}/MonoEngine
 	COMMENT "Moving MonoEngine includes"
 )
 ExternalProject_Add_Step(
@@ -143,3 +144,4 @@ add_definitions( -DGLM_FORCE_RADIANS )
 #--------------------------------------------------------------------
 add_executable(mapcity ${SRCS} ${HDRS})
 target_link_libraries(mapcity ${MONOENGINE_STATIC_LIB} ${GLFW_STATIC_LIB} ${OPENGL_gl_LIBRARY} ${GLFW_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+add_dependencies(mapcity MonoEngine)
