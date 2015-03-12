@@ -49,6 +49,8 @@ class Demo {
 		std::deque<double> m_cpuTimeDeque;
 
 		unsigned int m_numObjects;
+#ifdef LEGACY_MODE
 		unsigned int m_maxNumObjects;
+#endif
 
 };

@@ -5,8 +5,8 @@ project(mapcity)
 # Set version
 #--------------------------------------------------------------------
 set(MAPCITY_VERSION_MAJOR "0")
-set(MAPCITY_VERSION_MINOR "0")
-set(MAPCITY_VERSION_PATCH "1")
+set(MAPCITY_VERSION_MINOR "1")
+set(MAPCITY_VERSION_PATCH "0")
 set(MAPCITY_VERSION_EXTRA "alpha")
 set(MAPCITY_VERSION "${MAPCITY_VERSION_MAJOR}.${MAPCITY_VERSION_MINOR}")
 set(MAPCITY_VERSION_FULL "${MAPCITY_VERSION}.${MAPCITY_VERSION_PATCH}${MAPCITY_VERSION_EXTRA}")
@@ -55,23 +55,29 @@ find_package(Threads)
 # MonoEngine
 #--------------------------------------------------------------------
 set(CONTRIB_DIR "${PROJECT_SOURCE_DIR}/contrib")
-set(MONOENGINE_BUILD_DIR "${PROJECT_SOURCE_DIR}/build/monoengine")
+
 option(MONOENGINE_LEGACY "use legacy engine" OFF)
 if (${MONOENGINE_LEGACY})
+	set(MONOENGINE_BUILD_DIR "${PROJECT_SOURCE_DIR}/build/monoengine_legacy")
 	set(MONOENGINE_DOWNLOAD_FILE "legacy.zip")
 	add_definitions(-DLEGACY_MODE)
+	set(MONOENGINE_DIR "${PROJECT_SOURCE_DIR}/contrib/monoengine_legacy")
 else ()
+	set(MONOENGINE_BUILD_DIR "${PROJECT_SOURCE_DIR}/build/monoengine")
 	set(MONOENGINE_DOWNLOAD_FILE "master.zip")
+	set(MONOENGINE_DIR "${PROJECT_SOURCE_DIR}/contrib/monoengine")
 endif ()
+
 set(MONOENGINE_LIB_NAME "libmonoEngine.a")
-set(MONOENGINE_DIR "${PROJECT_SOURCE_DIR}/contrib/monoengine")
-set(MONOENGINE_STAMP_DIR "${MONOENGINE_BUILD_DIR}/stamp")
-set(MONOENGINE_TMP_DIR "${MONOENGINE_BUILD_DIR}/tmp")
-set(MONOENGINE_DOWNLOAD_DIR "${PROJECT_SOURCE_DIR}/dl")
-set(MONOENGINE_LIB_INSTALL_DIR "${MONOENGINE_BUILD_DIR}/libinstall")
-set(MONOENGINE_LIB_DIR "${MONOENGINE_DIR}/lib")
-set(MONOENGINE_SOURCE_DIR "${MONOENGINE_BUILD_DIR}/source")
-set(MONOENGINE_INCLUDE_DIR "${MONOENGINE_DIR}/include")
+
+set(MONOENGINE_STAMP_DIR 		"${MONOENGINE_BUILD_DIR}/stamp")
+set(MONOENGINE_TMP_DIR 			"${MONOENGINE_BUILD_DIR}/tmp")
+set(MONOENGINE_DOWNLOAD_DIR 	"${PROJECT_SOURCE_DIR}/dl")
+set(MONOENGINE_LIB_INSTALL_DIR 	"${MONOENGINE_BUILD_DIR}/libinstall")
+set(MONOENGINE_LIB_DIR 			"${MONOENGINE_DIR}/lib")
+set(MONOENGINE_SOURCE_DIR 		"${MONOENGINE_BUILD_DIR}/source")
+set(MONOENGINE_INCLUDE_DIR 		"${MONOENGINE_DIR}/include")
+
 set(MONOENGINE_CMAKE_ARGS -DSTATIC_LIB=1 -DGLFW_DOWNLOAD_DIR:STRING=${MONOENGINE_DOWNLOAD_DIR} -DCMAKE_INSTALL_PREFIX=${MONOENGINE_INSTALL_DIR})
 
 if (EXISTS ${MONOENGINE_DOWNLOAD_DIR}/${MONOENGINE_DOWNLOAD_FILE})
@@ -129,6 +135,9 @@ ExternalProject_Add_Step(
 set(MONOENGINE_STATIC_LIB "${MONOENGINE_LIB_DIR}/${MONOENGINE_LIB_NAME}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${MONOENGINE_INCLUDE_DIR}")
 
+#--------------------------------------------------------------------
+# GLFW
+#--------------------------------------------------------------------
 set(GLFW_STATIC_LIB "${CONTRIB_DIR}/glfw/lib/libglfw3.a")
 set(GLFW_LIBRARIES "-lX11 -lXrandr -lXi -lXxf86vm")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem ${CONTRIB_DIR}/glfw/include")

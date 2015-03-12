@@ -5,7 +5,9 @@
 int main() {
 
 	Demo demo({1920, 1080});
-	while (demo.render());
+	while (demo.render()) {
+
+	}
 
 	return EXIT_SUCCESS;
 

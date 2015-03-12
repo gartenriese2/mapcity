@@ -1,3 +1,7 @@
 *.sublime-*
 imgui.ini
 dl
+bin
+build
+build_legacy
+contrib
