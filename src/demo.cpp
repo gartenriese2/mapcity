@@ -1,8 +1,8 @@
 #include "demo.hpp"
 
-#include "MonoEngine/gl/shader.hpp"
-#include "MonoEngine/core/log.hpp"
-#include "MonoEngine/extern/imgui.h"
+#include <MonoEngine/gl/shader.hpp>
+#include <MonoEngine/core/log.hpp>
+#include <MonoEngine/extern/imgui.h>
 
 #include <chrono>
 #include <random>
