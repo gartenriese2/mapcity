@@ -1,6 +1,9 @@
 #include <cstdlib>
 #include <memory>
 
+void demo();
+void rendering();
+
 #include "demo.hpp"
 void demo() {
 	Demo demo({1920, 1080});

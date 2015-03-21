@@ -1,7 +1,5 @@
-#version 450 core
-
-layout(std430, binding = 0) restrict readonly buffer ModelMatrixBuffer {
-	mat4 ModelMatrix[];
+layout(std140) uniform ModelMatrixBuffer {
+	mat4 ModelMatrix[NUM_MATRICES];
 };
 
 in int gl_InstanceID;

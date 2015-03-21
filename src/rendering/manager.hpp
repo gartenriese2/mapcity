@@ -33,4 +33,8 @@ class Manager {
 		gl::VertexArray m_vao;
 		gl::Buffer m_modelMatrixBuffer;
 
+#ifdef LEGACY_MODE
+		unsigned int m_maxNumObjects;
+#endif
+
 };
