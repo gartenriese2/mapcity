@@ -300,13 +300,14 @@ bool Demo::render() {
 	m_prog.use();
 	m_prog["col"] = glm::vec3{1.f, 0.f, 0.f};
 	m_prog["ViewProj"] = m_cam.getProjMatrix() * m_cam.getViewMatrix();
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, m_modelMatrixBuffer);
 
 #ifdef LEGACY_MODE
 	// ubo
 	const auto index = glGetUniformBlockIndex(static_cast<GLuint>(m_prog), "ModelMatrixBuffer");
 	glUniformBlockBinding(static_cast<GLuint>(m_prog), index, k_uboBinding);
 	glBindBufferBase(GL_UNIFORM_BUFFER, k_uboBinding, m_modelMatrixBuffer);
+#else
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, m_modelMatrixBuffer);
 #endif
 
 	// draw
