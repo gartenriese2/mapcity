@@ -2,9 +2,6 @@ layout(std140) uniform ModelMatrixBuffer {
 	mat4 ModelMatrix[NUM_MATRICES];
 };
 
-in int gl_InstanceID;
-in int gl_VertexID;
-
 out vec3 color;
 
 uniform mat4 ViewProj;
