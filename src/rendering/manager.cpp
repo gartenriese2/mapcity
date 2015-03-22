@@ -34,7 +34,7 @@ Manager::Manager(core::Camera & cam)
 	if (!vert.compileSource()) {
 		LOG_ERROR("could not compile vertex shader!");
 	}
-	gl::Shader frag("shader/test/color.frag");
+	gl::Shader frag("shader/test/color_legacy.frag");
 #else
 	gl::Shader vert("shader/geometries/quad.vert", "quad_instance_vert");
 	gl::Shader frag("shader/test/color.frag", "color_frag");

@@ -56,7 +56,7 @@ void Demo::init(const glm::uvec2 & size) {
 	if (!vert.compileSource()) {
 		LOG_ERROR("could not compile vertex shader!");
 	}
-	gl::Shader frag("shader/test/color.frag");
+	gl::Shader frag("shader/test/color_legacy.frag");
 #else
 	gl::Shader vert("shader/test/instancedraw.vert", "instance_vert");
 	gl::Shader frag("shader/test/color.frag", "color_frag");
