@@ -10,6 +10,7 @@ layout(std430, binding = 0) restrict readonly buffer ModelMatrixBuffer {
 in int gl_InstanceID;
 
 out vec3 color;
+out vec3 n;
 
 uniform vec3 col;
 uniform mat4 ViewProj;

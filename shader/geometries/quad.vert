@@ -8,6 +8,7 @@ in int gl_InstanceID;
 in int gl_VertexID;
 
 out vec3 color;
+out vec3 n;
 
 uniform mat4 ViewProj;
 uniform vec3 col;
@@ -24,5 +25,6 @@ void main() {
 
 	gl_Position = ViewProj * ModelMatrix[gl_InstanceID] * pos;
 	color = col;
+	n = normal;
 
 }

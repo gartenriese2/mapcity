@@ -1,9 +1,5 @@
 #include "street.hpp"
 
-Street::Street() {
-
-}
-
 StraightStreet::StraightStreet(const glm::vec3 & start, const glm::vec3 & end)
   : m_start{start},
 	m_end{end}

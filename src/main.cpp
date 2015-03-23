@@ -14,12 +14,27 @@ void demo() {
 
 #include "streets/street.hpp"
 #include "rendering/rendering.hpp"
+#include "terrain/terrain.hpp"
+#include "buildings/building.hpp"
 void rendering() {
+
+	/*
+	 *	Initialization
+	 */
 
 	Rendering renderer({1920, 1080});
 	auto & manager = renderer.getManager();
 
-	// add streets
+	/*
+	 *	Objects
+	 */
+
+	// terrain
+	std::shared_ptr<Drawable> terrain
+			= std::make_shared<Terrain>(glm::vec3(-500,-500,-10.f), glm::vec3(500,500,-10.f));
+	manager.add(terrain);
+
+	// streets
 	std::vector<std::shared_ptr<Drawable>> streets;
 	auto addSmallStreet = [&streets](const glm::vec3 & a, const glm::vec3 & b){
 		streets.emplace_back(std::make_shared<StraightSmallStreet>(a, b));
@@ -36,8 +51,31 @@ void rendering() {
 	addSmallStreet({175, -75, 0}, {-100, -75, 0});
 	addSmallStreet({175, -150, 0}, {175, 50, 0});
 	for (const auto & str : streets) {
-		manager.addStreet(str);
+		manager.add(str);
 	}
+
+	// buildings
+	std::vector<std::shared_ptr<Drawable>> buildings;
+	auto addOfficeBuilding = [&buildings](const glm::vec3 & a, const float width,
+			const float depth, const float height){
+		buildings.emplace_back(std::make_shared<OfficeBuilding>(a, a + glm::vec3{width, 0, 0},
+				a + glm::vec3{0, depth, 0}, height));
+	};
+	auto addResidentialBuilding = [&buildings](const glm::vec3 & a, const float width,
+			const float depth, const float height){
+		buildings.emplace_back(std::make_shared<ResidentialBuilding>(a, a + glm::vec3{width, 0, 0},
+				a + glm::vec3{0, depth, 0}, height));
+	};
+	addResidentialBuilding({-30.f, 10.f, 0.f}, 30.f, 40.f, 100.f);
+	addResidentialBuilding({10.f, 10.f, 0.f}, 30.f, 40.f, 120.f);
+	addOfficeBuilding({50.f, 10.f, 0.f}, 40.f, 40.f, 150.f);
+	for (const auto & b : buildings) {
+		manager.add(b);
+	}
+
+	/*
+	 *	Rendering
+	 */
 
 	while (renderer.render());
 

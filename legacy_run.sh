@@ -1,2 +1,1 @@
-make legacy
-./bin/mapcity_legacy
+make legacy && ./bin/mapcity_legacy

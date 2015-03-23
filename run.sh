@@ -1,2 +1,1 @@
-make
-./bin/mapcity
+make && ./bin/mapcity

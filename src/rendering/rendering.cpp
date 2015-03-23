@@ -17,7 +17,8 @@ void Rendering::init(const glm::uvec2 & size) {
 
 	m_cam.setRatio(static_cast<float>(size.x) / static_cast<float>(size.y));
 	m_cam.setFov(glm::radians(45.f));
-	m_cam.translate({0.f, 0.f, 500.f});
+	m_cam.translate({0.f, -100.f, 500.f});
+	m_cam.pitch(glm::radians(10.f));
 }
 
 Manager & Rendering::getManager() {

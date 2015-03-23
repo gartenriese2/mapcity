@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 
 namespace core {
 	class Camera;
@@ -20,21 +21,29 @@ class Manager {
 		Manager(core::Camera &);
 
 		void draw();
-
-		void addStreet(const std::shared_ptr<Drawable> &);
+		void add(const std::shared_ptr<Drawable> &);
 
 	private:
 
-		std::vector<std::weak_ptr<Drawable>> m_streets;
+		void initRenderTypes();
 
 		core::Camera & m_cam;
-		gl::Program m_prog;
-		gl::Buffer m_ibo;
-		gl::VertexArray m_vao;
-		gl::Buffer m_modelMatrixBuffer;
 
-#ifdef LEGACY_MODE
+		struct RenderType {
+			gl::Program prog;
+			gl::Buffer ibo;
+			std::function<void(GLsizei)> drawCall;
+		};
+		std::map<Drawable::RenderTypeName, RenderType> m_renderTypes;
+
+		struct DrawableType {
+			std::vector<std::weak_ptr<Drawable>> objects;
+			glm::vec3 col;
+			gl::VertexArray vao;
+			gl::Buffer modelBuffer;
+		};
+		std::map<std::string, DrawableType> m_drawables;
+
 		unsigned int m_maxNumObjects;
-#endif
 
 };
