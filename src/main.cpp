@@ -16,6 +16,7 @@ void demo() {
 #include "rendering/rendering.hpp"
 #include "terrain/terrain.hpp"
 #include "buildings/building.hpp"
+#include "rendering/gui.hpp"
 void rendering() {
 
 	/*
@@ -50,7 +51,7 @@ void rendering() {
 	addSmallStreet({-200, 0, 0.01f}, {-300, -100, 0.01f});
 	addSmallStreet({175, -75, 0.01f}, {-100, -75, 0.01f});
 	addSmallStreet({175, -150, 0.01f}, {175, 50, 0.01f});
-	for (const auto & str : streets) {
+	for (auto & str : streets) {
 		manager.add(str);
 	}
 

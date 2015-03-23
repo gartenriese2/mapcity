@@ -7,7 +7,7 @@
 /**************************************************************************************************/
 
 constexpr auto k_modelBufferBinding = 0u;
-constexpr auto k_maxNumObjects = 400u;
+constexpr auto k_maxNumObjects = 1000u;
 
 /**************************************************************************************************/
 
@@ -230,11 +230,11 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 	const auto type = drawable->getType();
 	const auto renderType = drawable->getRenderType();
 	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
-#ifdef LEGACY_MODE
+
 	if (m_drawables.count(type) == 0) {
 		// color
 		m_drawables[type].col = drawable->getColor();
-
+#ifdef LEGACY_MODE
 		// vao
 		m_drawables[type].vao.bind();
 		m_renderTypes[renderType].ibo.bind(GL_ELEMENT_ARRAY_BUFFER);
@@ -246,26 +246,58 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 		m_drawables[type].modelBuffer.createMutableStorage(m_maxNumObjects * typeSize,
 				GL_DYNAMIC_DRAW);
 		m_drawables[type].modelBuffer.unbind();
-	}
-
-	const auto offset = static_cast<unsigned int>(m_drawables[type].objects.size()) * typeSize;
-	m_drawables[type].objects.emplace_back(drawable);
-	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
-	m_drawables[type].modelBuffer.setData(offset, typeSize, glm::value_ptr(drawable->getModelMatrix()));
-	m_drawables[type].modelBuffer.unbind();
 #else
-	if (m_drawables.count(type) == 0) {
-		// color
-		m_drawables[type].col = drawable->getColor();
 		// vao
 		m_drawables[type].vao.bindElementBuffer(m_renderTypes[renderType].ibo);
 		// buffer
 		m_drawables[type].modelBuffer.createImmutableStorage(m_maxNumObjects * typeSize,
 				GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
+#endif
+	}
+
+	const auto numObjects = static_cast<unsigned int>(m_drawables[type].objects.size());
+	if (numObjects >= m_maxNumObjects) {
+		// cleanup
+		auto & objects = m_drawables[type].objects;
+		auto it = objects.begin();
+		while (it != objects.end()) {
+			if (it->expired()) {
+				it = objects.erase(it);
+				continue;
+			}
+			++it;
+		}
+		if (numObjects != static_cast<unsigned int>(objects.size())) {
+			// some objects expired -> copying new data to buffer
+			std::vector<glm::mat4> modelVec;
+			modelVec.reserve(objects.size());
+			for (const auto & obj : objects) {
+				modelVec.emplace_back(obj.lock()->getModelMatrix());
+			}
+#ifdef LEGACY_MODE
+			m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
+#endif
+			m_drawables[type].modelBuffer.setData(
+					0,
+					typeSize * static_cast<unsigned int>(modelVec.size()),
+					modelVec.data());
+#ifdef LEGACY_MODE
+			m_drawables[type].modelBuffer.unbind();
+#endif
+		} else {
+			// still full!
+			LOG_WARNING(type + " Buffer is full! Not adding any more objects!");
+			return;
+		}
 	}
 
 	const auto offset = static_cast<unsigned int>(m_drawables[type].objects.size()) * typeSize;
 	m_drawables[type].objects.emplace_back(drawable);
+#ifdef LEGACY_MODE
+	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
+	m_drawables[type].modelBuffer.setData(offset, typeSize, glm::value_ptr(drawable->getModelMatrix()));
+	m_drawables[type].modelBuffer.unbind();
+#else
 	m_drawables[type].modelBuffer.setData(offset, typeSize, glm::value_ptr(drawable->getModelMatrix()));
 #endif
 }
@@ -278,12 +310,13 @@ void Manager::setScreenSize(const glm::uvec2 & size) {
 
 /**************************************************************************************************/
 
-glm::vec3 Manager::getWorldPos(const unsigned int xPos, const unsigned int yPos) const {
+glm::vec3 Manager::getWorldPos(const glm::uvec2 & pos) const {
 	glm::vec3 wPos;
 	m_fbo.bind(GL_READ_FRAMEBUFFER);
 	m_fbo.read(GL_COLOR_ATTACHMENT2);
 	const auto size = m_fbo.getAttachmentSize(GL_COLOR_ATTACHMENT2);
-	glReadPixels(static_cast<GLint>(xPos), size.y - static_cast<GLint>(yPos), 1, 1, GL_RGB, GL_FLOAT, &wPos);
+	glReadPixels(static_cast<GLint>(pos.x), size.y - static_cast<GLint>(pos.y), 1, 1, GL_RGB,
+			GL_FLOAT, &wPos);
 	m_fbo.unbind();
 	return wPos;
 }

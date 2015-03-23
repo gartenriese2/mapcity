@@ -27,7 +27,7 @@ class Manager {
 
 		void setScreenSize(const glm::uvec2 &);
 
-		glm::vec3 getWorldPos(unsigned int, unsigned int) const;
+		glm::vec3 getWorldPos(const glm::uvec2 &) const;
 
 	private:
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "manager.hpp"
+#include "input.hpp"
+#include "gui.hpp"
 
 #include <MonoEngine/engine.hpp>
 #include <MonoEngine/core/camera.hpp>
@@ -12,6 +14,7 @@ class Rendering {
 		Rendering(const glm::uvec2 &);
 
 		Manager & getManager();
+		std::unique_ptr<core::Input> & getInputPtr();
 
 		bool render();
 
@@ -23,7 +26,7 @@ class Rendering {
 		core::Camera m_cam;
 
 		Manager m_manager;
-
-		glm::uvec2 m_mousePos;
+		Input m_input;
+		Gui m_gui;
 
 };
