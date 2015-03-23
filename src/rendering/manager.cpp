@@ -11,8 +11,9 @@ constexpr auto k_maxNumObjects = 400u;
 
 /**************************************************************************************************/
 
-Manager::Manager(core::Camera & cam)
+Manager::Manager(core::Camera & cam, const glm::uvec2 & size)
   : m_cam{cam},
+	m_screenSize{size},
   	m_maxNumObjects{k_maxNumObjects}
 {
 	GLint maxBufferSize;
@@ -25,6 +26,7 @@ Manager::Manager(core::Camera & cam)
 	m_maxNumObjects = std::min(static_cast<unsigned int>(maxBufferSize), m_maxNumObjects);
 
 	initRenderTypes();
+	initFBO();
 }
 
 /**************************************************************************************************/
@@ -124,7 +126,53 @@ void Manager::initRenderTypes() {
 
 /**************************************************************************************************/
 
+void Manager::initFBO() {
+#ifdef LEGACY_MODE
+	m_depthTex.bind();
+	m_depthTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_DEPTH_COMPONENT32F);
+	m_normalTex.bind();
+	m_normalTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGB32F);
+	m_colorTex.bind();
+	m_colorTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
+	m_positionTex.bind();
+	m_positionTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGB32F);
+	m_lightingTex.bind();
+	m_lightingTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
+
+	m_fbo.bind();
+	m_fbo.attachTexture(GL_DEPTH_ATTACHMENT, m_depthTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT0, m_normalTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT1, m_colorTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT2, m_positionTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT3, m_lightingTex, 0);
+	if (!m_fbo.isComplete()) {
+		LOG_ERROR("Incomplete FBO!");
+	}
+	m_fbo.unbind();
+#else
+	m_depthTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_DEPTH_COMPONENT32F);
+	m_normalTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGB32F);
+	m_colorTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
+	m_positionTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGB32F);
+	m_lightingTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
+
+	m_fbo.attachTexture(GL_DEPTH_ATTACHMENT, m_depthTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT0, m_normalTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT1, m_colorTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT2, m_positionTex, 0);
+	m_fbo.attachTexture(GL_COLOR_ATTACHMENT3, m_lightingTex, 0);
+	if (!m_fbo.isComplete(GL_FRAMEBUFFER)) {
+		LOG_ERROR("Incomplete FBO!");
+	}
+#endif
+}
+
+/**************************************************************************************************/
+
 void Manager::draw() {
+
+	m_fbo.bind();
+	m_fbo.draw({GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3});
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -153,6 +201,24 @@ void Manager::draw() {
 		drawType.vao.bind();
 		m_renderTypes[renderType].drawCall(static_cast<GLsizei>(drawType.objects.size()));
 	}
+
+	m_fbo.unbind();
+
+#ifdef LEGACY_MODE
+	m_fbo.bind(GL_READ_FRAMEBUFFER);
+	glDrawBuffer(GL_BACK);
+#endif
+	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT0,
+			{0, 0, m_screenSize.x / 2, m_screenSize.y / 2});
+	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT1,
+			{m_screenSize.x / 2, 0, m_screenSize.x, m_screenSize.y / 2});
+	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT2,
+			{0, m_screenSize.y / 2, m_screenSize.x / 2, m_screenSize.y});
+	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT3,
+			{m_screenSize.x / 2, m_screenSize.y / 2, m_screenSize.x, m_screenSize.y});
+#ifdef LEGACY_MODE
+	m_fbo.unbind();
+#endif
 
 }
 
@@ -200,6 +266,12 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 	m_drawables[type].objects.emplace_back(drawable);
 	m_drawables[type].modelBuffer.setData(offset, typeSize, glm::value_ptr(drawable->getModelMatrix()));
 #endif
+}
+
+/**************************************************************************************************/
+
+void Manager::setScreenSize(const glm::uvec2 & size) {
+	m_screenSize = size;
 }
 
 /**************************************************************************************************/

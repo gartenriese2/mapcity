@@ -2,7 +2,7 @@
 
 Rendering::Rendering(const glm::uvec2 & size)
   : m_engine{size, "MapCity", true},
-	m_manager{m_cam}
+	m_manager{m_cam, size}
 {
 	init(size);
 }

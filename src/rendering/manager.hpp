@@ -5,6 +5,8 @@
 #include <MonoEngine/gl/program.hpp>
 #include <MonoEngine/gl/buffer.hpp>
 #include <MonoEngine/gl/vertexarray.hpp>
+#include <MonoEngine/gl/texture.hpp>
+#include <MonoEngine/gl/framebuffer.hpp>
 
 #include <vector>
 #include <memory>
@@ -18,16 +20,27 @@ class Manager {
 
 	public:
 
-		Manager(core::Camera &);
+		Manager(core::Camera &, const glm::uvec2 &);
 
 		void draw();
 		void add(const std::shared_ptr<Drawable> &);
 
+		void setScreenSize(const glm::uvec2 &);
+
 	private:
 
 		void initRenderTypes();
+		void initFBO();
 
 		core::Camera & m_cam;
+		glm::uvec2 m_screenSize;
+
+		gl::Framebuffer m_fbo;
+		gl::Texture m_depthTex;
+		gl::Texture m_normalTex;
+		gl::Texture m_colorTex;
+		gl::Texture m_positionTex;
+		gl::Texture m_lightingTex;
 
 		struct RenderType {
 			gl::Program prog;

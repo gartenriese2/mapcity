@@ -4,6 +4,7 @@ layout(std140) uniform ModelMatrixBuffer {
 
 out vec3 color;
 out vec3 n;
+out vec3 worldpos;
 
 uniform mat4 ViewProj;
 uniform vec3 col;
@@ -20,6 +21,7 @@ void main() {
 	int nIndic = (gl_VertexID>>3);
 	normal[nIndic] = pos[nIndic];
 
+	worldpos = (ModelMatrix[gl_InstanceID] * pos).xyz;
 	gl_Position = ViewProj * ModelMatrix[gl_InstanceID] * pos;
 	color = col;
 	n = normal;
