@@ -31,7 +31,7 @@ void rendering() {
 
 	// terrain
 	std::shared_ptr<Drawable> terrain
-			= std::make_shared<Terrain>(glm::vec3(-500,-500,-10.f), glm::vec3(500,500,-10.f));
+			= std::make_shared<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
 	manager.add(terrain);
 
 	// streets
@@ -42,14 +42,14 @@ void rendering() {
 	auto addMediumStreet = [&streets](const glm::vec3 & a, const glm::vec3 & b){
 		streets.emplace_back(std::make_shared<StraightMediumStreet>(a, b));
 	};
-	addMediumStreet({-300, 0, 0}, {100, 0, 0});
-	addSmallStreet({-200, 100, 0}, {100, 100, 0});
-	addMediumStreet({100, -200, 0}, {100, 200, 0});
-	addSmallStreet({-100, -100, 0}, {-100, 100, 0});
-	addSmallStreet({100, 50, 0}, {200, 50, 0});
-	addSmallStreet({-200, 0, 0}, {-300, -100, 0});
-	addSmallStreet({175, -75, 0}, {-100, -75, 0});
-	addSmallStreet({175, -150, 0}, {175, 50, 0});
+	addMediumStreet({-300, 0, 0.02f}, {100, 0, 0.02f});
+	addSmallStreet({-200, 100, 0.01f}, {100, 100, 0.01f});
+	addMediumStreet({100, -200, 0.02f}, {100, 200, 0.02f});
+	addSmallStreet({-100, -100, 0.01f}, {-100, 100, 0.01f});
+	addSmallStreet({100, 50, 0.01f}, {200, 50, 0.01f});
+	addSmallStreet({-200, 0, 0.01f}, {-300, -100, 0.01f});
+	addSmallStreet({175, -75, 0.01f}, {-100, -75, 0.01f});
+	addSmallStreet({175, -150, 0.01f}, {175, 50, 0.01f});
 	for (const auto & str : streets) {
 		manager.add(str);
 	}

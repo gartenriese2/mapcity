@@ -24,4 +24,6 @@ class Rendering {
 
 		Manager m_manager;
 
+		glm::uvec2 m_mousePos;
+
 };

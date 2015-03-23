@@ -360,7 +360,7 @@ bool Demo::render() {
 	}
 
 	// Gui
-	ImGui::NewFrame();
+	m_engine.getGuiPtr()->newFrame();
 	ImGui::Begin("Demo");
 	int numObj = static_cast<int>(m_numObjects);
 #ifdef LEGACY_MODE

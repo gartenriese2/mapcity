@@ -208,14 +208,16 @@ void Manager::draw() {
 	m_fbo.bind(GL_READ_FRAMEBUFFER);
 	glDrawBuffer(GL_BACK);
 #endif
-	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT0,
-			{0, 0, m_screenSize.x / 2, m_screenSize.y / 2});
-	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT1,
-			{m_screenSize.x / 2, 0, m_screenSize.x, m_screenSize.y / 2});
-	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT2,
-			{0, m_screenSize.y / 2, m_screenSize.x / 2, m_screenSize.y});
-	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT3,
-			{m_screenSize.x / 2, m_screenSize.y / 2, m_screenSize.x, m_screenSize.y});
+	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT0,
+	// 		{0, 0, m_screenSize.x / 2, m_screenSize.y / 2});
+	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT1,
+	// 		{m_screenSize.x / 2, 0, m_screenSize.x, m_screenSize.y / 2});
+	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT2,
+	// 		{0, m_screenSize.y / 2, m_screenSize.x / 2, m_screenSize.y});
+	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT3,
+	// 		{m_screenSize.x / 2, m_screenSize.y / 2, m_screenSize.x, m_screenSize.y});
+
+	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT3, {0, 0, m_screenSize.x, m_screenSize.y});
 #ifdef LEGACY_MODE
 	m_fbo.unbind();
 #endif
@@ -272,6 +274,18 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 
 void Manager::setScreenSize(const glm::uvec2 & size) {
 	m_screenSize = size;
+}
+
+/**************************************************************************************************/
+
+glm::vec3 Manager::getWorldPos(const unsigned int xPos, const unsigned int yPos) const {
+	glm::vec3 wPos;
+	m_fbo.bind(GL_READ_FRAMEBUFFER);
+	m_fbo.read(GL_COLOR_ATTACHMENT2);
+	const auto size = m_fbo.getAttachmentSize(GL_COLOR_ATTACHMENT2);
+	glReadPixels(static_cast<GLint>(xPos), size.y - static_cast<GLint>(yPos), 1, 1, GL_RGB, GL_FLOAT, &wPos);
+	m_fbo.unbind();
+	return wPos;
 }
 
 /**************************************************************************************************/
