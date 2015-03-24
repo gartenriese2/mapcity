@@ -6,6 +6,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 const auto k_dimension = glm::vec3{4.7f, 1.83f, 1.43f};
+constexpr auto k_minSpeed = -20.f;
+constexpr auto k_maxSpeed = 50.f;
 
 Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir)
   : m_pos{pos},
@@ -27,17 +29,23 @@ void Vehicle::initModelMatrix() {
 	m_object.moveTo(gameToGraphics(m_pos + glm::vec3{0.f, k_dimension.y * 0.5f, 0.f}));
 }
 
-void Vehicle::update(const float step) {
+void Vehicle::update(const float t) {
+	const auto s = t * m_speed + 0.5f * m_acceleration * t * t;
+	m_speed += m_acceleration * t;
+	m_speed = std::min(std::max(m_speed, k_minSpeed), k_maxSpeed);
+	// friction
+	m_speed -= m_speed * 0.5f * t;
 
-	const auto diff = step * m_speed;
-	m_object.move(gameToGraphics(diff), m_dir);
+	m_object.move(gameToGraphics(s), m_dir);
+	const auto turnDiff = m_speed * t * m_turnSpeed;
+	m_dir = glm::rotateZ(m_dir, glm::radians(turnDiff));
+	m_object.rotate(glm::radians(turnDiff), {0.f, 0.f, 1.f});
 }
 
-void Vehicle::setSpeed(const float speed) {
-	m_speed = speed;
+void Vehicle::setTurnSpeed(const float speed) {
+	m_turnSpeed = speed;
 }
 
-void Vehicle::turn(const float angle) {
-	m_dir = glm::rotateZ(m_dir, glm::radians(angle));
-	m_object.rotate(glm::radians(angle), {0.f, 0.f, 1.f});
+void Vehicle::setAcceleration(const float acc) {
+	m_acceleration = acc;
 }

@@ -89,22 +89,28 @@ void rendering() {
 
 	renderer.getInputPtr()->addKeyFunc([&](const int key, const int, const int action, const int){
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-			car->setSpeed(30.f);
+			car->setAcceleration(30.f);
 		}
 		if (key == GLFW_KEY_UP && action == GLFW_RELEASE) {
-			car->setSpeed(0.f);
+			car->setAcceleration(0.f);
 		}
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-			car->setSpeed(-15.f);
+			car->setAcceleration(-30.f);
 		}
 		if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE) {
-			car->setSpeed(0.f);
+			car->setAcceleration(0.f);
 		}
-		if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			car->turn(5.f);
+		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+			car->setTurnSpeed(5.f);
 		}
-		if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			car->turn(-5.f);
+		if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
+			car->setTurnSpeed(0.f);
+		}
+		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+			car->setTurnSpeed(-5.f);
+		}
+		if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
+			car->setTurnSpeed(0.f);
 		}
 	});
 

@@ -13,11 +13,11 @@ class Vehicle : public Drawable, public Updatable {
 
 		virtual void update(float) override;
 
-		void setSpeed(float);
-		void turn(float);
+		void setTurnSpeed(float);
+		void setAcceleration(float);
 	protected:
 		void initModelMatrix();
 	private:
 		glm::vec3 m_pos, m_dir;
-		float m_speed;
+		float m_speed, m_turnSpeed, m_acceleration;
 };
