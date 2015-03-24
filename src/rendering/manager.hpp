@@ -24,6 +24,7 @@ class Manager {
 
 		void draw();
 		void add(const std::shared_ptr<Drawable> &);
+		void updateBuffer(const std::string &);
 
 		void setScreenSize(const glm::uvec2 &);
 

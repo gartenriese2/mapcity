@@ -322,3 +322,25 @@ glm::vec3 Manager::getWorldPos(const glm::uvec2 & pos) const {
 }
 
 /**************************************************************************************************/
+
+void Manager::updateBuffer(const std::string & type) {
+	const auto & objects = m_drawables[type].objects;
+	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
+	std::vector<glm::mat4> modelVec;
+	modelVec.reserve(objects.size());
+	for (const auto & obj : objects) {
+		modelVec.emplace_back(obj.lock()->getModelMatrix());
+	}
+#ifdef LEGACY_MODE
+	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
+#endif
+	m_drawables[type].modelBuffer.setData(
+			0,
+			typeSize * static_cast<unsigned int>(modelVec.size()),
+			modelVec.data());
+#ifdef LEGACY_MODE
+	m_drawables[type].modelBuffer.unbind();
+#endif
+}
+
+/**************************************************************************************************/

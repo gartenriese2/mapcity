@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../rendering/drawable.hpp"
+#include "../../rendering/drawable.hpp"
 
 #include <glm/glm.hpp>
 
@@ -30,7 +30,7 @@ class StraightSmallStreet : public StraightStreet {
 		virtual std::string getType() const override { return "StraightSmallStreet"; }
 		virtual glm::vec3 getColor() const override { return {1.f, 1.f, 0.f}; }
 	private:
-		const float k_width = 4.f;
+		const float k_width = 6.f;
 };
 
 class StraightMediumStreet : public StraightStreet {
@@ -39,5 +39,5 @@ class StraightMediumStreet : public StraightStreet {
 		virtual std::string getType() const override { return "StraightMediumStreet"; }
 		virtual glm::vec3 getColor() const override { return {1.f, 0.f, 0.f}; }
 	private:
-		const float k_width = 8.f;
+		const float k_width = 10.f;
 };

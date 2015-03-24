@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../rendering/drawable.hpp"
+#include "../../rendering/drawable.hpp"
 
 class Building : public Drawable {
 	public:
