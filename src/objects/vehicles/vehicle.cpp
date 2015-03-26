@@ -8,6 +8,8 @@
 const auto k_dimension = glm::vec3{4.7f, 1.83f, 1.43f};
 constexpr auto k_minSpeed = -20.f;
 constexpr auto k_maxSpeed = 50.f;
+constexpr auto k_friction = 0.5f;
+constexpr auto k_stopSpeed = 2.f;
 
 Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir)
   : m_pos{pos},
@@ -30,11 +32,15 @@ void Vehicle::initModelMatrix() {
 }
 
 void Vehicle::update(const float t) {
+	LOG_ASSERT(t > 0.f, "NO NEGATIVE TIME STEPS!");
 	const auto s = t * m_speed + 0.5f * m_acceleration * t * t;
 	m_speed += m_acceleration * t;
 	m_speed = std::min(std::max(m_speed, k_minSpeed), k_maxSpeed);
 	// friction
-	m_speed -= m_speed * 0.5f * t;
+	m_speed -= m_speed * k_friction * std::min(1.f / k_friction, t);
+	if (std::abs(m_acceleration) <= 0.f && std::abs(m_speed) < k_stopSpeed) {
+		m_speed = 0.f;
+	}
 
 	m_object.move(gameToGraphics(s), m_dir);
 	const auto turnDiff = m_speed * t * m_turnSpeed;
