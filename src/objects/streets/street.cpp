@@ -2,8 +2,15 @@
 
 #include "../../rendering/conversion.hpp"
 
-StraightStreet::StraightStreet(const glm::vec3 & start, const glm::vec3 & end)
-  : m_start{start},
+Street::Street(std::unique_ptr<Path> path)
+  : m_path{std::move(path)}
+{
+}
+
+StraightStreet::StraightStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
+  : Street(std::make_unique<StraightPath>(m, start, end)),
+	Drawable{m},
+	m_start{start},
 	m_end{end}
 {
 }
@@ -18,14 +25,14 @@ void StraightStreet::initModelMatrix(const float width) {
 	m_object.moveTo(gameToGraphics((m_start + m_end) * 0.5f));
 }
 
-StraightSmallStreet::StraightSmallStreet(const glm::vec3 & start, const glm::vec3 & end)
-  : StraightStreet{start, end}
+StraightSmallStreet::StraightSmallStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
+  : StraightStreet{m, start, end}
 {
 	initModelMatrix(k_width);
 }
 
-StraightMediumStreet::StraightMediumStreet(const glm::vec3 & start, const glm::vec3 & end)
-  : StraightStreet{start, end}
+StraightMediumStreet::StraightMediumStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
+  : StraightStreet{m, start, end}
 {
 	initModelMatrix(k_width);
 }

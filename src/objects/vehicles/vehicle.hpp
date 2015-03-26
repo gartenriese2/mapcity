@@ -6,7 +6,7 @@
 class Vehicle : public Drawable, public Updatable {
 
 	public:
-		Vehicle(const glm::vec3 &, const glm::vec3 &);
+		Vehicle(Manager &, const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "Vehicle"; }
 		virtual glm::vec3 getColor() const override { return {0.3f, 0.3f, 0.3f}; }
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::CUBE; }

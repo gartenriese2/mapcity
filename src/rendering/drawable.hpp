@@ -5,11 +5,16 @@
 #include <glm/glm.hpp>
 #include <MonoEngine/object.hpp>
 
+class Manager;
+
 class Drawable {
 
 	public:
 
-		enum class RenderTypeName : std::uint8_t { QUAD, CUBE };
+		enum class RenderTypeName : std::uint8_t { QUAD, CUBE, LINE };
+
+		Drawable(Manager &);
+		~Drawable();
 
 		const glm::mat4 & getModelMatrix() const;
 
@@ -20,5 +25,6 @@ class Drawable {
 	protected:
 
 		engine::Object m_object;
+		Manager & m_manager;
 
 };

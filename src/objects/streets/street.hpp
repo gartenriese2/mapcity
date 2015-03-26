@@ -1,20 +1,21 @@
 #pragma once
 
 #include "../../rendering/drawable.hpp"
+#include "../../network/path.hpp"
 
 #include <glm/glm.hpp>
+#include <memory>
 
-class Street : public Drawable {
+class Street {
 	public:
-		Street() = default;
-		virtual std::string getType() const = 0;
-		virtual glm::vec3 getColor() const = 0;
-		virtual RenderTypeName getRenderType() const = 0;
+		Street(std::unique_ptr<Path>);
+	protected:
+		std::shared_ptr<Path> m_path;
 };
 
-class StraightStreet : public Street {
+class StraightStreet : public Street, public Drawable {
 	public:
-		StraightStreet(const glm::vec3 &, const glm::vec3 &);
+		StraightStreet(Manager &, const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const = 0;
 		virtual glm::vec3 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
@@ -26,7 +27,7 @@ class StraightStreet : public Street {
 
 class StraightSmallStreet : public StraightStreet {
 	public:
-		StraightSmallStreet(const glm::vec3 &, const glm::vec3 &);
+		StraightSmallStreet(Manager &, const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "StraightSmallStreet"; }
 		virtual glm::vec3 getColor() const override { return {1.f, 1.f, 0.f}; }
 	private:
@@ -35,7 +36,7 @@ class StraightSmallStreet : public StraightStreet {
 
 class StraightMediumStreet : public StraightStreet {
 	public:
-		StraightMediumStreet(const glm::vec3 &, const glm::vec3 &);
+		StraightMediumStreet(Manager &, const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "StraightMediumStreet"; }
 		virtual glm::vec3 getColor() const override { return {1.f, 0.f, 0.f}; }
 	private:

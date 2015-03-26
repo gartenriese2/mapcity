@@ -4,9 +4,10 @@
 
 #include <MonoEngine/core/log.hpp>
 
-Building::Building(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+Building::Building(Manager & m, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 		const float height)
-  : m_a{a},
+  : Drawable{m},
+	m_a{a},
 	m_b{b},
 	m_c{c},
 	m_height{height}
@@ -26,14 +27,14 @@ void Building::initModelMatrix() {
 	m_object.moveTo(gameToGraphics(0.5f * (m_b + m_c)));
 }
 
-ResidentialBuilding::ResidentialBuilding(const glm::vec3 & a, const glm::vec3 & b,
+ResidentialBuilding::ResidentialBuilding(Manager & m, const glm::vec3 & a, const glm::vec3 & b,
 		const glm::vec3 & c, const float height)
-  : Building{a, b, c, height}
+  : Building{m,a, b, c, height}
 {
 }
 
-OfficeBuilding::OfficeBuilding(const glm::vec3 & a, const glm::vec3 & b,
+OfficeBuilding::OfficeBuilding(Manager & m, const glm::vec3 & a, const glm::vec3 & b,
 		const glm::vec3 & c, const float height)
-  : Building{a, b, c, height}
+  : Building{m, a, b, c, height}
 {
 }

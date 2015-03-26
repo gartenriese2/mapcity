@@ -24,6 +24,7 @@ class Manager {
 
 		void draw();
 		void add(const std::shared_ptr<Drawable> &);
+		bool remove(const std::string &, unsigned long);
 		void updateBuffer(const std::string &);
 
 		void setScreenSize(const glm::uvec2 &);
@@ -53,6 +54,7 @@ class Manager {
 		std::map<Drawable::RenderTypeName, RenderType> m_renderTypes;
 
 		struct DrawableType {
+			std::map<unsigned long, std::unique_ptr<Drawable>> objectMap;
 			std::vector<std::weak_ptr<Drawable>> objects;
 			glm::vec3 col;
 			gl::VertexArray vao;

@@ -304,6 +304,24 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 
 /**************************************************************************************************/
 
+bool Manager::remove(const std::string & type, unsigned long ID) {
+	if (m_drawables.count(type) == 0) {
+		LOG_WARNING("Trying to remove non existant type: " + type);
+		return false;
+	}
+	if (m_drawables[type].objectMap.count(ID) == 0) {
+		LOG_WARNING("Trying to remove non existant ID: " + std::to_string(ID) + " (" + type + ")");
+		return false;
+	}
+	m_drawables[type].objectMap.erase(ID);
+	if (m_drawables[type].objectMap.size() == 0) {
+		m_drawables.erase(type);
+	}
+	return true;
+}
+
+/**************************************************************************************************/
+
 void Manager::setScreenSize(const glm::uvec2 & size) {
 	m_screenSize = size;
 }

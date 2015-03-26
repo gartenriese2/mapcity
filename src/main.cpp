@@ -39,16 +39,16 @@ void rendering() {
 
 	// terrain
 	std::shared_ptr<Drawable> terrain
-			= std::make_shared<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
+			= std::make_shared<Terrain>(manager, glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
 	manager.add(terrain);
 
 	// streets
 	std::vector<std::shared_ptr<Drawable>> streets;
-	auto addSmallStreet = [&streets](const glm::vec3 & a, const glm::vec3 & b){
-		streets.emplace_back(std::make_shared<StraightSmallStreet>(a, b));
+	auto addSmallStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
+		streets.emplace_back(std::make_shared<StraightSmallStreet>(manager, a, b));
 	};
-	auto addMediumStreet = [&streets](const glm::vec3 & a, const glm::vec3 & b){
-		streets.emplace_back(std::make_shared<StraightMediumStreet>(a, b));
+	auto addMediumStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
+		streets.emplace_back(std::make_shared<StraightMediumStreet>(manager, a, b));
 	};
 	addMediumStreet({-300, 0, 0.02f}, {100, 0, 0.02f});
 	addSmallStreet({-200, 100, 0.01f}, {100, 100, 0.01f});
@@ -64,15 +64,15 @@ void rendering() {
 
 	// buildings
 	std::vector<std::shared_ptr<Drawable>> buildings;
-	auto addOfficeBuilding = [&buildings](const glm::vec3 & a, const float width,
+	auto addOfficeBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
-		buildings.emplace_back(std::make_shared<OfficeBuilding>(a, a + glm::vec3{width, 0, 0},
-				a + glm::vec3{0, depth, 0}, height));
+		buildings.emplace_back(std::make_shared<OfficeBuilding>(manager, a,
+				a + glm::vec3{width, 0, 0},	a + glm::vec3{0, depth, 0}, height));
 	};
-	auto addResidentialBuilding = [&buildings](const glm::vec3 & a, const float width,
+	auto addResidentialBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
-		buildings.emplace_back(std::make_shared<ResidentialBuilding>(a, a + glm::vec3{width, 0, 0},
-				a + glm::vec3{0, depth, 0}, height));
+		buildings.emplace_back(std::make_shared<ResidentialBuilding>(manager, a,
+				a + glm::vec3{width, 0, 0},	a + glm::vec3{0, depth, 0}, height));
 	};
 	addResidentialBuilding({-30.f, 10.f, 0.f}, 30.f, 40.f, 100.f);
 	addResidentialBuilding({10.f, 10.f, 0.f}, 30.f, 40.f, 120.f);
@@ -82,7 +82,7 @@ void rendering() {
 	}
 
 	// car
-	std::shared_ptr<Vehicle> car = std::make_shared<Vehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
+	std::shared_ptr<Vehicle> car = std::make_shared<Vehicle>(manager, glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
 	std::shared_ptr<Drawable> carDrawable(car);
 	std::shared_ptr<Updatable> carUpdatable(car);
 	manager.add(carDrawable);

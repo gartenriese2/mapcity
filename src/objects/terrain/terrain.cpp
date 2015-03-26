@@ -2,8 +2,9 @@
 
 #include "../../rendering/conversion.hpp"
 
-Terrain::Terrain(const glm::vec3 & start, const glm::vec3 & end)
-  : m_start{start},
+Terrain::Terrain(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
+  : Drawable{m},
+	m_start{start},
 	m_end{end}
 {
 	initModelMatrix();
