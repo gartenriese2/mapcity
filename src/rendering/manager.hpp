@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <type_traits>
 
 namespace core {
 	class Camera;
@@ -24,6 +25,20 @@ class Manager {
 
 		void draw();
 		void add(const std::shared_ptr<Drawable> &);
+
+		template<typename T>
+		void add(const std::shared_ptr<T> & ptr) {
+			static_assert(std::is_base_of<Drawable, T>::value, "adding a Type that is not derived from Drawable");
+			add(std::static_pointer_cast<Drawable>(ptr));
+		}
+
+		template<typename T>
+		void add(const std::vector<std::shared_ptr<T>> & vec) {
+			for (const auto & ptr : vec) {
+				add(ptr);
+			}
+		}
+
 		bool remove(const std::string &, unsigned long);
 		void updateBuffer(const std::string &);
 

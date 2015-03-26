@@ -38,17 +38,20 @@ void rendering() {
 	 */
 
 	// terrain
-	std::shared_ptr<Drawable> terrain
-			= std::make_shared<Terrain>(manager, glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
+	auto terrain = std::make_shared<Terrain>(manager, glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
 	manager.add(terrain);
 
 	// streets
-	std::vector<std::shared_ptr<Drawable>> streets;
+	std::vector<std::shared_ptr<StraightStreet>> streets;
 	auto addSmallStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
 		streets.emplace_back(std::make_shared<StraightSmallStreet>(manager, a, b));
+		manager.add(streets.back());
+		manager.add(streets.back()->getPaths());
 	};
 	auto addMediumStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
 		streets.emplace_back(std::make_shared<StraightMediumStreet>(manager, a, b));
+		manager.add(streets.back());
+		manager.add(streets.back()->getPaths());
 	};
 	addMediumStreet({-300, 0, 0.02f}, {100, 0, 0.02f});
 	addSmallStreet({-200, 100, 0.01f}, {100, 100, 0.01f});
@@ -58,12 +61,12 @@ void rendering() {
 	addSmallStreet({-200, 0, 0.01f}, {-300, -100, 0.01f});
 	addSmallStreet({175, -75, 0.01f}, {-100, -75, 0.01f});
 	addSmallStreet({175, -150, 0.01f}, {175, 50, 0.01f});
-	for (auto & str : streets) {
+	for (auto str : streets) {
 		manager.add(str);
 	}
 
 	// buildings
-	std::vector<std::shared_ptr<Drawable>> buildings;
+	std::vector<std::shared_ptr<Building>> buildings;
 	auto addOfficeBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
 		buildings.emplace_back(std::make_shared<OfficeBuilding>(manager, a,
@@ -83,9 +86,8 @@ void rendering() {
 
 	// car
 	std::shared_ptr<Vehicle> car = std::make_shared<Vehicle>(manager, glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
-	std::shared_ptr<Drawable> carDrawable(car);
 	std::shared_ptr<Updatable> carUpdatable(car);
-	manager.add(carDrawable);
+	manager.add(car);
 
 	renderer.getInputPtr()->addKeyFunc([&](const int key, const int, const int action, const int){
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {

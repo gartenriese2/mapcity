@@ -2,14 +2,16 @@
 
 #include "../../rendering/conversion.hpp"
 
-Street::Street(std::unique_ptr<Path> path)
-  : m_path{std::move(path)}
-{
+void Street::addPaths(const std::vector<std::shared_ptr<Path>> & paths) {
+	m_paths.insert(m_paths.end(), paths.begin(), paths.end());
+}
+
+std::vector<std::shared_ptr<Path>> & Street::getPaths() {
+	return m_paths;
 }
 
 StraightStreet::StraightStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
-  : Street(std::make_unique<StraightPath>(m, start, end)),
-	Drawable{m},
+  : Drawable{m},
 	m_start{start},
 	m_end{end}
 {
@@ -29,10 +31,18 @@ StraightSmallStreet::StraightSmallStreet(Manager & m, const glm::vec3 & start, c
   : StraightStreet{m, start, end}
 {
 	initModelMatrix(k_width);
+	std::shared_ptr<Path> path = std::make_shared<StraightPath>(m, start, end);
+	m_paths.emplace_back(path);
 }
 
 StraightMediumStreet::StraightMediumStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
   : StraightStreet{m, start, end}
 {
 	initModelMatrix(k_width);
+	const auto offset = glm::normalize(glm::vec3((end - start).y, (start - end).x, start.z)) * k_width * 0.25f;
+	std::shared_ptr<Path> path = std::make_shared<StraightPath>(m, start + offset, end + offset);
+	m_paths.emplace_back(path);
+	path = std::make_shared<StraightPath>(m, start - offset, end - offset);
+	m_paths.emplace_back(path);
+
 }

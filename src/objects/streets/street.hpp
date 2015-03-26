@@ -5,12 +5,15 @@
 
 #include <glm/glm.hpp>
 #include <memory>
+#include <vector>
 
 class Street {
 	public:
-		Street(std::unique_ptr<Path>);
+		Street() = default;
+		void addPaths(const std::vector<std::shared_ptr<Path>> &);
+		std::vector<std::shared_ptr<Path>> & getPaths();
 	protected:
-		std::shared_ptr<Path> m_path;
+		std::vector<std::shared_ptr<Path>> m_paths;
 };
 
 class StraightStreet : public Street, public Drawable {

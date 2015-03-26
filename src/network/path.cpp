@@ -15,7 +15,9 @@ StraightPath::StraightPath(Manager & m, const glm::vec3 & a, const glm::vec3 & b
 	m_a{a},
 	m_b{b}
 {
-
+	m_a.z += 5.f;
+	m_b.z += 5.f;
+	initModelMatrix();
 }
 
 void StraightPath::initModelMatrix() {
