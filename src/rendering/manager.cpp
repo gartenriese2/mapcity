@@ -131,11 +131,11 @@ void Manager::initFBO() {
 	m_depthTex.bind();
 	m_depthTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_DEPTH_COMPONENT32F);
 	m_normalTex.bind();
-	m_normalTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGB32F);
+	m_normalTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
 	m_colorTex.bind();
 	m_colorTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
 	m_positionTex.bind();
-	m_positionTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGB32F);
+	m_positionTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
 	m_lightingTex.bind();
 	m_lightingTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_RGBA32F);
 
