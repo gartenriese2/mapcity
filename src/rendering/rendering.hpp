@@ -1,6 +1,6 @@
 #pragma once
 
-#include "manager.hpp"
+#include "drawablemanager.hpp"
 #include "input.hpp"
 #include "gui.hpp"
 
@@ -13,7 +13,7 @@ class Rendering {
 
 		Rendering(const glm::uvec2 &);
 
-		Manager & getManager();
+		DrawableManager & getDrawableManager();
 		std::unique_ptr<core::Input> & getInputPtr();
 
 		bool render();
@@ -25,7 +25,7 @@ class Rendering {
 		engine::Engine m_engine;
 		core::Camera m_cam;
 
-		Manager m_manager;
+		DrawableManager m_manager;
 		Input m_input;
 		Gui m_gui;
 

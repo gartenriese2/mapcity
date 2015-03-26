@@ -17,11 +17,11 @@ namespace core {
 	class Camera;
 }
 
-class Manager {
+class DrawableManager {
 
 	public:
 
-		Manager(core::Camera &, const glm::uvec2 &);
+		DrawableManager(core::Camera &, const glm::uvec2 &);
 
 		void draw();
 		void add(const std::shared_ptr<Drawable> &);
@@ -40,6 +40,8 @@ class Manager {
 		}
 
 		void updateBuffer(const std::string &);
+		void hide(const std::string &);
+		void show(const std::string &);
 
 		void setScreenSize(const glm::uvec2 &);
 
@@ -68,6 +70,7 @@ class Manager {
 		std::map<Drawable::RenderTypeName, RenderType> m_renderTypes;
 
 		struct DrawableType {
+			bool visible;
 			std::vector<std::weak_ptr<Drawable>> objects;
 			glm::vec3 col;
 			gl::VertexArray vao;

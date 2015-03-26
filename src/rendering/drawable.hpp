@@ -5,8 +5,6 @@
 #include <glm/glm.hpp>
 #include <MonoEngine/object.hpp>
 
-class Manager;
-
 class Drawable {
 
 	public:

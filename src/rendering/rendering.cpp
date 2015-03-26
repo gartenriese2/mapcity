@@ -39,7 +39,7 @@ void Rendering::init(const glm::uvec2 & size) {
 
 /**************************************************************************************************/
 
-Manager & Rendering::getManager() {
+DrawableManager & Rendering::getDrawableManager() {
 	return m_manager;
 }
 
@@ -52,6 +52,11 @@ std::unique_ptr<core::Input> & Rendering::getInputPtr() {
 /**************************************************************************************************/
 
 bool Rendering::render() {
+	if (m_gui.showPaths()) {
+		m_manager.show("Path");
+	} else {
+		m_manager.hide("Path");
+	}
 	m_manager.draw();
 	if (m_input.hasLeftClicked()) {
 		m_gui.setWorldPosition(graphicsToGame(m_manager.getWorldPos(m_input.getMousePos())));

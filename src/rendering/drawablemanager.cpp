@@ -1,4 +1,4 @@
-#include "manager.hpp"
+#include "drawablemanager.hpp"
 
 #include <MonoEngine/core/camera.hpp>
 #include <MonoEngine/core/log.hpp>
@@ -11,7 +11,7 @@ constexpr auto k_maxNumObjects = 1000u;
 
 /**************************************************************************************************/
 
-Manager::Manager(core::Camera & cam, const glm::uvec2 & size)
+DrawableManager::DrawableManager(core::Camera & cam, const glm::uvec2 & size)
   : m_cam{cam},
 	m_screenSize{size},
   	m_maxNumObjects{k_maxNumObjects}
@@ -31,7 +31,7 @@ Manager::Manager(core::Camera & cam, const glm::uvec2 & size)
 
 /**************************************************************************************************/
 
-void Manager::initRenderTypes() {
+void DrawableManager::initRenderTypes() {
 	/*
 	 *	QUAD
 	 */
@@ -126,7 +126,7 @@ void Manager::initRenderTypes() {
 
 /**************************************************************************************************/
 
-void Manager::initFBO() {
+void DrawableManager::initFBO() {
 #ifdef LEGACY_MODE
 	m_depthTex.bind();
 	m_depthTex.createImmutableStorage(m_screenSize.x, m_screenSize.y, GL_DEPTH_COMPONENT32F);
@@ -169,7 +169,7 @@ void Manager::initFBO() {
 
 /**************************************************************************************************/
 
-void Manager::draw() {
+void DrawableManager::draw() {
 
 	m_fbo.bind();
 	m_fbo.draw({GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3});
@@ -180,7 +180,7 @@ void Manager::draw() {
 
 	for (const auto & drawablePair : m_drawables) {
 		const auto & drawType = drawablePair.second;
-		if (drawType.objects.size() == 0) {
+		if (drawType.objects.size() == 0 || !drawType.visible) {
 			continue;
 		}
 		const auto renderType = drawType.objects[0].lock()->getRenderType();
@@ -226,7 +226,7 @@ void Manager::draw() {
 
 /**************************************************************************************************/
 
-void Manager::add(const std::shared_ptr<Drawable> & drawable) {
+void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 	const auto type = drawable->getType();
 	const auto renderType = drawable->getRenderType();
 	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
@@ -234,6 +234,8 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 	if (m_drawables.count(type) == 0) {
 		// color
 		m_drawables[type].col = drawable->getColor();
+		// visible
+		m_drawables[type].visible = true;
 #ifdef LEGACY_MODE
 		// vao
 		m_drawables[type].vao.bind();
@@ -304,13 +306,13 @@ void Manager::add(const std::shared_ptr<Drawable> & drawable) {
 
 /**************************************************************************************************/
 
-void Manager::setScreenSize(const glm::uvec2 & size) {
+void DrawableManager::setScreenSize(const glm::uvec2 & size) {
 	m_screenSize = size;
 }
 
 /**************************************************************************************************/
 
-glm::vec3 Manager::getWorldPos(const glm::uvec2 & pos) const {
+glm::vec3 DrawableManager::getWorldPos(const glm::uvec2 & pos) const {
 	glm::vec3 wPos;
 	m_fbo.bind(GL_READ_FRAMEBUFFER);
 	m_fbo.read(GL_COLOR_ATTACHMENT2);
@@ -323,7 +325,7 @@ glm::vec3 Manager::getWorldPos(const glm::uvec2 & pos) const {
 
 /**************************************************************************************************/
 
-void Manager::updateBuffer(const std::string & type) {
+void DrawableManager::updateBuffer(const std::string & type) {
 	const auto & objects = m_drawables[type].objects;
 	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
 	std::vector<glm::mat4> modelVec;
@@ -341,6 +343,26 @@ void Manager::updateBuffer(const std::string & type) {
 #ifdef LEGACY_MODE
 	m_drawables[type].modelBuffer.unbind();
 #endif
+}
+
+/**************************************************************************************************/
+
+void DrawableManager::hide(const std::string & type) {
+	if (m_drawables.count(type) == 0) {
+		LOG_WARNING("Type " + type + " does not exist -> cannot hide it");
+		return;
+	}
+	m_drawables[type].visible = false;
+}
+
+/**************************************************************************************************/
+
+void DrawableManager::show(const std::string & type) {
+	if (m_drawables.count(type) == 0) {
+		LOG_WARNING("Type " + type + " does not exist -> cannot show it");
+		return;
+	}
+	m_drawables[type].visible = true;
 }
 
 /**************************************************************************************************/
