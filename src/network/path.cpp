@@ -4,15 +4,8 @@
 
 constexpr auto k_width = 0.5f;
 
-Path::Path(Manager & m)
-  : Drawable{m}
-{
-
-}
-
-StraightPath::StraightPath(Manager & m, const glm::vec3 & a, const glm::vec3 & b)
-  : Path{m},
-	m_a{a},
+StraightPath::StraightPath(const glm::vec3 & a, const glm::vec3 & b)
+  : m_a{a},
 	m_b{b}
 {
 	m_a.z += 5.f;

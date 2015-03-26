@@ -4,7 +4,7 @@
 
 class Path : public Drawable {
 	public:
-		Path(Manager &);
+		Path() = default;
 		virtual std::string getType() const override { return "Path"; }
 		virtual glm::vec3 getColor() const override { return {0.f, 0.f, 0.f}; }
 		virtual RenderTypeName getRenderType() const = 0;
@@ -12,7 +12,7 @@ class Path : public Drawable {
 
 class StraightPath : public Path {
 	public:
-		StraightPath(Manager &, const glm::vec3 &, const glm::vec3 &);
+		StraightPath(const glm::vec3 &, const glm::vec3 &);
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
 	protected:
 		void initModelMatrix();

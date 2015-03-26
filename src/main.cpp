@@ -38,18 +38,18 @@ void rendering() {
 	 */
 
 	// terrain
-	auto terrain = std::make_shared<Terrain>(manager, glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
+	auto terrain = std::make_shared<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
 	manager.add(terrain);
 
 	// streets
 	std::vector<std::shared_ptr<StraightStreet>> streets;
 	auto addSmallStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
-		streets.emplace_back(std::make_shared<StraightSmallStreet>(manager, a, b));
+		streets.emplace_back(std::make_shared<StraightSmallStreet>(a, b));
 		manager.add(streets.back());
 		manager.add(streets.back()->getPaths());
 	};
 	auto addMediumStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
-		streets.emplace_back(std::make_shared<StraightMediumStreet>(manager, a, b));
+		streets.emplace_back(std::make_shared<StraightMediumStreet>(a, b));
 		manager.add(streets.back());
 		manager.add(streets.back()->getPaths());
 	};
@@ -61,31 +61,27 @@ void rendering() {
 	addSmallStreet({-200, 0, 0.01f}, {-300, -100, 0.01f});
 	addSmallStreet({175, -75, 0.01f}, {-100, -75, 0.01f});
 	addSmallStreet({175, -150, 0.01f}, {175, 50, 0.01f});
-	for (auto str : streets) {
-		manager.add(str);
-	}
 
 	// buildings
 	std::vector<std::shared_ptr<Building>> buildings;
 	auto addOfficeBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
-		buildings.emplace_back(std::make_shared<OfficeBuilding>(manager, a,
+		buildings.emplace_back(std::make_shared<OfficeBuilding>(a,
 				a + glm::vec3{width, 0, 0},	a + glm::vec3{0, depth, 0}, height));
+		manager.add(buildings.back());
 	};
 	auto addResidentialBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
-		buildings.emplace_back(std::make_shared<ResidentialBuilding>(manager, a,
+		buildings.emplace_back(std::make_shared<ResidentialBuilding>(a,
 				a + glm::vec3{width, 0, 0},	a + glm::vec3{0, depth, 0}, height));
+		manager.add(buildings.back());
 	};
 	addResidentialBuilding({-30.f, 10.f, 0.f}, 30.f, 40.f, 100.f);
 	addResidentialBuilding({10.f, 10.f, 0.f}, 30.f, 40.f, 120.f);
 	addOfficeBuilding({50.f, 10.f, 0.f}, 40.f, 40.f, 150.f);
-	for (const auto & b : buildings) {
-		manager.add(b);
-	}
 
 	// car
-	std::shared_ptr<Vehicle> car = std::make_shared<Vehicle>(manager, glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
+	std::shared_ptr<Vehicle> car = std::make_shared<Vehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
 	std::shared_ptr<Updatable> carUpdatable(car);
 	manager.add(car);
 

@@ -4,7 +4,7 @@
 
 class Building : public Drawable {
 	public:
-		Building(Manager &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float);
+		Building(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float);
 		virtual std::string getType() const = 0;
 		virtual glm::vec3 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::CUBE; }
@@ -17,14 +17,14 @@ class Building : public Drawable {
 
 class ResidentialBuilding : public Building {
 	public:
-		ResidentialBuilding(Manager &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float);
+		ResidentialBuilding(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float);
 		virtual std::string getType() const override { return "ResidentialBuilding"; }
 		virtual glm::vec3 getColor() const override { return {0.f, 0.7f, 0.f}; }
 };
 
 class OfficeBuilding : public Building {
 	public:
-		OfficeBuilding(Manager &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float);
+		OfficeBuilding(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float);
 		virtual std::string getType() const override { return "OfficeBuilding"; }
 		virtual glm::vec3 getColor() const override { return {0.f, 0.f, 1.f}; }
 };

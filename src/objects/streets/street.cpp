@@ -10,9 +10,8 @@ std::vector<std::shared_ptr<Path>> & Street::getPaths() {
 	return m_paths;
 }
 
-StraightStreet::StraightStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
-  : Drawable{m},
-	m_start{start},
+StraightStreet::StraightStreet(const glm::vec3 & start, const glm::vec3 & end)
+  : m_start{start},
 	m_end{end}
 {
 }
@@ -27,22 +26,22 @@ void StraightStreet::initModelMatrix(const float width) {
 	m_object.moveTo(gameToGraphics((m_start + m_end) * 0.5f));
 }
 
-StraightSmallStreet::StraightSmallStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
-  : StraightStreet{m, start, end}
+StraightSmallStreet::StraightSmallStreet(const glm::vec3 & start, const glm::vec3 & end)
+  : StraightStreet{start, end}
 {
 	initModelMatrix(k_width);
-	std::shared_ptr<Path> path = std::make_shared<StraightPath>(m, start, end);
+	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start, end);
 	m_paths.emplace_back(path);
 }
 
-StraightMediumStreet::StraightMediumStreet(Manager & m, const glm::vec3 & start, const glm::vec3 & end)
-  : StraightStreet{m, start, end}
+StraightMediumStreet::StraightMediumStreet(const glm::vec3 & start, const glm::vec3 & end)
+  : StraightStreet{start, end}
 {
 	initModelMatrix(k_width);
 	const auto offset = glm::normalize(glm::vec3((end - start).y, (start - end).x, start.z)) * k_width * 0.25f;
-	std::shared_ptr<Path> path = std::make_shared<StraightPath>(m, start + offset, end + offset);
+	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start + offset, end + offset);
 	m_paths.emplace_back(path);
-	path = std::make_shared<StraightPath>(m, start - offset, end - offset);
+	path = std::make_shared<StraightPath>(start - offset, end - offset);
 	m_paths.emplace_back(path);
 
 }

@@ -13,9 +13,6 @@ class Drawable {
 
 		enum class RenderTypeName : std::uint8_t { QUAD, CUBE, LINE };
 
-		Drawable(Manager &);
-		~Drawable();
-
 		const glm::mat4 & getModelMatrix() const;
 
 		virtual std::string getType() const = 0;
@@ -25,6 +22,5 @@ class Drawable {
 	protected:
 
 		engine::Object m_object;
-		Manager & m_manager;
 
 };

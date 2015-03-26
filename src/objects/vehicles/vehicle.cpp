@@ -9,9 +9,8 @@ const auto k_dimension = glm::vec3{4.7f, 1.83f, 1.43f};
 constexpr auto k_minSpeed = -20.f;
 constexpr auto k_maxSpeed = 50.f;
 
-Vehicle::Vehicle(Manager & m, const glm::vec3 & pos, const glm::vec3 & dir)
-  : Drawable{m},
-	m_pos{pos},
+Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir)
+  : m_pos{pos},
 	m_dir{dir}
 {
 	LOG_ASSERT(std::abs(pos.z) <= 0.f, "VEHICLE NOT AT GROUND LEVEL!");

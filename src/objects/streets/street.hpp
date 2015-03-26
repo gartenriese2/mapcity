@@ -18,7 +18,7 @@ class Street {
 
 class StraightStreet : public Street, public Drawable {
 	public:
-		StraightStreet(Manager &, const glm::vec3 &, const glm::vec3 &);
+		StraightStreet(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const = 0;
 		virtual glm::vec3 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
@@ -30,7 +30,7 @@ class StraightStreet : public Street, public Drawable {
 
 class StraightSmallStreet : public StraightStreet {
 	public:
-		StraightSmallStreet(Manager &, const glm::vec3 &, const glm::vec3 &);
+		StraightSmallStreet(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "StraightSmallStreet"; }
 		virtual glm::vec3 getColor() const override { return {1.f, 1.f, 0.f}; }
 	private:
@@ -39,7 +39,7 @@ class StraightSmallStreet : public StraightStreet {
 
 class StraightMediumStreet : public StraightStreet {
 	public:
-		StraightMediumStreet(Manager &, const glm::vec3 &, const glm::vec3 &);
+		StraightMediumStreet(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "StraightMediumStreet"; }
 		virtual glm::vec3 getColor() const override { return {1.f, 0.f, 0.f}; }
 	private:

@@ -4,7 +4,7 @@
 
 class Terrain : public Drawable {
 	public:
-		Terrain(Manager &, const glm::vec3 &, const glm::vec3 &);
+		Terrain(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "Terrain"; }
 		virtual glm::vec3 getColor() const override { return {0.5f, 1.f, 0.5f}; }
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
