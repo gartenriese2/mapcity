@@ -183,6 +183,9 @@ void DrawableManager::draw() {
 		if (drawType.objects.size() == 0 || !drawType.visible) {
 			continue;
 		}
+		if (drawType.dynamic) {
+			updateBuffer(drawablePair.first);
+		}
 		const auto renderType = drawType.objects[0].lock()->getRenderType();
 		auto & prog = m_renderTypes[renderType].prog;
 		prog.use();
@@ -234,6 +237,8 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 	if (m_drawables.count(type) == 0) {
 		// color
 		m_drawables[type].col = drawable->getColor();
+		// dynamic
+		m_drawables[type].dynamic = drawable->isDynamic(); // TO DO
 		// visible
 		m_drawables[type].visible = true;
 #ifdef LEGACY_MODE

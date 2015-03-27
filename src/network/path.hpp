@@ -8,6 +8,7 @@ class Path : public Drawable {
 		virtual std::string getType() const override { return "Path"; }
 		virtual glm::vec3 getColor() const override { return {0.f, 0.f, 0.f}; }
 		virtual RenderTypeName getRenderType() const = 0;
+		virtual bool isDynamic() const override { return false; }
 };
 
 class StraightPath : public Path {

@@ -2,18 +2,22 @@
 
 #include "updatablemanager.hpp"
 
+#include <chrono>
+
 class Simulation {
 
 	public:
 
-		Simulation() {}
+		Simulation();
 
 		UpdatableManager & getUpdatableManager();
 
-		void update(float);
+		void update();
 
 	private:
 
 		UpdatableManager m_manager;
+
+		std::chrono::time_point<std::chrono::system_clock> m_timepoint;
 
 };

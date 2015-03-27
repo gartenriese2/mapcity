@@ -10,6 +10,7 @@ class Vehicle : public Drawable, public Updatable {
 		virtual std::string getType() const override { return "Vehicle"; }
 		virtual glm::vec3 getColor() const override { return {0.3f, 0.3f, 0.3f}; }
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::CUBE; }
+		virtual bool isDynamic() const override { return true; }
 
 		virtual void update(float) override;
 

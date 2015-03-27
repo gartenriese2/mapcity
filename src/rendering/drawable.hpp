@@ -16,6 +16,7 @@ class Drawable : public virtual Object {
 
 		virtual glm::vec3 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const = 0;
+		virtual bool isDynamic() const = 0;
 
 	protected:
 

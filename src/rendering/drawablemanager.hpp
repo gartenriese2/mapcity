@@ -72,6 +72,7 @@ class DrawableManager {
 
 		struct DrawableType {
 			bool visible;
+			bool dynamic;
 			std::vector<std::weak_ptr<Drawable>> objects;
 			glm::vec3 col;
 			gl::VertexArray vao;

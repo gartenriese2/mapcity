@@ -17,17 +17,11 @@ void demo() {
 #include "objects/vehicles/vehicle.hpp"
 
 #include "objects/objectmanager.hpp"
-
 #include "rendering/rendering.hpp"
-#include "rendering/gui.hpp"
-
 #include "simulation/simulation.hpp"
-#include "simulation/updatable.hpp"
 
-#include <chrono>
-#include <thread>
 #include <memory>
-#include <vector>
+
 void rendering() {
 
 	/*
@@ -112,14 +106,8 @@ void rendering() {
 	 *	Rendering
 	 */
 
-	std::chrono::time_point<std::chrono::system_clock> start;
 	while (renderer.render()) {
-		// simulation
-		std::chrono::duration<float> elapsed_seconds = std::chrono::system_clock::now() - start;
-		simulation.update(elapsed_seconds.count());
-		start = std::chrono::system_clock::now();
-
-		renderer.getDrawableManager().updateBuffer(car->getType());
+		simulation.update();
 	}
 
 }

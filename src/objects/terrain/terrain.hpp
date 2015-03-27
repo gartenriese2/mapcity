@@ -9,6 +9,7 @@ class Terrain : public Drawable {
 		virtual std::string getType() const override { return "Terrain"; }
 		virtual glm::vec3 getColor() const override { return {0.5f, 1.f, 0.5f}; }
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
+		virtual bool isDynamic() const override { return false; }
 	protected:
 		void initModelMatrix();
 	private:

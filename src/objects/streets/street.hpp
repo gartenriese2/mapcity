@@ -22,6 +22,7 @@ class StraightStreet : public Street, public Drawable {
 		virtual std::string getType() const = 0;
 		virtual glm::vec3 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
+		virtual bool isDynamic() const override { return false; }
 	protected:
 		void initModelMatrix(float);
 	private:
