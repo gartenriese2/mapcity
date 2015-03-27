@@ -15,7 +15,7 @@ class ObjectManager {
 		ObjectManager(DrawableManager &, UpdatableManager &);
 
 		template<typename T, typename ... Args>
-		std::shared_ptr<T> add(const Args & ... args) {
+		const std::shared_ptr<T> add(const Args & ... args) {
 			static_assert(std::is_base_of<Object, T>(), "type is not derived from object!");
 			const auto ptr = std::make_shared<T>(args ...);
 			add(std::static_pointer_cast<Object>(ptr));

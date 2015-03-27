@@ -45,7 +45,7 @@ DrawableManager & Rendering::getDrawableManager() {
 
 /**************************************************************************************************/
 
-std::unique_ptr<core::Input> & Rendering::getInputPtr() {
+const std::unique_ptr<core::Input> & Rendering::getInputPtr() {
 	return m_engine.getInputPtr();
 }
 

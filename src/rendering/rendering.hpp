@@ -14,7 +14,7 @@ class Rendering {
 		Rendering(const glm::uvec2 &);
 
 		DrawableManager & getDrawableManager();
-		std::unique_ptr<core::Input> & getInputPtr();
+		const std::unique_ptr<core::Input> & getInputPtr();
 
 		bool render();
 

@@ -30,7 +30,7 @@ StraightSmallStreet::StraightSmallStreet(const glm::vec3 & start, const glm::vec
   : StraightStreet(start, end)
 {
 	initModelMatrix(k_width);
-	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start, end);
+	const std::shared_ptr<Path> path = std::make_shared<StraightPath>(start, end);
 	m_paths.emplace_back(path);
 }
 
