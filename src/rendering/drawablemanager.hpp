@@ -28,7 +28,8 @@ class DrawableManager {
 
 		template<typename T>
 		void add(const std::shared_ptr<T> & ptr) {
-			static_assert(std::is_base_of<Drawable, T>::value, "adding a Type that is not derived from Drawable");
+			static_assert(std::is_base_of<Drawable, T>::value,
+					"adding a Type that is not derived from Drawable");
 			add(std::static_pointer_cast<Drawable>(ptr));
 		}
 

@@ -1,19 +1,19 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <glm/glm.hpp>
+#include "../objects/object.hpp"
+
 #include <MonoEngine/object.hpp>
 
-class Drawable {
+class Drawable : public virtual Object {
 
 	public:
 
-		enum class RenderTypeName : std::uint8_t { QUAD, CUBE, LINE };
+		enum class RenderTypeName : std::uint8_t { QUAD, CUBE };
 
-		const glm::mat4 & getModelMatrix() const;
+		const glm::mat4 & getModelMatrix() const {
+			return m_object.getModelMatrix();
+		}
 
-		virtual std::string getType() const = 0;
 		virtual glm::vec3 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const = 0;
 

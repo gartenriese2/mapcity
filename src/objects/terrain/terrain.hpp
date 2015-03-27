@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../rendering/drawable.hpp"
+#include "../object.hpp"
 
 class Terrain : public Drawable {
 	public:

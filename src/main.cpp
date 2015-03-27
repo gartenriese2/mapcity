@@ -16,9 +16,12 @@ void demo() {
 #include "objects/buildings/building.hpp"
 #include "objects/vehicles/vehicle.hpp"
 
+#include "objects/objectmanager.hpp"
+
 #include "rendering/rendering.hpp"
 #include "rendering/gui.hpp"
 
+#include "simulation/simulation.hpp"
 #include "simulation/updatable.hpp"
 
 #include <chrono>
@@ -32,27 +35,23 @@ void rendering() {
 	 */
 
 	Rendering renderer({1920, 1080});
-	auto & drawableManager = renderer.getDrawableManager();
+	Simulation simulation;
 
 	/*
 	 *	Objects
 	 */
 
+	ObjectManager objManager(renderer.getDrawableManager(), simulation.getUpdatableManager());
+
 	// terrain
-	auto terrain = std::make_shared<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
-	drawableManager.add(terrain);
+	objManager.add(std::make_shared<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f)));
 
 	// streets
-	std::vector<std::shared_ptr<StraightStreet>> streets;
 	auto addSmallStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
-		streets.emplace_back(std::make_shared<StraightSmallStreet>(a, b));
-		drawableManager.add(streets.back());
-		drawableManager.add(streets.back()->getPaths());
+		objManager.add(std::make_shared<StraightSmallStreet>(a, b));
 	};
 	auto addMediumStreet = [&](const glm::vec3 & a, const glm::vec3 & b){
-		streets.emplace_back(std::make_shared<StraightMediumStreet>(a, b));
-		drawableManager.add(streets.back());
-		drawableManager.add(streets.back()->getPaths());
+		objManager.add(std::make_shared<StraightMediumStreet>(a, b));
 	};
 	addMediumStreet({-300, 0, 0.02f}, {100, 0, 0.02f});
 	addSmallStreet({-200, 100, 0.01f}, {100, 100, 0.01f});
@@ -64,18 +63,15 @@ void rendering() {
 	addSmallStreet({175, -150, 0.01f}, {175, 50, 0.01f});
 
 	// buildings
-	std::vector<std::shared_ptr<Building>> buildings;
 	auto addOfficeBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
-		buildings.emplace_back(std::make_shared<OfficeBuilding>(a,
-				a + glm::vec3{width, 0, 0},	a + glm::vec3{0, depth, 0}, height));
-		drawableManager.add(buildings.back());
+		objManager.add(std::make_shared<OfficeBuilding>(a, a + glm::vec3{width, 0, 0},
+				a + glm::vec3{0, depth, 0}, height));
 	};
 	auto addResidentialBuilding = [&](const glm::vec3 & a, const float width,
 			const float depth, const float height){
-		buildings.emplace_back(std::make_shared<ResidentialBuilding>(a,
-				a + glm::vec3{width, 0, 0},	a + glm::vec3{0, depth, 0}, height));
-		drawableManager.add(buildings.back());
+		objManager.add(std::make_shared<ResidentialBuilding>(a, a + glm::vec3{width, 0, 0},
+				a + glm::vec3{0, depth, 0}, height));
 	};
 	addResidentialBuilding({-30.f, 10.f, 0.f}, 30.f, 40.f, 100.f);
 	addResidentialBuilding({10.f, 10.f, 0.f}, 30.f, 40.f, 120.f);
@@ -83,8 +79,7 @@ void rendering() {
 
 	// car
 	std::shared_ptr<Vehicle> car = std::make_shared<Vehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
-	std::shared_ptr<Updatable> carUpdatable(car);
-	drawableManager.add(car);
+	objManager.add(car);
 
 	renderer.getInputPtr()->addKeyFunc([&](const int key, const int, const int action, const int){
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
@@ -121,10 +116,10 @@ void rendering() {
 	while (renderer.render()) {
 		// simulation
 		std::chrono::duration<float> elapsed_seconds = std::chrono::system_clock::now() - start;
-		carUpdatable->update(elapsed_seconds.count());
+		simulation.update(elapsed_seconds.count());
 		start = std::chrono::system_clock::now();
-		drawableManager.updateBuffer(car->getType());
-		// std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+		renderer.getDrawableManager().updateBuffer(car->getType());
 	}
 
 }

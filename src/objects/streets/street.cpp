@@ -27,7 +27,7 @@ void StraightStreet::initModelMatrix(const float width) {
 }
 
 StraightSmallStreet::StraightSmallStreet(const glm::vec3 & start, const glm::vec3 & end)
-  : StraightStreet{start, end}
+  : StraightStreet(start, end)
 {
 	initModelMatrix(k_width);
 	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start, end);
@@ -35,7 +35,7 @@ StraightSmallStreet::StraightSmallStreet(const glm::vec3 & start, const glm::vec
 }
 
 StraightMediumStreet::StraightMediumStreet(const glm::vec3 & start, const glm::vec3 & end)
-  : StraightStreet{start, end}
+  : StraightStreet(start, end)
 {
 	initModelMatrix(k_width);
 	const auto offset = glm::normalize(glm::vec3((end - start).y, (start - end).x, start.z)) * k_width * 0.25f;

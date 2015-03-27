@@ -28,12 +28,12 @@ void Building::initModelMatrix() {
 
 ResidentialBuilding::ResidentialBuilding(const glm::vec3 & a, const glm::vec3 & b,
 		const glm::vec3 & c, const float height)
-  : Building{a, b, c, height}
+  : Building(a, b, c, height)
 {
 }
 
 OfficeBuilding::OfficeBuilding(const glm::vec3 & a, const glm::vec3 & b,
 		const glm::vec3 & c, const float height)
-  : Building{a, b, c, height}
+  : Building(a, b, c, height)
 {
 }
