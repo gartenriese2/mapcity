@@ -47,7 +47,8 @@ int main() {
 			glm::vec3(50.f, 50.f, 0.f), 150.f);
 
 	// car
-	objManager.add<UDriveItVehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), renderer.getInputPtr());
+	objManager.add<UDriveItVehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
+			renderer.getInputPtr(), "french racing blue");
 
 	/*
 	 *	Rendering

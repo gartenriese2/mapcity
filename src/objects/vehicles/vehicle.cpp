@@ -5,13 +5,20 @@
 #include <MonoEngine/core/log.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
+#include <map>
+#include <random>
+#include "../../../resources/cars.db"
+
+const auto k_defaultColor = glm::vec3{0.f, 0.f, 0.f};
 const auto k_dimension = glm::vec3{4.7f, 1.83f, 1.43f};
 constexpr auto k_minSpeed = -20.f;
 constexpr auto k_maxSpeed = 50.f;
 constexpr auto k_friction = 0.5f;
 constexpr auto k_stopSpeed = 2.f;
+std::random_device rd;
+std::mt19937 gen(rd());
 
-Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir)
+Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir, const std::string & color)
   : m_pos{pos},
 	m_dir{dir}
 {
@@ -19,6 +26,7 @@ Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir)
 	LOG_ASSERT(std::abs(glm::length(dir)) > 0.f, "DIRECTION OF VEHICLE IS ZERO!");
 	m_dir = glm::normalize(m_dir);
 	initModelMatrix();
+	initColor(color);
 }
 
 void Vehicle::initModelMatrix() {
@@ -31,9 +39,21 @@ void Vehicle::initModelMatrix() {
 	m_object.moveTo(gameToGraphics(m_pos + glm::vec3{0.f, k_dimension.y * 0.5f, 0.f}));
 }
 
+void Vehicle::initColor(const std::string & color) {
+	if (color == "" || k_carColors.count(color) == 0) {
+		// random
+		std::uniform_int_distribution<> dis(0, static_cast<int>(k_carColors.size()) - 1);
+		auto it = k_carColors.begin();
+		std::advance(it, dis(gen));
+		m_color = it->second;
+	} else {
+		m_color = k_carColors.at(color);
+	}
+}
+
 UDriveItVehicle::UDriveItVehicle(const glm::vec3 & pos, const glm::vec3 & dir,
-		const std::unique_ptr<core::Input> & input)
-  : Vehicle(pos, dir)
+		const std::unique_ptr<core::Input> & input, const std::string & color)
+  : Vehicle(pos, dir, color)
 {
 	initKeys(input);
 }

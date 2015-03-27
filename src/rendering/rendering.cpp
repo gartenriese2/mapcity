@@ -31,8 +31,8 @@ void Rendering::init(const glm::uvec2 & size) {
 
 	m_cam.setRatio(static_cast<float>(size.x) / static_cast<float>(size.y));
 	m_cam.setFov(glm::radians(45.f));
-	m_cam.translate(gameToGraphics(glm::vec3{0.f, -100.f, 500.f}));
-	m_cam.pitch(glm::radians(10.f));
+	m_cam.translate(gameToGraphics(glm::vec3{0.f, -100.f, 200.f}));
+	m_cam.pitch(glm::radians(20.f));
 
 	glClampColor(GL_CLAMP_READ_COLOR, GL_FALSE);
 }
