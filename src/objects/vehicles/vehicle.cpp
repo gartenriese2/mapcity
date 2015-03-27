@@ -31,7 +31,12 @@ void Vehicle::initModelMatrix() {
 	m_object.moveTo(gameToGraphics(m_pos + glm::vec3{0.f, k_dimension.y * 0.5f, 0.f}));
 }
 
-void Vehicle::update(const float t) {
+UDriveItVehicle::UDriveItVehicle(const glm::vec3 & pos, const glm::vec3 & dir)
+  : Vehicle(pos, dir)
+{
+}
+
+void UDriveItVehicle::update(const float t) {
 	LOG_ASSERT(t > 0.f, "NO NEGATIVE TIME STEPS!");
 	const auto s = t * m_speed + 0.5f * m_acceleration * t * t;
 	m_speed += m_acceleration * t;
@@ -48,10 +53,10 @@ void Vehicle::update(const float t) {
 	m_object.rotate(glm::radians(turnDiff), {0.f, 0.f, 1.f});
 }
 
-void Vehicle::setTurnSpeed(const float speed) {
+void UDriveItVehicle::setTurnSpeed(const float speed) {
 	m_turnSpeed = speed;
 }
 
-void Vehicle::setAcceleration(const float acc) {
+void UDriveItVehicle::setAcceleration(const float acc) {
 	m_acceleration = acc;
 }

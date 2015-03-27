@@ -59,7 +59,7 @@ void rendering() {
 			glm::vec3(50.f, 50.f, 0.f), 150.f);
 
 	// car
-	auto car = objManager.add<Vehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
+	auto car = objManager.add<UDriveItVehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
 
 	renderer.getInputPtr()->addKeyFunc([&](const int key, const int, const int action, const int){
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
