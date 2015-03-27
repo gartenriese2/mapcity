@@ -1,16 +1,3 @@
-#include <cstdlib>
-
-void demo();
-void rendering();
-
-#include "demo.hpp"
-void demo() {
-	Demo demo({1920, 1080});
-	while (demo.render()) {
-
-	}
-}
-
 #include "objects/streets/street.hpp"
 #include "objects/terrain/terrain.hpp"
 #include "objects/buildings/building.hpp"
@@ -21,8 +8,9 @@ void demo() {
 #include "simulation/simulation.hpp"
 
 #include <memory>
+#include <cstdlib>
 
-void rendering() {
+int main() {
 
 	/*
 	 *	Initialization
@@ -68,13 +56,6 @@ void rendering() {
 	while (renderer.render()) {
 		simulation.update();
 	}
-
-}
-
-int main() {
-
-	rendering();
-	// demo();
 
 	return EXIT_SUCCESS;
 
