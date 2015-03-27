@@ -31,9 +31,11 @@ void Vehicle::initModelMatrix() {
 	m_object.moveTo(gameToGraphics(m_pos + glm::vec3{0.f, k_dimension.y * 0.5f, 0.f}));
 }
 
-UDriveItVehicle::UDriveItVehicle(const glm::vec3 & pos, const glm::vec3 & dir)
+UDriveItVehicle::UDriveItVehicle(const glm::vec3 & pos, const glm::vec3 & dir,
+		const std::unique_ptr<core::Input> & input)
   : Vehicle(pos, dir)
 {
+	initKeys(input);
 }
 
 void UDriveItVehicle::update(const float t) {
@@ -59,4 +61,33 @@ void UDriveItVehicle::setTurnSpeed(const float speed) {
 
 void UDriveItVehicle::setAcceleration(const float acc) {
 	m_acceleration = acc;
+}
+
+void UDriveItVehicle::initKeys(const std::unique_ptr<core::Input> & input) {
+	input->addKeyFunc([&](const int key, const int, const int action, const int){
+		if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+			setAcceleration(30.f);
+		}
+		if (key == GLFW_KEY_UP && action == GLFW_RELEASE) {
+			setAcceleration(0.f);
+		}
+		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+			setAcceleration(-45.f);
+		}
+		if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE) {
+			setAcceleration(0.f);
+		}
+		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+			setTurnSpeed(5.f);
+		}
+		if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
+			setTurnSpeed(0.f);
+		}
+		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+			setTurnSpeed(-5.f);
+		}
+		if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
+			setTurnSpeed(0.f);
+		}
+	});
 }
