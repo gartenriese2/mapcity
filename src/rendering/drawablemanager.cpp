@@ -48,7 +48,6 @@ void DrawableManager::initRenderTypes() {
 	if (!quadVert.compileSource()) {
 		LOG_ERROR("could not compile vertex shader!");
 	}
-	// gl::Shader frag("shader/test/color_legacy.frag");
 	gl::Shader frag("shader/lighting/direct_lighting_legacy.frag");
 	m_renderTypes[renderType].prog.attachShader(quadVert);
 	m_renderTypes[renderType].prog.attachShader(frag);
@@ -59,7 +58,6 @@ void DrawableManager::initRenderTypes() {
 	m_renderTypes[renderType].ibo.unbind();
 #else
 	gl::Shader quadVert("shader/geometries/quad.vert", "quad_instance_vert");
-	// gl::Shader frag("shader/test/color.frag", "color_frag");
 	gl::Shader frag("shader/lighting/direct_lighting.frag");
 	m_renderTypes[renderType].prog.attachShader(quadVert);
 	m_renderTypes[renderType].prog.attachShader(frag);
@@ -115,8 +113,7 @@ void DrawableManager::initRenderTypes() {
 	m_renderTypes[renderType].prog.attachShader(cubeVert);
 	m_renderTypes[renderType].prog.attachShader(frag);
 
-	m_renderTypes[renderType].ibo.createImmutableStorage(
-			static_cast<unsigned int>(cubeIdx.size() * sizeof(GLushort)),
+	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(cubeIdx.size() * sizeof(GLushort)),
 			0, cubeIdx.data());
 #endif
 	m_renderTypes[renderType].drawCall = [](const GLsizei size){
