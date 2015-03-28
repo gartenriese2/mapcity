@@ -199,7 +199,9 @@ void DrawableManager::draw() {
 #endif
 
 		prog["ViewProj"] = m_cam.getProjMatrix() * m_cam.getViewMatrix();
+		prog["View"] = m_cam.getViewMatrix();
 		prog["col"] = drawType.col;
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
 		glBindBufferBase(bufferEnum, k_modelBufferBinding, drawType.modelBuffer);
 		drawType.vao.bind();
 		m_renderTypes[renderType].drawCall(static_cast<GLsizei>(drawType.objects.size()));

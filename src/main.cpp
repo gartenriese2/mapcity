@@ -40,15 +40,15 @@ int main() {
 
 	// buildings
 	objManager.add<ResidentialBuilding>(glm::vec3(-30.f, 10.f, 0.f), glm::vec3(0.f, 10.f, 0.f),
-			glm::vec3(-30.f, 50.f, 0.f), 100.f);
+			glm::vec3(-30.f, 50.f, 0.f), 20.f);
 	objManager.add<ResidentialBuilding>(glm::vec3(10.f, 10.f, 0.f), glm::vec3(40.f, 10.f, 0.f),
-			glm::vec3(10.f, 50.f, 0.f), 120.f);
+			glm::vec3(10.f, 50.f, 0.f), 30.f);
 	objManager.add<OfficeBuilding>(glm::vec3(50.f, 10.f, 0.f), glm::vec3(90.f, 10.f, 0.f),
-			glm::vec3(50.f, 50.f, 0.f), 150.f);
+			glm::vec3(50.f, 50.f, 0.f), 25.f);
 
 	// car
 	objManager.add<UDriveItVehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
-			renderer.getInputPtr(), "french racing blue");
+			renderer.getInputPtr(), "ford tourneo custom", "french racing blue");
 
 	/*
 	 *	Rendering

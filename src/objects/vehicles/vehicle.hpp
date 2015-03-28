@@ -6,15 +6,17 @@
 class Vehicle : public Drawable, public Updatable {
 
 	public:
-		Vehicle(const glm::vec3 &, const glm::vec3 &, const std::string & = "");
+		Vehicle(const glm::vec3 &, const glm::vec3 &, const std::string & = "",
+				const std::string & = "");
 		virtual glm::vec3 getColor() const override { return m_color; }
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::CUBE; }
 		virtual bool isDynamic() const override { return true; }
 	protected:
 		void initModelMatrix();
 		void initColor(const std::string &);
+		void initSize(const std::string &);
 		float m_speed;
-		glm::vec3 m_pos, m_dir, m_color;
+		glm::vec3 m_pos, m_dir, m_color, m_size;
 };
 
 #include <MonoEngine/core/input.hpp>
@@ -22,7 +24,8 @@ class Vehicle : public Drawable, public Updatable {
 
 class UDriveItVehicle : public Vehicle {
 	public:
-		UDriveItVehicle(const glm::vec3 &, const glm::vec3 &, const std::unique_ptr<core::Input> &, const std::string & = "");
+		UDriveItVehicle(const glm::vec3 &, const glm::vec3 &, const std::unique_ptr<core::Input> &,
+				const std::string & = "", const std::string & = "");
 		void setTurnSpeed(float);
 		void setAcceleration(float);
 		virtual std::string getType() const override { return "UDriveItVehicle"; }

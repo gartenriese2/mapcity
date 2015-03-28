@@ -23,7 +23,7 @@ void Building::initModelMatrix() {
 	m_object.scale(scaling);
 	const float angle = glm::atan((m_b - m_a).y, (m_b - m_a).x);
 	m_object.rotate(angle, {0.f, 0.f, 1.f});
-	m_object.moveTo(gameToGraphics(0.5f * (m_b + m_c)));
+	m_object.moveTo(gameToGraphics(0.5f * (m_b + m_c + glm::vec3(0.f, 0.f, m_height))));
 }
 
 ResidentialBuilding::ResidentialBuilding(const glm::vec3 & a, const glm::vec3 & b,

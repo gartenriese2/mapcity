@@ -3,11 +3,15 @@ layout(std140) uniform ModelMatrixBuffer {
 };
 
 out vec3 color;
-out vec3 n;
+out vec3 n_w;
+out vec3 n_vp;
 out vec3 worldpos;
+out vec3 l;
 
 uniform mat4 ViewProj;
+uniform mat4 View;
 uniform vec3 col;
+uniform vec3 lightDir;
 
 void main() {
 
@@ -24,6 +28,9 @@ void main() {
 	worldpos = (ModelMatrix[gl_InstanceID] * pos).xyz;
 	gl_Position = ViewProj * ModelMatrix[gl_InstanceID] * pos;
 	color = col;
-	n = normal;
+	n_w = normal;
+	mat4 NormalMatrix = transpose(inverse(View * ModelMatrix[gl_InstanceID]));
+	n_vp = (normalize(NormalMatrix * vec4(normal, 0.0))).xyz;
 
+	l = (ViewProj * vec4(lightDir, 1.0)).xyz;
 }
