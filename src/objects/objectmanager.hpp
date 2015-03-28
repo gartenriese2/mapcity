@@ -25,7 +25,7 @@ class ObjectManager {
 
 	private:
 
-		void add(const std::shared_ptr<Object> &);
+		void add(std::shared_ptr<Object> &&);
 
 		DrawableManager & m_drawableManager;
 		UpdatableManager & m_updatableManager;

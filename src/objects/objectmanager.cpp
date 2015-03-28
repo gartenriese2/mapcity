@@ -10,7 +10,7 @@ ObjectManager::ObjectManager(DrawableManager & dm, UpdatableManager & um)
 	m_updatableManager{um}
 {}
 
-void ObjectManager::add(const std::shared_ptr<Object> & ptr) {
+void ObjectManager::add(std::shared_ptr<Object> && ptr) {
 	m_objects.emplace(ptr->getType(), ptr);
 	if (auto drawablePtr = std::dynamic_pointer_cast<Drawable>(ptr)) {
 		m_drawableManager.add(drawablePtr);
