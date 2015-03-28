@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <map>
+#include <utility>
 
 class DrawableManager;
 class UpdatableManager;
@@ -15,9 +16,9 @@ class ObjectManager {
 		ObjectManager(DrawableManager &, UpdatableManager &);
 
 		template<typename T, typename ... Args>
-		const std::shared_ptr<T> add(const Args & ... args) {
+		std::shared_ptr<T> add(Args && ... args) {
 			static_assert(std::is_base_of<Object, T>(), "type is not derived from object!");
-			const auto ptr = std::make_shared<T>(args ...);
+			auto ptr = std::make_shared<T>(std::forward<Args>(args) ...);
 			add(std::static_pointer_cast<Object>(ptr));
 			return ptr;
 		}

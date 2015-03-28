@@ -19,6 +19,13 @@ class Vehicle : public Drawable, public Updatable {
 		glm::vec3 m_pos, m_dir, m_color, m_size;
 };
 
+class Car : public Vehicle {
+	public:
+		Car(const glm::vec3 &, const glm::vec3 &, const std::string & = "", const std::string & = "");
+		virtual std::string getType() const override { return "Car"; }
+		virtual void update(float) override;
+};
+
 #include <MonoEngine/core/input.hpp>
 #include <memory>
 

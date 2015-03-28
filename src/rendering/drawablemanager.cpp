@@ -167,7 +167,6 @@ void DrawableManager::initFBO() {
 /**************************************************************************************************/
 
 void DrawableManager::draw() {
-
 	m_fbo.bind();
 	m_fbo.draw({GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3});
 
@@ -335,6 +334,7 @@ void DrawableManager::updateBuffer(const std::string & type) {
 	std::vector<glm::mat4> modelVec;
 	modelVec.reserve(objects.size());
 	for (const auto & obj : objects) {
+		if (obj.expired()) continue;
 		modelVec.emplace_back(obj.lock()->getModelMatrix());
 	}
 #ifdef LEGACY_MODE

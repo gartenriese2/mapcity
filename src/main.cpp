@@ -49,6 +49,10 @@ int main() {
 	// car
 	objManager.add<UDriveItVehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
 			renderer.getInputPtr(), "ford tourneo custom", "french racing blue");
+	objManager.add<Car>(glm::vec3(10.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
+	objManager.add<Car>(glm::vec3(16.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
+	objManager.add<Car>(glm::vec3(23.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
+	objManager.add<Car>(glm::vec3(29.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
 
 	/*
 	 *	Rendering

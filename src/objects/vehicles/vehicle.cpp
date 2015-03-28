@@ -64,6 +64,17 @@ void Vehicle::initSize(const std::string & size) {
 	}
 }
 
+Car::Car(const glm::vec3 & pos, const glm::vec3 & dir, const std::string & color,
+		const std::string & size)
+  : Vehicle(pos, dir, color, size)
+{
+}
+
+void Car::update(const float t) {
+	LOG_ASSERT(t > 0.f, "NO NEGATIVE TIME STEPS!");
+	// TO DO
+}
+
 UDriveItVehicle::UDriveItVehicle(const glm::vec3 & pos, const glm::vec3 & dir,
 		const std::unique_ptr<core::Input> & input, const std::string & color,
 		const std::string & size)

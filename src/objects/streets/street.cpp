@@ -30,8 +30,8 @@ StraightSmallStreet::StraightSmallStreet(const glm::vec3 & start, const glm::vec
   : StraightStreet(start, end)
 {
 	initModelMatrix(k_width);
-	const std::shared_ptr<Path> path = std::make_shared<StraightPath>(start, end);
-	m_paths.emplace_back(path);
+	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start, end);
+	m_paths.emplace_back(std::move(path));
 }
 
 StraightMediumStreet::StraightMediumStreet(const glm::vec3 & start, const glm::vec3 & end)
@@ -40,8 +40,8 @@ StraightMediumStreet::StraightMediumStreet(const glm::vec3 & start, const glm::v
 	initModelMatrix(k_width);
 	const auto offset = glm::normalize(glm::vec3((end - start).y, (start - end).x, start.z)) * k_width * 0.25f;
 	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start + offset, end + offset);
-	m_paths.emplace_back(path);
+	m_paths.emplace_back(std::move(path));
 	path = std::make_shared<StraightPath>(start - offset, end - offset);
-	m_paths.emplace_back(path);
+	m_paths.emplace_back(std::move(path));
 
 }
