@@ -260,40 +260,13 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 #endif
 	}
 
-	const auto numObjects = static_cast<unsigned int>(m_drawables[type].objects.size());
-	if (numObjects >= m_maxNumObjects) {
-		// cleanup
-		auto & objects = m_drawables[type].objects;
-		auto it = objects.begin();
-		while (it != objects.end()) {
-			if (it->expired()) {
-				it = objects.erase(it);
-				continue;
-			}
-			++it;
-		}
-		if (numObjects != static_cast<unsigned int>(objects.size())) {
-			// some objects expired -> copying new data to buffer
-			std::vector<glm::mat4> modelVec;
-			modelVec.reserve(objects.size());
-			for (const auto & obj : objects) {
-				modelVec.emplace_back(obj.lock()->getModelMatrix());
-			}
-#ifdef LEGACY_MODE
-			m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
-#endif
-			m_drawables[type].modelBuffer.setData(
-					0,
-					typeSize * static_cast<unsigned int>(modelVec.size()),
-					modelVec.data());
-#ifdef LEGACY_MODE
-			m_drawables[type].modelBuffer.unbind();
-#endif
-		} else {
-			// still full!
-			LOG_WARNING(type + " Buffer is full! Not adding any more objects!");
-			return;
-		}
+	if (static_cast<unsigned int>(m_drawables[type].objects.size()) >= m_maxNumObjects) {
+		updateBuffer(type);
+	}
+	if (static_cast<unsigned int>(m_drawables[type].objects.size()) >= m_maxNumObjects) {
+		// still full!
+		LOG_WARNING(type + " Buffer is full! Not adding any more objects!");
+		return;
 	}
 
 	const auto offset = static_cast<unsigned int>(m_drawables[type].objects.size()) * typeSize;
@@ -329,14 +302,22 @@ glm::vec3 DrawableManager::getWorldPos(const glm::uvec2 & pos) const {
 /**************************************************************************************************/
 
 void DrawableManager::updateBuffer(const std::string & type) {
-	const auto & objects = m_drawables[type].objects;
 	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
+	auto & objects = m_drawables[type].objects;
+
 	std::vector<glm::mat4> modelVec;
 	modelVec.reserve(objects.size());
-	for (const auto & obj : objects) {
-		if (obj.expired()) continue;
-		modelVec.emplace_back(obj.lock()->getModelMatrix());
+
+	auto it = objects.begin();
+	while (it != objects.end()) {
+		if (it->expired()) {
+			it = objects.erase(it);
+			continue;
+		}
+		modelVec.emplace_back(it->lock()->getModelMatrix());
+		++it;
 	}
+
 #ifdef LEGACY_MODE
 	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
 #endif

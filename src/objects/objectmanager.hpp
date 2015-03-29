@@ -23,6 +23,14 @@ class ObjectManager {
 			return ptr;
 		}
 
+		template<typename T>
+		void remove(const std::shared_ptr<T> & ptr) {
+			static_assert(std::is_base_of<Object, T>(), "type is not derived from object!");
+			remove(ptr->ID());
+		}
+
+		void remove(std::uint64_t);
+
 	private:
 
 		void add(std::shared_ptr<Object> &&);
@@ -30,6 +38,6 @@ class ObjectManager {
 		DrawableManager & m_drawableManager;
 		UpdatableManager & m_updatableManager;
 
-		std::map<std::string, std::shared_ptr<Object>> m_objects;
+		std::map<std::uint64_t, std::shared_ptr<Object>> m_objects;
 
 };
