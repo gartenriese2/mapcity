@@ -2,7 +2,7 @@ layout(std140) uniform ModelMatrixBuffer {
 	mat4 ModelMatrix[NUM_MATRICES];
 };
 
-out vec3 color;
+out vec4 color;
 out vec3 n_w;
 out vec3 n_vp;
 out vec3 worldpos;
@@ -10,7 +10,7 @@ out vec3 l;
 
 uniform mat4 ViewProj;
 uniform mat4 View;
-uniform vec3 col;
+uniform vec4 col;
 uniform vec3 lightDir;
 
 void main() {

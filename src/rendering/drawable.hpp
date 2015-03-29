@@ -8,15 +8,16 @@ class Drawable : public virtual Object {
 
 	public:
 
-		enum class RenderTypeName : std::uint8_t { QUAD, CUBE };
+		enum class RenderTypeName : std::uint8_t { QUAD, CUBE, MULTICOLOR_CUBE };
 
 		const glm::mat4 & getModelMatrix() const {
 			return m_object.getModelMatrix();
 		}
 
-		virtual glm::vec3 getColor() const = 0;
+		virtual glm::vec4 getColor() const = 0;
 		virtual RenderTypeName getRenderType() const = 0;
 		virtual bool isDynamic() const = 0;
+		virtual bool isUnicolored() const { return true; }
 
 	protected:
 

@@ -63,22 +63,25 @@ class DrawableManager {
 		gl::Texture m_positionTex;
 		gl::Texture m_lightingTex;
 
+		struct DrawableType {
+			bool visible;
+			bool dynamic;
+			bool unicolored;
+			std::vector<std::weak_ptr<Drawable>> objects;
+			glm::vec4 col;
+			gl::VertexArray vao;
+			gl::Buffer modelBuffer;
+			gl::Buffer colorBuffer;
+		};
+		std::map<std::string, DrawableType> m_drawables;
+
 		struct RenderType {
 			gl::Program prog;
 			gl::Buffer ibo;
 			std::function<void(GLsizei)> drawCall;
+			std::function<void(gl::Program &, const DrawableType &, const core::Camera &)> preCall;
 		};
 		std::map<Drawable::RenderTypeName, RenderType> m_renderTypes;
-
-		struct DrawableType {
-			bool visible;
-			bool dynamic;
-			std::vector<std::weak_ptr<Drawable>> objects;
-			glm::vec3 col;
-			gl::VertexArray vao;
-			gl::Buffer modelBuffer;
-		};
-		std::map<std::string, DrawableType> m_drawables;
 
 		unsigned int m_maxNumObjects;
 

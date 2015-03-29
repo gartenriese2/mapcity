@@ -8,8 +8,8 @@ class Vehicle : public Drawable, public Updatable {
 	public:
 		Vehicle(const glm::vec3 &, const glm::vec3 &, const std::string & = "",
 				const std::string & = "");
-		virtual glm::vec3 getColor() const override { return m_color; }
-		virtual RenderTypeName getRenderType() const override { return RenderTypeName::CUBE; }
+		virtual glm::vec4 getColor() const override { return glm::vec4(m_color, 1.f); }
+		virtual RenderTypeName getRenderType() const override { return RenderTypeName::MULTICOLOR_CUBE; }
 		virtual bool isDynamic() const override { return true; }
 	protected:
 		void initModelMatrix();
@@ -23,6 +23,7 @@ class Car : public Vehicle {
 	public:
 		Car(const glm::vec3 &, const glm::vec3 &, const std::string & = "", const std::string & = "");
 		virtual std::string getType() const override { return "Car"; }
+		virtual bool isUnicolored() const override { return false; }
 		virtual void update(float) override;
 };
 
@@ -36,6 +37,7 @@ class UDriveItVehicle : public Vehicle {
 		void setTurnSpeed(float);
 		void setAcceleration(float);
 		virtual std::string getType() const override { return "UDriveItVehicle"; }
+		virtual bool isUnicolored() const override { return false; }
 		virtual void update(float) override;
 	private:
 		void initKeys(const std::unique_ptr<core::Input> &);

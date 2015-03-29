@@ -7,6 +7,9 @@
 /**************************************************************************************************/
 
 constexpr auto k_modelBufferBinding = 0u;
+constexpr auto k_colorBufferBinding = 1u;
+constexpr auto k_modelTypeSize = static_cast<unsigned int>(sizeof(glm::mat4));
+constexpr auto k_colorTypeSize = static_cast<unsigned int>(sizeof(glm::vec4));
 constexpr auto k_maxNumObjects = 1000u;
 
 /**************************************************************************************************/
@@ -33,7 +36,7 @@ DrawableManager::DrawableManager(core::Camera & cam, const glm::uvec2 & size)
 
 void DrawableManager::initRenderTypes() {
 	/*
-	 *	QUAD
+	 *	UNICOLORED QUAD
 	 */
 	const std::vector<GLubyte> quadIdx = {
 		3, 2, 0,
@@ -65,12 +68,30 @@ void DrawableManager::initRenderTypes() {
 	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(quadIdx.size() * sizeof(GLubyte)),
 			0, quadIdx.data());
 #endif
+	// drawCall
 	m_renderTypes[renderType].drawCall = [](const GLsizei size){
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, size);
 	};
+	// preCall
+	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+		prog.use();
+#ifdef LEGACY_MODE
+		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+#else
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+#endif
+		prog["col"] = drawType.col;
+		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
+		prog["View"] = cam.getViewMatrix();
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
+
+		drawType.vao.bind();
+	};
 
 	/*
-	 *	CUBE
+	 *	UNICOLORED CUBE
 	 */
 	const std::vector<GLushort> cubeIdx = {
 		19, 18, 16,
@@ -109,15 +130,87 @@ void DrawableManager::initRenderTypes() {
 			GL_STATIC_DRAW,	cubeIdx.data());
 	m_renderTypes[renderType].ibo.unbind();
 #else
-	gl::Shader cubeVert("shader/geometries/cube.vert", "cube_instance_vert");
+	gl::Shader cubeVert("shader/geometries/cube.vert", "cube_vert");
 	m_renderTypes[renderType].prog.attachShader(cubeVert);
 	m_renderTypes[renderType].prog.attachShader(frag);
 
 	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(cubeIdx.size() * sizeof(GLushort)),
 			0, cubeIdx.data());
 #endif
+	// drawCall
 	m_renderTypes[renderType].drawCall = [](const GLsizei size){
 		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, size);
+	};
+	// preCall
+	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+		prog.use();
+#ifdef LEGACY_MODE
+		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+#else
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+#endif
+		prog["col"] = drawType.col;
+		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
+		prog["View"] = cam.getViewMatrix();
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
+
+		drawType.vao.bind();
+	};
+
+	/*
+	 *	MULTICOLORED CUBE
+	 */
+	renderType = Drawable::RenderTypeName::MULTICOLOR_CUBE;
+#ifdef LEGACY_MODE
+	gl::Shader multicolorCubeVert(GL_VERTEX_SHADER);
+	multicolorCubeVert.addSourceFromString("#version 330 core\n");
+	multicolorCubeVert.addSourceFromString("const int NUM_MATRICES = " + std::to_string(m_maxNumObjects) + ";\n");
+	multicolorCubeVert.addSourceFromFile("shader/geometries/multicolor_cube_legacy.vert");
+	if (!multicolorCubeVert.compileSource()) {
+		LOG_ERROR("could not compile vertex shader!");
+	}
+	m_renderTypes[renderType].prog.attachShader(multicolorCubeVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.bind(GL_ARRAY_BUFFER);
+	m_renderTypes[renderType].ibo.createMutableStorage(
+			static_cast<unsigned int>(cubeIdx.size() * sizeof(GLushort)),
+			GL_STATIC_DRAW,	cubeIdx.data());
+	m_renderTypes[renderType].ibo.unbind();
+#else
+	gl::Shader multicolorCubeVert("shader/geometries/multicolor_cube.vert", "multicolor_cube_vert");
+	m_renderTypes[renderType].prog.attachShader(multicolorCubeVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(cubeIdx.size() * sizeof(GLushort)),
+			0, cubeIdx.data());
+#endif
+	// drawCall
+	m_renderTypes[renderType].drawCall = [](const GLsizei size){
+		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, size);
+	};
+	// preCall
+	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+		prog.use();
+#ifdef LEGACY_MODE
+		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+		const auto colorIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ColorBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), colorIndex, k_colorBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+#else
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+#endif
+
+		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
+		prog["View"] = cam.getViewMatrix();
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
+
+		drawType.vao.bind();
 	};
 }
 
@@ -183,23 +276,7 @@ void DrawableManager::draw() {
 			updateBuffer(drawablePair.first);
 		}
 		const auto renderType = drawType.objects[0].lock()->getRenderType();
-		auto & prog = m_renderTypes[renderType].prog;
-		prog.use();
-
-#ifdef LEGACY_MODE
-		const auto index = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), index, k_modelBufferBinding);
-		const auto bufferEnum = GL_UNIFORM_BUFFER;
-#else
-		const auto bufferEnum = GL_SHADER_STORAGE_BUFFER;
-#endif
-
-		prog["ViewProj"] = m_cam.getProjMatrix() * m_cam.getViewMatrix();
-		prog["View"] = m_cam.getViewMatrix();
-		prog["col"] = drawType.col;
-		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
-		glBindBufferBase(bufferEnum, k_modelBufferBinding, drawType.modelBuffer);
-		drawType.vao.bind();
+		m_renderTypes[renderType].preCall(m_renderTypes[renderType].prog, drawType, m_cam);
 		m_renderTypes[renderType].drawCall(static_cast<GLsizei>(drawType.objects.size()));
 	}
 
@@ -209,15 +286,6 @@ void DrawableManager::draw() {
 	m_fbo.bind(GL_READ_FRAMEBUFFER);
 	glDrawBuffer(GL_BACK);
 #endif
-	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT0,
-	// 		{0, 0, m_screenSize.x / 2, m_screenSize.y / 2});
-	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT1,
-	// 		{m_screenSize.x / 2, 0, m_screenSize.x, m_screenSize.y / 2});
-	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT2,
-	// 		{0, m_screenSize.y / 2, m_screenSize.x / 2, m_screenSize.y});
-	// m_fbo.blitAttachment(GL_COLOR_ATTACHMENT3,
-	// 		{m_screenSize.x / 2, m_screenSize.y / 2, m_screenSize.x, m_screenSize.y});
-
 	m_fbo.blitAttachment(GL_COLOR_ATTACHMENT3, {0, 0, m_screenSize.x, m_screenSize.y});
 #ifdef LEGACY_MODE
 	m_fbo.unbind();
@@ -230,13 +298,17 @@ void DrawableManager::draw() {
 void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 	const auto type = drawable->getType();
 	const auto renderType = drawable->getRenderType();
-	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
+
+	const auto unicolored = drawable->isUnicolored();
 
 	if (m_drawables.count(type) == 0) {
 		// color
-		m_drawables[type].col = drawable->getColor();
+		m_drawables[type].unicolored = unicolored;
+		if (unicolored) {
+			m_drawables[type].col = drawable->getColor();
+		}
 		// dynamic
-		m_drawables[type].dynamic = drawable->isDynamic(); // TO DO
+		m_drawables[type].dynamic = drawable->isDynamic();
 		// visible
 		m_drawables[type].visible = true;
 #ifdef LEGACY_MODE
@@ -248,15 +320,26 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 
 		// buffer
 		m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
-		m_drawables[type].modelBuffer.createMutableStorage(m_maxNumObjects * typeSize,
+		m_drawables[type].modelBuffer.createMutableStorage(m_maxNumObjects * k_modelTypeSize,
 				GL_DYNAMIC_DRAW);
 		m_drawables[type].modelBuffer.unbind();
+		if (!unicolored) {
+			m_drawables[type].colorBuffer.bind(GL_UNIFORM_BUFFER);
+			m_drawables[type].colorBuffer.createMutableStorage(m_maxNumObjects * k_colorTypeSize,
+					GL_DYNAMIC_DRAW);
+			m_drawables[type].colorBuffer.unbind();
+		}
+
 #else
 		// vao
 		m_drawables[type].vao.bindElementBuffer(m_renderTypes[renderType].ibo);
 		// buffer
-		m_drawables[type].modelBuffer.createImmutableStorage(m_maxNumObjects * typeSize,
+		m_drawables[type].modelBuffer.createImmutableStorage(m_maxNumObjects * k_modelTypeSize,
 				GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
+		if (!unicolored) {
+		m_drawables[type].colorBuffer.createImmutableStorage(m_maxNumObjects * k_colorTypeSize,
+				GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
+		}
 #endif
 	}
 
@@ -269,14 +352,23 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 		return;
 	}
 
-	const auto offset = static_cast<unsigned int>(m_drawables[type].objects.size()) * typeSize;
+	const auto modelOffset = static_cast<unsigned int>(m_drawables[type].objects.size()) * k_modelTypeSize;
+	const auto colorOffset = static_cast<unsigned int>(m_drawables[type].objects.size()) * k_colorTypeSize;
 	m_drawables[type].objects.emplace_back(drawable);
 #ifdef LEGACY_MODE
 	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
-	m_drawables[type].modelBuffer.setData(offset, typeSize, glm::value_ptr(drawable->getModelMatrix()));
+	m_drawables[type].modelBuffer.setData(modelOffset, k_modelTypeSize, glm::value_ptr(drawable->getModelMatrix()));
 	m_drawables[type].modelBuffer.unbind();
+	if (!unicolored) {
+		m_drawables[type].colorBuffer.bind(GL_UNIFORM_BUFFER);
+		m_drawables[type].colorBuffer.setData(colorOffset, k_colorTypeSize, glm::value_ptr(drawable->getColor()));
+		m_drawables[type].colorBuffer.unbind();
+	}
 #else
-	m_drawables[type].modelBuffer.setData(offset, typeSize, glm::value_ptr(drawable->getModelMatrix()));
+	m_drawables[type].modelBuffer.setData(modelOffset, k_modelTypeSize, glm::value_ptr(drawable->getModelMatrix()));
+	if (!unicolored) {
+		m_drawables[type].colorBuffer.setData(colorOffset, k_colorTypeSize, glm::value_ptr(drawable->getColor()));
+	}
 #endif
 }
 
@@ -302,11 +394,12 @@ glm::vec3 DrawableManager::getWorldPos(const glm::uvec2 & pos) const {
 /**************************************************************************************************/
 
 void DrawableManager::updateBuffer(const std::string & type) {
-	const auto typeSize = static_cast<unsigned int>(sizeof(glm::mat4));
 	auto & objects = m_drawables[type].objects;
 
 	std::vector<glm::mat4> modelVec;
+	std::vector<glm::vec3> colorVec;
 	modelVec.reserve(objects.size());
+	colorVec.reserve(objects.size());
 
 	auto it = objects.begin();
 	while (it != objects.end()) {
@@ -315,18 +408,36 @@ void DrawableManager::updateBuffer(const std::string & type) {
 			continue;
 		}
 		modelVec.emplace_back(it->lock()->getModelMatrix());
+		colorVec.emplace_back(it->lock()->getColor());
 		++it;
 	}
 
 #ifdef LEGACY_MODE
 	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
-#endif
 	m_drawables[type].modelBuffer.setData(
 			0,
-			typeSize * static_cast<unsigned int>(modelVec.size()),
+			k_modelTypeSize * static_cast<unsigned int>(modelVec.size()),
 			modelVec.data());
-#ifdef LEGACY_MODE
 	m_drawables[type].modelBuffer.unbind();
+	if (!m_drawables[type].unicolored) {
+		m_drawables[type].colorBuffer.bind(GL_UNIFORM_BUFFER);
+		m_drawables[type].colorBuffer.setData(
+				0,
+				k_colorTypeSize * static_cast<unsigned int>(colorVec.size()),
+				colorVec.data());
+		m_drawables[type].colorBuffer.unbind();
+	}
+#else
+	m_drawables[type].modelBuffer.setData(
+			0,
+			k_modelTypeSize * static_cast<unsigned int>(modelVec.size()),
+			modelVec.data());
+	if (!m_drawables[type].unicolored) {
+		m_drawables[type].colorBuffer.setData(
+				0,
+				k_colorTypeSize * static_cast<unsigned int>(colorVec.size()),
+				colorVec.data());
+	}
 #endif
 }
 
