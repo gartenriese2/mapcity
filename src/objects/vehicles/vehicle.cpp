@@ -95,7 +95,12 @@ void UDriveItVehicle::update(const float t) {
 	}
 
 	m_object.move(gameToGraphics(s), m_dir);
-	const auto turnDiff = m_speed * t * m_turnSpeed;
+	auto turnDiff = glm::sign(m_speed) * t * m_turnSpeed;
+	if (std::abs(m_speed) <= 2.f) {
+		turnDiff = 0.f;
+	} else if (std::abs(m_speed) <= 8.f) {
+		turnDiff *= std::sqrt(std::sqrt(std::sqrt(std::log2(std::abs(m_speed) / 2.f) / 2.f)));
+	}
 	m_dir = glm::rotateZ(m_dir, glm::radians(turnDiff));
 	m_object.rotate(glm::radians(turnDiff), {0.f, 0.f, 1.f});
 }
@@ -123,13 +128,13 @@ void UDriveItVehicle::initKeys(const std::unique_ptr<core::Input> & input) {
 			setAcceleration(0.f);
 		}
 		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
-			setTurnSpeed(5.f);
+			setTurnSpeed(75.f);
 		}
 		if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE) {
 			setTurnSpeed(0.f);
 		}
 		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-			setTurnSpeed(-5.f);
+			setTurnSpeed(-75.f);
 		}
 		if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) {
 			setTurnSpeed(0.f);
