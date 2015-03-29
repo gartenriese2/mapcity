@@ -27,7 +27,7 @@ void main() {
 	gl_Position = ViewProj * ModelMatrix[gl_InstanceID] * pos;
 	color = col;
 	n_w = normal;
-	mat4 NormalMatrix = transpose(inverse(View * ModelMatrix[gl_InstanceID]));
+	mat4 NormalMatrix = transpose(inverse(View/* * ModelMatrix[gl_InstanceID]*/));
 	n_vp = (normalize(NormalMatrix * vec4(normal, 0.0))).xyz;
 
 	l = (ViewProj * vec4(lightDir, 1.0)).xyz;
