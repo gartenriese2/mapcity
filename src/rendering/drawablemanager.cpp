@@ -337,8 +337,8 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 		m_drawables[type].modelBuffer.createImmutableStorage(m_maxNumObjects * k_modelTypeSize,
 				GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
 		if (!unicolored) {
-		m_drawables[type].colorBuffer.createImmutableStorage(m_maxNumObjects * k_colorTypeSize,
-				GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
+			m_drawables[type].colorBuffer.createImmutableStorage(m_maxNumObjects * k_colorTypeSize,
+					GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
 		}
 #endif
 	}
@@ -397,7 +397,7 @@ void DrawableManager::updateBuffer(const std::string & type) {
 	auto & objects = m_drawables[type].objects;
 
 	std::vector<glm::mat4> modelVec;
-	std::vector<glm::vec3> colorVec;
+	std::vector<glm::vec4> colorVec;
 	modelVec.reserve(objects.size());
 	colorVec.reserve(objects.size());
 
