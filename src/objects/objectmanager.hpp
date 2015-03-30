@@ -16,11 +16,11 @@ class ObjectManager {
 		ObjectManager(DrawableManager &, UpdatableManager &);
 
 		template<typename T, typename ... Args>
-		std::shared_ptr<T> add(Args && ... args) {
+		IDType add(Args && ... args) {
 			static_assert(std::is_base_of<Object, T>(), "type is not derived from object!");
 			auto ptr = std::make_shared<T>(std::forward<Args>(args) ...);
 			add(std::static_pointer_cast<Object>(ptr));
-			return ptr;
+			return ptr->ID();
 		}
 
 		template<typename T>
@@ -29,7 +29,9 @@ class ObjectManager {
 			remove(ptr->ID());
 		}
 
-		void remove(std::uint64_t);
+		void remove(IDType);
+		const std::shared_ptr<Object> & get(IDType);
+
 
 	private:
 
@@ -38,6 +40,6 @@ class ObjectManager {
 		DrawableManager & m_drawableManager;
 		UpdatableManager & m_updatableManager;
 
-		std::map<std::uint64_t, std::shared_ptr<Object>> m_objects;
+		std::map<IDType, std::shared_ptr<Object>> m_objects;
 
 };

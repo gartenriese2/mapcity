@@ -25,11 +25,18 @@ void ObjectManager::add(std::shared_ptr<Object> && objPtr) {
 	}
 }
 
-void ObjectManager::remove(std::uint64_t ID) {
+void ObjectManager::remove(IDType ID) {
 	auto it = m_objects.find(ID);
 	if (it != m_objects.end()) {
 		m_objects.erase(it);
 	} else {
 		LOG_WARNING("Tried to remove an Object that wasn't in ObjectManager");
 	}
+}
+
+const std::shared_ptr<Object> & ObjectManager::get(const IDType ID) {
+	if (m_objects.count(ID) == 0) {
+		LOG_ERROR("Trying to get non existant Object!");
+	}
+	return m_objects.at(ID);
 }
