@@ -1,7 +1,7 @@
 #include "objects/streets/street.hpp"
 #include "objects/terrain/terrain.hpp"
 #include "objects/buildings/building.hpp"
-#include "objects/vehicles/vehicle.hpp"
+#include "objects/vehicles/car.hpp"
 
 #include "objects/objectmanager.hpp"
 #include "rendering/rendering.hpp"
@@ -47,7 +47,7 @@ int main() {
 			glm::vec3(50.f, 50.f, 0.f), 25.f);
 
 	// car
-	objManager.add<UDriveItVehicle>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
+	objManager.add<UDriveItCar>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
 			renderer.getInputPtr());
 	objManager.add<Car>(glm::vec3(10.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
 	objManager.add<Car>(glm::vec3(16.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
