@@ -17,8 +17,8 @@ StraightStreet::StraightStreet(const glm::vec3 & start, const glm::vec3 & end)
 }
 
 void StraightStreet::initModelMatrix(const float width) {
-	const auto scaling = gameToGraphics(glm::vec3{glm::length(m_end - m_start) * 0.5f, width * 0.5f, 0.f});
-	m_object.scale(scaling);
+	const auto scaling = gameToGraphics(glm::vec2(glm::length(m_end - m_start) * 0.5f, width * 0.5f));
+	m_object.scale({scaling.x, scaling.y, 1.f});
 
 	const auto angle = glm::atan((m_end - m_start).y, (m_end - m_start).x);
 	m_object.rotate(angle, {0.f, 0.f, 1.f});
