@@ -10,6 +10,64 @@
 #include <memory>
 #include <cstdlib>
 
+class CarSpawner : public Updatable {
+
+	public:
+
+		CarSpawner(ObjectManager & oMan, const IDType path, const float relPos)
+		  : m_objManager{oMan},
+			m_path{path},
+			m_relPathPos{relPos}
+		{
+			LOG_ASSERT(relPos >= 0.f && relPos <= 1.f, "relPos not on Path");
+		}
+
+		virtual void update(const float t) {
+			auto path = std::dynamic_pointer_cast<Path>(m_objManager.get(m_path));
+			if (!path) {
+				LOG_WARNING("path is not a Path!");
+				return;
+			}
+			const auto dist = t * 50.f;
+			auto it = m_cars.begin();
+			while (it != m_cars.end()) {
+				auto ptr = m_objManager.get(*it);
+				auto carPtr = std::dynamic_pointer_cast<Car>(ptr);
+				const auto relPos = path->advance(carPtr->getPosition(), dist);
+				if (relPos < 0.f || relPos > 1.f) {
+					m_objManager.remove(*it);
+					it = m_cars.erase(it);
+					spawn();
+				} else {
+					carPtr->setPosition(path->getPosition(relPos));
+					++it;
+				}
+			}
+		}
+		virtual std::string getType() const { return "CarSpawner"; }
+
+		void spawn() {
+			auto ptr = m_objManager.get(m_path);
+			auto path = std::dynamic_pointer_cast<Path>(ptr);
+			if (!path) {
+				LOG_WARNING("path is not a Path!");
+				return;
+			}
+			const auto pos = path->getPosition(m_relPathPos);
+			const auto dir = path->getDirection(m_relPathPos);
+			m_cars.emplace_back(m_objManager.add<Car>(glm::vec3(pos.x, pos.y, 0.f), dir));
+		}
+
+	private:
+
+		ObjectManager & m_objManager;
+
+		IDType m_path;
+		float m_relPathPos;
+
+		std::vector<IDType> m_cars;
+};
+
 int main() {
 
 	/*
@@ -54,6 +112,11 @@ int main() {
 	objManager.add<Car>(glm::vec3(23.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
 	objManager.add<Car>(glm::vec3(29.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
 	objManager.add<Car>(glm::vec3(34.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
+
+	const auto pathID = objManager.add<StraightPath>(glm::vec3(-50, -20, 0), glm::vec3(50, -20, 0));
+	auto spawnerID = objManager.add<CarSpawner>(objManager, pathID, 0.f);
+	auto ptr = objManager.get(spawnerID);
+	std::dynamic_pointer_cast<CarSpawner>(ptr)->spawn();
 
 	/*
 	 *	Rendering

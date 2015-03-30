@@ -17,7 +17,6 @@ Car::Car(const glm::vec3 & pos, const glm::vec3 & dir, const std::string & color
 
 void Car::update(const float t) {
 	LOG_ASSERT(t > 0.f, "NO NEGATIVE TIME STEPS!");
-	// TO DO
 }
 
 UDriveItCar::UDriveItCar(const glm::vec3 & pos, const glm::vec3 & dir,

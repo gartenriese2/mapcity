@@ -32,7 +32,6 @@ class ObjectManager {
 		void remove(IDType);
 		const std::shared_ptr<Object> & get(IDType);
 
-
 	private:
 
 		void add(std::shared_ptr<Object> &&);

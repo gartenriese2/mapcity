@@ -25,6 +25,19 @@ Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir, const std::string
 	initModelMatrix();
 }
 
+void Vehicle::setPosition(const glm::vec3 & pos) {
+	m_pos = pos;
+	m_object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, m_size.z)));
+}
+
+const glm::vec3 & Vehicle::getPosition() const {
+	return m_pos;
+}
+
+void Vehicle::setDirection(const glm::vec3 & dir) {
+	m_dir = dir;
+}
+
 void Vehicle::initModelMatrix() {
 	const auto scaling = gameToGraphics(m_size * 0.5f);
 	m_object.scale(scaling);
