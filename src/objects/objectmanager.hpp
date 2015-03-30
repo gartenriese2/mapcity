@@ -23,12 +23,6 @@ class ObjectManager {
 			return ptr->ID();
 		}
 
-		template<typename T>
-		void remove(const std::shared_ptr<T> & ptr) {
-			static_assert(std::is_base_of<Object, T>(), "type is not derived from object!");
-			remove(ptr->ID());
-		}
-
 		void remove(IDType);
 		const std::shared_ptr<Object> & get(IDType);
 

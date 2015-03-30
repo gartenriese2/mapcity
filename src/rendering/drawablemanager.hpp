@@ -33,13 +33,6 @@ class DrawableManager {
 			add(std::static_pointer_cast<Drawable>(ptr));
 		}
 
-		template<typename T>
-		void add(const std::vector<std::shared_ptr<T>> & vec) {
-			for (const auto & ptr : vec) {
-				add(ptr);
-			}
-		}
-
 		void updateBuffer(const std::string &);
 		void hide(const std::string &);
 		void show(const std::string &);

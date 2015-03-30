@@ -39,7 +39,8 @@ class CarSpawner : public Updatable {
 					it = m_cars.erase(it);
 					spawn();
 				} else {
-					carPtr->setPosition(path->getPosition(relPos));
+					const auto newPos = path->getPosition(relPos);
+					carPtr->setPosition({newPos.x, newPos.y, carPtr->getPosition().z});
 					++it;
 				}
 			}
@@ -87,14 +88,21 @@ int main() {
 	objManager.add<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
 
 	// streets
-	objManager.add<StraightMediumStreet>(glm::vec3(-300, 0, 0.02f), glm::vec3(100, 0, 0.02f));
-	objManager.add<StraightSmallStreet>(glm::vec3(-200, 100, 0.01f), glm::vec3(100, 100, 0.01f));
-	objManager.add<StraightMediumStreet>(glm::vec3(100, -200, 0.02f), glm::vec3(100, 200, 0.02f));
-	objManager.add<StraightSmallStreet>(glm::vec3(-100, -100, 0.01f), glm::vec3(-100, 100, 0.01f));
-	objManager.add<StraightSmallStreet>(glm::vec3(100, 50, 0.01f), glm::vec3(200, 50, 0.01f));
-	objManager.add<StraightSmallStreet>(glm::vec3(-200, 0, 0.01f), glm::vec3(-300, -100, 0.01f));
-	objManager.add<StraightSmallStreet>(glm::vec3(175, -75, 0.01f), glm::vec3(-100, -75, 0.01f));
-	objManager.add<StraightSmallStreet>(glm::vec3(175, -150, 0.01f), glm::vec3(175, 50, 0.01f));
+	auto spawnerFunc = [&](const IDType ID){
+		auto strPtr = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID));
+		for (const auto & path : strPtr->getPaths()) {
+			auto spawnerID = objManager.add<CarSpawner>(objManager, path->ID(), 0.f);
+			std::dynamic_pointer_cast<CarSpawner>(objManager.get(spawnerID))->spawn();
+		}
+	};
+	spawnerFunc(objManager.add<StraightMediumStreet>(glm::vec3(-300, 0, 0.02f), glm::vec3(100, 0, 0.02f)));
+	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(-200, 100, 0.01f), glm::vec3(100, 100, 0.01f)));
+	spawnerFunc(objManager.add<StraightMediumStreet>(glm::vec3(100, -200, 0.02f), glm::vec3(100, 200, 0.02f)));
+	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(-100, -100, 0.01f), glm::vec3(-100, 100, 0.01f)));
+	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(100, 50, 0.01f), glm::vec3(200, 50, 0.01f)));
+	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(-200, 0, 0.01f), glm::vec3(-300, -100, 0.01f)));
+	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(175, -75, 0.01f), glm::vec3(-100, -75, 0.01f)));
+	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(175, -150, 0.01f), glm::vec3(175, 50, 0.01f)));
 
 	// buildings
 	objManager.add<ResidentialBuilding>(glm::vec3(-30.f, 10.f, 0.f), glm::vec3(0.f, 10.f, 0.f),
@@ -104,7 +112,7 @@ int main() {
 	objManager.add<OfficeBuilding>(glm::vec3(50.f, 10.f, 0.f), glm::vec3(90.f, 10.f, 0.f),
 			glm::vec3(50.f, 50.f, 0.f), 25.f);
 
-	// car
+	// cars
 	objManager.add<UDriveItCar>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
 			renderer.getInputPtr());
 	objManager.add<Car>(glm::vec3(10.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
@@ -112,11 +120,6 @@ int main() {
 	objManager.add<Car>(glm::vec3(23.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
 	objManager.add<Car>(glm::vec3(29.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
 	objManager.add<Car>(glm::vec3(34.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
-
-	const auto pathID = objManager.add<StraightPath>(glm::vec3(-50, -20, 0), glm::vec3(50, -20, 0));
-	auto spawnerID = objManager.add<CarSpawner>(objManager, pathID, 0.f);
-	auto ptr = objManager.get(spawnerID);
-	std::dynamic_pointer_cast<CarSpawner>(ptr)->spawn();
 
 	/*
 	 *	Rendering

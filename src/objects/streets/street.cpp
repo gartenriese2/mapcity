@@ -41,6 +41,6 @@ StraightMediumStreet::StraightMediumStreet(const glm::vec3 & start, const glm::v
 	const auto offset = glm::normalize(glm::vec3((end - start).y, (start - end).x, start.z)) * k_width * 0.25f;
 	std::shared_ptr<Path> path = std::make_shared<StraightPath>(start + offset, end + offset);
 	m_paths.emplace_back(std::move(path));
-	path = std::make_shared<StraightPath>(start - offset, end - offset);
+	path = std::make_shared<StraightPath>(end - offset, start - offset);
 	m_paths.emplace_back(std::move(path));
 }
