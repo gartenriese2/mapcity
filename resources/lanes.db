@@ -1,0 +1,11 @@
+/*
+ *	Lanes
+ */
+
+const std::map<std::string, Lane> k_lanes = {
+	{"SmallSidewalk", {{LANETYPE::PEDESTRIAN}, 1.5f, 10.f}},
+	{"MediumSidewalk", {{LANETYPE::PEDESTRIAN}, 2.f, 10.f}},
+	{"WideSidewalk", {{LANETYPE::PEDESTRIAN}, 3.f, 10.f}},
+	{"SmallStreet", {{LANETYPE::CAR}, 3.5f, 30.f}},
+	{"MediumStreet", {{LANETYPE::CAR}, 4.f, 50.f}},
+};

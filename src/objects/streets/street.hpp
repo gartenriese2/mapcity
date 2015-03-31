@@ -2,6 +2,7 @@
 
 #include "../../rendering/drawable.hpp"
 #include "../../network/path.hpp"
+#include "laneconfig.hpp"
 
 #include <glm/glm.hpp>
 #include <memory>
@@ -14,6 +15,7 @@ class Street {
 		std::vector<std::shared_ptr<Path>> & getPaths();
 	protected:
 		std::vector<std::shared_ptr<Path>> m_paths;
+		LaneConfig m_lanes;
 };
 
 class StraightStreet : public Street, public Drawable {
@@ -24,7 +26,7 @@ class StraightStreet : public Street, public Drawable {
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
 		virtual bool isDynamic() const override { return false; }
 	protected:
-		void initModelMatrix(float);
+		void initModelMatrix();
 	private:
 		glm::vec3 m_start, m_end;
 };
@@ -34,8 +36,6 @@ class StraightSmallStreet : public StraightStreet {
 		StraightSmallStreet(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "StraightSmallStreet"; }
 		virtual glm::vec4 getColor() const override { return {1.f, 1.f, 0.f, 1.f}; }
-	private:
-		const float k_width = 6.f;
 };
 
 class StraightMediumStreet : public StraightStreet {
@@ -43,6 +43,4 @@ class StraightMediumStreet : public StraightStreet {
 		StraightMediumStreet(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "StraightMediumStreet"; }
 		virtual glm::vec4 getColor() const override { return {1.f, 0.f, 0.f, 1.f}; }
-	private:
-		const float k_width = 10.f;
 };
