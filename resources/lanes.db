@@ -9,3 +9,14 @@ const std::map<std::string, Lane> k_lanes = {
 	{"SmallStreet", {{LANETYPE::CAR}, 3.5f, 30.f}},
 	{"MediumStreet", {{LANETYPE::CAR}, 4.f, 50.f}},
 };
+
+/*
+ *	Streets
+ */
+
+const std::map<std::string, LaneConfig> k_streets = {
+	{"SmallStreet", {{"SmallSidewalk", "SmallStreet", "SmallStreet", "SmallSidewalk"},
+					{false, false, true, true}, {1,1,0}}},
+	{"MediumStreet", {{"MediumSidewalk", "MediumStreet", "MediumStreet", "MediumSidewalk"},
+					{false, false, true, true}, {1,0,0}}},
+};

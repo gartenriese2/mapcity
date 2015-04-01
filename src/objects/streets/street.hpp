@@ -8,39 +8,31 @@
 #include <memory>
 #include <vector>
 
-class Street {
+class Street : public Drawable {
 	public:
-		Street() = default;
-		void addPaths(const std::vector<std::shared_ptr<Path>> &);
+		Street(const std::string &);
+
+		virtual std::string getType() const override;
+		virtual glm::vec4 getColor() const override;
+		virtual RenderTypeName getRenderType() const = 0;
+		virtual bool isDynamic() const override;
+
 		std::vector<std::shared_ptr<Path>> & getPaths();
+		const LaneConfig & getConfig() const;
 	protected:
 		std::vector<std::shared_ptr<Path>> m_paths;
-		LaneConfig m_lanes;
+		LaneConfig m_config;
+		std::string m_type;
 };
 
-class StraightStreet : public Street, public Drawable {
+class StraightStreet : public Street {
 	public:
-		StraightStreet(const glm::vec3 &, const glm::vec3 &);
-		virtual std::string getType() const = 0;
-		virtual glm::vec4 getColor() const = 0;
+		StraightStreet(const glm::vec3 &, const glm::vec3 &, const std::string &);
+
 		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
-		virtual bool isDynamic() const override { return false; }
 	protected:
 		void initModelMatrix();
+		void initPaths();
 	private:
 		glm::vec3 m_start, m_end;
-};
-
-class StraightSmallStreet : public StraightStreet {
-	public:
-		StraightSmallStreet(const glm::vec3 &, const glm::vec3 &);
-		virtual std::string getType() const override { return "StraightSmallStreet"; }
-		virtual glm::vec4 getColor() const override { return {1.f, 1.f, 0.f, 1.f}; }
-};
-
-class StraightMediumStreet : public StraightStreet {
-	public:
-		StraightMediumStreet(const glm::vec3 &, const glm::vec3 &);
-		virtual std::string getType() const override { return "StraightMediumStreet"; }
-		virtual glm::vec4 getColor() const override { return {1.f, 0.f, 0.f, 1.f}; }
 };

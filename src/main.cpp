@@ -90,19 +90,24 @@ int main() {
 	// streets
 	auto spawnerFunc = [&](const IDType ID){
 		auto strPtr = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID));
+		const auto & config = strPtr->getConfig();
+		auto count = 0u;
 		for (const auto & path : strPtr->getPaths()) {
-			auto spawnerID = objManager.add<CarSpawner>(objManager, path->ID(), 0.f);
-			std::dynamic_pointer_cast<CarSpawner>(objManager.get(spawnerID))->spawn();
+			if (config.getLanes()[count].allows(LANETYPE::CAR)) {
+				auto spawnerID = objManager.add<CarSpawner>(objManager, path->ID(), 0.f);
+				std::dynamic_pointer_cast<CarSpawner>(objManager.get(spawnerID))->spawn();
+			}
+			++count;
 		}
 	};
-	spawnerFunc(objManager.add<StraightMediumStreet>(glm::vec3(-300, 0, 0.02f), glm::vec3(100, 0, 0.02f)));
-	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(-200, 100, 0.01f), glm::vec3(100, 100, 0.01f)));
-	spawnerFunc(objManager.add<StraightMediumStreet>(glm::vec3(100, -200, 0.02f), glm::vec3(100, 200, 0.02f)));
-	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(-100, -100, 0.01f), glm::vec3(-100, 100, 0.01f)));
-	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(100, 50, 0.01f), glm::vec3(200, 50, 0.01f)));
-	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(-200, 0, 0.01f), glm::vec3(-300, -100, 0.01f)));
-	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(175, -75, 0.01f), glm::vec3(-100, -75, 0.01f)));
-	spawnerFunc(objManager.add<StraightSmallStreet>(glm::vec3(175, -150, 0.01f), glm::vec3(175, 50, 0.01f)));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(-300, 0, 0.02f), glm::vec3(100, 0, 0.02f), "MediumStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(-200, 100, 0.01f), glm::vec3(100, 100, 0.01f), "SmallStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(100, -200, 0.02f), glm::vec3(100, 200, 0.02f), "MediumStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(-100, -100, 0.01f), glm::vec3(-100, 100, 0.01f), "SmallStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(100, 50, 0.01f), glm::vec3(200, 50, 0.01f), "SmallStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(-200, 0, 0.01f), glm::vec3(-300, -100, 0.01f), "SmallStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(175, -75, 0.01f), glm::vec3(-100, -75, 0.01f), "SmallStreet"));
+	spawnerFunc(objManager.add<StraightStreet>(glm::vec3(175, -150, 0.01f), glm::vec3(175, 50, 0.01f), "SmallStreet"));
 
 	// buildings
 	objManager.add<ResidentialBuilding>(glm::vec3(-30.f, 10.f, 0.f), glm::vec3(0.f, 10.f, 0.f),
