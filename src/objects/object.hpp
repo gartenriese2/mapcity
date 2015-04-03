@@ -5,6 +5,7 @@
 #include <MonoEngine/core/log.hpp>
 
 #include <vector>
+#include <memory>
 
 using IDType = std::uint64_t;
 

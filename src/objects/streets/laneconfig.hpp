@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <glm/glm.hpp>
+#include <string>
 
 struct Lane;
 enum class LANETYPE : std::uint8_t { CAR, PEDESTRIAN };
