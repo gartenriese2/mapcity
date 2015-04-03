@@ -1,17 +1,16 @@
 #pragma once
 
-#include "../../rendering/drawable.hpp"
 #include "../object.hpp"
 
-class Terrain : public Drawable {
+#include <vector>
+
+class Terrain : public Object {
 	public:
 		Terrain(const glm::vec3 &, const glm::vec3 &);
 		virtual std::string getType() const override { return "Terrain"; }
-		virtual glm::vec4 getColor() const override { return {0.5f, 1.f, 0.5f, 1.f}; }
-		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
-		virtual bool isDynamic() const override { return false; }
+		virtual bool isDrawable() const { return true; }
 	protected:
-		void initModelMatrix();
+		void initDrawables();
 	private:
 		glm::vec3 m_start, m_end;
 };

@@ -1,6 +1,10 @@
 #pragma once
 
+#include "../rendering/drawable.hpp"
+
 #include <MonoEngine/core/log.hpp>
+
+#include <vector>
 
 using IDType = std::uint64_t;
 
@@ -21,6 +25,9 @@ class Object {
 		virtual ~Object() {}
 		auto ID() const { return m_ID; }
 		virtual std::string getType() const = 0;
+		virtual bool isDrawable() const { return false; }
+		const std::vector<std::shared_ptr<Drawable>> & getDrawables() const { return m_drawables; }
 	protected:
 		IDType m_ID;
+		std::vector<std::shared_ptr<Drawable>> m_drawables;
 };

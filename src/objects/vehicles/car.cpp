@@ -13,6 +13,7 @@ Car::Car(const glm::vec3 & pos, const glm::vec3 & dir, const std::string & color
 		const std::string & size)
   : Vehicle(pos, dir, color, size)
 {
+	m_drawables.back()->type = getType();
 }
 
 void Car::update(const float t) {
@@ -25,6 +26,7 @@ UDriveItCar::UDriveItCar(const glm::vec3 & pos, const glm::vec3 & dir,
   : Vehicle(pos, dir, color, size)
 {
 	initKeys(input);
+	m_drawables.back()->type = getType();
 }
 
 void UDriveItCar::update(const float t) {
@@ -38,7 +40,7 @@ void UDriveItCar::update(const float t) {
 		m_speed = 0.f;
 	}
 
-	m_object.move(gameToGraphics(s), m_dir);
+	m_drawables[0]->object.move(gameToGraphics(s), m_dir);
 	auto turnDiff = glm::sign(m_speed) * t * m_turnSpeed;
 	if (std::abs(m_speed) <= 2.f) {
 		turnDiff = 0.f;
@@ -46,7 +48,7 @@ void UDriveItCar::update(const float t) {
 		turnDiff *= std::sqrt(std::sqrt(std::sqrt(std::log2(std::abs(m_speed) / 2.f) / 2.f)));
 	}
 	m_dir = glm::rotateZ(m_dir, glm::radians(turnDiff));
-	m_object.rotate(glm::radians(turnDiff), {0.f, 0.f, 1.f});
+	m_drawables[0]->object.rotate(glm::radians(turnDiff), {0.f, 0.f, 1.f});
 }
 
 void UDriveItCar::setTurnSpeed(const float speed) {

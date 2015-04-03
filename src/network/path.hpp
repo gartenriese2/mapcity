@@ -1,14 +1,11 @@
 #pragma once
 
-#include "../rendering/drawable.hpp"
+#include "../objects/object.hpp"
 
-class Path : public Drawable {
+class Path : public Object {
 	public:
 		Path() = default;
 		virtual std::string getType() const override { return "Path"; }
-		virtual glm::vec4 getColor() const override { return {0.f, 0.f, 0.f, 1.f}; }
-		virtual RenderTypeName getRenderType() const = 0;
-		virtual bool isDynamic() const override { return false; }
 
 		virtual glm::vec3 getPosition(float) const = 0;
 		virtual glm::vec3 getDirection(float) const = 0;
@@ -20,7 +17,6 @@ class Path : public Drawable {
 class StraightPath : public Path {
 	public:
 		StraightPath(const glm::vec3 &, const glm::vec3 &);
-		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
 
 		virtual glm::vec3 getPosition(float) const override;
 		virtual glm::vec3 getDirection(float) const override;
@@ -28,6 +24,6 @@ class StraightPath : public Path {
 
 		virtual bool isOnPath(const glm::vec3 &) const override;
 	protected:
-		void initModelMatrix();
+		void initDrawables();
 		glm::vec3 m_a, m_b;
 };

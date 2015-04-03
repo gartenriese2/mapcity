@@ -22,12 +22,21 @@ Vehicle::Vehicle(const glm::vec3 & pos, const glm::vec3 & dir, const std::string
 
 	initColor(color);
 	initSize(size);
-	initModelMatrix();
+	m_drawables.emplace_back(std::make_shared<Drawable>());
+	m_drawables.back()->color = glm::vec4{m_color, 1.f};
+	m_drawables.back()->renderType = RenderTypeName::MULTICOLOR_CUBE;
+	m_drawables.back()->dynamic = true;
+	m_drawables.back()->unicolored = false;
+	const auto scaling = gameToGraphics(m_size * 0.5f);
+	m_drawables.back()->object.scale(scaling);
+	const auto angle = glm::atan(m_dir.y, m_dir.x);
+	m_drawables.back()->object.rotate(angle, {0.f, 0.f, 1.f});
+	m_drawables.back()->object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, m_size.z)));
 }
 
 void Vehicle::setPosition(const glm::vec3 & pos) {
 	m_pos = pos;
-	m_object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, m_size.z)));
+	m_drawables[0]->object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, m_size.z)));
 }
 
 const glm::vec3 & Vehicle::getPosition() const {
@@ -36,16 +45,6 @@ const glm::vec3 & Vehicle::getPosition() const {
 
 void Vehicle::setDirection(const glm::vec3 & dir) {
 	m_dir = dir;
-}
-
-void Vehicle::initModelMatrix() {
-	const auto scaling = gameToGraphics(m_size * 0.5f);
-	m_object.scale(scaling);
-
-	const auto angle = glm::atan(m_dir.y, m_dir.x);
-	m_object.rotate(angle, {0.f, 0.f, 1.f});
-
-	m_object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, m_size.z)));
 }
 
 void Vehicle::initColor(const std::string & color) {

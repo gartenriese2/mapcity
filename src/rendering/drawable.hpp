@@ -1,26 +1,18 @@
 #pragma once
 
-#include "../objects/object.hpp"
-
 #include <MonoEngine/object.hpp>
+#include <string>
 
-class Drawable : public virtual Object {
+enum class RenderTypeName : std::uint8_t { QUAD, CUBE, MULTICOLOR_QUAD, MULTICOLOR_CUBE };
 
-	public:
-
-		enum class RenderTypeName : std::uint8_t { QUAD, CUBE, MULTICOLOR_CUBE };
-
-		const glm::mat4 & getModelMatrix() const {
-			return m_object.getModelMatrix();
-		}
-
-		virtual glm::vec4 getColor() const = 0;
-		virtual RenderTypeName getRenderType() const = 0;
-		virtual bool isDynamic() const = 0;
-		virtual bool isUnicolored() const { return true; }
-
-	protected:
-
-		engine::Object m_object;
-
+struct Drawable {
+	const glm::mat4 & getModelMatrix() const {
+		return object.getModelMatrix();
+	}
+	std::string type;
+	glm::vec4 color;
+	RenderTypeName renderType;
+	bool dynamic;
+	bool unicolored;
+	engine::Object object;
 };

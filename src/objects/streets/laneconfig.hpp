@@ -25,10 +25,11 @@ class LaneConfig {
 };
 
 struct Lane {
-	Lane(const std::set<LANETYPE> & t, float w, float s)
-	  : types{t}, width{w}, speedlimit{s} {}
+	Lane(const std::set<LANETYPE> & t, float w, float s, const glm::vec3 & c)
+	  : types{t}, width{w}, speedlimit{s}, color{c} {}
 	bool allows(LANETYPE type) const { return types.count(type) != 0; }
 	std::set<LANETYPE> types;
 	float width;
 	float speedlimit;
+	glm::vec3 color;
 };

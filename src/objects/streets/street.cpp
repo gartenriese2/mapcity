@@ -10,20 +10,10 @@ Street::Street(const std::string & type)
 {
 	LOG_ASSERT(k_streets.count(m_type) != 0, "Street with the name " + m_type + " does not exist.");
 	m_config = k_streets.at(m_type);
-
-
 }
 
 std::string Street::getType() const {
 	return m_type;
-}
-
-glm::vec4 Street::getColor() const {
-	return glm::vec4(m_config.getColor(), 1.f);
-}
-
-bool Street::isDynamic() const {
-	return false;
 }
 
 std::vector<std::shared_ptr<Path>> & Street::getPaths() {
@@ -41,19 +31,7 @@ StraightStreet::StraightStreet(const glm::vec3 & start, const glm::vec3 & end,
 	m_end{end}
 {
 	initPaths();
-	initModelMatrix();
-}
-
-void StraightStreet::initModelMatrix() {
-	const auto width = m_config.getTotalWidth();
-
-	const auto scaling = gameToGraphics(glm::vec2(glm::length(m_end - m_start) * 0.5f, width * 0.5f));
-	m_object.scale({scaling.x, scaling.y, 1.f});
-
-	const auto angle = glm::atan((m_end - m_start).y, (m_end - m_start).x);
-	m_object.rotate(angle, {0.f, 0.f, 1.f});
-
-	m_object.moveTo(gameToGraphics((m_start + m_end) * 0.5f));
+	initDrawables();
 }
 
 void StraightStreet::initPaths() {
@@ -72,5 +50,28 @@ void StraightStreet::initPaths() {
 		} else {
 			m_paths.emplace_back(std::make_shared<StraightPath>(e, s));
 		}
+	}
+}
+
+void StraightStreet::initDrawables() {
+	const auto angle = glm::atan((m_end - m_start).y, (m_end - m_start).x);
+	const auto n = glm::normalize(glm::vec3((m_end - m_start).y, (m_start - m_end).x, m_start.z));
+	const auto centers = m_config.getLaneCenters();
+	const auto & lanes = m_config.getLanes();
+	auto sideStart = -m_config.getTotalWidth() * 0.5f;
+	for (auto i = 0u; i < lanes.size(); ++i) {
+		m_drawables.emplace_back(std::make_shared<Drawable>());
+		auto & drawable = m_drawables[i];
+		drawable->type = m_type;
+		drawable->color = glm::vec4(lanes[i].color, 1.f);
+		drawable->renderType = RenderTypeName::MULTICOLOR_QUAD;
+		drawable->dynamic = false;
+		drawable->unicolored = false;
+		const auto scaling = gameToGraphics(glm::vec2(glm::length(m_end - m_start) * 0.5f,
+				lanes[i].width * 0.5f));
+		drawable->object.scale({scaling.x, scaling.y, 1.f});
+		drawable->object.rotate(angle, {0.f, 0.f, 1.f});
+		const auto offset = (sideStart + centers[i]) * glm::vec2(n.x, n.y);
+		drawable->object.moveTo(gameToGraphics((m_start + m_end) * 0.5f + glm::vec3(offset, 0.f)));
 	}
 }

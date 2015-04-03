@@ -1,21 +1,17 @@
 #pragma once
 
-#include "../../rendering/drawable.hpp"
+#include "../object.hpp"
 #include "../../network/path.hpp"
 #include "laneconfig.hpp"
 
 #include <glm/glm.hpp>
-#include <memory>
-#include <vector>
 
-class Street : public Drawable {
+class Street : public Object {
 	public:
 		Street(const std::string &);
 
 		virtual std::string getType() const override;
-		virtual glm::vec4 getColor() const override;
-		virtual RenderTypeName getRenderType() const = 0;
-		virtual bool isDynamic() const override;
+		virtual bool isDrawable() const { return true; }
 
 		std::vector<std::shared_ptr<Path>> & getPaths();
 		const LaneConfig & getConfig() const;
@@ -28,11 +24,9 @@ class Street : public Drawable {
 class StraightStreet : public Street {
 	public:
 		StraightStreet(const glm::vec3 &, const glm::vec3 &, const std::string &);
-
-		virtual RenderTypeName getRenderType() const override { return RenderTypeName::QUAD; }
 	protected:
-		void initModelMatrix();
 		void initPaths();
 	private:
+		void initDrawables();
 		glm::vec3 m_start, m_end;
 };

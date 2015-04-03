@@ -14,7 +14,7 @@ class CarSpawner : public Updatable {
 
 	public:
 
-		CarSpawner(ObjectManager & oMan, const IDType path, const float relPos)
+		CarSpawner(ObjectManager & oMan, const std::shared_ptr<Path> & path, const float relPos)
 		  : m_objManager{oMan},
 			m_path{path},
 			m_relPathPos{relPos}
@@ -23,23 +23,18 @@ class CarSpawner : public Updatable {
 		}
 
 		virtual void update(const float t) {
-			auto path = std::dynamic_pointer_cast<Path>(m_objManager.get(m_path));
-			if (!path) {
-				LOG_WARNING("path is not a Path!");
-				return;
-			}
 			const auto dist = t * 50.f;
 			auto it = m_cars.begin();
 			while (it != m_cars.end()) {
 				auto ptr = m_objManager.get(*it);
 				auto carPtr = std::dynamic_pointer_cast<Car>(ptr);
-				const auto relPos = path->advance(carPtr->getPosition(), dist);
+				const auto relPos = m_path->advance(carPtr->getPosition(), dist);
 				if (relPos < 0.f || relPos > 1.f) {
 					m_objManager.remove(*it);
 					it = m_cars.erase(it);
 					spawn();
 				} else {
-					const auto newPos = path->getPosition(relPos);
+					const auto newPos = m_path->getPosition(relPos);
 					carPtr->setPosition({newPos.x, newPos.y, carPtr->getPosition().z});
 					++it;
 				}
@@ -48,14 +43,8 @@ class CarSpawner : public Updatable {
 		virtual std::string getType() const { return "CarSpawner"; }
 
 		void spawn() {
-			auto ptr = m_objManager.get(m_path);
-			auto path = std::dynamic_pointer_cast<Path>(ptr);
-			if (!path) {
-				LOG_WARNING("path is not a Path!");
-				return;
-			}
-			const auto pos = path->getPosition(m_relPathPos);
-			const auto dir = path->getDirection(m_relPathPos);
+			const auto pos = m_path->getPosition(m_relPathPos);
+			const auto dir = m_path->getDirection(m_relPathPos);
 			m_cars.emplace_back(m_objManager.add<Car>(glm::vec3(pos.x, pos.y, 0.f), dir));
 		}
 
@@ -63,30 +52,16 @@ class CarSpawner : public Updatable {
 
 		ObjectManager & m_objManager;
 
-		IDType m_path;
+		std::shared_ptr<Path> m_path;
 		float m_relPathPos;
 
 		std::vector<IDType> m_cars;
 };
 
-int main() {
+void demo0(ObjectManager &, const std::unique_ptr<core::Input> &);
+void demo1(ObjectManager &);
 
-	/*
-	 *	Initialization
-	 */
-
-	Rendering renderer({1920, 1080});
-	Simulation simulation;
-
-	/*
-	 *	Objects
-	 */
-
-	ObjectManager objManager(renderer.getDrawableManager(), simulation.getUpdatableManager());
-
-	// terrain
-	objManager.add<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
-
+void demo0(ObjectManager & objManager, const std::unique_ptr<core::Input> & inputPtr) {
 	// streets
 	auto spawnerFunc = [&](const IDType ID){
 		auto strPtr = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID));
@@ -94,7 +69,7 @@ int main() {
 		auto count = 0u;
 		for (const auto & path : strPtr->getPaths()) {
 			if (config.getLanes()[count].allows(LANETYPE::CAR)) {
-				auto spawnerID = objManager.add<CarSpawner>(objManager, path->ID(), 0.f);
+				auto spawnerID = objManager.add<CarSpawner>(objManager, path, 0.f);
 				std::dynamic_pointer_cast<CarSpawner>(objManager.get(spawnerID))->spawn();
 			}
 			++count;
@@ -118,13 +93,34 @@ int main() {
 			glm::vec3(50.f, 50.f, 0.f), 25.f);
 
 	// cars
-	objManager.add<UDriveItCar>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f),
-			renderer.getInputPtr());
-	objManager.add<Car>(glm::vec3(10.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
-	objManager.add<Car>(glm::vec3(16.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
-	objManager.add<Car>(glm::vec3(23.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
-	objManager.add<Car>(glm::vec3(29.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
-	objManager.add<Car>(glm::vec3(34.f, 5.f, 0.f), glm::vec3(-1.f, 0.f, 0.f));
+	objManager.add<UDriveItCar>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), inputPtr);
+}
+
+void demo1(ObjectManager & objManager) {
+	objManager.add<StraightStreet>(glm::vec3(-100, 0, 0.02f), glm::vec3(0, 0, 0.02f), "SmallStreet");
+	objManager.add<StraightStreet>(glm::vec3(0, 0, 0.02f), glm::vec3(100, 0, 0.02f), "MediumStreet");
+}
+
+int main() {
+
+	/*
+	 *	Initialization
+	 */
+
+	Rendering renderer({1920, 1080});
+	Simulation simulation;
+
+	/*
+	 *	Objects
+	 */
+
+	ObjectManager objManager(renderer.getDrawableManager(), simulation.getUpdatableManager());
+
+	// terrain
+	objManager.add<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
+
+	demo0(objManager, renderer.getInputPtr());
+	// demo1(objManager);
 
 	/*
 	 *	Rendering

@@ -26,13 +26,6 @@ class DrawableManager {
 		void draw();
 		void add(const std::shared_ptr<Drawable> &);
 
-		template<typename T>
-		void add(const std::shared_ptr<T> & ptr) {
-			static_assert(std::is_base_of<Drawable, T>(),
-					"adding a Type that is not derived from Drawable");
-			add(std::static_pointer_cast<Drawable>(ptr));
-		}
-
 		void updateBuffer(const std::string &);
 		void hide(const std::string &);
 		void show(const std::string &);
@@ -74,7 +67,7 @@ class DrawableManager {
 			std::function<void(GLsizei)> drawCall;
 			std::function<void(gl::Program &, const DrawableType &, const core::Camera &)> preCall;
 		};
-		std::map<Drawable::RenderTypeName, RenderType> m_renderTypes;
+		std::map<RenderTypeName, RenderType> m_renderTypes;
 
 		unsigned int m_maxNumObjects;
 

@@ -14,12 +14,15 @@ void ObjectManager::add(std::shared_ptr<Object> && objPtr) {
 	auto pair = m_objects.emplace(objPtr->ID(), std::move(objPtr));
 	auto it = pair.first;
 	auto ptr = it->second;
-	if (auto drawablePtr = std::dynamic_pointer_cast<Drawable>(ptr)) {
-		m_drawableManager.add(drawablePtr);
-		if (auto streetPtr = std::dynamic_pointer_cast<Street>(drawablePtr)) {
-			for (const auto & path : streetPtr->getPaths()) {
-				m_objects.emplace(path->ID(), std::static_pointer_cast<Object>(path));
-				m_drawableManager.add(path);
+	if (ptr->isDrawable()) {
+		for (const auto & drawable : ptr->getDrawables()) {
+			m_drawableManager.add(drawable);
+		}
+	}
+	if (auto streetPtr = std::dynamic_pointer_cast<Street>(ptr)) {
+		for (const auto & path : streetPtr->getPaths()) {
+			for (const auto & drawable : path->getDrawables()) {
+				m_drawableManager.add(drawable);
 			}
 		}
 	}
