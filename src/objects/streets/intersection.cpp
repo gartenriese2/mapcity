@@ -74,5 +74,22 @@ Intersection::Intersection(const std::pair<std::shared_ptr<Street>, std::shared_
 			drawable->object.rotate(angleb + glm::radians(90.f), {0.f, 0.f, 1.f});
 		}
 		drawable->object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, 0.05f)));
+
+		m_drawables.emplace_back(std::make_shared<Drawable>());
+		auto & drawable = m_drawables.back();
+		drawable->type = "Intersection";
+		drawable->color = glm::vec4(0.f);
+		drawable->renderType = RenderTypeName::FAN;
+		drawable->misc = glm::vec4(std::abs(glm::degrees(angle)), 0.f, 0.f, 0.f);
+		drawable->dynamic = false;
+		drawable->unicolored = false;
+		const auto scaling = gameToGraphics(m_streets.front()->getConfig().getTotalWidth() * 0.5f);
+		drawable->object.scale({scaling, scaling, 1.f});
+		if (angle >= 0.f) {
+			drawable->object.rotate(anglea - glm::radians(90.f), {0.f, 0.f, 1.f});
+		} else {
+			drawable->object.rotate(angleb + glm::radians(90.f), {0.f, 0.f, 1.f});
+		}
+		drawable->object.moveTo(gameToGraphics(m_pos + glm::vec3(0.f, 0.f, 0.05f)));
 	}
 }
