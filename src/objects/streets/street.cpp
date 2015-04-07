@@ -5,8 +5,10 @@
 #include <map>
 #include "../../../resources/lanes.db"
 
-Street::Street(const std::string & type)
-  : m_type{type}
+Street::Street(const std::string & type, const glm::vec3 & start, const glm::vec3 & end)
+  : m_type{type},
+	m_start{start},
+	m_end{end}
 {
 	LOG_ASSERT(k_streets.count(m_type) != 0, "Street with the name " + m_type + " does not exist.");
 	m_config = k_streets.at(m_type);
@@ -26,12 +28,12 @@ const LaneConfig & Street::getConfig() const {
 
 StraightStreet::StraightStreet(const glm::vec3 & start, const glm::vec3 & end,
 			const std::string & type)
-  : Street{type},
-	m_start{start},
-	m_end{end}
+  : Street{type, start, end}
 {
 	initPaths();
 	initDrawables();
+	m_startTangent = glm::normalize(m_start - m_end);
+	m_endTangent = glm::normalize(m_end - m_start);
 }
 
 void StraightStreet::initPaths() {

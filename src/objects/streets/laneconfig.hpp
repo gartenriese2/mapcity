@@ -11,18 +11,15 @@ enum class LANETYPE : std::uint8_t { CAR, PEDESTRIAN };
 class LaneConfig {
 	public:
 		LaneConfig() {}
-		LaneConfig(const std::vector<std::string> &, const std::vector<bool> &,
-				const glm::vec3 &);
+		LaneConfig(const std::vector<std::string> &, const std::vector<bool> &);
 
 		float getTotalWidth() const;
 		std::vector<float> getLaneCenters() const;
 		const std::vector<Lane> & getLanes() const;
 		const std::vector<bool> & getDirections() const;
-		const glm::vec3 & getColor() const;
 	private:
 		std::vector<Lane> m_lanes;
 		std::vector<bool> m_directions;
-		glm::vec3 m_color;
 };
 
 struct Lane {
@@ -34,3 +31,8 @@ struct Lane {
 	float speedlimit;
 	glm::vec3 color;
 };
+
+inline bool operator==(const Lane & lhs, const Lane & rhs){
+	return lhs.types == rhs.types && std::abs(lhs.width - rhs.width) <= 0.f
+			&& std::abs(lhs.speedlimit - rhs.speedlimit) <= 0.f	&& lhs.color == rhs.color;
+}

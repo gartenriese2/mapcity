@@ -3,7 +3,7 @@
 #include <MonoEngine/object.hpp>
 #include <string>
 
-enum class RenderTypeName : std::uint8_t { QUAD, CUBE, MULTICOLOR_QUAD, MULTICOLOR_CUBE };
+enum class RenderTypeName : std::uint8_t { QUAD, CUBE, MULTICOLOR_QUAD, MULTICOLOR_CUBE, FAN };
 
 struct Drawable {
 	const glm::mat4 & getModelMatrix() const {
@@ -15,4 +15,5 @@ struct Drawable {
 	bool dynamic;
 	bool unicolored;
 	engine::Object object;
+	glm::vec4 misc;
 };

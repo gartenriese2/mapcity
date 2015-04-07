@@ -16,7 +16,7 @@ const std::map<std::string, Lane> k_lanes = {
 
 const std::map<std::string, LaneConfig> k_streets = {
 	{"SmallStreet", {{"SmallSidewalk", "SmallStreet", "SmallStreet", "SmallSidewalk"},
-					{false, false, true, true}, {1,1,0}}},
+					{false, false, true, true}}},
 	{"MediumStreet", {{"MediumSidewalk", "MediumStreet", "MediumStreet", "MediumSidewalk"},
-					{false, false, true, true}, {1,0,0}}},
+					{false, false, true, true}}},
 };

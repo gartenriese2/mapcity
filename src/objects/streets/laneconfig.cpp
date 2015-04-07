@@ -6,10 +6,8 @@
 #include <string>
 #include "../../../resources/lanes.db"
 
-LaneConfig::LaneConfig(const std::vector<std::string> & names, const std::vector<bool> & directions,
-		const glm::vec3 & color)
-  : m_directions{directions},
-	m_color{color}
+LaneConfig::LaneConfig(const std::vector<std::string> & names, const std::vector<bool> & directions)
+  : m_directions{directions}
 {
 	for (const auto & name : names) {
 		LOG_ASSERT(k_lanes.count(name) != 0, "Lane with the name " + name + " does not exist.");
@@ -43,8 +41,4 @@ const std::vector<Lane> & LaneConfig::getLanes() const {
 
 const std::vector<bool> & LaneConfig::getDirections() const {
 	return m_directions;
-}
-
-const glm::vec3 & LaneConfig::getColor() const {
-	return m_color;
 }

@@ -8,8 +8,10 @@
 
 constexpr auto k_modelBufferBinding = 0u;
 constexpr auto k_colorBufferBinding = 1u;
+constexpr auto k_miscBufferBinding = 2u;
 constexpr auto k_modelTypeSize = static_cast<unsigned int>(sizeof(glm::mat4));
 constexpr auto k_colorTypeSize = static_cast<unsigned int>(sizeof(glm::vec4));
+constexpr auto k_miscTypeSize = static_cast<unsigned int>(sizeof(glm::vec4));
 constexpr auto k_maxNumObjects = 1000u;
 
 /**************************************************************************************************/
@@ -35,6 +37,71 @@ DrawableManager::DrawableManager(core::Camera & cam, const glm::uvec2 & size)
 /**************************************************************************************************/
 
 void DrawableManager::initRenderTypes() {
+
+	/*
+	 *	precalls
+	 */
+	auto multicolorPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+		prog.use();
+#ifdef LEGACY_MODE
+		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+		const auto colorIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ColorBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), colorIndex, k_colorBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+#else
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+#endif
+
+		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
+		prog["View"] = cam.getViewMatrix();
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
+
+		drawType.vao.bind();
+	};
+	auto fanPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+		prog.use();
+#ifdef LEGACY_MODE
+		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+		const auto colorIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ColorBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), colorIndex, k_colorBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+		const auto miscIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "MiscBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), miscIndex, k_miscBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_miscBufferBinding, drawType.miscBuffer);
+#else
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_miscBufferBinding, drawType.miscBuffer);
+#endif
+
+		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
+		prog["View"] = cam.getViewMatrix();
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
+
+		drawType.vao.bind();
+	};
+	auto unicolorPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+		prog.use();
+#ifdef LEGACY_MODE
+		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
+		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
+		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+#else
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
+#endif
+		prog["col"] = drawType.col;
+		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
+		prog["View"] = cam.getViewMatrix();
+		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
+
+		drawType.vao.bind();
+	};
+
 	/*
 	 *	UNICOLORED QUAD
 	 */
@@ -73,22 +140,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
-		prog.use();
-#ifdef LEGACY_MODE
-		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
-		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-#else
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-#endif
-		prog["col"] = drawType.col;
-		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
-		prog["View"] = cam.getViewMatrix();
-		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
-
-		drawType.vao.bind();
-	};
+	m_renderTypes[renderType].preCall = unicolorPreCall;
 
 	/*
 	 *	MULTICOLORED QUAD
@@ -123,26 +175,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
-		prog.use();
-#ifdef LEGACY_MODE
-		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
-		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-		const auto colorIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ColorBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), colorIndex, k_colorBufferBinding);
-		glBindBufferBase(GL_UNIFORM_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
-#else
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
-#endif
-
-		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
-		prog["View"] = cam.getViewMatrix();
-		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
-
-		drawType.vao.bind();
-	};
+	m_renderTypes[renderType].preCall = multicolorPreCall;
 
 	/*
 	 *	UNICOLORED CUBE
@@ -196,22 +229,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
-		prog.use();
-#ifdef LEGACY_MODE
-		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
-		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-#else
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-#endif
-		prog["col"] = drawType.col;
-		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
-		prog["View"] = cam.getViewMatrix();
-		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
-
-		drawType.vao.bind();
-	};
+	m_renderTypes[renderType].preCall = unicolorPreCall;
 
 	/*
 	 *	MULTICOLORED CUBE
@@ -246,26 +264,48 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
-		prog.use();
+	m_renderTypes[renderType].preCall = multicolorPreCall;
+
+	/*
+	 *	FAN
+	 */
+	std::vector<GLushort> fanIdx;
+	constexpr auto segments = 100u;
+	fanIdx.reserve(segments + 2);
+	for (auto i = 0u; i < segments + 2; ++i) {
+		fanIdx.emplace_back(i);
+	}
+	renderType = RenderTypeName::FAN;
 #ifdef LEGACY_MODE
-		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), modelIndex, k_modelBufferBinding);
-		glBindBufferBase(GL_UNIFORM_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-		const auto colorIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ColorBuffer");
-		glUniformBlockBinding(static_cast<GLuint>(prog), colorIndex, k_colorBufferBinding);
-		glBindBufferBase(GL_UNIFORM_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+	gl::Shader fanVert(GL_VERTEX_SHADER);
+	fanVert.addSourceFromString("#version 330 core\n");
+	fanVert.addSourceFromString("const int NUM_MATRICES = " + std::to_string(m_maxNumObjects) + ";\n");
+	fanVert.addSourceFromFile("shader/geometries/fan_legacy.vert");
+	if (!fanVert.compileSource()) {
+		LOG_ERROR("could not compile vertex shader!");
+	}
+	m_renderTypes[renderType].prog.attachShader(fanVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.bind(GL_ARRAY_BUFFER);
+	m_renderTypes[renderType].ibo.createMutableStorage(
+			static_cast<unsigned int>(fanIdx.size() * sizeof(GLushort)),
+			GL_STATIC_DRAW,	fanIdx.data());
+	m_renderTypes[renderType].ibo.unbind();
 #else
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_modelBufferBinding, drawType.modelBuffer);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, k_colorBufferBinding, drawType.colorBuffer);
+	gl::Shader fanVert("shader/geometries/fan.vert", "fan_vert");
+	m_renderTypes[renderType].prog.attachShader(fanVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(fanIdx.size() * sizeof(GLushort)),
+			0, fanIdx.data());
 #endif
-
-		prog["ViewProj"] = cam.getProjMatrix() * cam.getViewMatrix();
-		prog["View"] = cam.getViewMatrix();
-		prog["lightDir"] = glm::vec3(1.f, 2.f, -3.f);
-
-		drawType.vao.bind();
+	// drawCall
+	m_renderTypes[renderType].drawCall = [](const GLsizei size){
+		glDrawElementsInstanced(GL_TRIANGLE_FAN, 102, GL_UNSIGNED_SHORT, 0, size);
 	};
+	// preCall
+	m_renderTypes[renderType].preCall = fanPreCall;
 }
 
 /**************************************************************************************************/
@@ -383,6 +423,10 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 					GL_DYNAMIC_DRAW);
 			m_drawables[type].colorBuffer.unbind();
 		}
+		m_drawables[type].miscBuffer.bind(GL_UNIFORM_BUFFER);
+		m_drawables[type].miscBuffer.createMutableStorage(m_maxNumObjects * k_miscTypeSize,
+				GL_DYNAMIC_DRAW);
+		m_drawables[type].miscBuffer.unbind();
 
 #else
 		// vao
@@ -394,6 +438,8 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 			m_drawables[type].colorBuffer.createImmutableStorage(m_maxNumObjects * k_colorTypeSize,
 					GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
 		}
+		m_drawables[type].miscBuffer.createImmutableStorage(m_maxNumObjects * k_miscTypeSize,
+				GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
 #endif
 	}
 
@@ -408,6 +454,7 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 
 	const auto modelOffset = static_cast<unsigned int>(m_drawables[type].objects.size()) * k_modelTypeSize;
 	const auto colorOffset = static_cast<unsigned int>(m_drawables[type].objects.size()) * k_colorTypeSize;
+	const auto miscOffset = static_cast<unsigned int>(m_drawables[type].objects.size()) * k_miscTypeSize;
 	m_drawables[type].objects.emplace_back(drawable);
 #ifdef LEGACY_MODE
 	m_drawables[type].modelBuffer.bind(GL_UNIFORM_BUFFER);
@@ -418,11 +465,15 @@ void DrawableManager::add(const std::shared_ptr<Drawable> & drawable) {
 		m_drawables[type].colorBuffer.setData(colorOffset, k_colorTypeSize, glm::value_ptr(drawable->color));
 		m_drawables[type].colorBuffer.unbind();
 	}
+	m_drawables[type].miscBuffer.bind(GL_UNIFORM_BUFFER);
+	m_drawables[type].miscBuffer.setData(miscOffset, k_miscTypeSize, glm::value_ptr(drawable->misc));
+	m_drawables[type].miscBuffer.unbind();
 #else
 	m_drawables[type].modelBuffer.setData(modelOffset, k_modelTypeSize, glm::value_ptr(drawable->getModelMatrix()));
 	if (!unicolored) {
 		m_drawables[type].colorBuffer.setData(colorOffset, k_colorTypeSize, glm::value_ptr(drawable->color));
 	}
+	m_drawables[type].miscBuffer.setData(miscOffset, k_miscTypeSize, glm::value_ptr(drawable->misc));
 #endif
 }
 
@@ -452,8 +503,10 @@ void DrawableManager::updateBuffer(const std::string & type) {
 
 	std::vector<glm::mat4> modelVec;
 	std::vector<glm::vec4> colorVec;
+	std::vector<glm::vec4> miscVec;
 	modelVec.reserve(objects.size());
 	colorVec.reserve(objects.size());
+	miscVec.reserve(objects.size());
 
 	auto it = objects.begin();
 	while (it != objects.end()) {
@@ -463,6 +516,7 @@ void DrawableManager::updateBuffer(const std::string & type) {
 		}
 		modelVec.emplace_back(it->lock()->getModelMatrix());
 		colorVec.emplace_back(it->lock()->color);
+		miscVec.emplace_back(it->lock()->misc);
 		++it;
 	}
 
@@ -481,6 +535,12 @@ void DrawableManager::updateBuffer(const std::string & type) {
 				colorVec.data());
 		m_drawables[type].colorBuffer.unbind();
 	}
+	m_drawables[type].miscBuffer.bind(GL_UNIFORM_BUFFER);
+	m_drawables[type].miscBuffer.setData(
+			0,
+			k_miscTypeSize * static_cast<unsigned int>(miscVec.size()),
+			miscVec.data());
+	m_drawables[type].miscBuffer.unbind();
 #else
 	m_drawables[type].modelBuffer.setData(
 			0,
@@ -492,6 +552,10 @@ void DrawableManager::updateBuffer(const std::string & type) {
 				k_colorTypeSize * static_cast<unsigned int>(colorVec.size()),
 				colorVec.data());
 	}
+	m_drawables[type].miscBuffer.setData(
+			0,
+			k_miscTypeSize * static_cast<unsigned int>(miscVec.size()),
+			miscVec.data());
 #endif
 }
 

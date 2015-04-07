@@ -1,4 +1,5 @@
 #include "objects/streets/street.hpp"
+#include "objects/streets/intersection.hpp"
 #include "objects/terrain/terrain.hpp"
 #include "objects/buildings/building.hpp"
 #include "objects/vehicles/car.hpp"
@@ -97,8 +98,11 @@ void demo0(ObjectManager & objManager, const std::unique_ptr<core::Input> & inpu
 }
 
 void demo1(ObjectManager & objManager) {
-	objManager.add<StraightStreet>(glm::vec3(-100, 0, 0.02f), glm::vec3(0, 0, 0.02f), "SmallStreet");
-	objManager.add<StraightStreet>(glm::vec3(0, 0, 0.02f), glm::vec3(100, 0, 0.02f), "MediumStreet");
+	auto smallID = objManager.add<StraightStreet>(glm::vec3(-100, 0, 0.02f), glm::vec3(0, 0, 0.02f), "SmallStreet");
+	auto mediumID = objManager.add<StraightStreet>(glm::vec3(0, 0, 0.02f), glm::vec3(100, 100, 0.02f), "MediumStreet");
+	auto smallPtr = std::dynamic_pointer_cast<StraightStreet>(objManager.get(smallID));
+	auto mediumPtr = std::dynamic_pointer_cast<StraightStreet>(objManager.get(mediumID));
+	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{smallPtr, mediumPtr});
 }
 
 int main() {
@@ -119,8 +123,8 @@ int main() {
 	// terrain
 	objManager.add<Terrain>(glm::vec3(-500,-500,0.f), glm::vec3(500,500,0.f));
 
-	demo0(objManager, renderer.getInputPtr());
-	// demo1(objManager);
+	// demo0(objManager, renderer.getInputPtr());
+	demo1(objManager);
 
 	/*
 	 *	Rendering

@@ -8,17 +8,23 @@
 
 class Street : public Object {
 	public:
-		Street(const std::string &);
+		Street(const std::string &, const glm::vec3 &, const glm::vec3 &);
 
 		virtual std::string getType() const override;
 		virtual bool isDrawable() const { return true; }
 
 		std::vector<std::shared_ptr<Path>> & getPaths();
 		const LaneConfig & getConfig() const;
+		const glm::vec3 & getStart() const { return m_start; }
+		const glm::vec3 & getEnd() const { return m_end; }
+		const glm::vec3 & getStartTangent() const { return m_startTangent; }
+		const glm::vec3 & getEndTangent() const { return m_endTangent; }
 	protected:
 		std::vector<std::shared_ptr<Path>> m_paths;
 		LaneConfig m_config;
 		std::string m_type;
+		glm::vec3 m_start, m_end;
+		glm::vec3 m_startTangent, m_endTangent;
 };
 
 class StraightStreet : public Street {
@@ -28,5 +34,4 @@ class StraightStreet : public Street {
 		void initPaths();
 	private:
 		void initDrawables();
-		glm::vec3 m_start, m_end;
 };

@@ -58,6 +58,7 @@ class DrawableManager {
 			gl::VertexArray vao;
 			gl::Buffer modelBuffer;
 			gl::Buffer colorBuffer;
+			gl::Buffer miscBuffer;
 		};
 		std::map<std::string, DrawableType> m_drawables;
 
