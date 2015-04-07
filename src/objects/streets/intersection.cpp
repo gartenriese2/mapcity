@@ -62,8 +62,8 @@ Intersection::Intersection(const std::pair<std::shared_ptr<Street>, std::shared_
 		auto & drawable = m_drawables.back();
 		drawable->type = "Intersection";
 		drawable->color = glm::vec4(0.f);
-		drawable->renderType = RenderTypeName::FAN;
-		drawable->misc = glm::vec4(std::abs(glm::degrees(angle)), 0.f, 0.f, 0.f);
+		drawable->renderType = RenderTypeName::ANNULUS;
+		drawable->misc = glm::vec4(std::abs(glm::degrees(angle)), 0.5f, 0.f, 0.f);
 		drawable->dynamic = false;
 		drawable->unicolored = false;
 		const auto scaling = gameToGraphics(m_streets.front()->getConfig().getTotalWidth() * 0.5f);

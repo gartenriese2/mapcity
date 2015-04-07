@@ -302,7 +302,47 @@ void DrawableManager::initRenderTypes() {
 #endif
 	// drawCall
 	m_renderTypes[renderType].drawCall = [](const GLsizei size){
-		glDrawElementsInstanced(GL_TRIANGLE_FAN, 102, GL_UNSIGNED_SHORT, 0, size);
+		glDrawElementsInstanced(GL_TRIANGLE_FAN, segments + 2, GL_UNSIGNED_SHORT, 0, size);
+	};
+	// preCall
+	m_renderTypes[renderType].preCall = fanPreCall;
+
+	/*
+	 *	ANNULUS
+	 */
+	std::vector<GLushort> annulusIdx;
+	annulusIdx.reserve(2 * segments + 2);
+	for (auto i = 0u; i < 2 * segments + 2; ++i) {
+		annulusIdx.emplace_back(i);
+	}
+	renderType = RenderTypeName::ANNULUS;
+#ifdef LEGACY_MODE
+	gl::Shader annulusVert(GL_VERTEX_SHADER);
+	annulusVert.addSourceFromString("#version 330 core\n");
+	annulusVert.addSourceFromString("const int NUM_MATRICES = " + std::to_string(m_maxNumObjects) + ";\n");
+	annulusVert.addSourceFromFile("shader/geometries/circlesegment_legacy.vert");
+	if (!annulusVert.compileSource()) {
+		LOG_ERROR("could not compile vertex shader!");
+	}
+	m_renderTypes[renderType].prog.attachShader(annulusVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.bind(GL_ARRAY_BUFFER);
+	m_renderTypes[renderType].ibo.createMutableStorage(
+			static_cast<unsigned int>(annulusIdx.size() * sizeof(GLushort)),
+			GL_STATIC_DRAW,	annulusIdx.data());
+	m_renderTypes[renderType].ibo.unbind();
+#else
+	gl::Shader annulusVert("shader/geometries/circlesegment.vert", "circlesegment_vert");
+	m_renderTypes[renderType].prog.attachShader(annulusVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(annulusIdx.size() * sizeof(GLushort)),
+			0, annulusIdx.data());
+#endif
+	// drawCall
+	m_renderTypes[renderType].drawCall = [](const GLsizei size){
+		glDrawElementsInstanced(GL_TRIANGLE_STRIP, 2 * segments + 2, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
 	m_renderTypes[renderType].preCall = fanPreCall;

@@ -7,7 +7,7 @@ layout(std430, binding = 1) restrict readonly buffer ColorBuffer {
 	vec4 Color[];
 };
 layout(std430, binding = 2) restrict readonly buffer MiscBuffer {
-	vec4 Misc[]; // x = degrees
+	vec4 Misc[]; // x = degrees, y = innerradius
 };
 
 in int gl_InstanceID;
@@ -26,9 +26,13 @@ uniform vec3 lightDir;
 void main() {
 
 	const float deg = clamp(Misc[gl_InstanceID].x, 0.01, 360.0);
+	const float innerradius = clamp(Misc[gl_InstanceID].y, 0.01, 0.99);
+	const float rad = radians(float(gl_VertexID / 2) * deg * 0.01); // 0.01 == 1/numSegments
 	vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
-	if (gl_VertexID > 0) {
-		const float rad = radians(float(gl_VertexID - 1) * deg * 0.01); // 0.01 == 1/numSegments
+	if (gl_VertexID % 2 == 0) {
+		pos.x = innerradius * cos(rad);
+		pos.y = innerradius * sin(rad);
+	} else {
 		pos.x = cos(rad);
 		pos.y = sin(rad);
 	}
