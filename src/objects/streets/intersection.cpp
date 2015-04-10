@@ -51,27 +51,31 @@ Intersection::Intersection(const std::pair<std::shared_ptr<Street>, std::shared_
 		if (angle < -glm::pi<float>()) angle += 2.f * glm::pi<float>();
 		if (angle > glm::pi<float>()) angle -= 2.f * glm::pi<float>();
 
-		const auto totalwidth1 = config1.getTotalWidth();
+		const auto w1 = config1.getTotalWidth();
+		const auto w2 = config2.getTotalWidth();
+		const auto w = 0.5f * (w1 + w2);
 		const auto n1 = glm::normalize(glm::vec3(m_tangents.front().y, -m_tangents.front().x, 0.f));
 		const auto n2 = glm::normalize(glm::vec3(m_tangents.back().y, -m_tangents.back().x, 0.f));
 		const auto heightOffset = glm::vec3(0.f, 0.f, 0.03f);
-		const auto x = glm::tan(std::abs(angle) * 0.5f) * 0.5f * totalwidth1;
+		const auto x = glm::tan(std::abs(angle) * 0.5f) * 0.5f * w;
 		const auto rotateRadians = angle >= 0.f ? anglea - glm::half_pi<float>() : angleb + glm::half_pi<float>();
 		const auto tangentOffset = -glm::normalize(angle >= 0.f ? m_tangents.front() : m_tangents.back()) * x;
-		const auto centerOffset = (angle >= 0.f ? n1 : n2) * 0.5f * totalwidth1;
+		const auto centerOffset = (angle >= 0.f ? n1 : n2) * 0.5f * w;
 		const auto moveToPos = gameToGraphics(m_pos - centerOffset + heightOffset + tangentOffset);
 
-		auto w = lanes1[0].width;
+		auto _w1 = lanes1[0].width;
+		auto _w2 = lanes2[0].width;
+		auto _w = 0.5f * (_w1 + _w2);
 		// inner fan
 		{
 			auto drawable = std::make_shared<Drawable>();
 			drawable->type = "IntersectionInner";
-			drawable->color = glm::vec4(lanes1[0].color, 1.f);
+			drawable->color = glm::vec4(0.5f * (lanes1[0].color + lanes2[0].color), 1.f);
 			drawable->renderType = RenderTypeName::FAN;
 			drawable->misc = glm::vec4(std::abs(glm::degrees(angle)), 0.f, 0.f, 0.f);
 			drawable->dynamic = false;
 			drawable->unicolored = false;
-			const auto scaling = gameToGraphics(w);
+			const auto scaling = gameToGraphics(_w);
 			drawable->object.scale({scaling, scaling, 1.f});
 			drawable->object.rotate(rotateRadians, {0.f, 0.f, 1.f});
 			drawable->object.moveTo(moveToPos);
@@ -79,26 +83,41 @@ Intersection::Intersection(const std::pair<std::shared_ptr<Street>, std::shared_
 		}
 		// outer fans
 		for (auto i = 1u; i < lanes1.size(); ++i) {
+			const auto _w1_old = _w1;
+			const auto _w2_old = _w2;
+			_w1 += lanes1[i].width;
+			_w2 += lanes2[i].width;
+			_w = 0.5f * (_w1 + _w2);
 			auto drawable = std::make_shared<Drawable>();
 			drawable = std::make_shared<Drawable>();
 			drawable->type = "IntersectionOuter";
-			drawable->color = glm::vec4(lanes1[i].color, 1.f);
+			drawable->color = glm::vec4(0.5f * (lanes1[i].color + lanes2[i].color), 1.f);
 			drawable->renderType = RenderTypeName::ANNULUS;
-			drawable->misc = glm::vec4(std::abs(glm::degrees(angle)),
-					w / (w + lanes1[i].width), 0.f, 0.f);
+			const auto relOffset = (_w1_old / _w1 + _w2_old / _w2) * 0.5f;
+			drawable->misc = glm::vec4(std::abs(glm::degrees(angle)), relOffset, 0.f, 0.f);
 			drawable->dynamic = false;
 			drawable->unicolored = false;
-			const auto scaling = gameToGraphics(w + lanes1[i].width);
+			const auto scaling = gameToGraphics(_w);
 			drawable->object.scale({scaling, scaling, 1.f});
 			drawable->object.rotate(rotateRadians, {0.f, 0.f, 1.f});
 			drawable->object.moveTo(moveToPos);
 			m_drawables.emplace_back(drawable);
-			w += lanes1[i].width;
 		}
 
 		// TO DO: different lane widths!
 		// TO DO: color smoothing
 		// TO DO: cut streets back by tangentoffset
+
+		if (glm::vec2(m_pos.x, m_pos.y) == m_streets.front()->getStartXY()) {
+			m_streets.front()->moveStart(2.f * x);
+		} else {
+			m_streets.front()->moveEnd(-2.f * x);
+		}
+		if (glm::vec2(m_pos.x, m_pos.y) == m_streets.back()->getStartXY()) {
+			m_streets.back()->moveStart(2.f * x);
+		} else {
+			m_streets.back()->moveEnd(-2.f * x);
+		}
 
 	} else {
 		// TO DO: no uniform connections

@@ -21,6 +21,10 @@ class Street : public Object {
 		glm::vec2 getEndXY() const { return glm::vec2(m_end.x, m_end.y); }
 		const glm::vec3 & getStartTangent() const { return m_startTangent; }
 		const glm::vec3 & getEndTangent() const { return m_endTangent; }
+
+		virtual float getLength() const = 0;
+		virtual void moveStart(float) = 0;
+		virtual void moveEnd(float) = 0;
 	protected:
 		std::vector<std::shared_ptr<Path>> m_paths;
 		LaneConfig m_config;
@@ -32,6 +36,9 @@ class Street : public Object {
 class StraightStreet : public Street {
 	public:
 		StraightStreet(const glm::vec3 &, const glm::vec3 &, const std::string &);
+		virtual float getLength() const override;
+		virtual void moveStart(float) override;
+		virtual void moveEnd(float) override;
 	protected:
 		void initPaths();
 	private:
