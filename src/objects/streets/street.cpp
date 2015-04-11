@@ -84,9 +84,8 @@ float StraightStreet::getLength() const {
 
 void StraightStreet::moveStart(const float val) {
 	LOG_ASSERT(val < getLength(), "cannot move start forward more than total length");
-	LOG("movestart val: " + std::to_string(val));
 	const auto xScaling = (getLength() - val) / getLength();
-	m_start += val * glm::normalize(getStartTangent());
+	m_start += val * glm::normalize(-getStartTangent());
 	for (auto & drawable : m_drawables) {
 		drawable->object.scale({xScaling, 1.f, 1.f});
 		drawable->object.move(gameToGraphics(val * 0.5f), getEndTangent());
@@ -95,7 +94,6 @@ void StraightStreet::moveStart(const float val) {
 
 void StraightStreet::moveEnd(const float val) {
 	LOG_ASSERT(val > -getLength(), "cannot move end back more than total length");
-	LOG("moveend val: " + std::to_string(val));
 	const auto xScaling = (getLength() + val) / getLength();
 	m_end += val * glm::normalize(getEndTangent());
 	for (auto & drawable : m_drawables) {
