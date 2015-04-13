@@ -3,11 +3,9 @@
  */
 
 const std::map<std::string, Lane> k_lanes = {
-	{"SmallSidewalk", {{LANETYPE::PEDESTRIAN}, 1.5f, 10.f, {0.5f, 0.5f, 0.5f}}},
-	{"MediumSidewalk", {{LANETYPE::PEDESTRIAN}, 2.f, 10.f, {0.5f, 0.5f, 0.5f}}},
-	{"WideSidewalk", {{LANETYPE::PEDESTRIAN}, 3.f, 10.f, {0.5f, 0.5f, 0.5f}}},
-	{"SmallStreet", {{LANETYPE::CAR}, 3.5f, 30.f, {1.f, 1.f, 0.f}}},
-	{"MediumStreet", {{LANETYPE::CAR}, 4.f, 50.f, {1.f, 0.f, 0.f}}},
+	{"Sidewalk", {{LANETYPE::PEDESTRIAN}, 2.f, 10.f, {0.5f, 0.5f, 0.5f}}},
+	{"SmallStreet", {{LANETYPE::CAR}, 3.f, 30.f, {1.f, 1.f, 0.f}}},
+	{"MediumStreet", {{LANETYPE::CAR}, 3.f, 50.f, {1.f, 0.f, 0.f}}},
 };
 
 /*
@@ -15,8 +13,8 @@ const std::map<std::string, Lane> k_lanes = {
  */
 
 const std::map<std::string, LaneConfig> k_streets = {
-	{"SmallStreet", {{"SmallSidewalk", "SmallStreet", "SmallStreet", "SmallSidewalk"},
-					{false, false, true, true}}},
-	{"MediumStreet", {{"MediumSidewalk", "MediumStreet", "MediumStreet", "MediumSidewalk"},
-					{false, false, true, true}}},
+	{"SmallStreet", {{"SmallStreet", "SmallStreet"},
+					{false, true}}},
+	{"MediumStreet", {{"MediumStreet", "MediumStreet"},
+					{false, true}}},
 };

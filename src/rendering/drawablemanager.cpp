@@ -41,7 +41,7 @@ void DrawableManager::initRenderTypes() {
 	/*
 	 *	precalls
 	 */
-	auto multicolorPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+	auto doubleBufferPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
 		prog.use();
 #ifdef LEGACY_MODE
 		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
@@ -61,7 +61,7 @@ void DrawableManager::initRenderTypes() {
 
 		drawType.vao.bind();
 	};
-	auto fanPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+	auto tripleBufferPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
 		prog.use();
 #ifdef LEGACY_MODE
 		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
@@ -85,7 +85,7 @@ void DrawableManager::initRenderTypes() {
 
 		drawType.vao.bind();
 	};
-	auto unicolorPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
+	auto singleBufferPreCall = [](gl::Program & prog, const DrawableType & drawType, const core::Camera & cam){
 		prog.use();
 #ifdef LEGACY_MODE
 		const auto modelIndex = glGetUniformBlockIndex(static_cast<GLuint>(prog), "ModelMatrixBuffer");
@@ -140,7 +140,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = unicolorPreCall;
+	m_renderTypes[renderType].preCall = singleBufferPreCall;
 
 	/*
 	 *	MULTICOLORED QUAD
@@ -175,7 +175,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = multicolorPreCall;
+	m_renderTypes[renderType].preCall = doubleBufferPreCall;
 
 	/*
 	 *	UNICOLORED CUBE
@@ -229,7 +229,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = unicolorPreCall;
+	m_renderTypes[renderType].preCall = singleBufferPreCall;
 
 	/*
 	 *	MULTICOLORED CUBE
@@ -264,7 +264,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = multicolorPreCall;
+	m_renderTypes[renderType].preCall = doubleBufferPreCall;
 
 	/*
 	 *	FAN
@@ -305,7 +305,7 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLE_FAN, segments + 2, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = fanPreCall;
+	m_renderTypes[renderType].preCall = tripleBufferPreCall;
 
 	/*
 	 *	ANNULUS
@@ -345,7 +345,42 @@ void DrawableManager::initRenderTypes() {
 		glDrawElementsInstanced(GL_TRIANGLE_STRIP, 2 * segments + 2, GL_UNSIGNED_SHORT, 0, size);
 	};
 	// preCall
-	m_renderTypes[renderType].preCall = fanPreCall;
+	m_renderTypes[renderType].preCall = tripleBufferPreCall;
+
+	/*
+	 *	TRAPEZOID
+	 */
+	renderType = RenderTypeName::TRAPEZOID;
+#ifdef LEGACY_MODE
+	gl::Shader trapezoidVert(GL_VERTEX_SHADER);
+	trapezoidVert.addSourceFromString("#version 330 core\n");
+	trapezoidVert.addSourceFromString("const int NUM_MATRICES = " + std::to_string(m_maxNumObjects) + ";\n");
+	trapezoidVert.addSourceFromFile("shader/geometries/trapezoid_legacy.vert");
+	if (!trapezoidVert.compileSource()) {
+		LOG_ERROR("could not compile vertex shader!");
+	}
+	m_renderTypes[renderType].prog.attachShader(trapezoidVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.bind(GL_ARRAY_BUFFER);
+	m_renderTypes[renderType].ibo.createMutableStorage(
+			static_cast<unsigned int>(quadIdx.size() * sizeof(GLubyte)),
+			GL_STATIC_DRAW,	quadIdx.data());
+	m_renderTypes[renderType].ibo.unbind();
+#else
+	gl::Shader trapezoidVert("shader/geometries/trapezoid.vert", "trapezoid_vert");
+	m_renderTypes[renderType].prog.attachShader(trapezoidVert);
+	m_renderTypes[renderType].prog.attachShader(frag);
+
+	m_renderTypes[renderType].ibo.createImmutableStorage(static_cast<unsigned int>(quadIdx.size() * sizeof(GLubyte)),
+			0, quadIdx.data());
+#endif
+	// drawCall
+	m_renderTypes[renderType].drawCall = [](const GLsizei size){
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, size);
+	};
+	// preCall
+	m_renderTypes[renderType].preCall = tripleBufferPreCall;
 }
 
 /**************************************************************************************************/

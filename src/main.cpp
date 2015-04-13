@@ -100,24 +100,27 @@ void demo0(ObjectManager & objManager, const std::unique_ptr<core::Input> & inpu
 void demo1(ObjectManager & objManager, DrawableManager & drawableManager) {
 	auto ID0 = objManager.add<StraightStreet>(glm::vec3(-50, -25, 0.01f), glm::vec3(0, -25, 0.01f), "SmallStreet");
 	auto ptr0 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID0));
-	auto ID1 = objManager.add<StraightStreet>(glm::vec3(0, -25, 0.02f), glm::vec3(25, 0, 0.02f), "SmallStreet"/*"MediumStreet"*/);
+	auto ID1 = objManager.add<StraightStreet>(glm::vec3(0, -25, 0.02f), glm::vec3(25, 0, 0.02f), "MediumStreet");
 	auto ptr1 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID1));
 	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr0, ptr1});
 	auto ID2 = objManager.add<StraightStreet>(glm::vec3(25, 0, 0.01f), glm::vec3(-25, 50, 0.01f), "SmallStreet");
 	auto ptr2 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID2));
 	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr2, ptr1});
-	auto ID3 = objManager.add<StraightStreet>(glm::vec3(-25, 50, 0.02f), glm::vec3(-25, 0, 0.02f), /*"SmallStreet"*/"MediumStreet");
+	auto ID3 = objManager.add<StraightStreet>(glm::vec3(-25, 50, 0.02f), glm::vec3(-25, 0, 0.02f), "MediumStreet");
 	auto ptr3 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID3));
 	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr2, ptr3});
 	auto ID4 = objManager.add<StraightStreet>(glm::vec3(-25, 0, 0.01f), glm::vec3(-75, 50, 0.01f), "SmallStreet");
 	auto ptr4 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID4));
 	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr4, ptr3});
-	auto ID5 = objManager.add<StraightStreet>(glm::vec3(-75, 50, 0.02f), glm::vec3(-50, 75, 0.02f), "SmallStreet"/*"MediumStreet"*/);
+	auto ID5 = objManager.add<StraightStreet>(glm::vec3(-75, 50, 0.02f), glm::vec3(-50, 75, 0.02f), "MediumStreet");
 	auto ptr5 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID5));
 	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr4, ptr5});
 	auto ID6 = objManager.add<StraightStreet>(glm::vec3(-50, 75, 0.01f), glm::vec3(0, 75, 0.01f), "SmallStreet");
 	auto ptr6 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID6));
 	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr6, ptr5});
+	auto ID7 = objManager.add<StraightStreet>(glm::vec3(0, 75, 0.02f), glm::vec3(50, 75, 0.02f), "MediumStreet");
+	auto ptr7 = std::dynamic_pointer_cast<StraightStreet>(objManager.get(ID7));
+	objManager.add<Intersection>(std::pair<std::shared_ptr<Street>, std::shared_ptr<Street>>{ptr6, ptr7});
 	drawableManager.updateBuffer("SmallStreet");
 	drawableManager.updateBuffer("MediumStreet");
 }

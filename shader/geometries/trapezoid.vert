@@ -7,7 +7,7 @@ layout(std430, binding = 1) restrict readonly buffer ColorBuffer {
 	vec4 Color[];
 };
 layout(std430, binding = 2) restrict readonly buffer MiscBuffer {
-	vec4 Misc[]; // x = degrees, y = innerradius right, z = innerradius left, w = outerradius left
+	vec4 Misc[]; // x = upper left scale, y = upper right scale
 };
 
 in int gl_InstanceID;
@@ -25,21 +25,15 @@ uniform vec3 lightDir;
 
 void main() {
 
-	const float deg = clamp(Misc[gl_InstanceID].x, 0.01, 360.0);
-	const float innerradiusRight = max(Misc[gl_InstanceID].y, 0.01);
-	const float innerradiusLeft = max(Misc[gl_InstanceID].z, 0.01);
-	const float outerradiusLeft = max(Misc[gl_InstanceID].w, innerradiusLeft + 0.01);
-	const float rel = float(gl_VertexID / 2) * 0.01; // 0.01 == 1/numSegments
-	const float rad = radians(rel * deg);
-	const float inRad = (1.0 - rel) * innerradiusRight + rel * innerradiusLeft;
-	const float outRad = 1.0 + rel * (outerradiusLeft - 1.0);
-	vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
-	if (gl_VertexID % 2 == 0) {
-		pos.x = inRad * cos(rad);
-		pos.y = inRad * sin(rad);
-	} else {
-		pos.x = outRad * cos(rad);
-		pos.y = outRad * sin(rad);
+	vec4 pos = vec4((gl_VertexID>>0) & 0x01,
+					(gl_VertexID>>1) & 0x01,
+					0.0,
+					1.0);
+	pos.xy = 1.0 - 2.0 * pos.xy;
+	if (pos.xy == vec2(-1.0, 1.0)) {
+		pos.x *= Misc[gl_InstanceID].x;
+	} else if (pos.xy == vec2(1.0, 1.0)) {
+		pos.x *= Misc[gl_InstanceID].y;
 	}
 
 	vec3 normal = vec3(0.0, 0.0, 1.0);
