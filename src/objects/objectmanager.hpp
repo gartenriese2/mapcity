@@ -18,7 +18,7 @@ class ObjectManager {
 		template<typename T, typename ... Args>
 		IDType add(Args && ... args) {
 			static_assert(std::is_base_of<Object, T>(), "type is not derived from object!");
-			auto ptr = std::make_shared<T>(std::forward<Args>(args) ...);
+			auto ptr {std::make_shared<T>(std::forward<Args>(args) ...)};
 			add(std::static_pointer_cast<Object>(ptr));
 			return ptr->ID();
 		}

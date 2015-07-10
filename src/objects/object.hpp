@@ -12,7 +12,7 @@ using IDType = std::uint64_t;
 class Object {
 	public:
 		Object() {
-			static std::uint64_t s_id = 0;
+			static auto s_id {static_cast<std::uint64_t>(0)};
 			m_ID = ++s_id;
 			if (m_ID == 0) {
 				LOG_ERROR("Tried to create more objects than possible: "
@@ -20,14 +20,14 @@ class Object {
 			}
 		}
 		Object(const Object &) = delete;
-		Object(Object &&) = delete;
+		Object(Object &&) = default;
 		Object & operator=(const Object &) & = delete;
-		Object & operator=(Object  &&) & = delete;
+		Object & operator=(Object  &&) & = default;
 		virtual ~Object() {}
 		auto ID() const { return m_ID; }
 		virtual std::string getType() const = 0;
 		virtual bool isDrawable() const { return false; }
-		const std::vector<std::shared_ptr<Drawable>> & getDrawables() const { return m_drawables; }
+		const auto & getDrawables() const { return m_drawables; }
 	protected:
 		IDType m_ID;
 		std::vector<std::shared_ptr<Drawable>> m_drawables;

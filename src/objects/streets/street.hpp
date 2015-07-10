@@ -8,8 +8,6 @@
 
 class Street : public Object {
 	public:
-		Street(const std::string &, const glm::vec3 &, const glm::vec3 &);
-
 		virtual std::string getType() const override;
 		virtual bool isDrawable() const { return true; }
 
@@ -26,6 +24,8 @@ class Street : public Object {
 		virtual void moveStart(float) = 0;
 		virtual void moveEnd(float) = 0;
 	protected:
+		Street(const std::string &, const glm::vec3 &, const glm::vec3 &);
+
 		std::vector<std::shared_ptr<Path>> m_paths;
 		LaneConfig m_config;
 		std::string m_type;

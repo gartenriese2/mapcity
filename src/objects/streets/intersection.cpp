@@ -31,6 +31,7 @@ Intersection::Intersection(const std::pair<std::shared_ptr<Street>, std::shared_
 	const auto & config1 = m_streets.front()->getConfig();
 	const auto & config2 = m_streets.back()->getConfig();
 
+	/*
 	const auto & dir1 = config1.getDirections();
 	const auto & dir2 = config2.getDirections();
 	const auto & lanes1 = config1.getLanes();
@@ -118,6 +119,20 @@ Intersection::Intersection(const std::pair<std::shared_ptr<Street>, std::shared_
 	} else {
 		// TO DO: no uniform connections
 	}
+	*/
+
+	// simplistic circle
+	const auto maxWidth = std::max(config1.getTotalWidth(), config2.getTotalWidth());
+	auto drawable = std::make_shared<Drawable>();
+	drawable->type = "IntersectionCircle";
+	drawable->color = {0.5f, 0.5f, 0.f, 1.f};
+	drawable->renderType = RenderTypeName::FAN;
+	drawable->misc = {360.f, 0.f, 0.f, 0.f};
+	drawable->dynamic = false;
+	drawable->unicolored = false;
+	drawable->object.scale({gameToGraphics(maxWidth), gameToGraphics(maxWidth), 1.f});
+	drawable->object.moveTo(gameToGraphics(glm::vec3{m_pos.x, m_pos.y, 0.1}));
+	m_drawables.emplace_back(drawable);
 
 	// TO DO: connect paths with a node
 }

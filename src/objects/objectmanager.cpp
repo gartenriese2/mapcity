@@ -11,9 +11,9 @@ ObjectManager::ObjectManager(DrawableManager & dm, UpdatableManager & um)
 {}
 
 void ObjectManager::add(std::shared_ptr<Object> && objPtr) {
-	auto pair = m_objects.emplace(objPtr->ID(), std::move(objPtr));
-	auto it = pair.first;
-	auto ptr = it->second;
+	auto pair {m_objects.emplace(objPtr->ID(), std::move(objPtr))};
+	auto it {pair.first};
+	auto ptr {it->second};
 	if (ptr->isDrawable()) {
 		for (const auto & drawable : ptr->getDrawables()) {
 			m_drawableManager.add(drawable);
@@ -32,7 +32,7 @@ void ObjectManager::add(std::shared_ptr<Object> && objPtr) {
 }
 
 void ObjectManager::remove(IDType ID) {
-	auto it = m_objects.find(ID);
+	auto it {m_objects.find(ID)};
 	if (it != m_objects.end()) {
 		m_objects.erase(it);
 	} else {

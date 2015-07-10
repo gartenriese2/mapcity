@@ -17,7 +17,7 @@ LaneConfig::LaneConfig(const std::vector<std::string> & names, const std::vector
 }
 
 float LaneConfig::getTotalWidth() const {
-	auto width = 0.f;
+	auto width {0.f};
 	for (const auto & lane : m_lanes) {
 		width += lane.width;
 	}
@@ -27,7 +27,7 @@ float LaneConfig::getTotalWidth() const {
 std::vector<float> LaneConfig::getLaneCenters() const {
 	std::vector<float> centers;
 	centers.reserve(m_lanes.size());
-	auto widthCounter = 0.f;
+	auto widthCounter {0.f};
 	for (const auto & lane : m_lanes) {
 		centers.emplace_back(widthCounter + lane.width * 0.5f);
 		widthCounter += lane.width;
